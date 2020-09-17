@@ -1,7 +1,5 @@
 ﻿using Store.DataAccess.Entities.Base;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using static Store.DataAccess.Entities.Enums.Enums;
 
 namespace Store.DataAccess.Entities
@@ -14,6 +12,11 @@ namespace Store.DataAccess.Entities
         public Status Status { get; set; }
         public Currency Currency { get; set; }
         public PrintingEditionType Type { get; set; }
-        public List<Author> Authors { get; set; }
+        public List<AuthorInPrintingEdition> Authors { get; set; }
+
+        public PrintingEdition()
+        {
+            Authors = new List<AuthorInPrintingEdition>();
+        }
     }
 }

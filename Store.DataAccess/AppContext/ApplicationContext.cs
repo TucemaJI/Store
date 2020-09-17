@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.Entities;
-using Store.DataAccess.Initialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Store.DataAccess.AppContext
 {
@@ -20,11 +16,27 @@ namespace Store.DataAccess.AppContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            DataBaseInitialization.Initialize(builder);
+            base.OnModelCreating(builder);
+
+            builder.Entity<AuthorInPrintingEdition>()
+                .HasKey(t => new { t.AuthorId, t.PrintingEditionId });
+            builder.Entity<AuthorInPrintingEdition>()
+                .HasOne(ape => ape.PrintingEdition)
+                .WithMany(pe => pe.Authors)
+                .HasForeignKey(ape => ape.PrintingEditionId);
+            builder.Entity<AuthorInPrintingEdition>()
+                .HasOne(ape => ape.Author)
+                .WithMany(author => author.PrintingEditions)
+                .HasForeignKey(ape => ape.AuthorId);
+
+            //DataBaseInitialization.Initialize(builder);
         }
     }
 }

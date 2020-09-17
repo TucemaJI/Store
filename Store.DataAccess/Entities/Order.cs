@@ -1,7 +1,5 @@
 ﻿using Store.DataAccess.Entities.Base;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Store.DataAccess.Entities
 {
@@ -9,6 +7,13 @@ namespace Store.DataAccess.Entities
     {
         public string Description { get; set; }
         public long UserId { get; set; }
+        public User User { get; set; }
         public long PaymentId { get; set; }
+        public Payment Payment { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
+        public Order()
+        {
+            OrderItems = new List<OrderItem>();
+        }
     }
 }
