@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Presentation", "Store.Presentation\Store.Presentation.csproj", "{F5B7F816-3798-48E7-92C6-0D0732BF12EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Presentation", "Store.Presentation\Store.Presentation.csproj", "{F5B7F816-3798-48E7-92C6-0D0732BF12EE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3C7ED1AB-3A97-436E-B73D-271C57823804} = {3C7ED1AB-3A97-436E-B73D-271C57823804}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.BusinessLogic", "Store.BusinessLogic\Store.BusinessLogic.csproj", "{3C7ED1AB-3A97-436E-B73D-271C57823804}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.BusinessLogic", "Store.BusinessLogic\Store.BusinessLogic.csproj", "{3C7ED1AB-3A97-436E-B73D-271C57823804}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.DataAccess", "Store.DataAccess\Store.DataAccess.csproj", "{552123F6-50BA-4593-820E-220D42110282}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.DataAccess", "Store.DataAccess\Store.DataAccess.csproj", "{552123F6-50BA-4593-820E-220D42110282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

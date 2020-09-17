@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogic.Common;
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Initialization;
@@ -34,8 +35,9 @@ namespace Store.Presentation
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
+                    var logger = services.GetRequiredService<Logger>();
+                    logger.LogInformation(ex, "An error occurred while seeding the database.");
+                    logger.LogDebug(ex, "An error occurred while seeding the database.");
                 }
             }
             host.Run();

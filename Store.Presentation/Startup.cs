@@ -7,6 +7,10 @@ using Store.DataAccess.AppContext;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Store.BusinessLogic.Common;
 
 namespace Store.Presentation
 {
@@ -30,7 +34,7 @@ namespace Store.Presentation
         }
 
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -47,6 +51,17 @@ namespace Store.Presentation
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
+
+
+            app.Run(async (context) =>
+            {
+                logger.LogInformation("Processing request {0}", context.Request.Path);
+
+                await context.Response.WriteAsync("Hello World!");
             });
         }
     }

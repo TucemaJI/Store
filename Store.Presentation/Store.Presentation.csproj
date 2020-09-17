@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Store.BusinessLogic\Store.BusinessLogic.csproj" />
     <ProjectReference Include="..\Store.DataAccess\Store.DataAccess.csproj" />
   </ItemGroup>
 
