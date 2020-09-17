@@ -23,7 +23,7 @@ namespace Store.DataAccess.Initialization
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, FirstName = "Administrator", LastName = "Administratorovich", UserName = adminEmail };
+                User admin = new User { Email = adminEmail, FirstName = "Administrator", LastName = "Administratorovich"/*, UserName = adminEmail*/ };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {

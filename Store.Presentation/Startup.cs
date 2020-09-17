@@ -54,7 +54,7 @@ namespace Store.Presentation
             });
 
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
-            var logger = loggerFactory.CreateLogger("FileLogger");
+            var logger = loggerFactory.CreateLogger("Logger");
 
 
             app.Run(async (context) =>
