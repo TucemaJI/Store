@@ -25,16 +25,6 @@ namespace Store.BusinessLogic.Common
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            var test = logLevel;
-            if (exception == null)
-            {
-                return;
-            }
-                lock (_lock)
-                {
-                    File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
-                }
-
             if (formatter != null)
             {
                 lock (_lock)
@@ -42,13 +32,6 @@ namespace Store.BusinessLogic.Common
                     File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
                 }
             }
-            //if (logLevel == LogLevel.Warning)
-            //{
-            //    lock (_lock)
-            //    {
-            //        File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
-            //    }
-            //}
         }
     }
 }
