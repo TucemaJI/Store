@@ -35,8 +35,6 @@ namespace Store.DataAccess.AppContext
                 .HasOne(ape => ape.Author)
                 .WithMany(author => author.PrintingEditions)
                 .HasForeignKey(ape => ape.AuthorId);
-
-            //DataBaseInitialization.Initialize(builder);
         }
     }
 }

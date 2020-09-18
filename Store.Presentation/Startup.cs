@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Store.DataAccess.AppContext;
 using Microsoft.EntityFrameworkCore;
-using Store.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
 using System.IO;
 using Store.BusinessLogic.Common;
 
@@ -23,13 +20,9 @@ namespace Store.Presentation
 
         public IConfiguration Configuration { get; }
 
-        
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>();
+            BusinessLogic.Startup.Initialize(services, Configuration);
             services.AddControllers();
         }
 
@@ -40,6 +33,9 @@ namespace Store.Presentation
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
+            var logger = loggerFactory.CreateLogger("Logger");
 
             app.UseHttpsRedirection();
 
@@ -53,16 +49,6 @@ namespace Store.Presentation
                 endpoints.MapControllers();
             });
 
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
-            var logger = loggerFactory.CreateLogger("Logger");
-
-
-            app.Run(async (context) =>
-            {
-                logger.LogInformation("Processing request {0}", context.Request.Path);
-
-                await context.Response.WriteAsync("Hello World!");
-            });
         }
     }
 }

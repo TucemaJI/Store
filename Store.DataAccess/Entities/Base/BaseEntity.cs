@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Store.DataAccess.Entities.Base
 {
@@ -9,5 +7,10 @@ namespace Store.DataAccess.Entities.Base
         public long Id { get; set; }
         public DateTime CreationData { get; set; }
         public bool IsRemoved { get; set; }
+
+        public BaseEntity()
+        {
+            CreationData = DateTime.UtcNow;
+        }
     }
 }
