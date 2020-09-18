@@ -13,6 +13,7 @@ namespace Store.DataAccess.Initialization
         {
             string adminEmail = "admin@gmail.com";
             string password = "_Aa123456";
+            throw new NullReferenceException();
             if (await roleManager.FindByNameAsync(Enums.UserRole.Admin.ToString()) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Admin.ToString()));
@@ -29,6 +30,11 @@ namespace Store.DataAccess.Initialization
                 {
                     await userManager.AddToRoleAsync(admin, Enums.UserRole.Admin.ToString());
                 }
+                else
+                {
+                    throw new ArgumentNullException("Admin wasn't created", result.Errors.ToString());
+                }
+                
             }
         }
 
