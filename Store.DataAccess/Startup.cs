@@ -13,7 +13,8 @@ namespace Store.DataAccess
         public static void Initialize(IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             DataBaseInitialization.Initialize(services);

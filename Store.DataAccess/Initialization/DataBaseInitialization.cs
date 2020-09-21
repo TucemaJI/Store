@@ -39,26 +39,27 @@ namespace Store.DataAccess.Initialization
             }
         }
 
-        //public static void InitializeDB(ApplicationContext db) 
-        //{
-        //    var author = new Author {Name = "Troelsen", IsRemoved = false };
-        //    db.Authors.Add(author);
+        public static void InitializeDB(ModelBuilder builder)
+        {
+            var author = new Author {Id = 1, Name = "Troelsen", IsRemoved = false };
+            
+
+            var pe = new PrintingEdition
+            {
+                Id = 1,
+                Currency = Enums.Enums.Currency.USD,
+                Price = 50,
+                Status = Enums.Enums.Status.Unpaid,
+                Type = Enums.Enums.PrintingEditionType.Book
+            };
+            var aipe = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pe.Id };
+            
+            builder.Entity<AuthorInPrintingEdition>().HasData(aipe);
+            builder.Entity<Author>().HasData(author);
+            builder.Entity<PrintingEdition>().HasData(pe);
 
             
-        //    var pe = new PrintingEdition
-        //    {
-        //        CreationData = DateTime.Now,
-        //        Currency = Enums.Enums.Currency.USD,
-        //        Price = 50,
-        //        Status = Enums.Enums.Status.Unpaid,
-        //        Type = Enums.Enums.PrintingEditionType.Book
-        //    };
-        //    db.PrintingEditions.Add(pe);
 
-        //    db.SaveChanges();
-
-        //    author.PrintingEditions.Add(new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pe.Id });
-        //    db.SaveChanges();
-        //}
+        }
     }
 }

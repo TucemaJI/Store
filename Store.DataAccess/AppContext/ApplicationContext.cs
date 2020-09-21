@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.Entities;
+using Store.DataAccess.Initialization;
 
 namespace Store.DataAccess.AppContext
 {
@@ -25,6 +26,10 @@ namespace Store.DataAccess.AppContext
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<User>()
+                .Property(u => u.UserName)
+                .HasComputedColumnSql("[FirstName] + ' ' + [LastName]");
+
             builder.Entity<AuthorInPrintingEdition>()
                 .HasKey(t => new { t.AuthorId, t.PrintingEditionId });
             builder.Entity<AuthorInPrintingEdition>()
@@ -35,6 +40,8 @@ namespace Store.DataAccess.AppContext
                 .HasOne(ape => ape.Author)
                 .WithMany(author => author.PrintingEditions)
                 .HasForeignKey(ape => ape.AuthorId);
+
+            DataBaseInitialization.InitializeDB(builder);
         }
     }
 }
