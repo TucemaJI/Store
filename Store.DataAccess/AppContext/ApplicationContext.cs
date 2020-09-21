@@ -12,6 +12,7 @@ namespace Store.DataAccess.AppContext
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PrintingEdition> PrintingEditions { get; set; }
+        public DbSet<AuthorInPrintingEdition> AuthorsInPrintingEditions { get; set; }
 
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
