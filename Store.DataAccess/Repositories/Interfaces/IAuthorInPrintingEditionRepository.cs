@@ -1,6 +1,6 @@
 ﻿namespace Store.DataAccess.Repositories.Interfaces
 {
-    interface IAuthorInPrintingEditionRepository<T> : IBaseEFRepository<T> where T : class 
+    public interface IAuthorInPrintingEditionRepository<T> : IBaseEFRepository<T> where T : class 
     { 
     }
 }
