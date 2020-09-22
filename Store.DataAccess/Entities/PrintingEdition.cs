@@ -9,14 +9,13 @@ namespace Store.DataAccess.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public Status Status { get; set; }
         public Currency Currency { get; set; }
         public PrintingEditionType Type { get; set; }
-        public List<AuthorInPrintingEdition> Authors { get; set; }
+        public List<AuthorInPrintingEdition> AuthorsInPrintingEdition { get; set; }
 
         public PrintingEdition()
         {
-            Authors = new List<AuthorInPrintingEdition>();
+            AuthorsInPrintingEdition = new List<AuthorInPrintingEdition>();
         }
     }
 }

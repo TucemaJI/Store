@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
-using System;
 using System.Threading.Tasks;
 
 namespace Store.DataAccess.Initialization
@@ -49,8 +47,9 @@ namespace Store.DataAccess.Initialization
                 Id = 1,
                 Currency = Enums.Enums.Currency.USD,
                 Price = 50,
-                Status = Enums.Enums.Status.Unpaid,
-                Type = Enums.Enums.PrintingEditionType.Book
+                Type = Enums.Enums.PrintingEditionType.Book,
+                Title = "C# 8.0",
+                Description = "The new best book for learning programming",
             };
             var aipe = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pe.Id };
             

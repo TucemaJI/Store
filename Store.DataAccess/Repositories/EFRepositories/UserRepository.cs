@@ -13,6 +13,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
         public void Create(User item)
         {
             db.Users.Add(item);
+            db.SaveChanges();
         }
 
         public void Delete(long id)

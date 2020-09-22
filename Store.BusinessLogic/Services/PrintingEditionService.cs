@@ -2,7 +2,7 @@
 
 namespace Store.BusinessLogic.Services
 {
-    public class PrintingEditionService : BaseService, IPrintingEditionService
+    public class PrintingEditionService : /*BaseService,*/ IPrintingEditionService
     {
     }
 }

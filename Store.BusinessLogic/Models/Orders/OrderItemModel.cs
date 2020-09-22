@@ -9,9 +9,7 @@ namespace Store.BusinessLogic.Models.Orders
         public long Amount { get; set; }
         public string Currency { get; set; }
         public long PrintingEditionId { get; set; }
-        public PrintingEditionModel PrintingEditionModel { get; set; }
         public long OrderId { get; set; }
-        public OrderModel OrderModel { get; set; }
         public long Count { get; set; }
     }
 }

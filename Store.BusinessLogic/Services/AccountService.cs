@@ -2,7 +2,7 @@
 
 namespace Store.BusinessLogic.Services
 {
-    public class AccountService : BaseService, IAccountService
+    public class AccountService : /*BaseService,*/ IAccountService
     {
     }
 }

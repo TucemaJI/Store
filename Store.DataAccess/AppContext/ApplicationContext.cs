@@ -35,11 +35,11 @@ namespace Store.DataAccess.AppContext
                 .HasKey(t => new { t.AuthorId, t.PrintingEditionId });
             builder.Entity<AuthorInPrintingEdition>()
                 .HasOne(ape => ape.PrintingEdition)
-                .WithMany(pe => pe.Authors)
+                .WithMany(pe => pe.AuthorsInPrintingEdition)
                 .HasForeignKey(ape => ape.PrintingEditionId);
             builder.Entity<AuthorInPrintingEdition>()
                 .HasOne(ape => ape.Author)
-                .WithMany(author => author.PrintingEditions)
+                .WithMany(author => author.AuthorInPrintingEditions)
                 .HasForeignKey(ape => ape.AuthorId);
 
             DataBaseInitialization.InitializeDB(builder);

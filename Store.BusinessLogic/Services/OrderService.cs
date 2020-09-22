@@ -2,7 +2,7 @@
 
 namespace Store.BusinessLogic.Services
 {
-    public class OrderService : BaseService, IOrderService
+    public class OrderService : /*BaseService,*/ IOrderService
     {
     }
 }

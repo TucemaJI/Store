@@ -6,11 +6,11 @@ namespace Store.DataAccess.Entities
     public class Author : BaseEntity
     {
         public string Name { get; set; }
-        public List<AuthorInPrintingEdition> PrintingEditions { get; set; }
+        public List<AuthorInPrintingEdition> AuthorInPrintingEditions { get; set; }
 
         public Author()
         {
-            PrintingEditions = new List<AuthorInPrintingEdition>();
+            AuthorInPrintingEditions = new List<AuthorInPrintingEdition>();
         }
     }
 }
