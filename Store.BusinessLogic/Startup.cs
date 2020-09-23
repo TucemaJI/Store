@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Services;
 using Store.BusinessLogic.Services.Interfaces;
 
@@ -11,7 +13,16 @@ namespace Store.BusinessLogic
         {
             DataAccess.Startup.Initialize(services, configuration);
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IAuthorService, AuthorService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<ICartService, CartService>();
+            var mapperConfig = new MapperConfiguration(config =>
+            {
+                config.AddProfile(new AuthorProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
         }
     }
 }

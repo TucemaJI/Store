@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.DataAccess.Enums;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
@@ -15,35 +18,35 @@ namespace Store.BusinessLogic.Services
             _userManager = userManager;
         }
 
-        public override void Create(UserModel item)
+        public override async void CreateEntity(UserModel model)
         {
-            throw new System.NotImplementedException();
+            User user = new UserMapper().Map(model);
+            IdentityResult result = await _userManager.CreateAsync(user);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
+            }
         }
 
-        public override void Delete(long id)
+        public void Dispose()
         {
-            throw new System.NotImplementedException();
+            _userManager.Dispose();
         }
 
-        public override UserModel GetItem(long id)
+        public async Task<UserModel> GetUserAsync(string email)
         {
-            throw new System.NotImplementedException();
+            return new UserMapper().Map(await _userManager.FindByEmailAsync(email));
         }
 
-        public override IEnumerable<UserModel> GetList()
+        public override IEnumerable<UserModel> GetModels()
         {
-            throw new System.NotImplementedException();
+            var userList = _userManager.Users;
+            var userModelList = new List<UserModel>();
+            foreach (var user in userList)
+            {
+                userModelList.Add(new UserMapper().Map(user));
+            }
+            return userModelList;
         }
-
-        public override void Save()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Update(UserModel item)
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
 }

@@ -23,6 +23,7 @@ namespace Store.DataAccess.AppContext
         }
 
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

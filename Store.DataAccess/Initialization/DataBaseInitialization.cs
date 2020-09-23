@@ -39,7 +39,7 @@ namespace Store.DataAccess.Initialization
 
         public static void InitializeDB(ModelBuilder builder)
         {
-            var author = new Author {Id = 1, Name = "Troelsen", IsRemoved = false };
+            var author = new Author {Id = 1, Name = "Andrew Troelsen", IsRemoved = false };
             
 
             var pe = new PrintingEdition

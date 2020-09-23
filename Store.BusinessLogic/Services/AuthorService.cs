@@ -1,4 +1,4 @@
-﻿using Store.BusinessLogic.Mappers;
+﻿using AutoMapper;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
@@ -10,40 +10,33 @@ namespace Store.BusinessLogic.Services
     public class AuthorService : BaseService<AuthorModel>, IAuthorService
     {
         private readonly IAuthorRepository<Author> _authorRepository;
-
-        public AuthorService(IAuthorRepository<Author> authorRepository)
+        private readonly IMapper _mapper;
+        public AuthorService(IAuthorRepository<Author> authorRepository, IMapper mapper)
         {
             _authorRepository = authorRepository;
+            _mapper = mapper;
         }
 
-        public override void Create(AuthorModel item)
+        public override void CreateEntity(AuthorModel model)
         {
-            _authorRepository.Create(new AuthorMapper().Map(item));
+            _authorRepository.Create(_mapper.Map<AuthorModel, Author>(model));
+            _authorRepository.Save();
         }
 
-        public override void Delete(long id)
+        public AuthorModel GetAuthor(long id)
         {
-            throw new System.NotImplementedException();
+            return _mapper.Map<Author, AuthorModel>(_authorRepository.GetItem(id));
         }
 
-        public override AuthorModel GetItem(long id)
+        public override IEnumerable<AuthorModel> GetModels()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override IEnumerable<AuthorModel> GetList()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Save()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Update(AuthorModel item)
-        {
-            throw new System.NotImplementedException();
+            var authorList = _authorRepository.GetList();
+            var authorModelList = new List<AuthorModel>();
+            foreach (var author in authorList)
+            {
+                authorModelList.Add(_mapper.Map<Author, AuthorModel>(author));
+            }
+            return authorModelList;
         }
     }
 }

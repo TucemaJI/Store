@@ -1,8 +1,4 @@
-﻿using Store.BusinessLogic.Models.Authors;
-using Store.BusinessLogic.Models.Base;
-using Store.DataAccess.Entities;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Store.BusinessLogic.Models.Base;
 using static Store.DataAccess.Enums.Enums;
 
 namespace Store.BusinessLogic.Models.PrintingEditions

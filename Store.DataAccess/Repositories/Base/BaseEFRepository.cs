@@ -14,18 +14,9 @@ namespace Store.DataAccess.Repositories.Base
             db = new ApplicationContext(options);
         }
 
-        public virtual void Dispose(bool disposing)
+        public void Create(T entity)
         {
-            if (disposing && !disposed)
-            {
-                db.Dispose();
-            }
-            disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            db.Set<T>().Add(entity: entity);
         }
 
         public void Save()

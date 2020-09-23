@@ -1,10 +1,8 @@
 ﻿using Store.BusinessLogic.Models.Base;
-using Store.BusinessLogic.Models.PrintingEditions;
-using System.Collections;
 
 namespace Store.BusinessLogic.Models.Orders
 {
-     public class OrderItemModel : BaseModel
+    public class OrderItemModel : BaseModel
     {
         public long Amount { get; set; }
         public string Currency { get; set; }
