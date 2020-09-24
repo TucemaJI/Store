@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Repositories.Interfaces;
-using System;
+using System.Collections.Generic;
 
 namespace Store.DataAccess.Repositories.Base
 {
     public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class
     {
-        private bool disposed = false;
         protected ApplicationContext db;
         public BaseEFRepository(DbContextOptions<ApplicationContext> options)
         {
@@ -18,7 +17,18 @@ namespace Store.DataAccess.Repositories.Base
         {
             db.Set<T>().Add(entity: entity);
         }
-
+        public void Delete(long item)
+        {
+            db.Set<T>().Remove(db.Set<T>().Find(item));
+        }
+        public T GetItem(long id)
+        {
+            return db.Set<T>().Find(id);
+        }
+        public IEnumerable<T> GetList()
+        {
+            return db.Set<T>();
+        }
         public void Save()
         {
             db.SaveChanges();

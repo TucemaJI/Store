@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services.Interfaces
 {
-    public interface IUserService : IDisposable
+    public interface IUserService
     {
         public Task<UserModel> GetUserAsync(string email);
     }

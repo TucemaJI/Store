@@ -6,6 +6,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using Store.BusinessLogic.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Store.Presentation.Helpers;
+using Store.Presentation.Middlewares;
 
 namespace Store.Presentation
 {
@@ -21,6 +25,30 @@ namespace Store.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             BusinessLogic.Startup.Initialize(services, Configuration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // укзывает, будет ли валидироваться издатель при валидации токена
+                            ValidateIssuer = true,
+                            // строка, представляющая издателя
+                            ValidIssuer = JwtHelper.ISSUER,
+
+                            // будет ли валидироваться потребитель токена
+                            ValidateAudience = true,
+                            // установка потребителя токена
+                            ValidAudience = JwtHelper.AUDIENCE,
+                            // будет ли валидироваться время существования
+                            ValidateLifetime = true,
+
+                            // установка ключа безопасности
+                            IssuerSigningKey = new JwtHelper().GetSymmetricSecurityKey(),
+                            // валидация ключа безопасности
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
             services.AddControllers();
         }
 
@@ -32,8 +60,7 @@ namespace Store.Presentation
                 app.UseDeveloperExceptionPage();
             }
 
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
-            var logger = loggerFactory.CreateLogger("Logger");
+            app.UseMiddleware<LoggerMiddleware>(loggerFactory);
 
             app.UseHttpsRedirection();
 

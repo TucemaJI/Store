@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Store.BusinessLogic.Services.Interfaces
+﻿namespace Store.BusinessLogic.Services.Interfaces
 {
-    public interface IAccountService : IDisposable
+    public interface IAccountService 
     {
     }
 }

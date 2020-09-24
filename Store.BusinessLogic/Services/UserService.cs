@@ -28,11 +28,6 @@ namespace Store.BusinessLogic.Services
             }
         }
 
-        public void Dispose()
-        {
-            _userManager.Dispose();
-        }
-
         public async Task<UserModel> GetUserAsync(string email)
         {
             return new UserMapper().Map(await _userManager.FindByEmailAsync(email));

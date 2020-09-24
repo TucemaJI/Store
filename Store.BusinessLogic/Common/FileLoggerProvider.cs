@@ -4,7 +4,7 @@ namespace Store.BusinessLogic.Common
 {
     public class FileLoggerProvider : ILoggerProvider
     {
-        private string path;
+        private readonly string path;
         public FileLoggerProvider(string _path)
         {
             path = _path;

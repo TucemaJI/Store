@@ -18,10 +18,7 @@ namespace Store.BusinessLogic.Mappers
                     TFirst newObject = Map(element);
                     if (newObject != null)
                     {
-                        if (callback != null)
-                        {
-                            callback(newObject);
-                        }
+                        callback?.Invoke(newObject);
                         objectCollection.Add(newObject);
                     }
                 }
@@ -40,8 +37,7 @@ namespace Store.BusinessLogic.Mappers
                     TSecond newObject = Map(element);
                     if (newObject != null)
                     {
-                        if (callback != null)
-                            callback(newObject);
+                        callback?.Invoke(newObject);
                         objectCollection.Add(newObject);
                     }
                 }

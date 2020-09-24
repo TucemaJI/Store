@@ -1,9 +1,13 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
+        IEnumerable<T> GetList();
+        T GetItem(long id);
+        void Create(T item);
+        void Delete(long id);
         void Update(T item);
         void Save();
     }

@@ -1,6 +1,6 @@
 ﻿namespace Store.DataAccess.Repositories.Interfaces
 {
-    public interface IOrderItemRepository<T> : IBaseEFRepository<T> where T : class
+    public interface IOrderItemRepository<T> : IBaseRepository<T> where T : class
     {
 
     }

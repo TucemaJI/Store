@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Initialization;
+using Store.DataAccess.Repositories.EFRepositories;
+using Store.DataAccess.Repositories.Interfaces;
 
 namespace Store.DataAccess
 {
@@ -16,6 +18,11 @@ namespace Store.DataAccess
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddTransient<IAuthorInPrintingEditionRepository<AuthorInPrintingEdition>, AuthorInPrintingEditionRepository>();
+            services.AddTransient<IAuthorRepository<Author>, AuthorRepository>();
+            services.AddTransient<IOrderItemRepository<OrderItem>, OrderItemRepository>();
+            services.AddTransient<IOrderRepository<Order>, OrderRepository>();
+            services.AddTransient<IPrintingEditionRepository<PrintingEdition>, PrintingEditionRepository>();
 
             DataBaseInitialization.Initialize(services);
         }
