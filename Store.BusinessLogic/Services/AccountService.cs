@@ -3,6 +3,7 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
@@ -14,10 +15,16 @@ namespace Store.BusinessLogic.Services
             _userManager = userManager;
         }
 
-        public async System.Threading.Tasks.Task<UserModel> GetUserModelAsync(string email, string password)
+        public async Task<string> GetRefreshToken(string email, string loginProvider, string tokenName)
         {
+            var user = await _userManager.FindByEmailAsync(email);
+            return await _userManager.GetAuthenticationTokenAsync(user, loginProvider, tokenName);
+        }
 
-            return new UserMapper().Map(await _userManager.FindByEmailAsync(email));
+        public async Task<UserModel> GetUserModelAsync(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return new UserMapper().Map(user);
         }
     }
 }

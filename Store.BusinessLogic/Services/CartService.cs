@@ -4,9 +4,6 @@ namespace Store.BusinessLogic.Services
 {
     public class CartService : /*BaseService,*/ ICartService
     {
-        public void Dispose()
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 }

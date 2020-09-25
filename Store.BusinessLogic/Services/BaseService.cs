@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
     public abstract class BaseService<T> where T : class
     {
-        public abstract void CreateEntity(T model);
+        public abstract void CreateEntityAsync(T model);
         
-        public abstract IEnumerable<T> GetModels();
+        public abstract Task<IEnumerable<T>> GetModelsAsync();
     }
 }

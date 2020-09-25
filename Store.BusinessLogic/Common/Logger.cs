@@ -7,7 +7,7 @@ namespace Store.BusinessLogic.Common
     public class Logger : ILogger
     {
         private readonly string filePath;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         public Logger(string path)
         {

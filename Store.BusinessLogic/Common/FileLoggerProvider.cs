@@ -4,14 +4,14 @@ namespace Store.BusinessLogic.Common
 {
     public class FileLoggerProvider : ILoggerProvider
     {
-        private readonly string path;
-        public FileLoggerProvider(string _path)
+        private readonly string _path;
+        public FileLoggerProvider(string path)
         {
-            path = _path;
+            _path = path;
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new Logger(path);
+            return new Logger(_path);
         }
 
         public void Dispose()

@@ -4,6 +4,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
@@ -14,27 +15,29 @@ namespace Store.BusinessLogic.Services
         {
             _printingEditionRepository = printingEditionRepository;
         }
-        public override void CreateEntity(PrintingEditionModel model)
+        public override void CreateEntityAsync(PrintingEditionModel model)
         {
-
-            _printingEditionRepository.Create(new PrintingEditionMapper().Map(model));
-            _printingEditionRepository.Save();
+            var printingEdition = new PrintingEditionMapper().Map(model);
+            _printingEditionRepository.CreateAsync(printingEdition);
+            _printingEditionRepository.SaveAsync();
         }
 
-        public override IEnumerable<PrintingEditionModel> GetModels()
+        public override async Task<IEnumerable<PrintingEditionModel>> GetModelsAsync()
         {
-            var printingEditions = _printingEditionRepository.GetList();
+            var printingEditions = await _printingEditionRepository.GetListAsync();
             var printingEditionModels = new List<PrintingEditionModel>();
             foreach(var pe in printingEditions)
             {
-                printingEditionModels.Add(new PrintingEditionMapper().Map(pe));
+                var printingEditionModel = new PrintingEditionMapper().Map(pe);
+                printingEditionModels.Add(printingEditionModel);
             }
             return printingEditionModels;
         }
 
-        public PrintingEditionModel GetOrder(long id)
+        public async Task<PrintingEditionModel> GetModelAsync(long id)
         {
-            return new PrintingEditionMapper().Map(_printingEditionRepository.GetItem(id));
+            var printingEdition = await _printingEditionRepository.GetItemAsync(id);
+            return new PrintingEditionMapper().Map(printingEdition);
         }
     }
 }

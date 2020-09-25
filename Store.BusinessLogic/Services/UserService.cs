@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
@@ -18,7 +19,7 @@ namespace Store.BusinessLogic.Services
             _userManager = userManager;
         }
 
-        public override async void CreateEntity(UserModel model)
+        public override async void CreateEntityAsync(UserModel model)
         {
             User user = new UserMapper().Map(model);
             IdentityResult result = await _userManager.CreateAsync(user);
@@ -30,12 +31,13 @@ namespace Store.BusinessLogic.Services
 
         public async Task<UserModel> GetUserAsync(string email)
         {
-            return new UserMapper().Map(await _userManager.FindByEmailAsync(email));
+            var user = await _userManager.FindByEmailAsync(email);
+            return new UserMapper().Map(user);
         }
 
-        public override IEnumerable<UserModel> GetModels()
+        public override async Task<IEnumerable<UserModel>> GetModelsAsync()
         {
-            var userList = _userManager.Users;
+            var userList = await _userManager.Users.ToListAsync();
             var userModelList = new List<UserModel>();
             foreach (var user in userList)
             {

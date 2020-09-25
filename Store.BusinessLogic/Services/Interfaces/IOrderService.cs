@@ -1,10 +1,11 @@
 ﻿using Store.BusinessLogic.Models.Orders;
 using System;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services.Interfaces
 {
-    public interface IOrderService 
+    public interface IOrderService
     {
-        public OrderModel GetOrder(long id);
+        public abstract Task<OrderModel> GetModelAsync(long id);
     }
 }

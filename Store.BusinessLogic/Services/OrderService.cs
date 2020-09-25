@@ -4,6 +4,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
@@ -14,26 +15,29 @@ namespace Store.BusinessLogic.Services
         {
             _orderRepository = orderRepository;
         }
-        public override void CreateEntity(OrderModel model)
+        public override void CreateEntityAsync(OrderModel model)
         {
-            _orderRepository.Create(new OrderMapper().Map(model));
-            _orderRepository.Save();
+            var order = new OrderMapper().Map(model);
+            _orderRepository.CreateAsync(order);
+            _orderRepository.SaveAsync();
         }
 
-        public override IEnumerable<OrderModel> GetModels()
+        public override async Task<IEnumerable<OrderModel>> GetModelsAsync()
         {
-            var orderList = _orderRepository.GetList();
+            var orderList = await _orderRepository.GetListAsync();
             var orderModelList = new List<OrderModel>();
             foreach (var order in orderList)
             {
-                orderModelList.Add(new OrderMapper().Map(order));
+                var orderModel = new OrderMapper().Map(order);
+                orderModelList.Add(orderModel);
             }
             return orderModelList;
         }
 
-        public OrderModel GetOrder(long id)
+        public async Task<OrderModel> GetModelAsync(long id)
         {
-            return new OrderMapper().Map(_orderRepository.GetItem(id));
+            var order = await _orderRepository.GetItemAsync(id);
+            return new OrderMapper().Map(order);
         }
     }
 }

@@ -4,11 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.IO;
-using Store.BusinessLogic.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Store.Presentation.Helpers;
+using Store.Presentation.Providers;
 using Store.Presentation.Middlewares;
 
 namespace Store.Presentation
@@ -31,21 +29,14 @@ namespace Store.Presentation
                         options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
                             ValidateIssuer = true,
-                            // строка, представляющая издателя
-                            ValidIssuer = JwtHelper.ISSUER,
+                            ValidIssuer = JwtProvider.ISSUER,
 
-                            // будет ли валидироваться потребитель токена
                             ValidateAudience = true,
-                            // установка потребителя токена
-                            ValidAudience = JwtHelper.AUDIENCE,
-                            // будет ли валидироваться время существования
+                            ValidAudience = JwtProvider.AUDIENCE,
                             ValidateLifetime = true,
 
-                            // установка ключа безопасности
-                            IssuerSigningKey = new JwtHelper().GetSymmetricSecurityKey(),
-                            // валидация ключа безопасности
+                            IssuerSigningKey = new JwtProvider().GetSymmetricSecurityKey(),
                             ValidateIssuerSigningKey = true,
                         };
                     });

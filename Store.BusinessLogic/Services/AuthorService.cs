@@ -4,6 +4,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
@@ -17,24 +18,27 @@ namespace Store.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public override void CreateEntity(AuthorModel model)
+        public override void CreateEntityAsync(AuthorModel model)
         {
-            _authorRepository.Create(_mapper.Map<AuthorModel, Author>(model));
-            _authorRepository.Save();
+            var author = _mapper.Map<AuthorModel, Author>(model);
+            _authorRepository.CreateAsync(author);
+            _authorRepository.SaveAsync();
         }
 
-        public AuthorModel GetAuthor(long id)
+        public async Task<AuthorModel> GetModelAsync(long id)
         {
-            return _mapper.Map<Author, AuthorModel>(_authorRepository.GetItem(id));
+            var author = await _authorRepository.GetItemAsync(id);
+            return _mapper.Map<Author, AuthorModel>(author);
         }
 
-        public override IEnumerable<AuthorModel> GetModels()
+        public override async Task<IEnumerable<AuthorModel>> GetModelsAsync()
         {
-            var authorList = _authorRepository.GetList();
+            var authorList = await _authorRepository.GetListAsync();
             var authorModelList = new List<AuthorModel>();
             foreach (var author in authorList)
             {
-                authorModelList.Add(_mapper.Map<Author, AuthorModel>(author));
+                var authorModel = _mapper.Map<Author, AuthorModel>(author);
+                authorModelList.Add(authorModel);
             }
             return authorModelList;
         }

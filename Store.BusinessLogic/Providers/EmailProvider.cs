@@ -1,16 +1,17 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using System.Threading.Tasks;
+// WIP
 
-namespace Store.BusinessLogic.Helpers
+namespace Store.BusinessLogic.Providers
 {
-    public class EmailHelper
+    public class EmailProvider
     {
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "login@yandex.ru"));
+            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "testcsharpsmtp0@gmail.com"));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)

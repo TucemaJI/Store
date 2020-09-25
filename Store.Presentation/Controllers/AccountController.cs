@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogic.Services;
 using Store.Presentation.Controllers.Base;
-using Store.Presentation.Helpers;
+using Store.Presentation.Providers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,10 +22,31 @@ namespace Store.Presentation.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("/token")]
-        public IActionResult Token(string username, string password)
+        [HttpPost]
+        public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
         {
-            var identity = GetIdentity(username, password);
+            var principal = new JwtProvider().GetPrincipalFromExpiredToken(token);
+            var username = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
+            var savedRefreshToken = await _accountService.GetRefreshToken(username.Value, username.Issuer, token);
+            if (savedRefreshToken != refreshToken)
+                throw new SecurityTokenException("Invalid refresh token");
+
+            var newJwtToken = new JwtProvider().CreateToken(principal.Claims);
+            var newRefreshToken = new JwtProvider().GenerateRefreshToken();
+            
+            //todo save refresh token in db
+
+            return new ObjectResult(new
+            {
+                token = newJwtToken,
+                refreshToken = newRefreshToken
+            });
+        }
+
+        [HttpPost("/token")]
+        public async Task<IActionResult> GetToken(string username, string password)
+        {
+            var identity = await GetIdentity(username, password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -31,22 +54,22 @@ namespace Store.Presentation.Controllers
 
             var response = new
             {
-                access_token = new JwtHelper().CreateToken(identity),
+                access_token = new JwtProvider().CreateToken(identity.Claims),
                 username = identity.Name
             };
 
             return Ok(response);
         }
 
-        private ClaimsIdentity GetIdentity(string mail, string password)
+        private async Task<ClaimsIdentity> GetIdentity(string mail, string password)
         {
-            var person = _accountService.GetUserModelAsync(mail, password);
+            var person = await _accountService.GetUserModelAsync(mail, password);
             if (person != null)
             {
                 var claims = new List<Claim>
                 {
-                    //new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
-                    //new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)
+                    new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, person.Email),
+                    new Claim("Role", person.Role)
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -54,7 +77,6 @@ namespace Store.Presentation.Controllers
                 return claimsIdentity;
             }
 
-            // если пользователя не найдено
             return null;
         }
     }

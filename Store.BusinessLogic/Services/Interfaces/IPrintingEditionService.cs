@@ -1,10 +1,11 @@
 ﻿using Store.BusinessLogic.Models.PrintingEditions;
 using System;
+using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services.Interfaces
 {
-    public interface IPrintingEditionService 
+    public interface IPrintingEditionService
     {
-        public PrintingEditionModel GetOrder(long id);
+        public abstract Task<PrintingEditionModel> GetModelAsync(long id);
     }
 }

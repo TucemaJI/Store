@@ -2,40 +2,42 @@
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Store.DataAccess.Repositories.Base
 {
     public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class
     {
-        protected ApplicationContext db;
-        public BaseEFRepository(DbContextOptions<ApplicationContext> options)
+        private readonly ApplicationContext _db;
+        public BaseEFRepository(ApplicationContext db)
         {
-            db = new ApplicationContext(options);
+            _db = db;
         }
 
-        public void Create(T entity)
+        public async void CreateAsync(T entity)
         {
-            db.Set<T>().Add(entity: entity);
+            await _db.Set<T>().AddAsync(entity: entity);
         }
-        public void Delete(long item)
+        public async void DeleteAsync(long item)
         {
-            db.Set<T>().Remove(db.Set<T>().Find(item));
+            var element = await _db.Set<T>().FindAsync(item);
+            _db.Set<T>().Remove(element);
         }
-        public T GetItem(long id)
+        public async Task<T> GetItemAsync(long id)
         {
-            return db.Set<T>().Find(id);
+            return await _db.Set<T>().FindAsync(id);
         }
-        public IEnumerable<T> GetList()
+        public async Task<IEnumerable<T>> GetListAsync()
         {
-            return db.Set<T>();
+            return await _db.Set<T>().ToListAsync();
         }
-        public void Save()
+        public async void SaveAsync()
         {
-            db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
         public void Update(T item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            _db.Entry(item).State = EntityState.Modified;
         }
     }
 }
