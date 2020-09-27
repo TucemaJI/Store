@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -12,8 +15,7 @@ using Store.Presentation.Providers;
 
 namespace Store.Presentation.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [AllowAnonymous]
     public class AccountController : BaseController
     {
         private readonly AccountService _accountService;
@@ -68,8 +70,9 @@ namespace Store.Presentation.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, person.Email),
-                    new Claim("Role", person.Role)
+                    new Claim(JwtRegisteredClaimNames.Sub, person.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, person.Role)
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

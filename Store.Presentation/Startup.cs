@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Store.Presentation.Providers;
 using Store.Presentation.Middlewares;
+using System;
 
 namespace Store.Presentation
 {
@@ -29,17 +30,16 @@ namespace Store.Presentation
                         options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidateIssuer = true,
                             ValidIssuer = JwtProvider.ISSUER,
-
-                            ValidateAudience = true,
                             ValidAudience = JwtProvider.AUDIENCE,
-                            ValidateLifetime = true,
+
+                            ClockSkew = TimeSpan.Zero,
 
                             IssuerSigningKey = new JwtProvider().GetSymmetricSecurityKey(),
                             ValidateIssuerSigningKey = true,
                         };
                     });
+            services.AddAuthorization();
             services.AddControllers();
         }
 

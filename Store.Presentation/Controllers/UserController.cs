@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Services;
 using Store.Presentation.Controllers.Base;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,6 +17,11 @@ namespace Store.Presentation.Controllers
         {
             _userService = userService;
         }
-        
+
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
     }
 }

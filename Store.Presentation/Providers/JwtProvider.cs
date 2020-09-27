@@ -29,7 +29,6 @@ namespace Store.Presentation.Providers
             var jwt = new JwtSecurityToken(
                     issuer: JwtProvider.ISSUER,
                     audience: JwtProvider.AUDIENCE,
-                    notBefore: now,
                     claims: claims,
                     expires: now.Add(TimeSpan.FromMinutes(JwtProvider.LIFETIME)),
                     signingCredentials: new SigningCredentials(new JwtProvider().GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
