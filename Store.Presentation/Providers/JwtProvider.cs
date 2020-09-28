@@ -14,14 +14,14 @@ namespace Store.Presentation.Providers
         public const string AUDIENCE = "MyAuthClient";
         const string KEY = "mysupersecret_secretkey!123";
         public const int LIFETIME = 1;
-        private readonly SymmetricSecurityKey securituKey;
+        private readonly SymmetricSecurityKey securityKey;
         public JwtProvider()
         {
-            securituKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));
+            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));
         }
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {
-            return securituKey;
+            return securityKey;
         }
         public string CreateToken(IEnumerable<Claim> claims)
         {

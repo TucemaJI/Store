@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogic.Services;
+using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using Store.Presentation.Providers;
 
@@ -18,8 +19,8 @@ namespace Store.Presentation.Controllers
     [AllowAnonymous]
     public class AccountController : BaseController
     {
-        private readonly AccountService _accountService;
-        public AccountController(AccountService accountService, ILogger<AccountController> logger) : base(logger)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger) : base(logger)
         {
             _accountService = accountService;
         }

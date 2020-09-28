@@ -26,13 +26,17 @@ namespace Store.DataAccess.Initialization
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.Enums.UserRole.Client.ToString()));
             }
-            if (await userManager.FindByNameAsync(adminEmail) == null)
+            if (await userManager.FindByEmailAsync(adminEmail) == null)
             {
                 User admin = new User { Email = adminEmail, FirstName = "Administrator", LastName = "Administratorovich", UserName = adminEmail };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, Enums.Enums.UserRole.Admin.ToString());
+                    var result2 = await userManager.AddToRoleAsync(admin, Enums.Enums.UserRole.Admin.ToString());
+                    if (!result2.Succeeded)
+                    {
+                        throw new System.Exception();
+                    }
                 }
             }
         }

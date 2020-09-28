@@ -23,7 +23,7 @@ namespace Store.Presentation.Controllers
         //    _logger = logger;
         //}
 
-        [HttpGet]
+        [HttpGet("/weather")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

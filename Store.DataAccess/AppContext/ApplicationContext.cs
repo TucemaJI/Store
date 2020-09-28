@@ -18,7 +18,7 @@ namespace Store.DataAccess.AppContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -30,7 +30,7 @@ namespace Store.DataAccess.AppContext
 
             builder.Entity<User>()
                 .Property(u => u.UserName)
-                .HasComputedColumnSql("[FirstName] + ' ' + [LastName]");
+                .HasComputedColumnSql("[FirstName] + [LastName]");
 
             builder.Entity<AuthorInPrintingEdition>()
                 .HasKey(t => new { t.AuthorId, t.PrintingEditionId });
@@ -43,6 +43,7 @@ namespace Store.DataAccess.AppContext
                 .WithMany(author => author.AuthorInPrintingEditions)
                 .HasForeignKey(ape => ape.AuthorId);
 
+            
             DataBaseInitialization.InitializeDB(builder);
         }
     }

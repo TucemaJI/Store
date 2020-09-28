@@ -13,7 +13,6 @@ namespace Store.BusinessLogic.Mappers
                 LastName = element.LastName,
                 Email = element.Email,
                 UserName = element.UserName,
-                PasswordHash = element.Password,
             };
         }
 
@@ -25,7 +24,6 @@ namespace Store.BusinessLogic.Mappers
                 LastName = element.LastName,
                 Email = element.Email,
                 UserName = element.UserName,
-                Password = element.PasswordHash,
             };
         }
     }
