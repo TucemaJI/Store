@@ -3,6 +3,10 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
@@ -26,5 +30,25 @@ namespace Store.BusinessLogic.Services
             var user = await _userManager.FindByEmailAsync(email);
             return new UserMapper().Map(user);
         }
+        public async Task<ClaimsIdentity> GetIdentity(string mail, string password)
+        {
+            var person = await GetUserModelAsync(mail, password);
+            if (person != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, person.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, person.Role)
+                };
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+
+            return null;
+        }
+
     }
 }

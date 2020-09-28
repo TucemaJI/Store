@@ -24,35 +24,32 @@ namespace Store.Presentation.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
-        {
-            var principal = new JwtProvider().GetPrincipalFromExpiredToken(token);
-            var username = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
-            var savedRefreshToken = await _accountService.GetRefreshToken(username.Value, username.Issuer, token);
-            if (savedRefreshToken != refreshToken)
-                throw new SecurityTokenException("Invalid refresh token");
+        //[HttpPost]
+        //public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
+        //{
+        //    var principal = new JwtProvider().GetPrincipalFromExpiredToken(token);
+        //    var username = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
+        //    var savedRefreshToken = await _accountService.GetRefreshToken(username.Value, username.Issuer, token);
+        //    if (savedRefreshToken != refreshToken)
+        //        throw new SecurityTokenException("Invalid refresh token");
 
-            var newJwtToken = new JwtProvider().CreateToken(principal.Claims);
-            var newRefreshToken = new JwtProvider().GenerateRefreshToken();
+        //    var newJwtToken = new JwtProvider().CreateToken(principal.Claims);
+        //    var newRefreshToken = new JwtProvider().GenerateRefreshToken();
             
-            //todo save refresh token in db
+        //    //todo save refresh token in db
 
-            return new ObjectResult(new
-            {
-                token = newJwtToken,
-                refreshToken = newRefreshToken
-            });
-        }
+        //    return new ObjectResult(new
+        //    {
+        //        token = newJwtToken,
+        //        refreshToken = newRefreshToken
+        //    });
+        //}
 
         [HttpPost("/token")]
         public async Task<IActionResult> GetToken(string username, string password)
         {
-            var identity = await GetIdentity(username, password);
-            if (identity == null)
-            {
-                return BadRequest(new { errorText = "Invalid username or password." });
-            }
+            var identity = await _accountService.GetIdentity(username, password);
+
 
             var response = new
             {
@@ -63,24 +60,6 @@ namespace Store.Presentation.Controllers
             return Ok(response);
         }
 
-        private async Task<ClaimsIdentity> GetIdentity(string mail, string password)
-        {
-            var person = await _accountService.GetUserModelAsync(mail, password);
-            if (person != null)
-            {
-                var claims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, person.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Role, person.Role)
-                };
-                ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
-            }
 
-            return null;
-        }
     }
 }

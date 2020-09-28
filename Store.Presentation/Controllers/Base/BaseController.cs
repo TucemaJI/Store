@@ -13,7 +13,7 @@ namespace Store.Presentation.Controllers.Base
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class BaseController : ControllerBase
+    public class BaseController : Controller
     {
         private readonly ILogger<BaseController> _logger;
         public BaseController(ILogger<BaseController> logger)

@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using Store.Presentation.Providers;
 using Store.Presentation.Middlewares;
 using System;
+using Microsoft.OpenApi.Models;
+using System.Linq;
 
 namespace Store.Presentation
 {
@@ -41,15 +43,24 @@ namespace Store.Presentation
                     });
             services.AddAuthorization();
             services.AddControllers();
+            services.AddSwaggerGen(c => {
+            c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "ToDoAPI" });
+            c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            });
         }
-
-        
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "StoreAPI V1");
+                
+            });
 
             app.UseMiddleware<LoggerMiddleware>(loggerFactory);
 
