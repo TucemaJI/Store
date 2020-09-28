@@ -14,10 +14,11 @@ namespace Store.DataAccess
     {
         public static void Initialize(IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddTransient<UserManager<User>>();
             services.AddTransient<IAuthorInPrintingEditionRepository<AuthorInPrintingEdition>, AuthorInPrintingEditionRepository>();
             services.AddTransient<IAuthorRepository<Author>, AuthorRepository>();
             services.AddTransient<IOrderItemRepository<OrderItem>, OrderItemRepository>();

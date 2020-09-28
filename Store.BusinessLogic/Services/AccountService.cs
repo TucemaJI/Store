@@ -29,11 +29,10 @@ namespace Store.BusinessLogic.Services
 
         public async Task<UserModel> GetUserModelAsync(string email, string password)
         {
-            
-            var user1 = await _userManager.FindByNameAsync(email);
-            var user2 = await _userManager.FindByIdAsync("e19b10d66e8a4ec2898b194949a367d4");
             var user = await _userManager.FindByEmailAsync(email);
-            return new UserMapper().Map(user);
+            var userModel =  new UserMapper().Map(user);
+            userModel.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            return userModel;
         }
         public async Task<ClaimsIdentity> GetIdentity(string mail, string password)
         {
