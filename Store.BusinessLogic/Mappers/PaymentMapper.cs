@@ -3,7 +3,7 @@ using Store.DataAccess.Entities;
 
 namespace Store.BusinessLogic.Mappers
 {
-    class PaymentMapper : BaseMapper<Payment, PaymentModel>
+    public class PaymentMapper : BaseMapper<Payment, PaymentModel>
     {
         public override Payment Map(PaymentModel element)
         {

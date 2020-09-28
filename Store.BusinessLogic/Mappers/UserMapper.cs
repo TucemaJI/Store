@@ -3,7 +3,7 @@ using Store.DataAccess.Entities;
 
 namespace Store.BusinessLogic.Mappers
 {
-    class UserMapper : BaseMapper<User, UserModel>
+    public class UserMapper : BaseMapper<User, UserModel>
     {
         public override User Map(UserModel element)
         {

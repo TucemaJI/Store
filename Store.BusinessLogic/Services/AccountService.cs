@@ -16,43 +16,52 @@ namespace Store.BusinessLogic.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<User> _userManager;
-        public AccountService(UserManager<User> userManager)
+        private readonly UserMapper _userMapper;
+        public AccountService(UserManager<User> userManager, UserMapper userMapper)
         {
             _userManager = userManager;
+            _userMapper = userMapper;
         }
 
-        public async Task<string> GetRefreshToken(string email, string loginProvider, string tokenName)
+        public async Task<User> SignInAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            return await _userManager.GetAuthenticationTokenAsync(user, loginProvider, tokenName);
-        }
-
-        public async Task<UserModel> GetUserModelAsync(string email, string password)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            var userModel =  new UserMapper().Map(user);
-            userModel.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-            return userModel;
-        }
-        public async Task<ClaimsIdentity> GetIdentity(string mail, string password)
-        {
-            var person = await GetUserModelAsync(mail, password);
-            if (person != null)
+            if(!await _userManager.CheckPasswordAsync(user, password))
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, person.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Role, person.Role)
-                };
-                ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
+                throw new InvalidOperationException();
             }
-
-            return null;
+            return user;
         }
 
+        public UserModel GetUserModel(User user)
+        {
+            return _userMapper.Map(user);
+        }
+        
+        public async Task<string> GetUserRoleAsync(User user)
+        {
+            return (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+        }
+
+        public async Task<IdentityResult> WriteRefreshTokenToDb(User user, string issuer, string refreshToken)
+        {
+            return await _userManager.SetAuthenticationTokenAsync(user, issuer, "RefreshToken", refreshToken);
+        }
+
+        public async Task<IdentityResult> WriteRefreshTokenToDb(ClaimsPrincipal claims, string refreshToken)
+        {
+            var claim = claims.FindFirst(JwtRegisteredClaimNames.Sub);
+            var user = await _userManager.FindByEmailAsync(claim.Value);
+            return await _userManager.SetAuthenticationTokenAsync(user, claim.Issuer, "RefreshToken", refreshToken);
+        }
+
+        public async Task<string> GetRefreshToken(ClaimsPrincipal claims)
+        {
+            var claim = claims.FindFirst(JwtRegisteredClaimNames.Sub);
+            var user = await _userManager.FindByEmailAsync(claim.Value);
+
+            return await _userManager.GetAuthenticationTokenAsync(user, claim.Issuer, "RefreshToken");
+
+        }
     }
 }

@@ -47,6 +47,7 @@ namespace Store.Presentation
             c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "ToDoAPI" });
             c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+            services.AddTransient<JwtProvider>();
         }
             public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {

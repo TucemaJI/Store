@@ -3,7 +3,7 @@ using Store.DataAccess.Entities;
 
 namespace Store.BusinessLogic.Mappers
 {
-    class OrderItemMapper : BaseMapper<OrderItem, OrderItemModel>
+    public class OrderItemMapper : BaseMapper<OrderItem, OrderItemModel>
     {
         public override OrderItem Map(OrderItemModel element)
         {

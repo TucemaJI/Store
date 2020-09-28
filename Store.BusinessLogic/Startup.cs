@@ -17,6 +17,13 @@ namespace Store.BusinessLogic
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ICartService, CartService>();
+
+            services.AddTransient<OrderItemMapper>();
+            services.AddTransient<OrderMapper>();
+            services.AddTransient<PaymentMapper>();
+            services.AddTransient<PrintingEditionMapper>();
+            services.AddTransient<UserMapper>();
+
             var mapperConfig = new MapperConfiguration(config =>
             {
                 config.AddProfile(new AuthorProfile());

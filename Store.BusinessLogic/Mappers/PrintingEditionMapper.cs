@@ -3,7 +3,7 @@ using Store.DataAccess.Entities;
 
 namespace Store.BusinessLogic.Mappers
 {
-    class PrintingEditionMapper : BaseMapper<PrintingEdition, PrintingEditionModel>
+    public class PrintingEditionMapper : BaseMapper<PrintingEdition, PrintingEditionModel>
     {
         public override PrintingEdition Map(PrintingEditionModel element)
         {

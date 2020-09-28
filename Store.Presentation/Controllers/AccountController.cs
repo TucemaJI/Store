@@ -20,42 +20,47 @@ namespace Store.Presentation.Controllers
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService, ILogger<AccountController> logger) : base(logger)
+        private readonly JwtProvider _jwtProvider;
+        public AccountController(IAccountService accountService, JwtProvider jwtProvider, ILogger<AccountController> logger) : base(logger)
         {
             _accountService = accountService;
+            _jwtProvider = jwtProvider;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
-        //{
-        //    var principal = new JwtProvider().GetPrincipalFromExpiredToken(token);
-        //    var username = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
-        //    var savedRefreshToken = await _accountService.GetRefreshToken(username.Value, username.Issuer, token);
-        //    if (savedRefreshToken != refreshToken)
-        //        throw new SecurityTokenException("Invalid refresh token");
-
-        //    var newJwtToken = new JwtProvider().CreateToken(principal.Claims);
-        //    var newRefreshToken = new JwtProvider().GenerateRefreshToken();
-            
-        //    //todo save refresh token in db
-
-        //    return new ObjectResult(new
-        //    {
-        //        token = newJwtToken,
-        //        refreshToken = newRefreshToken
-        //    });
-        //}
-
-        [HttpPost("/token")]
-        public async Task<IActionResult> GetToken(string username, string password)
+        [HttpPost]
+        public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
         {
-            var identity = await _accountService.GetIdentity(username, password);
+            var principal = _jwtProvider.GetPrincipalFromExpiredToken(token);
+            var savedRefreshToken = await _accountService.GetRefreshToken(principal);
+            if (savedRefreshToken != refreshToken)
+                throw new SecurityTokenException("Invalid refresh token");
 
+            var newAccessToken = _jwtProvider.CreateToken(principal.Claims);
+            var newRefreshToken = _jwtProvider.GenerateRefreshToken();
+
+            await _accountService.WriteRefreshTokenToDb(principal, newRefreshToken); // Here not working
+
+            return new ObjectResult(new
+            {
+                token = newAccessToken,
+                refreshToken = newRefreshToken
+            });
+        }
+
+        [HttpPost("SignIn")]
+        public async Task<IActionResult> SignIn(string email, string password)
+        {
+            var user = await _accountService.SignInAsync(email, password);
+            var role = await _accountService.GetUserRoleAsync(user);
+            var identity = _jwtProvider.GetIdentity(user.Email, role);
+
+            var refreshToken = _jwtProvider.GenerateRefreshToken();
+            await _accountService.WriteRefreshTokenToDb(user, JwtProvider.ISSUER, refreshToken);
 
             var response = new
             {
-                access_token = new JwtProvider().CreateToken(identity.Claims),
-                username = identity.Name
+                accessToken = _jwtProvider.CreateToken(identity.Claims),
+                refreshToken,
             };
 
             return Ok(response);

@@ -1,10 +1,13 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Store.BusinessLogic.Models.Users;
+using Store.BusinessLogic.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 //WIP
 namespace Store.Presentation.Providers
 {
@@ -23,15 +26,29 @@ namespace Store.Presentation.Providers
         {
             return securityKey;
         }
+        public ClaimsIdentity GetIdentity(string email, string role)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, role)
+            };
+            ClaimsIdentity claimsIdentity =
+            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+            return claimsIdentity;
+
+        }
         public string CreateToken(IEnumerable<Claim> claims)
         {
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: JwtProvider.ISSUER,
-                    audience: JwtProvider.AUDIENCE,
+                    issuer: ISSUER,
+                    audience: AUDIENCE,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(JwtProvider.LIFETIME)),
-                    signingCredentials: new SigningCredentials(new JwtProvider().GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromMinutes(LIFETIME)),
+                    signingCredentials: new SigningCredentials(GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
@@ -42,7 +59,7 @@ namespace Store.Presentation.Providers
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new JwtProvider().GetSymmetricSecurityKey(),
+                IssuerSigningKey = GetSymmetricSecurityKey(),
                 ValidateLifetime = true,
             };
 
@@ -51,7 +68,9 @@ namespace Store.Presentation.Providers
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
                 throw new SecurityTokenException("Invalid token");
+            }
 
             return principal;
         }
