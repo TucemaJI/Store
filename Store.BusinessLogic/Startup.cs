@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
+using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services;
 using Store.BusinessLogic.Services.Interfaces;
 
@@ -30,6 +31,8 @@ namespace Store.BusinessLogic
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
+
+            services.AddTransient<EmailProvider>();
         }
     }
 }

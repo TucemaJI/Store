@@ -49,7 +49,7 @@ namespace Store.Presentation.Providers
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public JwtSecurityToken GetPrincipalFromExpiredToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -57,21 +57,21 @@ namespace Store.Presentation.Providers
                 ValidAudience = AUDIENCE,
 
                 ClockSkew = TimeSpan.Zero,
-
+                NameClaimType = JwtRegisteredClaimNames.Sub,
                 IssuerSigningKey = GetSymmetricSecurityKey(),
                 ValidateIssuerSigningKey = true,
+                ValidateLifetime = false,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid token");
             }
 
-            return principal;
+            return jwtSecurityToken;
         }
 
         public string GenerateRefreshToken()

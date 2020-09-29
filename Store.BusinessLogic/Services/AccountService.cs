@@ -4,6 +4,7 @@ using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace Store.BusinessLogic.Services
         public async Task<User> SignInAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if(!await _userManager.CheckPasswordAsync(user, password))
+            if (!await _userManager.CheckPasswordAsync(user, password))
             {
                 throw new InvalidOperationException();
             }
@@ -34,7 +35,7 @@ namespace Store.BusinessLogic.Services
         {
             return _userMapper.Map(user);
         }
-        
+
         public async Task<string> GetUserRoleAsync(User user)
         {
             return (await _userManager.GetRolesAsync(user)).FirstOrDefault();
@@ -45,19 +46,30 @@ namespace Store.BusinessLogic.Services
             return await _userManager.SetAuthenticationTokenAsync(user, issuer, "RefreshToken", refreshToken);
         }
 
-        public async Task<IdentityResult> WriteRefreshTokenToDb(ClaimsPrincipal claims, string refreshToken)
+        public async Task<IdentityResult> WriteRefreshTokenToDb(JwtSecurityToken claims, string refreshToken)
         {
-            var claim = claims.FindFirst(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByEmailAsync(claim.Value);
-            return await _userManager.SetAuthenticationTokenAsync(user, claim.Issuer, "RefreshToken", refreshToken);
+            var sub = claims.Subject;
+            var user = await _userManager.FindByEmailAsync(sub);
+            return await _userManager.SetAuthenticationTokenAsync(user, claims.Issuer, "RefreshToken", refreshToken);
         }
 
-        public async Task<string> GetRefreshToken(ClaimsPrincipal claims)
+        public async Task<string> GetRefreshToken(JwtSecurityToken claims)
         {
-            var claim = claims.FindFirst(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByEmailAsync(claim.Value);
-            return await _userManager.GetAuthenticationTokenAsync(user, claim.Issuer, "RefreshToken");
+            var sub = claims.Subject;
+            var user = await _userManager.FindByEmailAsync(sub);
+            return await _userManager.GetAuthenticationTokenAsync(user, claims.Issuer, "RefreshToken");
+        }
 
+        public async Task<IdentityResult> CreateUserAsync(string firstName, string lastName, string email, string password)
+        {
+            User user = new User { FirstName = firstName, LastName = lastName, Email = email, UserName = firstName+lastName };
+            return await _userManager.CreateAsync(user, password);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(string email, string code)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return await _userManager.ConfirmEmailAsync(user, code);
         }
     }
 }
