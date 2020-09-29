@@ -1,14 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Store.BusinessLogic.Models.Users;
-using Store.BusinessLogic.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-//WIP
+
 namespace Store.Presentation.Providers
 {
     public class JwtProvider
@@ -56,11 +53,13 @@ namespace Store.Presentation.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
+                ValidIssuer = ISSUER,
+                ValidAudience = AUDIENCE,
+
+                ClockSkew = TimeSpan.Zero,
+
                 IssuerSigningKey = GetSymmetricSecurityKey(),
-                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Store.BusinessLogic.Services;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using Store.Presentation.Providers;
@@ -27,18 +22,19 @@ namespace Store.Presentation.Controllers
             _jwtProvider = jwtProvider;
         }
 
-        [HttpPost]
+        [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
         {
-            var principal = _jwtProvider.GetPrincipalFromExpiredToken(token);
-            var savedRefreshToken = await _accountService.GetRefreshToken(principal);
+            var jwtSequrityToken = _jwtProvider.GetPrincipalFromExpiredToken(token);
+            //var test1 = principal.Claims.FirstOrDefault(x=>x.Type.Contains("nameidentifier")).Value;
+            var savedRefreshToken = await _accountService.GetRefreshToken(jwtSequrityToken);
             if (savedRefreshToken != refreshToken)
                 throw new SecurityTokenException("Invalid refresh token");
 
-            var newAccessToken = _jwtProvider.CreateToken(principal.Claims);
+            var newAccessToken = _jwtProvider.CreateToken(jwtSequrityToken.Claims);
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
 
-            await _accountService.WriteRefreshTokenToDb(principal, newRefreshToken); // Here not working
+            await _accountService.WriteRefreshTokenToDb(jwtSequrityToken, newRefreshToken);
 
             return new ObjectResult(new
             {

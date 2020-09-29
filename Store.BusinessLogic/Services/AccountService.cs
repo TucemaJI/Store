@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -50,16 +47,15 @@ namespace Store.BusinessLogic.Services
 
         public async Task<IdentityResult> WriteRefreshTokenToDb(ClaimsPrincipal claims, string refreshToken)
         {
-            var claim = claims.FindFirst(JwtRegisteredClaimNames.Sub);
+            var claim = claims.FindFirst(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByEmailAsync(claim.Value);
             return await _userManager.SetAuthenticationTokenAsync(user, claim.Issuer, "RefreshToken", refreshToken);
         }
 
         public async Task<string> GetRefreshToken(ClaimsPrincipal claims)
         {
-            var claim = claims.FindFirst(JwtRegisteredClaimNames.Sub);
+            var claim = claims.FindFirst(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByEmailAsync(claim.Value);
-
             return await _userManager.GetAuthenticationTokenAsync(user, claim.Issuer, "RefreshToken");
 
         }
