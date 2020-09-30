@@ -21,11 +21,9 @@ namespace Store.BusinessLogic.Providers
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.yandex.ru", 25, false);
-                await client.AuthenticateAsync("login@yandex.ru", "password");
+                await client.ConnectAsync("smtp.gmail.com");
+                await client.AuthenticateAsync("testcsharpsmtp0@gmail.com", "P!W`k~'NHd^y{4Zu");
                 await client.SendAsync(emailMessage);
-
-                await client.DisconnectAsync(true);
             }
         }
     }

@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,16 +31,15 @@ namespace Store.Presentation.Controllers
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
         {
-            var principal = _jwtProvider.GetPrincipalFromExpiredToken(token);
+            var jwtSecurityToken = _jwtProvider.GetPrincipalFromExpiredToken(token);
             //var test1 = principal.Claims.FirstOrDefault(x=>x.Type.Contains("nameidentifier")).Value;
-            var savedRefreshToken = await _accountService.GetRefreshToken(principal);
-            if (savedRefreshToken != refreshToken)
-                throw new SecurityTokenException("Invalid refresh token");
-
-            var newAccessToken = _jwtProvider.CreateToken(principal.Claims);
+            var savedRefreshToken = await _accountService.GetRefreshToken(jwtSecurityToken);
+            if (savedRefreshToken != refreshToken) { throw new SecurityTokenException("Invalid refresh token"); }
+            var role = await _accountService.GetUserRoleAsync(jwtSecurityToken.Subject);
+            var newAccessToken = _jwtProvider.CreateToken(jwtSecurityToken.Subject, role);
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
 
-            await _accountService.WriteRefreshTokenToDb(User, newRefreshToken); // to do everything with this User it is Claim
+            await _accountService.WriteRefreshTokenToDb(jwtSecurityToken.Subject, jwtSecurityToken.Issuer, newRefreshToken);
 
             return new ObjectResult(new
             {
@@ -49,16 +51,16 @@ namespace Store.Presentation.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(string email, string password)
         {
-            var user = await _accountService.SignInAsync(email, password);
-            var role = await _accountService.GetUserRoleAsync(user);
-            var identity = _jwtProvider.GetIdentity(user.Email, role);
+            var result = await _accountService.SignInAsync(email, password);
+            if (!result) { throw new Exception(); }
+            var role = await _accountService.GetUserRoleAsync(email);
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
-            await _accountService.WriteRefreshTokenToDb(user, JwtProvider.ISSUER, refreshToken);
+            await _accountService.WriteRefreshTokenToDb(email, JwtProvider.ISSUER, refreshToken);
 
             var response = new
             {
-                accessToken = _jwtProvider.CreateToken(identity.Claims),
+                accessToken = _jwtProvider.CreateToken(email, role),
                 refreshToken,
             };
 
@@ -73,29 +75,25 @@ namespace Store.Presentation.Controllers
                 return Content("Passwords are different");
             }
 
-            var result = await _accountService.CreateUserAsync(firstName, lastName, email, password);
+            var token = await _accountService.CreateConfirmUserAsync(firstName, lastName, email, password);
 
-            if (result.Succeeded)
-            {
-                var code = await _accountService.SignInAsync(email, password);
-                var callbackUrl = Url.Action(
-                    "ConfirmEmail",
-                    "Account",
-                    new { userId = code.Id, code },
-                    protocol: HttpContext.Request.Scheme);
-                await _emailProvider.SendEmailAsync(email, "Confirm your account",
-                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { email, token },
+                protocol: HttpContext.Request.Scheme);
+            await _emailProvider.SendEmailAsync(email, "Confirm your account",
+                $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
 
-                return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
-            }
-            else { return Content("Error with creation an account"); }
+            return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
+
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
-            var result = await _accountService.ConfirmEmailAsync(email, code);
+            var result = await _accountService.ConfirmEmailAsync(email, token);
             if (result.Succeeded) { return Content("Email Confirmed"); }
             return Content("Email NOT Confirmed");
         }

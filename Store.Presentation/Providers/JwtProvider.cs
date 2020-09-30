@@ -23,7 +23,7 @@ namespace Store.Presentation.Providers
         {
             return securityKey;
         }
-        public ClaimsIdentity GetIdentity(string email, string role)
+        public string CreateToken(string email, string role)
         {
             var claims = new List<Claim>
             {
@@ -31,14 +31,7 @@ namespace Store.Presentation.Providers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role, role)
             };
-            ClaimsIdentity claimsIdentity =
-            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-            return claimsIdentity;
 
-        }
-        public string CreateToken(IEnumerable<Claim> claims)
-        {
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
                     issuer: ISSUER,
