@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using System.Linq;
 using Store.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace Store.Presentation
 {
@@ -51,6 +52,30 @@ namespace Store.Presentation
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "ToDoAPI" });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.AddSecurityDefinition("Bearer",
+                   new OpenApiSecurityScheme
+                   {
+                       In = ParameterLocation.Header,
+                       Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                       Name = "Authorization",
+                       Type = SecuritySchemeType.ApiKey,
+                       Scheme = "Bearer",
+                   });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                   {
+                        new OpenApiSecurityScheme
+                        {
+                             Reference = new OpenApiReference
+                             {
+                                 Type = ReferenceType.SecurityScheme,
+                                 Id = "Bearer"
+                             },
+                        },
+                        new List<string>()
+                   }
+                });
+
             });
             services.AddTransient<JwtProvider>();
         }

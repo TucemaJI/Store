@@ -9,6 +9,7 @@ namespace Store.BusinessLogic.Mappers
         {
             return new User
             {
+                Id = element.Id,
                 FirstName = element.FirstName,
                 LastName = element.LastName,
                 Email = element.Email,
@@ -20,6 +21,7 @@ namespace Store.BusinessLogic.Mappers
         {
             return new UserModel
             {
+                Id = element.Id,
                 FirstName = element.FirstName,
                 LastName = element.LastName,
                 Email = element.Email,

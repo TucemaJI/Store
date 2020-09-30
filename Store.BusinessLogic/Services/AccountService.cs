@@ -67,5 +67,11 @@ namespace Store.BusinessLogic.Services
             var user = await _userManager.FindByEmailAsync(email);
             return await _userManager.ConfirmEmailAsync(user, token);
         }
+
+        public async Task<IdentityResult> SignOut(string email, string issuer)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return await _userManager.RemoveAuthenticationTokenAsync(user, issuer, "RefreshToken");
+        }
     }
 }

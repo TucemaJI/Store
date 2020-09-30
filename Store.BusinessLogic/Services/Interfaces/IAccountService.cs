@@ -15,5 +15,6 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<string> GetRefreshToken(JwtSecurityToken claims);
         public Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email, string password);
         public Task<IdentityResult> ConfirmEmailAsync(string email, string code);
+        public Task<IdentityResult> SignOut(string email, string issuer);
     }
 }

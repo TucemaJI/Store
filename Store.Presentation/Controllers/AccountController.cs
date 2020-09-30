@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -83,19 +83,26 @@ namespace Store.Presentation.Controllers
                 new { email, token },
                 protocol: HttpContext.Request.Scheme);
             await _emailProvider.SendEmailAsync(email, "Confirm your account",
-                $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                $"Confirm registration using this link: <a href='{callbackUrl}'>link</a>");
 
-            return Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
-
+            return Content("To complete the registration, check your email and follow the link provided in the letter");
         }
 
-        [HttpGet]
+        [HttpGet("CheckMail")]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
             var result = await _accountService.ConfirmEmailAsync(email, token);
             if (result.Succeeded) { return Content("Email Confirmed"); }
             return Content("Email NOT Confirmed");
+        }
+
+        [Authorize]
+        [HttpPost("SignOut")]
+        public async Task<IdentityResult> SignOut()
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier);
+            return await _accountService.SignOut(user.Value, user.Issuer);
         }
     }
 }
