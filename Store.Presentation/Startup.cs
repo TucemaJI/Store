@@ -14,6 +14,7 @@ using System.Linq;
 using Store.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Store.Presentation
 {
@@ -29,15 +30,22 @@ namespace Store.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             BusinessLogic.Startup.Initialize(services, Configuration);
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                     .AddJwtBearer(options =>
                     {
                         options.RequireHttpsMetadata = false;
+                        options.SaveToken = true;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidIssuer = JwtProvider.ISSUER,
                             ValidAudience = JwtProvider.AUDIENCE,
-
+                            ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
                             IssuerSigningKey = new JwtProvider().GetSymmetricSecurityKey(),

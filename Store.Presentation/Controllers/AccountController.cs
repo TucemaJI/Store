@@ -99,7 +99,7 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("SignOut")]
-        public async Task<IdentityResult> SignOut()
+        public async Task<IdentityResult> SignOut() 
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             return await _accountService.SignOut(user.Value, user.Issuer);
