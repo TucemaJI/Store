@@ -7,6 +7,7 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Initialization;
 using Store.DataAccess.Repositories.EFRepositories;
 using Store.DataAccess.Repositories.Interfaces;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess
 {
@@ -14,7 +15,7 @@ namespace Store.DataAccess
     {
         public static void Initialize(IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
+                options.UseSqlServer(StartupOptions.Connection), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();

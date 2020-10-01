@@ -7,6 +7,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Services
 {
@@ -44,13 +45,13 @@ namespace Store.BusinessLogic.Services
         public async Task<IdentityResult> WriteRefreshTokenToDbAsync(string email, string issuer, string refreshToken)
         {
             var user = await FindUserByEmailAsync(email);
-            return await _userManager.SetAuthenticationTokenAsync(user, issuer, "RefreshToken", refreshToken);
+            return await _userManager.SetAuthenticationTokenAsync(user, issuer, AccountServiceOptions.RefreshToken, refreshToken);
         }
 
         public async Task<string> GetRefreshTokenAsync(JwtSecurityToken claims)
         {
             var user = await FindUserByEmailAsync(claims.Subject);
-            return await _userManager.GetAuthenticationTokenAsync(user, claims.Issuer, "RefreshToken");
+            return await _userManager.GetAuthenticationTokenAsync(user, claims.Issuer, AccountServiceOptions.RefreshToken);
         }
 
         public async Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email, string password)
@@ -71,7 +72,7 @@ namespace Store.BusinessLogic.Services
         public async Task<IdentityResult> SignOutAsync(string email, string issuer)
         {
             var user = await FindUserByEmailAsync(email);
-            return await _userManager.RemoveAuthenticationTokenAsync(user, issuer, "RefreshToken");
+            return await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceOptions.RefreshToken);
         }
         private async Task<User> FindUserByEmailAsync(string email)
         {

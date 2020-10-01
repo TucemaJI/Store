@@ -1,31 +1,22 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation.Providers
 {
     public class JwtProvider
     {
-        private readonly SymmetricSecurityKey securityKey;
-        private readonly IConfiguration _configuration;
-        public JwtProvider(IConfiguration configuration)
+        public readonly SymmetricSecurityKey securityKey;
+        public JwtProvider()
         {
-            _configuration = configuration;
-            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration.GetValue<string>("JwtConsts:Key")));
+            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.Key));
         }
-        public string GetIssuer()
-        {
-            return _configuration.GetValue<string>("JwtConsts:Issuer");
-        }
-        public SymmetricSecurityKey GetSymmetricSecurityKey()
-        {
-            return securityKey;
-        }
+
         public string CreateToken(string email, string role)
         {
             var claims = new List<Claim>
@@ -37,11 +28,11 @@ namespace Store.Presentation.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: _configuration.GetValue<string>("JwtConsts:Issuer"),
-                    audience: _configuration.GetValue<string>("JwtConsts:Audience"),
+                    issuer: JwtOptions.Issuer,
+                    audience: JwtOptions.Audience,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(_configuration.GetValue<int>("JwtConsts:Lifetime"))),
-                    signingCredentials: new SigningCredentials(GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                    expires: now.Add(TimeSpan.FromMinutes(JwtOptions.Lifetime)),
+                    signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
@@ -49,12 +40,12 @@ namespace Store.Presentation.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = _configuration.GetValue<string>("JwtConsts:Issuer"),
-                ValidAudience = _configuration.GetValue<string>("JwtConsts:Audience"),
+                ValidIssuer = JwtOptions.Issuer,
+                ValidAudience = JwtOptions.Audience,
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
-                IssuerSigningKey = GetSymmetricSecurityKey(),
+                IssuerSigningKey = securityKey,
                 ValidateIssuerSigningKey = true,
                 ValidateLifetime = false,
             };

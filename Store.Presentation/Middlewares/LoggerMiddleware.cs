@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Common;
 using System.IO;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation.Middlewares
 {
@@ -14,8 +15,8 @@ namespace Store.Presentation.Middlewares
         public LoggerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
-            _logger = loggerFactory.CreateLogger("Logger");
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareOptions.FileName));
+            _logger = loggerFactory.CreateLogger(LoggerMiddlewareOptions.Logger);
         }
         public async Task Invoke(HttpContext context)
         {
@@ -26,7 +27,7 @@ namespace Store.Presentation.Middlewares
             finally
             {
                 _logger.LogInformation(
-                    "Request {method} {url} => {statusCode}",
+                    LoggerMiddlewareOptions.RequestForm,
                     context.Request?.Method,
                     context.Request?.Path.Value,
                     context.Response?.StatusCode);

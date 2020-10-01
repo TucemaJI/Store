@@ -10,6 +10,7 @@ using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using Store.Presentation.Providers;
+using static Store.Shared.Constants.Constants;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -61,7 +62,7 @@ namespace Store.Presentation.Controllers
             var role = await _accountService.GetUserRoleAsync(email);
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
-            await _accountService.WriteRefreshTokenToDbAsync(email, _jwtProvider.GetIssuer(), refreshToken);
+            await _accountService.WriteRefreshTokenToDbAsync(email, JwtOptions.Issuer, refreshToken);
 
             var response = new
             {

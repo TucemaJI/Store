@@ -1,7 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using System.Threading.Tasks;
-// WIP
+using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Providers
 {
@@ -11,8 +11,8 @@ namespace Store.BusinessLogic.Providers
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Administration", "testcsharpsmtp0@gmail.com"));
-            emailMessage.To.Add(new MailboxAddress("", email));
+            emailMessage.From.Add(new MailboxAddress(EmailOptions.Name, EmailOptions.Address));
+            emailMessage.To.Add(new MailboxAddress(string.Empty, email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -21,8 +21,8 @@ namespace Store.BusinessLogic.Providers
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.gmail.com");
-                await client.AuthenticateAsync("testcsharpsmtp0@gmail.com", "P!W`k~'NHd^y{4Zu");
+                await client.ConnectAsync(EmailOptions.ConnectGmail);
+                await client.AuthenticateAsync(EmailOptions.Address, EmailOptions.Password);
                 await client.SendAsync(emailMessage);
             }
         }

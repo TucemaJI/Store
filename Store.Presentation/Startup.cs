@@ -15,6 +15,7 @@ using Store.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation
 {
@@ -39,12 +40,12 @@ namespace Store.Presentation
                         options.SaveToken = true;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidIssuer = Configuration.GetValue<string>("JwtConsts:Issuer"),
-                            ValidAudience = Configuration.GetValue<string>("JwtConsts:Audience"),
+                            ValidIssuer = JwtOptions.Issuer,
+                            ValidAudience = JwtOptions.Audience,
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
-                            IssuerSigningKey = new JwtProvider(Configuration).GetSymmetricSecurityKey(),
+                            IssuerSigningKey = new JwtProvider().securityKey,
                             ValidateIssuerSigningKey = true,
                         };
                     });
@@ -54,30 +55,33 @@ namespace Store.Presentation
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "ToDoAPI" });
+                c.SwaggerDoc(StartupOptions.VersionDocument, new OpenApiInfo 
+                { 
+                    Version = StartupOptions.VersionDocument, Title = StartupOptions.TitleApplication 
+                });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-                c.AddSecurityDefinition("Bearer",
-                   new OpenApiSecurityScheme
-                   {
-                       In = ParameterLocation.Header,
-                       Description = "Please enter into field the word 'Bearer' following by space and JWT",
-                       Name = "Authorization",
-                       Type = SecuritySchemeType.ApiKey,
-                       Scheme = "Bearer",
-                   });
+                c.AddSecurityDefinition(StartupOptions.Bearer,
+                    new OpenApiSecurityScheme
+                    {
+                        In = ParameterLocation.Header,
+                        Description = StartupOptions.OpenApiDescription,
+                        Name = StartupOptions.OpenApiAuthorization,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = StartupOptions.Bearer,
+                    });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
-                   {
+                    {
                         new OpenApiSecurityScheme
                         {
                              Reference = new OpenApiReference
                              {
                                  Type = ReferenceType.SecurityScheme,
-                                 Id = "Bearer"
+                                 Id = StartupOptions.Bearer
                              },
                         },
                         new List<string>()
-                   }
+                    }
                 });
 
             });
@@ -93,7 +97,7 @@ namespace Store.Presentation
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("v1/swagger.json", "StoreAPI V1");
+                c.SwaggerEndpoint(StartupOptions.SwaggerUrl, StartupOptions.SwaggerName);
 
             });
 

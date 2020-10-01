@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccess.Entities;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Initialization
 {
@@ -16,8 +17,6 @@ namespace Store.DataAccess.Initialization
         }
         public static async Task InitializeUsersRolesAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            string adminEmail = "admin@gmail.com";
-            string password = "_Aa123456";
             if (await roleManager.FindByNameAsync(Enums.Enums.UserRole.Admin.ToString()) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.Enums.UserRole.Admin.ToString()));
@@ -26,10 +25,16 @@ namespace Store.DataAccess.Initialization
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.Enums.UserRole.Client.ToString()));
             }
-            if (await userManager.FindByEmailAsync(adminEmail) == null)
+            if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.AdminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, FirstName = "Administrator", LastName = "Administratorovich", UserName = adminEmail };
-                IdentityResult createResult = await userManager.CreateAsync(admin, password);
+                User admin = new User 
+                {   
+                    Email = DatabaseInitializationOptions.AdminEmail,
+                    FirstName = DatabaseInitializationOptions.FirstName,
+                    LastName = DatabaseInitializationOptions.LastName,
+                    UserName = $"{DatabaseInitializationOptions.FirstName}{DatabaseInitializationOptions.LastName}" ,
+                };
+                IdentityResult createResult = await userManager.CreateAsync(admin, DatabaseInitializationOptions.Password);
                 if (createResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, Enums.Enums.UserRole.Admin.ToString());
@@ -39,7 +44,7 @@ namespace Store.DataAccess.Initialization
 
         public static void InitializeDB(ModelBuilder builder)
         {
-            var author = new Author {Id = 1, Name = "Andrew Troelsen", IsRemoved = false };
+            var author = new Author {Id = 1, Name = DatabaseInitializationOptions.AuthorName, IsRemoved = false };
             
 
             var pe = new PrintingEdition
@@ -48,8 +53,8 @@ namespace Store.DataAccess.Initialization
                 Currency = Enums.Enums.Currency.USD,
                 Price = 50,
                 Type = Enums.Enums.PrintingEditionType.Book,
-                Title = "C# 8.0",
-                Description = "The new best book for learning programming",
+                Title = DatabaseInitializationOptions.BookName,
+                Description = DatabaseInitializationOptions.BookDescription,
             };
             var aipe = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pe.Id };
             

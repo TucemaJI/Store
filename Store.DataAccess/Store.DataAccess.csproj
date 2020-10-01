@@ -26,4 +26,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Store.Share\Store.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
