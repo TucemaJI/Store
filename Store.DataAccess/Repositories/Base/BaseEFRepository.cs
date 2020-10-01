@@ -8,36 +8,36 @@ namespace Store.DataAccess.Repositories.Base
 {
     public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly ApplicationContext _db;
-        public BaseEFRepository(ApplicationContext db)
+        private readonly ApplicationContext _applicationContext;
+        public BaseEFRepository(ApplicationContext applicationContext)
         {
-            _db = db;
+            _applicationContext = applicationContext;
         }
 
         public async void CreateAsync(T entity)
         {
-            await _db.Set<T>().AddAsync(entity: entity);
+            await _applicationContext.Set<T>().AddAsync(entity: entity);
         }
         public async void DeleteAsync(long item)
         {
-            var element = await _db.Set<T>().FindAsync(item);
-            _db.Set<T>().Remove(element);
+            var element = await _applicationContext.Set<T>().FindAsync(item);
+            _applicationContext.Set<T>().Remove(element);
         }
         public async Task<T> GetItemAsync(long id)
         {
-            return await _db.Set<T>().FindAsync(id);
+            return await _applicationContext.Set<T>().FindAsync(id);
         }
         public async Task<IEnumerable<T>> GetListAsync()
         {
-            return await _db.Set<T>().ToListAsync();
+            return await _applicationContext.Set<T>().ToListAsync();
         }
         public async void SaveAsync()
         {
-            await _db.SaveChangesAsync();
+            await _applicationContext.SaveChangesAsync();
         }
         public void Update(T item)
         {
-            _db.Entry(item).State = EntityState.Modified;
+            _applicationContext.Entry(item).State = EntityState.Modified;
         }
     }
 }

@@ -32,23 +32,19 @@ namespace Store.Presentation
             BusinessLogic.Startup.Initialize(services, Configuration);
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
                         options.RequireHttpsMetadata = false;
                         options.SaveToken = true;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidIssuer = JwtProvider.ISSUER,
-                            ValidAudience = JwtProvider.AUDIENCE,
+                            ValidIssuer = Configuration.GetValue<string>("JwtConsts:Issuer"),
+                            ValidAudience = Configuration.GetValue<string>("JwtConsts:Audience"),
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
-                            IssuerSigningKey = new JwtProvider().GetSymmetricSecurityKey(),
+                            IssuerSigningKey = new JwtProvider(Configuration).GetSymmetricSecurityKey(),
                             ValidateIssuerSigningKey = true,
                         };
                     });

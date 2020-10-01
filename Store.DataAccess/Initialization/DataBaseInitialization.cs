@@ -29,14 +29,10 @@ namespace Store.DataAccess.Initialization
             if (await userManager.FindByEmailAsync(adminEmail) == null)
             {
                 User admin = new User { Email = adminEmail, FirstName = "Administrator", LastName = "Administratorovich", UserName = adminEmail };
-                IdentityResult result = await userManager.CreateAsync(admin, password);
-                if (result.Succeeded)
+                IdentityResult createResult = await userManager.CreateAsync(admin, password);
+                if (createResult.Succeeded)
                 {
-                    var result2 = await userManager.AddToRoleAsync(admin, Enums.Enums.UserRole.Admin.ToString());
-                    if (!result2.Succeeded)
-                    {
-                        throw new System.Exception();
-                    }
+                    await userManager.AddToRoleAsync(admin, Enums.Enums.UserRole.Admin.ToString());
                 }
             }
         }

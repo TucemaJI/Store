@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +15,6 @@ using Store.Presentation.Providers;
 
 namespace Store.Presentation.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
@@ -31,15 +30,17 @@ namespace Store.Presentation.Controllers
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshAsync(string token, string refreshToken)
         {
-            var jwtSecurityToken = _jwtProvider.GetPrincipalFromExpiredToken(token);
-            //var test1 = principal.Claims.FirstOrDefault(x=>x.Type.Contains("nameidentifier")).Value;
-            var savedRefreshToken = await _accountService.GetRefreshToken(jwtSecurityToken);
-            if (savedRefreshToken != refreshToken) { throw new SecurityTokenException("Invalid refresh token"); }
-            var role = await _accountService.GetUserRoleAsync(jwtSecurityToken.Subject);
-            var newAccessToken = _jwtProvider.CreateToken(jwtSecurityToken.Subject, role);
+            var principal = _jwtProvider.GetPrincipalFromExpiredToken(token);
+            var savedRefreshToken = await _accountService.GetRefreshTokenAsync(principal);
+            if (savedRefreshToken != refreshToken) 
+            { 
+                throw new SecurityTokenException("Invalid refresh token"); 
+            }
+            var role = await _accountService.GetUserRoleAsync(principal.Subject);
+            var newAccessToken = _jwtProvider.CreateToken(principal.Subject, role);
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
 
-            await _accountService.WriteRefreshTokenToDb(jwtSecurityToken.Subject, jwtSecurityToken.Issuer, newRefreshToken);
+            await _accountService.WriteRefreshTokenToDbAsync(principal.Subject, principal.Issuer, newRefreshToken);
 
             return new ObjectResult(new
             {
@@ -48,15 +49,19 @@ namespace Store.Presentation.Controllers
             });
         }
 
+        [AllowAnonymous]
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(string email, string password)
+        public async Task<IActionResult> SignInAsync(string email, string password)
         {
             var result = await _accountService.SignInAsync(email, password);
-            if (!result) { throw new Exception(); }
+            if (!result) 
+            { 
+                throw new Exception(); 
+            }
             var role = await _accountService.GetUserRoleAsync(email);
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
-            await _accountService.WriteRefreshTokenToDb(email, JwtProvider.ISSUER, refreshToken);
+            await _accountService.WriteRefreshTokenToDbAsync(email, _jwtProvider.GetIssuer(), refreshToken);
 
             var response = new
             {
@@ -67,8 +72,9 @@ namespace Store.Presentation.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("Registration")]
-        public async Task<IActionResult> Register(string firstName, string lastName, string email, string password, string confirmPassword)
+        public async Task<IActionResult> RegisterAsync(string firstName, string lastName, string email, string password, string confirmPassword)
         {
             if (password != confirmPassword)
             {
@@ -90,19 +96,22 @@ namespace Store.Presentation.Controllers
 
         [HttpGet("CheckMail")]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        public async Task<IActionResult> ConfirmEmailAsync(string email, string token)
         {
             var result = await _accountService.ConfirmEmailAsync(email, token);
-            if (result.Succeeded) { return Content("Email Confirmed"); }
+            if (result.Succeeded) 
+            {
+                return Content("Email Confirmed"); 
+            }
             return Content("Email NOT Confirmed");
         }
 
         [Authorize]
         [HttpPost("SignOut")]
-        public async Task<IdentityResult> SignOut() 
+        public async Task<IdentityResult> SignOutAsync() 
         {
-            var user = User.FindFirst(ClaimTypes.NameIdentifier);
-            return await _accountService.SignOut(user.Value, user.Issuer);
+            var user = User.FindFirst(JwtRegisteredClaimNames.Sub);
+            return await _accountService.SignOutAsync(user.Value, user.Issuer);
         }
     }
 }

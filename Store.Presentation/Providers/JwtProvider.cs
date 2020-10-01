@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,14 +11,16 @@ namespace Store.Presentation.Providers
 {
     public class JwtProvider
     {
-        public const string ISSUER = "MyAuthServer";
-        public const string AUDIENCE = "MyAuthClient";
-        const string KEY = "mysupersecret_secretkey!123";
-        public const int LIFETIME = 1;
         private readonly SymmetricSecurityKey securityKey;
-        public JwtProvider()
+        private readonly IConfiguration _configuration;
+        public JwtProvider(IConfiguration configuration)
         {
-            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));
+            _configuration = configuration;
+            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration.GetValue<string>("JwtConsts:Key")));
+        }
+        public string GetIssuer()
+        {
+            return _configuration.GetValue<string>("JwtConsts:Issuer");
         }
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {
@@ -34,10 +37,10 @@ namespace Store.Presentation.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: ISSUER,
-                    audience: AUDIENCE,
+                    issuer: _configuration.GetValue<string>("JwtConsts:Issuer"),
+                    audience: _configuration.GetValue<string>("JwtConsts:Audience"),
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(LIFETIME)),
+                    expires: now.Add(TimeSpan.FromMinutes(_configuration.GetValue<int>("JwtConsts:Lifetime"))),
                     signingCredentials: new SigningCredentials(GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -46,8 +49,8 @@ namespace Store.Presentation.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = ISSUER,
-                ValidAudience = AUDIENCE,
+                ValidIssuer = _configuration.GetValue<string>("JwtConsts:Issuer"),
+                ValidAudience = _configuration.GetValue<string>("JwtConsts:Audience"),
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,

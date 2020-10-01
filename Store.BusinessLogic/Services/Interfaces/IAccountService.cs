@@ -11,10 +11,10 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<bool> SignInAsync(string email, string password);
         public UserModel GetUserModel(User user);
         public Task<string> GetUserRoleAsync(string email);
-        public Task<IdentityResult> WriteRefreshTokenToDb(string email, string issuer, string refreshToken);
-        public Task<string> GetRefreshToken(JwtSecurityToken claims);
+        public Task<IdentityResult> WriteRefreshTokenToDbAsync(string email, string issuer, string refreshToken);
+        public Task<string> GetRefreshTokenAsync(JwtSecurityToken claims);
         public Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email, string password);
         public Task<IdentityResult> ConfirmEmailAsync(string email, string code);
-        public Task<IdentityResult> SignOut(string email, string issuer);
+        public Task<IdentityResult> SignOutAsync(string email, string issuer);
     }
 }
