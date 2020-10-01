@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Providers;
@@ -10,9 +9,9 @@ namespace Store.BusinessLogic
 {
     public class Startup
     {
-        public static void Initialize(IServiceCollection services, IConfiguration configuration)
+        public static void Initialize(IServiceCollection services)
         {
-            DataAccess.Startup.Initialize(services, configuration);
+            DataAccess.Startup.Initialize(services);
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
@@ -13,7 +12,7 @@ namespace Store.DataAccess
 {
     public class Startup
     {
-        public static void Initialize(IServiceCollection services, IConfiguration configuration) {
+        public static void Initialize(IServiceCollection services) {
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(StartupOptions.Connection), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
