@@ -114,5 +114,16 @@ namespace Store.Presentation.Controllers
             var user = User.FindFirst(JwtRegisteredClaimNames.Sub);
             return await _accountService.SignOutAsync(user.Value, user.Issuer);
         }
+
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public async Task ForgotPasswordAsync(string email)
+        {
+            var password = await _accountService.RecoveryPasswordAsync(email);
+
+            await _emailProvider.SendEmailAsync(email, "Your new password",
+                $"Here is your new password: {password}");
+
+        }
     }
 }

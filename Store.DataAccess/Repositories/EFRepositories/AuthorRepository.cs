@@ -7,7 +7,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class AuthorRepository : BaseEFRepository<Author>, IAuthorRepository<Author>
     {
-        public AuthorRepository(ApplicationContext db) : base(db) { }
+        public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
     }
 }

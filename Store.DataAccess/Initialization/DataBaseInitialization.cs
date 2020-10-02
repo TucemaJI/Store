@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccess.Entities;
+using Store.Shared.Enums;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 
@@ -17,13 +18,13 @@ namespace Store.DataAccess.Initialization
         }
         public static async Task InitializeUsersRolesAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            if (await roleManager.FindByNameAsync(Enums.Enums.UserRole.Admin.ToString()) == null)
+            if (await roleManager.FindByNameAsync(Enums.UserRole.Admin.ToString()) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole(Enums.Enums.UserRole.Admin.ToString()));
+                await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Admin.ToString()));
             }
-            if (await roleManager.FindByNameAsync(Enums.Enums.UserRole.Client.ToString()) == null)
+            if (await roleManager.FindByNameAsync(Enums.UserRole.Client.ToString()) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole(Enums.Enums.UserRole.Client.ToString()));
+                await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Client.ToString()));
             }
             if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.AdminEmail) == null)
             {
@@ -37,7 +38,7 @@ namespace Store.DataAccess.Initialization
                 IdentityResult createResult = await userManager.CreateAsync(admin, DatabaseInitializationOptions.Password);
                 if (createResult.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, Enums.Enums.UserRole.Admin.ToString());
+                    await userManager.AddToRoleAsync(admin, Enums.UserRole.Admin.ToString());
                 }
             }
         }
@@ -50,9 +51,9 @@ namespace Store.DataAccess.Initialization
             var pe = new PrintingEdition
             {
                 Id = 1,
-                Currency = Enums.Enums.Currency.USD,
+                Currency = Enums.Currency.USD,
                 Price = 50,
-                Type = Enums.Enums.PrintingEditionType.Book,
+                Type = Enums.PrintingEditionType.Book,
                 Title = DatabaseInitializationOptions.BookName,
                 Description = DatabaseInitializationOptions.BookDescription,
             };
@@ -61,9 +62,6 @@ namespace Store.DataAccess.Initialization
             builder.Entity<AuthorInPrintingEdition>().HasData(aipe);
             builder.Entity<Author>().HasData(author);
             builder.Entity<PrintingEdition>().HasData(pe);
-
-            
-
         }
     }
 }

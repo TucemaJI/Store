@@ -7,9 +7,9 @@ namespace Store.DataAccess.Repositories.Interfaces
     {
         Task<IEnumerable<T>> GetListAsync();
         Task<T> GetItemAsync(long id);
-        void CreateAsync(T item);
-        void DeleteAsync(long id);
+        Task CreateAsync(T item);
+        Task DeleteAsync(long id);
         void Update(T item);
-        void SaveAsync();
+        Task SaveAsync();
     }
 }

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Store.DataAccess.AppContext;
+using Store.Shared.AppContext;
 
-namespace Store.DataAccess.Migrations
+namespace Store.Shared.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20200918133411_InitialCreate")]

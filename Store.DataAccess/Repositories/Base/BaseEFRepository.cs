@@ -14,11 +14,11 @@ namespace Store.DataAccess.Repositories.Base
             _applicationContext = applicationContext;
         }
 
-        public async void CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
             await _applicationContext.Set<T>().AddAsync(entity: entity);
         }
-        public async void DeleteAsync(long item)
+        public async Task DeleteAsync(long item)
         {
             var element = await _applicationContext.Set<T>().FindAsync(item);
             _applicationContext.Set<T>().Remove(element);
@@ -31,7 +31,7 @@ namespace Store.DataAccess.Repositories.Base
         {
             return await _applicationContext.Set<T>().ToListAsync();
         }
-        public async void SaveAsync()
+        public async Task SaveAsync()
         {
             await _applicationContext.SaveChangesAsync();
         }

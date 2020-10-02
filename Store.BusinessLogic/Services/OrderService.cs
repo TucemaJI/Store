@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
-    public class OrderService : BaseService<OrderModel>, IOrderService
+    public class OrderService :  IOrderService
     {
         private readonly IOrderRepository<Order> _orderRepository;
         public OrderService(IOrderRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }
-        public override void CreateEntityAsync(OrderModel model)
+        public async Task CreateOrderAsync(OrderModel model)
         {
             var order = new OrderMapper().Map(model);
-            _orderRepository.CreateAsync(order);
-            _orderRepository.SaveAsync();
+            await _orderRepository.CreateAsync(order);
+            await _orderRepository.SaveAsync();
         }
 
-        public override async Task<IEnumerable<OrderModel>> GetModelsAsync()
+        public  async Task<IEnumerable<OrderModel>> GetOrderModelsAsync()
         {
             var orderList = await _orderRepository.GetListAsync();
             var orderModelList = new List<OrderModel>();
@@ -34,7 +34,7 @@ namespace Store.BusinessLogic.Services
             return orderModelList;
         }
 
-        public async Task<OrderModel> GetModelAsync(long id)
+        public async Task<OrderModel> GetOrderModelAsync(long id)
         {
             var order = await _orderRepository.GetItemAsync(id);
             return new OrderMapper().Map(order);

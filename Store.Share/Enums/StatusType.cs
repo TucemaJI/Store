@@ -1,4 +1,4 @@
-﻿namespace Store.DataAccess.Enums
+﻿namespace Store.Shared.Enums
 {
     public partial class Enums
     {

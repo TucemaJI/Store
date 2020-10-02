@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
-    public class PrintingEditionService : BaseService<PrintingEditionModel>, IPrintingEditionService
+    public class PrintingEditionService : IPrintingEditionService
     {
         private readonly IPrintingEditionRepository<PrintingEdition> _printingEditionRepository;
         public PrintingEditionService(IPrintingEditionRepository<PrintingEdition> printingEditionRepository)
         {
             _printingEditionRepository = printingEditionRepository;
         }
-        public override void CreateEntityAsync(PrintingEditionModel model)
+        public async Task CreatePrintingEditionAsync(PrintingEditionModel model)
         {
             var printingEdition = new PrintingEditionMapper().Map(model);
-            _printingEditionRepository.CreateAsync(printingEdition);
-            _printingEditionRepository.SaveAsync();
+            await _printingEditionRepository.CreateAsync(printingEdition);
+            await _printingEditionRepository.SaveAsync();
         }
 
-        public override async Task<IEnumerable<PrintingEditionModel>> GetModelsAsync()
+        public async Task<IEnumerable<PrintingEditionModel>> GetPrintingEditionModelsAsync()
         {
             var printingEditions = await _printingEditionRepository.GetListAsync();
             var printingEditionModels = new List<PrintingEditionModel>();
@@ -34,7 +34,7 @@ namespace Store.BusinessLogic.Services
             return printingEditionModels;
         }
 
-        public async Task<PrintingEditionModel> GetModelAsync(long id)
+        public async Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
         {
             var printingEdition = await _printingEditionRepository.GetItemAsync(id);
             return new PrintingEditionMapper().Map(printingEdition);

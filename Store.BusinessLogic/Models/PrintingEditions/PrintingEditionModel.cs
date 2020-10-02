@@ -1,5 +1,5 @@
 ﻿using Store.BusinessLogic.Models.Base;
-using static Store.DataAccess.Enums.Enums;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Models.PrintingEditions
 {

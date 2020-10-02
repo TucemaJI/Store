@@ -1,6 +1,4 @@
-﻿using Store.BusinessLogic.Models.Base;
-
-namespace Store.BusinessLogic.Models.Users
+﻿namespace Store.BusinessLogic.Models.Users
 {
     public class UserModel 
     {

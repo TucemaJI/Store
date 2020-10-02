@@ -7,7 +7,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class OrderRepository : BaseEFRepository<Order>, IOrderRepository<Order>
     {
-        public OrderRepository(ApplicationContext db) : base(db) { }
+        public OrderRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
     }
 }

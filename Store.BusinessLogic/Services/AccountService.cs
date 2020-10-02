@@ -6,6 +6,7 @@ using Store.DataAccess.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 
@@ -73,6 +74,22 @@ namespace Store.BusinessLogic.Services
         {
             var user = await FindUserByEmailAsync(email);
             return await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceOptions.RefreshToken);
+        }
+
+        public async Task<string> RecoveryPasswordAsync(string email)
+        {
+            var user = await FindUserByEmailAsync(email);
+            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var password = string.Empty;
+            using (RNGCryptoServiceProvider cryptRNG = new RNGCryptoServiceProvider())
+            {
+                byte[] tokenBuffer = new byte[9];
+                cryptRNG.GetBytes(tokenBuffer);
+                password = Convert.ToBase64String(tokenBuffer);
+            }
+
+            await _userManager.ResetPasswordAsync(user, resetToken, password);
+            return password;
         }
         private async Task<User> FindUserByEmailAsync(string email)
         {

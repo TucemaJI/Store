@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
-    public class AuthorService : BaseService<AuthorModel>, IAuthorService
+    public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository<Author> _authorRepository;
         private readonly IMapper _mapper;
@@ -18,20 +18,20 @@ namespace Store.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public override void CreateEntityAsync(AuthorModel model)
+        public async Task CreateAuthorAsync(AuthorModel model)
         {
             var author = _mapper.Map<AuthorModel, Author>(model);
-            _authorRepository.CreateAsync(author);
-            _authorRepository.SaveAsync();
+            await _authorRepository.CreateAsync(author);
+            await _authorRepository.SaveAsync();
         }
 
-        public async Task<AuthorModel> GetModelAsync(long id)
+        public async Task<AuthorModel> GetAuthorModelAsync(long id)
         {
             var author = await _authorRepository.GetItemAsync(id);
             return _mapper.Map<Author, AuthorModel>(author);
         }
 
-        public override async Task<IEnumerable<AuthorModel>> GetModelsAsync()
+        public async Task<IEnumerable<AuthorModel>> GetAuthorModelsAsync()
         {
             var authorList = await _authorRepository.GetListAsync();
             var authorModelList = new List<AuthorModel>();

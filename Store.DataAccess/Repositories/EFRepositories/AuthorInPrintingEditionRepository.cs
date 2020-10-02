@@ -7,7 +7,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class AuthorInPrintingEditionRepository :BaseEFRepository<AuthorInPrintingEdition>, IAuthorInPrintingEditionRepository<AuthorInPrintingEdition>
     {
-        public AuthorInPrintingEditionRepository(ApplicationContext db) :base(db){}
+        public AuthorInPrintingEditionRepository(ApplicationContext appicationContext) :base(appicationContext){}
 
     }
 }

@@ -16,5 +16,6 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email, string password);
         public Task<IdentityResult> ConfirmEmailAsync(string email, string code);
         public Task<IdentityResult> SignOutAsync(string email, string issuer);
+        public Task<string> RecoveryPasswordAsync(string email);
     }
 }

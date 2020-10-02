@@ -7,7 +7,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class PrintingEditionRepository : BaseEFRepository<PrintingEdition>, IPrintingEditionRepository<PrintingEdition>
     {
-        public PrintingEditionRepository(ApplicationContext db) : base(db) { }
+        public PrintingEditionRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
     }
 }
