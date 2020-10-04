@@ -5,7 +5,7 @@ using Store.DataAccess.Initialization;
 
 namespace Store.DataAccess.AppContext
 {
-    public class ApplicationContext : IdentityDbContext
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<Author> Authors { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }

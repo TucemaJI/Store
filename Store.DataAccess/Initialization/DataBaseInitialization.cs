@@ -22,10 +22,12 @@ namespace Store.DataAccess.Initialization
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Admin.ToString()));
             }
+
             if (await roleManager.FindByNameAsync(Enums.UserRole.Client.ToString()) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Client.ToString()));
             }
+
             if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.AdminEmail) == null)
             {
                 User admin = new User 
@@ -36,6 +38,7 @@ namespace Store.DataAccess.Initialization
                     UserName = $"{DatabaseInitializationOptions.FirstName}{DatabaseInitializationOptions.LastName}" ,
                 };
                 IdentityResult createResult = await userManager.CreateAsync(admin, DatabaseInitializationOptions.Password);
+
                 if (createResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, Enums.UserRole.Admin.ToString());

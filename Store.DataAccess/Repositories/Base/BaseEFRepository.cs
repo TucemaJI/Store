@@ -27,13 +27,13 @@ namespace Store.DataAccess.Repositories.Base
         {
             return await _applicationContext.Set<T>().FindAsync(id);
         }
-        public async Task<IEnumerable<T>> GetListAsync()
+        public Task<List<T>> GetListAsync()
         {
-            return await _applicationContext.Set<T>().ToListAsync();
+            return _applicationContext.Set<T>().ToListAsync();
         }
-        public async Task SaveAsync()
+        public Task SaveAsync()
         {
-            await _applicationContext.SaveChangesAsync();
+            return _applicationContext.SaveChangesAsync();
         }
         public void Update(T item)
         {

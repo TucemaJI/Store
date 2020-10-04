@@ -7,14 +7,13 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Store.Shared.Enums.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Store.Presentation.Controllers
 {
-    [Authorize(Roles = "Admin")] // change to enum or use const
-    [Route("api/[controller]")]
-    [ApiController]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;

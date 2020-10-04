@@ -7,8 +7,6 @@ using Store.Presentation.Controllers.Base;
 
 namespace Store.Presentation.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class PrintingEditionController : BaseController
     {
         private readonly PrintingEditionService _printingEditionService;

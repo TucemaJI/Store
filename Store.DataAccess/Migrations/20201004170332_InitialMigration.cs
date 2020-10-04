@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Store.DataAccess.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,7 @@ namespace Store.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true, computedColumnSql: "[FirstName] + [LastName]"),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
@@ -40,9 +40,9 @@ namespace Store.DataAccess.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    LastName = table.Column<string>(nullable: true),
+                    IsBlocked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,7 +90,6 @@ namespace Store.DataAccess.Migrations
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
                     Currency = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false)
                 },
@@ -216,7 +215,8 @@ namespace Store.DataAccess.Migrations
                     Description = table.Column<string>(nullable: true),
                     UserId = table.Column<long>(nullable: false),
                     UserId1 = table.Column<string>(nullable: true),
-                    PaymentId = table.Column<long>(nullable: false)
+                    PaymentId = table.Column<long>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,7 +236,7 @@ namespace Store.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuthorInPrintingEdition",
+                name: "AuthorsInPrintingEditions",
                 columns: table => new
                 {
                     AuthorId = table.Column<long>(nullable: false),
@@ -244,15 +244,15 @@ namespace Store.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuthorInPrintingEdition", x => new { x.AuthorId, x.PrintingEditionId });
+                    table.PrimaryKey("PK_AuthorsInPrintingEditions", x => new { x.AuthorId, x.PrintingEditionId });
                     table.ForeignKey(
-                        name: "FK_AuthorInPrintingEdition_Authors_AuthorId",
+                        name: "FK_AuthorsInPrintingEditions_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AuthorInPrintingEdition_PrintingEditions_PrintingEditionId",
+                        name: "FK_AuthorsInPrintingEditions_PrintingEditions_PrintingEditionId",
                         column: x => x.PrintingEditionId,
                         principalTable: "PrintingEditions",
                         principalColumn: "Id",
@@ -289,6 +289,21 @@ namespace Store.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Authors",
+                columns: new[] { "Id", "CreationData", "IsRemoved", "Name" },
+                values: new object[] { 1L, new DateTime(2020, 10, 4, 17, 3, 19, 330, DateTimeKind.Utc).AddTicks(3736), false, "Andrew Troelsen" });
+
+            migrationBuilder.InsertData(
+                table: "PrintingEditions",
+                columns: new[] { "Id", "CreationData", "Currency", "Description", "IsRemoved", "Price", "Title", "Type" },
+                values: new object[] { 1L, new DateTime(2020, 10, 4, 17, 3, 19, 330, DateTimeKind.Utc).AddTicks(7439), 1, "The new best book for learning programming", false, 50.0, "C# 8.0", 1 });
+
+            migrationBuilder.InsertData(
+                table: "AuthorsInPrintingEditions",
+                columns: new[] { "AuthorId", "PrintingEditionId" },
+                values: new object[] { 1L, 1L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -330,8 +345,8 @@ namespace Store.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuthorInPrintingEdition_PrintingEditionId",
-                table: "AuthorInPrintingEdition",
+                name: "IX_AuthorsInPrintingEditions_PrintingEditionId",
+                table: "AuthorsInPrintingEditions",
                 column: "PrintingEditionId");
 
             migrationBuilder.CreateIndex(
@@ -373,7 +388,7 @@ namespace Store.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "AuthorInPrintingEdition");
+                name: "AuthorsInPrintingEditions");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");

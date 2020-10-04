@@ -5,7 +5,7 @@ namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetListAsync();
+        Task<List<T>> GetListAsync();
         Task<T> GetItemAsync(long id);
         Task CreateAsync(T item);
         Task DeleteAsync(long id);
