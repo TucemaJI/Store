@@ -31,7 +31,7 @@ namespace Store.BusinessLogic.Services
             return _mapper.Map<Author, AuthorModel>(author);
         }
 
-        public async Task<IEnumerable<AuthorModel>> GetAuthorModelsAsync()
+        public async Task<List<AuthorModel>> GetAuthorModelsAsync()
         {
             var authorList = await _authorRepository.GetListAsync();
             var authorModelList = new List<AuthorModel>();
@@ -41,6 +41,18 @@ namespace Store.BusinessLogic.Services
                 authorModelList.Add(authorModel);
             }
             return authorModelList;
+        }
+
+        public async Task DeleteAuthorAsync(long id)
+        {
+            await _authorRepository.DeleteAsync(id);
+            await _authorRepository.SaveAsync();
+        }
+
+        public void UpdateAuthor(AuthorModel authorModel)
+        {
+            var author = _mapper.Map<AuthorModel, Author>(authorModel);
+            _authorRepository.Update(author);
         }
     }
 }

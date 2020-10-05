@@ -11,5 +11,7 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task CreateOrderAsync(OrderModel model);
 
         public Task<IEnumerable<OrderModel>> GetOrderModelsAsync();
+        public Task DeleteOrderAsync(long id);
+        public void UpdateOrder(OrderModel orderModel);
     }
 }

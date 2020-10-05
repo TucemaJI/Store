@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
@@ -40,14 +41,12 @@ namespace Store.BusinessLogic.Services
             return _userMapper.Map(user);
         }
 
-        public async Task<IEnumerable<UserModel>> GetUsersAsync()
+        public async Task<List<UserModel>> GetUsersAsync()
         {
             var userList = await _userManager.Users.ToListAsync();
             var userModelList = new List<UserModel>();
-            foreach (var user in userList)
-            {
-                userModelList.Add(_userMapper.Map(user));
-            }
+
+            userModelList = _userMapper.Map(userList);
             return userModelList;
         }
         public async Task<string> GetRoleAsync(string email)
@@ -75,5 +74,34 @@ namespace Store.BusinessLogic.Services
             return await _userManager.UpdateAsync(user);
         }
 
+        public async Task BlockUserAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            user.IsBlocked = true;
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<List<UserModel>> FilterUsersAsync(string filter, string filterBy)
+        {
+            var userModels = await GetUsersAsync();
+            switch (filterBy)
+            {
+                case "FirstName":
+                    return userModels
+                        .Where(x => x.FirstName.Contains(filter))
+                        .ToList();
+                case "LastName":
+                    return userModels
+                        .Where(x => x.LastName.Contains(filter))
+                        .ToList();
+                case "Email":
+                    return userModels
+                        .Where(x => x.Email.Contains(filter))
+                        .ToList();
+                default:
+                    break;
+            }
+            throw new BusinessLogicException("Problem with user filtration");
+        }
     }
 }

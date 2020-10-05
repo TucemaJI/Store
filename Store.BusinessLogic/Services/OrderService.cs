@@ -11,13 +11,15 @@ namespace Store.BusinessLogic.Services
     public class OrderService :  IOrderService
     {
         private readonly IOrderRepository<Order> _orderRepository;
-        public OrderService(IOrderRepository<Order> orderRepository)
+        private readonly OrderMapper _orderMapper;
+        public OrderService(IOrderRepository<Order> orderRepository, OrderMapper orderMapper)
         {
             _orderRepository = orderRepository;
+            _orderMapper = orderMapper;
         }
         public async Task CreateOrderAsync(OrderModel model)
         {
-            var order = new OrderMapper().Map(model);
+            var order = _orderMapper.Map(model);
             await _orderRepository.CreateAsync(order);
             await _orderRepository.SaveAsync();
         }
@@ -28,7 +30,7 @@ namespace Store.BusinessLogic.Services
             var orderModelList = new List<OrderModel>();
             foreach (var order in orderList)
             {
-                var orderModel = new OrderMapper().Map(order);
+                var orderModel = _orderMapper.Map(order);
                 orderModelList.Add(orderModel);
             }
             return orderModelList;
@@ -37,7 +39,19 @@ namespace Store.BusinessLogic.Services
         public async Task<OrderModel> GetOrderModelAsync(long id)
         {
             var order = await _orderRepository.GetItemAsync(id);
-            return new OrderMapper().Map(order);
+            return _orderMapper.Map(order);
+        }
+
+        public async Task DeleteOrderAsync(long id)
+        {
+            await _orderRepository.DeleteAsync(id);
+            await _orderRepository.SaveAsync();
+        }
+
+        public void UpdateOrder(OrderModel orderModel)
+        {
+            var order = _orderMapper.Map(orderModel);
+            _orderRepository.Update(order);
         }
     }
 }

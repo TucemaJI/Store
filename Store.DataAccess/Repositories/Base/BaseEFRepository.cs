@@ -39,5 +39,6 @@ namespace Store.DataAccess.Repositories.Base
         {
             _applicationContext.Entry(item).State = EntityState.Modified;
         }
+
     }
 }

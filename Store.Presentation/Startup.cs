@@ -96,7 +96,6 @@ namespace Store.Presentation
             });
 
             app.UseMiddleware<LoggerMiddleware>(loggerFactory);
-
             app.UseHttpsRedirection();
 
             app.UseRouting();

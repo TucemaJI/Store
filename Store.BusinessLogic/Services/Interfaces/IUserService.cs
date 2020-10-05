@@ -11,11 +11,13 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<UserModel> GetUserAsync(string email);
         public Task CreateUserAsync(UserModel model);
 
-        public Task<IEnumerable<UserModel>> GetUsersAsync();
+        public Task<List<UserModel>> GetUsersAsync();
         public Task<string> GetRoleAsync(string email);
         public Task<IdentityResult> CreateRoleAsync(string roleName);
         public IEnumerable<IdentityRole> GetAllRoles();
         public Task<IdentityResult> DeleteUserAsync(UserModel userModel);
         public Task<IdentityResult> UpdateUserAsync(UserModel userModel);
+        public Task BlockUserAsync(string email);
+        public Task<List<UserModel>> FilterUsersAsync(string filter, string filterBy);
     }
 }

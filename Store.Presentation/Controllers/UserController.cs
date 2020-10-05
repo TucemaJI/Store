@@ -22,39 +22,64 @@ namespace Store.Presentation.Controllers
             _userService = userService;
         }
 
+        [HttpPost("CreateUser")]
         public async Task CreateUserAsync(UserModel model)
         {
             await _userService.CreateUserAsync(model);
         }
 
+        [HttpGet("GetUser")]
         public async Task<UserModel> GetUserAsync(string email)
         {
             return await _userService.GetUserAsync(email);
         }
 
-        public async Task<IEnumerable<UserModel>> GetUsersAsync()
+        [HttpGet("GetAllUsers")]
+        public async Task<List<UserModel>> GetUsersAsync()
         {
             return await _userService.GetUsersAsync();
         }
+
+        [HttpGet("GetRole")]
         public async Task<string> GetRoleAsync(string email)
         {
             return await _userService.GetRoleAsync(email);
         }
+
+        [HttpGet("CreateRole")]
         public async Task<IdentityResult> CreateRoleAsync(string roleName)
         {
             return await _userService.CreateRoleAsync(roleName);
         }
+
+        [HttpGet("GetAllRoles")]
         public IEnumerable<IdentityRole> GetAllRoles()
         {
             return _userService.GetAllRoles();
         }
+
+        [HttpDelete("DeleteUser")]
         public async Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
             return await _userService.DeleteUserAsync(userModel);
         }
+
+        [HttpPut("UpdateUser")]
         public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
         {
             return await _userService.UpdateUserAsync(userModel);
+        }
+
+        [HttpGet("BlockUser")]
+        public async Task BlockUserAsync(string email)
+        {
+            await _userService.BlockUserAsync(email);
+        }
+
+        [HttpGet("FilterUsers")]
+        public async Task<List<UserModel>> FilterUsersAsync(string filter, string filterBy)
+        {
+            return await _userService.FilterUsersAsync(filter, filterBy);
         }
     }
 }

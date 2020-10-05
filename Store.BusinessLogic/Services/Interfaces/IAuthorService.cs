@@ -9,6 +9,8 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<AuthorModel> GetAuthorModelAsync(long id);
         public Task CreateAuthorAsync(AuthorModel model);
 
-        public Task<IEnumerable<AuthorModel>> GetAuthorModelsAsync();
+        public Task<List<AuthorModel>> GetAuthorModelsAsync();
+        public Task DeleteAuthorAsync(long id);
+        public void UpdateAuthor(AuthorModel authorModel);
     }
 }

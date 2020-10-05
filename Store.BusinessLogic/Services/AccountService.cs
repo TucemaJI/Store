@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
@@ -22,14 +23,19 @@ namespace Store.BusinessLogic.Services
             _userMapper = userMapper;
         }
 
-        public async Task<bool> SignInAsync(string email, string password)
+        public async Task SignInAsync(string email, string password)
         {
             var user = await FindUserByEmailAsync(email);
+
+            if (user.IsBlocked)
+            {
+                throw new BusinessLogicException("User blocked");
+            }
+
             if (!await _userManager.CheckPasswordAsync(user, password))
             {
-                throw new InvalidOperationException();
+                throw new BusinessLogicException("Incorrect password");
             }
-            return true;
         }
 
         public UserModel GetUserModel(User user)
@@ -98,7 +104,7 @@ namespace Store.BusinessLogic.Services
             {
                 return user;
             }
-            throw new Exception($"Not found {email} user");
+            throw new BusinessLogicException($"Not found {email} user");
         }
     }
 }
