@@ -5,7 +5,7 @@ using Store.DataAccess.Repositories.Interfaces;
 
 namespace Store.DataAccess.Repositories.EFRepositories
 {
-    public class PrintingEditionRepository : BaseEFRepository<PrintingEdition>, IPrintingEditionRepository<PrintingEdition>
+    public class PrintingEditionRepository : BaseEFRepository<PrintingEdition>, IPrintingEditionRepository
     {
         public PrintingEditionRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 

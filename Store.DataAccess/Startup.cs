@@ -19,11 +19,11 @@ namespace Store.DataAccess
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
             services.AddTransient<UserManager<User>>();
-            services.AddTransient<IAuthorInPrintingEditionRepository<AuthorInPrintingEdition>, AuthorInPrintingEditionRepository>();
-            services.AddTransient<IAuthorRepository<Author>, AuthorRepository>();
-            services.AddTransient<IOrderItemRepository<OrderItem>, OrderItemRepository>();
-            services.AddTransient<IOrderRepository<Order>, OrderRepository>();
-            services.AddTransient<IPrintingEditionRepository<PrintingEdition>, PrintingEditionRepository>();
+            services.AddTransient<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
+            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
 
             DataBaseInitialization.Initialize(services);
         }

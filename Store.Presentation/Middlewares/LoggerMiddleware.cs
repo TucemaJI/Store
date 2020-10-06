@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Store.BusinessLogic.Common;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Models.Base;
 using System;
+using System.Text.Json;
 using System.IO;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -35,11 +35,12 @@ namespace Store.Presentation.Middlewares
                 {
                     Errors = exception.Errors
                 };
-                var response = JsonConvert.SerializeObject(model);
+                var response = JsonSerializer.Serialize(model);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)exception.Code;
                 await context.Response.WriteAsync(response);
             }
+
             catch(Exception exception)
             {
                 _logger.LogInformation(

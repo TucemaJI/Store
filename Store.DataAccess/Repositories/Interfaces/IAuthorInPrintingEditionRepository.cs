@@ -1,6 +1,12 @@
-﻿namespace Store.DataAccess.Repositories.Interfaces
+﻿using Store.DataAccess.Entities;
+using Store.DataAccess.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Store.DataAccess.Repositories.Interfaces
 {
-    public interface IAuthorInPrintingEditionRepository<T> : IBaseRepository<T> where T : class 
-    { 
+    public interface IAuthorInPrintingEditionRepository : IBaseRepository<AuthorInPrintingEdition>
+    {
+        public Task<List<AuthorInPrintingEdition>> GetListAsync(EntityParameters entityParameters);
     }
 }

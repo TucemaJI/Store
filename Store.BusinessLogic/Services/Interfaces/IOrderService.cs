@@ -10,7 +10,7 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<OrderModel> GetOrderModelAsync(long id);
         public Task CreateOrderAsync(OrderModel model);
 
-        public Task<IEnumerable<OrderModel>> GetOrderModelsAsync();
+        public Task<List<OrderModel>> GetOrderModelsAsync();
         public Task DeleteOrderAsync(long id);
         public void UpdateOrder(OrderModel orderModel);
     }

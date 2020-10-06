@@ -2,6 +2,7 @@
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.DataAccess.Models;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ namespace Store.BusinessLogic.Services
 {
     public class AuthorService : IAuthorService
     {
-        private readonly IAuthorRepository<Author> _authorRepository;
+        private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
-        public AuthorService(IAuthorRepository<Author> authorRepository, IMapper mapper)
+        public AuthorService(IAuthorRepository authorRepository, IMapper mapper)
         {
             _authorRepository = authorRepository;
             _mapper = mapper;
@@ -31,16 +32,16 @@ namespace Store.BusinessLogic.Services
             return _mapper.Map<Author, AuthorModel>(author);
         }
 
+        public async Task<List<AuthorModel>> GetAuthorModelsAsync(EntityParameters entityParameters)
+        {
+            var authorList = await _authorRepository.GetListAsync(entityParameters);
+            return _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
+        }
+
         public async Task<List<AuthorModel>> GetAuthorModelsAsync()
         {
             var authorList = await _authorRepository.GetListAsync();
-            var authorModelList = new List<AuthorModel>();
-            foreach (var author in authorList)
-            {
-                var authorModel = _mapper.Map<Author, AuthorModel>(author);
-                authorModelList.Add(authorModel);
-            }
-            return authorModelList;
+            return _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
         }
 
         public async Task DeleteAuthorAsync(long id)

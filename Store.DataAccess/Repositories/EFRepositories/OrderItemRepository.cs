@@ -5,7 +5,7 @@ using Store.DataAccess.Repositories.Interfaces;
 
 namespace Store.DataAccess.Repositories.EFRepositories
 {
-    public class OrderItemRepository : BaseEFRepository<OrderItem>, IOrderItemRepository<OrderItem>
+    public class OrderItemRepository : BaseEFRepository<OrderItem>, IOrderItemRepository
     {
         public OrderItemRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 

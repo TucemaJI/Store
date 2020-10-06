@@ -1,7 +1,6 @@
 ﻿using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.DataAccess.Entities;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,9 +9,9 @@ namespace Store.BusinessLogic.Services
 {
     public class OrderService :  IOrderService
     {
-        private readonly IOrderRepository<Order> _orderRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly OrderMapper _orderMapper;
-        public OrderService(IOrderRepository<Order> orderRepository, OrderMapper orderMapper)
+        public OrderService(IOrderRepository orderRepository, OrderMapper orderMapper)
         {
             _orderRepository = orderRepository;
             _orderMapper = orderMapper;
@@ -24,7 +23,7 @@ namespace Store.BusinessLogic.Services
             await _orderRepository.SaveAsync();
         }
 
-        public  async Task<IEnumerable<OrderModel>> GetOrderModelsAsync()
+        public  async Task<List<OrderModel>> GetOrderModelsAsync()
         {
             var orderList = await _orderRepository.GetListAsync();
             var orderModelList = new List<OrderModel>();

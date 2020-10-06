@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services;
+using Store.DataAccess.Models;
 using Store.Presentation.Controllers.Base;
+using Store.Presentation.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
@@ -18,6 +20,12 @@ namespace Store.Presentation.Controllers
         public AuthorController(AuthorService authorService, ILogger<AuthorController> logger) : base(logger)
         {
             _authorService = authorService;
+        }
+
+        [HttpGet("GetAuthorsWithFilter")]
+        public async Task<List<AuthorModel>> GetAuthorModelsAsync([FromQuery] EntityParameters entityParemeters)
+        {
+            return await _authorService.GetAuthorModelsAsync(entityParemeters);
         }
 
         [HttpGet("GetAuthors")]

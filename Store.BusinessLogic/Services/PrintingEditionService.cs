@@ -2,7 +2,6 @@
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.DataAccess.Entities;
 using Store.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,9 +13,9 @@ namespace Store.BusinessLogic.Services
 {
     public class PrintingEditionService : IPrintingEditionService
     {
-        private readonly IPrintingEditionRepository<PrintingEdition> _printingEditionRepository;
+        private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly PrintingEditionMapper _printingEditionMapper;
-        public PrintingEditionService(IPrintingEditionRepository<PrintingEdition> printingEditionRepository, PrintingEditionMapper printingEditionMapper)
+        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, PrintingEditionMapper printingEditionMapper)
         {
             _printingEditionRepository = printingEditionRepository;
             _printingEditionMapper = printingEditionMapper;
