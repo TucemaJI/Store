@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services;
+using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models;
 using Store.Presentation.Controllers.Base;
 using Store.Presentation.Models;
@@ -16,14 +17,14 @@ namespace Store.Presentation.Controllers
 {
     public class AuthorController : BaseController
     {
-        private readonly AuthorService _authorService;
-        public AuthorController(AuthorService authorService, ILogger<AuthorController> logger) : base(logger)
+        private readonly IAuthorService _authorService;
+        public AuthorController(IAuthorService authorService, ILogger<AuthorController> logger) : base(logger)
         {
             _authorService = authorService;
         }
 
         [HttpGet("GetAuthorsWithFilter")]
-        public async Task<List<AuthorModel>> GetAuthorModelsAsync([FromQuery] EntityParameters entityParemeters)
+        public async Task<PagedList<AuthorModel>> GetAuthorModelsAsync([FromQuery] EntityParameters entityParemeters)
         {
             return await _authorService.GetAuthorModelsAsync(entityParemeters);
         }

@@ -17,6 +17,7 @@ namespace Store.BusinessLogic
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ICartService, CartService>();
+            services.AddTransient<IAuthorService, AuthorService>();
 
             services.AddTransient<OrderItemMapper>();
             services.AddTransient<OrderMapper>();
@@ -30,7 +31,7 @@ namespace Store.BusinessLogic
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
-
+            services.AddTransient<IMapper>(item => mapper);
             services.AddTransient<EmailProvider>();
         }
     }

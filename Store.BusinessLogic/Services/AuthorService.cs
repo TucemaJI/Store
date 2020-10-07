@@ -32,10 +32,10 @@ namespace Store.BusinessLogic.Services
             return _mapper.Map<Author, AuthorModel>(author);
         }
 
-        public async Task<List<AuthorModel>> GetAuthorModelsAsync(EntityParameters entityParameters)
+        public async Task<PagedList<AuthorModel>> GetAuthorModelsAsync(EntityParameters entityParameters)
         {
             var authorList = await _authorRepository.GetListAsync(entityParameters);
-            return _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
+            return _mapper.Map<PagedList<Author>, PagedList<AuthorModel>>(authorList);
         }
 
         public async Task<List<AuthorModel>> GetAuthorModelsAsync()
