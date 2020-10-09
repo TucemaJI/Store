@@ -36,7 +36,7 @@ namespace Store.Presentation.Middlewares
                     Errors = exception.Errors
                 };
                 var response = JsonSerializer.Serialize(model);
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = LoggerMiddlewareOptions.AppJson;
                 context.Response.StatusCode = (int)exception.Code;
                 await context.Response.WriteAsync(response);
             }

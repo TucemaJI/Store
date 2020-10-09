@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Initialization;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.AppContext
 {
@@ -18,7 +19,6 @@ namespace Store.DataAccess.AppContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
         {
-            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -30,7 +30,7 @@ namespace Store.DataAccess.AppContext
 
             builder.Entity<User>()
                 .Property(u => u.UserName)
-                .HasComputedColumnSql("[FirstName] + [LastName]");
+                .HasComputedColumnSql(DatabaseInitializationOptions.FullName);
 
             builder.Entity<AuthorInPrintingEdition>()
                 .HasKey(t => new { t.AuthorId, t.PrintingEditionId });

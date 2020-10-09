@@ -29,12 +29,12 @@ namespace Store.BusinessLogic.Services
 
             if (user.IsBlocked)
             {
-                throw new BusinessLogicException("User blocked");
+                throw new BusinessLogicException(AccountServiceOptions.UserBlocked);
             }
 
             if (!await _userManager.CheckPasswordAsync(user, password))
             {
-                throw new BusinessLogicException("Incorrect password");
+                throw new BusinessLogicException(AccountServiceOptions.IncorrectPassword);
             }
         }
 

@@ -7,7 +7,7 @@
             public const string Audience = "MyAuthClient";
             public const string Issuer = "MyAuthServer";
             public const string Key = "mysupersecret_secretkey!123";
-            public const short Lifetime = 1;
+            public const byte Lifetime = 1;
         }
     }
 }

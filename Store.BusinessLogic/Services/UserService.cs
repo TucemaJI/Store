@@ -5,6 +5,7 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.Shared.Constants;
 using Store.Shared.Enums;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,24 +85,8 @@ namespace Store.BusinessLogic.Services
         public async Task<List<UserModel>> FilterUsersAsync(string filter, string filterBy)
         {
             var userModels = await GetUsersAsync();
-            switch (filterBy)
-            {
-                case "FirstName":
-                    return userModels
-                        .Where(x => x.FirstName.Contains(filter))
-                        .ToList();
-                case "LastName":
-                    return userModels
-                        .Where(x => x.LastName.Contains(filter))
-                        .ToList();
-                case "Email":
-                    return userModels
-                        .Where(x => x.Email.Contains(filter))
-                        .ToList();
-                default:
-                    break;
-            }
-            throw new BusinessLogicException("Problem with user filtration");
+
+            throw new BusinessLogicException(ExceptionOptions.ProblemWithUserFiltration);
         }
     }
 }

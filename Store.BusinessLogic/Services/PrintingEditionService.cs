@@ -3,11 +3,9 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Repositories.Interfaces;
-using System;
+using Store.Shared.Constants;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Services
 {
@@ -57,31 +55,11 @@ namespace Store.BusinessLogic.Services
             await _printingEditionRepository.SaveAsync();
         }
 
-        public async Task<List<PrintingEditionModel>> FilterPrintingEditionsAsync(string filter, string filterBy) // throw it to repository(don't know how)
+        public async Task<List<PrintingEditionModel>> FilterPrintingEditionsAsync(string filter, string filterBy) 
         {
             var printingEditionModels = await GetPrintingEditionModelsAsync();
-            switch (filterBy)
-            {
-                case "Title":
-                    return printingEditionModels
-                        .Where(x => x.Title.Contains(filter))
-                        .ToList();
-                case "Currency":
-                    return printingEditionModels
-                        .Where(x => x.Currency == Enum.Parse<Currency>(filter))
-                        .ToList();
-                case "Status":
-                    return printingEditionModels
-                        .Where(x => x.Status == Enum.Parse<Status>(filter))
-                        .ToList();
-                case "Type":
-                    return printingEditionModels
-                        .Where(x => x.Type == Enum.Parse<PrintingEditionType>(filter))
-                        .ToList();
-                default:
-                    break;
-            }
-            throw new BusinessLogicException("Problem with user filtration");
+
+            throw new BusinessLogicException(ExceptionOptions.ProblemWithUserFiltration);
         }
     }
 }

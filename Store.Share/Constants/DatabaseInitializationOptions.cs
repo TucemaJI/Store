@@ -11,6 +11,7 @@
             public const string AuthorName = "Andrew Troelsen";
             public const string BookName = "C# 8.0";
             public const string BookDescription = "The new best book for learning programming";
+            public const string FullName = "[FirstName] + [LastName]";
         }
     }
 }

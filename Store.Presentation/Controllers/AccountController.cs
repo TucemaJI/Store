@@ -9,6 +9,7 @@ using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using Store.Presentation.Providers;
+using Store.Shared.Constants;
 using static Store.Shared.Constants.Constants;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -34,7 +35,7 @@ namespace Store.Presentation.Controllers
             var savedRefreshToken = await _accountService.GetRefreshTokenAsync(principal);
             if (savedRefreshToken != refreshToken)
             {
-                throw new BusinessLogicException("Invalid refresh token");
+                throw new BusinessLogicException(ExceptionOptions.InvalidRefreshToken);
             }
             var role = await _accountService.GetUserRoleAsync(principal.Subject);
 
@@ -73,20 +74,20 @@ namespace Store.Presentation.Controllers
         {
             if (password != confirmPassword)
             {
-                throw new BusinessLogicException("Passwords are different");
+                throw new BusinessLogicException(ExceptionOptions.PasswordsAreDifferent);
             }
 
             var token = await _accountService.CreateConfirmUserAsync(firstName, lastName, email, password);
 
             var callbackUrl = Url.Action(
-                "ConfirmEmail",
-                "Account",
+                EmailOptions.ConfirmEmail,
+                EmailOptions.Account,
                 new { email, token },
                 protocol: HttpContext.Request.Scheme);
-            await _emailProvider.SendEmailAsync(email, "Confirm your account",
+            await _emailProvider.SendEmailAsync(email, EmailOptions.ConfirmYourAccount,
                 $"Confirm registration using this link: <a href='{callbackUrl}'>link</a>");
 
-            return "To complete the registration, check your email and follow the link provided in the letter";
+            return EmailOptions.ToCompleteRegistration;
         }
 
         [HttpGet("CheckMail")]
@@ -96,9 +97,9 @@ namespace Store.Presentation.Controllers
             var result = await _accountService.ConfirmEmailAsync(email, token);
             if (result.Succeeded)
             {
-                return "Email Confirmed";
+                return EmailOptions.EmailConfirmed;
             }
-            throw new BusinessLogicException("Email NOT Confirmed");
+            throw new BusinessLogicException(ExceptionOptions.NotConfirmed);
         }
 
         [Authorize]
@@ -115,7 +116,7 @@ namespace Store.Presentation.Controllers
         {
             var password = await _accountService.RecoveryPasswordAsync(email);
 
-            await _emailProvider.SendEmailAsync(email, "Your new password",
+            await _emailProvider.SendEmailAsync(email, EmailOptions.YourNewPassword,
                 $"Here is your new password: {password}");
         }
     }

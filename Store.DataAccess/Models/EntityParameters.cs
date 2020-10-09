@@ -1,9 +1,10 @@
-﻿namespace Store.DataAccess.Models
+﻿using Store.Shared.Constants;
+
+namespace Store.DataAccess.Models
 {
     public class EntityParameters
     {
-        const int maxPageSize = 50;
-        public int PageNumber { get; set; } = 1;
+        public int PageNumber { get; set; }
         private int _pageSize = 10;
         public int PageSize
         {
@@ -13,8 +14,12 @@
             }
             set
             {
-                _pageSize = (value > maxPageSize) ? maxPageSize : value;
+                _pageSize = (value > EntityParametersOptions.MaxPageSize) ? EntityParametersOptions.MaxPageSize : value;
             }
+        }
+        public EntityParameters()
+        {
+            PageNumber = 1;
         }
     }
 }

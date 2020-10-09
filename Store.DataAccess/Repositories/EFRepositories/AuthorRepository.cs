@@ -16,7 +16,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
 
         public async Task<PagedList<Author>> GetListAsync(EntityParameters entityParameters)
         {
-            var authors = _applicationContext.Authors.Where(x => EF.Functions.Like(x.GetType().GetProperty("Name").Name, "%Troelsen%")/*((string)x.GetType().GetProperty("Name").GetValue(x, null)).Contains("Troelsen")*/);
+            var authors = _applicationContext.Authors;
             var temp = authors.FirstOrDefault();
             return PagedList<Author>.ToPagedList(authors.OrderBy(on => on.Name).ToList()
                 , entityParameters.PageNumber

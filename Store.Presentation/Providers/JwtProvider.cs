@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Store.Shared.Constants;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -55,7 +56,7 @@ namespace Store.Presentation.Providers
             JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new SecurityTokenException("Invalid token");
+                throw new SecurityTokenException(ExceptionOptions.InvalidToken);
             }
 
             return jwtSecurityToken;
