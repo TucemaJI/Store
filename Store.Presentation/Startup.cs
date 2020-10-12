@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using static Store.Shared.Constants.Constants;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 namespace Store.Presentation
 {
@@ -80,6 +81,7 @@ namespace Store.Presentation
 
             });
             services.AddTransient<JwtProvider>();
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -108,6 +110,15 @@ namespace Store.Presentation
                 endpoints.MapControllers();
             });
 
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer("start");
+                }
+            });
         }
     }
 }
