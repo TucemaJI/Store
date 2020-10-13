@@ -14,7 +14,6 @@
             public const string SwaggerName = "StartupOptions:SwaggerName";
             public const string RootPath = "StartupOptions:RootPath";
             public const string SourcePath = "StartupOptions:SourcePath";
-            public const string NpmScript = "StartupOptions:NpmScript";
         }
     }
 }

@@ -124,8 +124,7 @@ namespace Store.Presentation
 
                 if (env.IsDevelopment())
                 {
-                    var npmScript = Configuration[StartupOptions.NpmScript];
-                    spa.UseAngularCliServer(npmScript);
+                    spa.UseAngularCliServer("start");
                 }
             });
         }
