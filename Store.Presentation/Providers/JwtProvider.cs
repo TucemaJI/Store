@@ -7,15 +7,18 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using static Store.Shared.Constants.Constants;
+using Microsoft.Extensions.Configuration;
 
 namespace Store.Presentation.Providers
 {
     public class JwtProvider
     {
         public readonly SymmetricSecurityKey securityKey;
-        public JwtProvider()
+        private readonly IConfiguration _configuration;
+        public JwtProvider(IConfiguration configuration)
         {
-            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.Key));
+            _configuration = configuration;
+            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration[JwtOptions.Key]));
         }
 
         public string CreateToken(string email, string role)
@@ -29,10 +32,10 @@ namespace Store.Presentation.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: JwtOptions.Issuer,
-                    audience: JwtOptions.Audience,
+                    issuer: _configuration[JwtOptions.Issuer],
+                    audience: _configuration[JwtOptions.Audience],
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(JwtOptions.Lifetime)),
+                    expires: now.Add(TimeSpan.FromMinutes(double.Parse(_configuration[JwtOptions.Lifetime]))),
                     signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -41,8 +44,8 @@ namespace Store.Presentation.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = JwtOptions.Issuer,
-                ValidAudience = JwtOptions.Audience,
+                ValidIssuer = _configuration[JwtOptions.Issuer],
+                ValidAudience = _configuration[JwtOptions.Audience],
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
@@ -64,7 +67,7 @@ namespace Store.Presentation.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[32];
+            var randomNumber = new byte[byte.Parse(_configuration[JwtOptions.RefreshTokenLength])];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);

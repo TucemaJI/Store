@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Providers;
@@ -21,11 +22,13 @@ namespace Store.Presentation.Controllers
         private readonly IAccountService _accountService;
         private readonly JwtProvider _jwtProvider;
         private readonly EmailProvider _emailProvider;
-        public AccountController(IAccountService accountService, JwtProvider jwtProvider, EmailProvider emailProvider, ILogger<AccountController> logger) : base(logger)
+        private readonly IConfiguration _configuration;
+        public AccountController(IAccountService accountService, JwtProvider jwtProvider, EmailProvider emailProvider, ILogger<AccountController> logger, IConfiguration configuration) : base(logger)
         {
             _accountService = accountService;
             _jwtProvider = jwtProvider;
             _emailProvider = emailProvider;
+            _configuration = configuration;
         }
 
         [HttpPost("RefreshToken")]
@@ -59,7 +62,7 @@ namespace Store.Presentation.Controllers
             var role = await _accountService.GetUserRoleAsync(email);
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
-            await _accountService.WriteRefreshTokenToDbAsync(email, JwtOptions.Issuer, refreshToken);
+            await _accountService.WriteRefreshTokenToDbAsync(email, _configuration[JwtOptions.Issuer], refreshToken);
 
             return new
             {

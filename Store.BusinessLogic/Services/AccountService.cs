@@ -4,6 +4,7 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.Shared.Constants;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -29,12 +30,12 @@ namespace Store.BusinessLogic.Services
 
             if (user.IsBlocked)
             {
-                throw new BusinessLogicException(AccountServiceOptions.UserBlocked);
+                throw new BusinessLogicException(ExceptionOptions.UserBlocked);
             }
 
             if (!await _userManager.CheckPasswordAsync(user, password))
             {
-                throw new BusinessLogicException(AccountServiceOptions.IncorrectPassword);
+                throw new BusinessLogicException(ExceptionOptions.IncorrectPassword);
             }
         }
 

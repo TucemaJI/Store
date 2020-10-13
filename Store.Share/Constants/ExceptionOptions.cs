@@ -7,5 +7,7 @@
         public const string PasswordsAreDifferent = "Passwords are different";
         public const string NotConfirmed = "Email NOT Confirmed";
         public const string InvalidToken = "Invalid token";
+        public const string UserBlocked = "User blocked";
+        public const string IncorrectPassword = "Incorrect password";
     }
 }

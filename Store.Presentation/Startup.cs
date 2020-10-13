@@ -16,16 +16,23 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using static Store.Shared.Constants.Constants;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.Extensions.Configuration;
 
 namespace Store.Presentation
 {
     public class Startup
     {
-        public Startup() {}
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+        public Startup() { }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            BusinessLogic.Startup.Initialize(services);
+            BusinessLogic.Startup.Initialize(services, Configuration);
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -35,12 +42,12 @@ namespace Store.Presentation
                         options.SaveToken = true;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidIssuer = JwtOptions.Issuer,
-                            ValidAudience = JwtOptions.Audience,
+                            ValidIssuer = Configuration[JwtOptions.Issuer],
+                            ValidAudience = Configuration[JwtOptions.Audience],
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
-                            IssuerSigningKey = new JwtProvider().securityKey,
+                            IssuerSigningKey = new JwtProvider(Configuration).securityKey,
                             ValidateIssuerSigningKey = true,
                         };
                     });
@@ -50,19 +57,20 @@ namespace Store.Presentation
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(StartupOptions.VersionDocument, new OpenApiInfo 
-                { 
-                    Version = StartupOptions.VersionDocument, Title = StartupOptions.TitleApplication 
+                c.SwaggerDoc(Configuration[StartupOptions.VersionDocument], new OpenApiInfo
+                {
+                    Version = Configuration[StartupOptions.VersionDocument],
+                    Title = Configuration[StartupOptions.TitleApplication] 
                 });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-                c.AddSecurityDefinition(StartupOptions.Bearer,
+                c.AddSecurityDefinition(Configuration[StartupOptions.TitleApplication],
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Description = StartupOptions.OpenApiDescription,
-                        Name = StartupOptions.OpenApiAuthorization,
+                        Description = Configuration[StartupOptions.OpenApiDescription],
+                        Name = Configuration[StartupOptions.OpenApiAuthorization],
                         Type = SecuritySchemeType.ApiKey,
-                        Scheme = StartupOptions.Bearer,
+                        Scheme = Configuration[StartupOptions.Bearer],
                     });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
@@ -72,7 +80,7 @@ namespace Store.Presentation
                              Reference = new OpenApiReference
                              {
                                  Type = ReferenceType.SecurityScheme,
-                                 Id = StartupOptions.Bearer
+                                 Id = Configuration[StartupOptions.Bearer]
                              },
                         },
                         new List<string>()
@@ -81,7 +89,7 @@ namespace Store.Presentation
 
             });
             services.AddTransient<JwtProvider>();
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = Configuration[StartupOptions.RootPath]; });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -93,7 +101,7 @@ namespace Store.Presentation
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint(StartupOptions.SwaggerUrl, StartupOptions.SwaggerName);
+                c.SwaggerEndpoint(Configuration[StartupOptions.SwaggerUrl], Configuration[StartupOptions.SwaggerName]);
 
             });
 
@@ -112,11 +120,12 @@ namespace Store.Presentation
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = Configuration[StartupOptions.SourcePath];
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer("start");
+                    var npmScript = Configuration[StartupOptions.NpmScript];
+                    spa.UseAngularCliServer(npmScript);
                 }
             });
         }
