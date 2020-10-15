@@ -17,7 +17,6 @@ namespace Store.BusinessLogic
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<ICartService, CartService>();
             services.AddTransient<IAuthorService, AuthorService>();
 
             services.AddTransient<OrderItemMapper>();

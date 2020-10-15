@@ -13,6 +13,8 @@ namespace Store.BusinessLogic.Mappers
                 IsRemoved = element.IsRemoved,
                 PaymentId = element.PaymentId,
                 UserId = element.UserId,
+                OrderItems = new OrderItemMapper().Map(element.OrderItemModels),
+                Status = element.Status,
             };
         }
 
@@ -25,6 +27,8 @@ namespace Store.BusinessLogic.Mappers
                 PaymentId = element.PaymentId,
                 UserId = element.UserId,
                 CreationData = element.CreationData,
+                OrderItemModels = new OrderItemMapper().Map(element.OrderItems),
+                Status = element.Status,
             };
         }
     }

@@ -40,14 +40,14 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
-        [HttpPost("UpdateOrder")]
+        [HttpPost("UpdatePrintingEdition")]
         public void UpdatePrintingEdition(PrintingEditionModel printingEditionModel)
         {
             _printingEditionService.UpdatePrintingEdition(printingEditionModel);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
-        [HttpDelete("DeleteOrder")]
+        [HttpDelete("DeletePrintingEdition")]
         public async Task DeletePrintingEditionAsync(long id)
         {
             await _printingEditionService.DeletePrintingEditionAsync(id);

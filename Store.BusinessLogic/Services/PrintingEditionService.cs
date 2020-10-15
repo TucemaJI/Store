@@ -28,12 +28,7 @@ namespace Store.BusinessLogic.Services
         public async Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync()
         {
             var printingEditions = await _printingEditionRepository.GetListAsync();
-            var printingEditionModels = new List<PrintingEditionModel>();
-            foreach(var pe in printingEditions)
-            {
-                var printingEditionModel = _printingEditionMapper.Map(pe);
-                printingEditionModels.Add(printingEditionModel);
-            }
+            var printingEditionModels = _printingEditionMapper.Map(printingEditions);
             return printingEditionModels;
         }
 

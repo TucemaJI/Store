@@ -7,31 +7,39 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
 {
-    public class OrderService :  IOrderService
+    public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderItemRepository _orderItemRepository;
+        private readonly IPaymentRepository _paymentRepository;
+
         private readonly OrderMapper _orderMapper;
-        public OrderService(IOrderRepository orderRepository, OrderMapper orderMapper)
+        private readonly OrderItemMapper _orderItemMapper;
+        private readonly PaymentMapper _paymentMapper;
+
+        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, IOrderItemRepository orderItemRepository,
+            OrderMapper orderMapper, PaymentMapper paymentMapper, OrderItemMapper orderItemMapper )
         {
             _orderRepository = orderRepository;
+            _orderItemRepository = orderItemRepository;
+            _paymentRepository = paymentRepository;
+
             _orderMapper = orderMapper;
+            _orderItemMapper = orderItemMapper;
+            _paymentMapper = paymentMapper;
         }
         public async Task CreateOrderAsync(OrderModel model)
         {
             var order = _orderMapper.Map(model);
+            await _orderItemRepository.CreateOrderItemsAsync(order.OrderItems);
             await _orderRepository.CreateAsync(order);
             await _orderRepository.SaveAsync();
         }
 
-        public  async Task<List<OrderModel>> GetOrderModelsAsync()
+        public async Task<List<OrderModel>> GetOrderModelsAsync()
         {
             var orderList = await _orderRepository.GetListAsync();
-            var orderModelList = new List<OrderModel>();
-            foreach (var order in orderList)
-            {
-                var orderModel = _orderMapper.Map(order);
-                orderModelList.Add(orderModel);
-            }
+            var orderModelList = _orderMapper.Map(orderList);
             return orderModelList;
         }
 
@@ -52,5 +60,6 @@ namespace Store.BusinessLogic.Services
             var order = _orderMapper.Map(orderModel);
             _orderRepository.Update(order);
         }
+
     }
 }

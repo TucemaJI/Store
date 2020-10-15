@@ -1,5 +1,5 @@
 ﻿using Store.BusinessLogic.Models.Orders;
-using System;
+using Store.BusinessLogic.Models.Payments;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,9 +9,9 @@ namespace Store.BusinessLogic.Services.Interfaces
     {
         public Task<OrderModel> GetOrderModelAsync(long id);
         public Task CreateOrderAsync(OrderModel model);
-
         public Task<List<OrderModel>> GetOrderModelsAsync();
         public Task DeleteOrderAsync(long id);
         public void UpdateOrder(OrderModel orderModel);
+
     }
 }
