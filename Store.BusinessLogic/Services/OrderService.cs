@@ -59,7 +59,7 @@ namespace Store.BusinessLogic.Services
         {
             var order = _orderMapper.Map(orderModel);
             _orderRepository.Update(order);
+            _orderRepository.SaveAsync();
         }
-
     }
 }

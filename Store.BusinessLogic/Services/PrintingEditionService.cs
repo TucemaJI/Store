@@ -42,6 +42,7 @@ namespace Store.BusinessLogic.Services
         {
             var printingEdition = _printingEditionMapper.Map(printingEditionModel);
             _printingEditionRepository.Update(printingEdition);
+            _printingEditionRepository.SaveAsync();
         }
 
         public async Task DeletePrintingEditionAsync(long id)

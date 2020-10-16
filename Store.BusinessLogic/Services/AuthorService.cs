@@ -54,6 +54,7 @@ namespace Store.BusinessLogic.Services
         {
             var author = _mapper.Map<AuthorModel, Author>(authorModel);
             _authorRepository.Update(author);
+            _authorRepository.SaveAsync();
         }
     }
 }
