@@ -28,7 +28,6 @@ namespace Store.Presentation
         }
 
         public IConfiguration Configuration { get; }
-        public Startup() { }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -47,7 +46,7 @@ namespace Store.Presentation
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
-                            IssuerSigningKey = new JwtProvider(Configuration).securityKey,
+                            IssuerSigningKey = new JwtProvider().securityKey,
                             ValidateIssuerSigningKey = true,
                         };
                     });
@@ -57,20 +56,20 @@ namespace Store.Presentation
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(Configuration[StartupOptions.VersionDocument], new OpenApiInfo
+                c.SwaggerDoc(StartupOptions.VersionDocument, new OpenApiInfo
                 {
-                    Version = Configuration[StartupOptions.VersionDocument],
-                    Title = Configuration[StartupOptions.TitleApplication] 
+                    Version = StartupOptions.VersionDocument,
+                    Title = StartupOptions.TitleApplication
                 });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-                c.AddSecurityDefinition(Configuration[StartupOptions.TitleApplication],
+                c.AddSecurityDefinition(StartupOptions.Bearer,
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Description = Configuration[StartupOptions.OpenApiDescription],
-                        Name = Configuration[StartupOptions.OpenApiAuthorization],
+                        Description = StartupOptions.OpenApiDescription,
+                        Name = StartupOptions.OpenApiAuthorization,
                         Type = SecuritySchemeType.ApiKey,
-                        Scheme = Configuration[StartupOptions.Bearer],
+                        Scheme = StartupOptions.Bearer,
                     });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
@@ -80,7 +79,7 @@ namespace Store.Presentation
                              Reference = new OpenApiReference
                              {
                                  Type = ReferenceType.SecurityScheme,
-                                 Id = Configuration[StartupOptions.Bearer]
+                                 Id = StartupOptions.Bearer
                              },
                         },
                         new List<string>()
@@ -89,7 +88,7 @@ namespace Store.Presentation
 
             });
             services.AddTransient<JwtProvider>();
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = Configuration[StartupOptions.RootPath]; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -101,7 +100,7 @@ namespace Store.Presentation
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint(Configuration[StartupOptions.SwaggerUrl], Configuration[StartupOptions.SwaggerName]);
+                c.SwaggerEndpoint(StartupOptions.SwaggerUrl, StartupOptions.SwaggerName);
 
             });
 
@@ -120,7 +119,7 @@ namespace Store.Presentation
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = Configuration[StartupOptions.SourcePath];
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {

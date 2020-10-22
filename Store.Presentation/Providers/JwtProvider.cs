@@ -14,11 +14,9 @@ namespace Store.Presentation.Providers
     public class JwtProvider
     {
         public readonly SymmetricSecurityKey securityKey;
-        private readonly IConfiguration _configuration;
-        public JwtProvider(IConfiguration configuration)
+        public JwtProvider()
         {
-            _configuration = configuration;
-            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration[JwtOptions.Key]));
+            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.Key));
         }
 
         public string CreateToken(string email, string role)
@@ -32,10 +30,10 @@ namespace Store.Presentation.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: _configuration[JwtOptions.Issuer],
-                    audience: _configuration[JwtOptions.Audience],
+                    issuer: JwtOptions.Issuer,
+                    audience: JwtOptions.Audience,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(double.Parse(_configuration[JwtOptions.Lifetime]))),
+                    expires: now.Add(TimeSpan.FromMinutes(JwtOptions.Lifetime)),
                     signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -44,8 +42,8 @@ namespace Store.Presentation.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = _configuration[JwtOptions.Issuer],
-                ValidAudience = _configuration[JwtOptions.Audience],
+                ValidIssuer = JwtOptions.Issuer,
+                ValidAudience = JwtOptions.Audience,
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
@@ -67,7 +65,7 @@ namespace Store.Presentation.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[byte.Parse(_configuration[JwtOptions.RefreshTokenLength])];
+            var randomNumber = new byte[32];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);

@@ -4,11 +4,10 @@
     {
         public class JwtOptions
         {
-            public const string Audience = "JwtOptions:Audience";
-            public const string Issuer = "JwtOptions:Issuer";
-            public const string Key = "JwtOptions:Key";
-            public const string Lifetime = "JwtOptions:Lifetime";
-            public const string RefreshTokenLength = "JwtOptions:RefreshTokenLength";
+            public const string Audience = "MyAuthClient";
+            public const string Issuer = "MyAuthServer";
+            public const string Key = "mysupersecret_secretkey!123";
+            public const byte Lifetime = 1;
         }
     }
 }

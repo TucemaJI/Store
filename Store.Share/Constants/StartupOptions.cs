@@ -5,15 +5,13 @@
         public class StartupOptions
         {
             public const string Connection = "DefaultConnection";
-            public const string VersionDocument = "StartupOptions:VersionDocument";
-            public const string TitleApplication = "StartupOptions:TitleApplication";
-            public const string Bearer = "StartupOptions:Bearer";
-            public const string OpenApiDescription = "StartupOptions:OperApiDescription";
-            public const string OpenApiAuthorization = "StartupOptions:OpenApiAuthorization";
-            public const string SwaggerUrl = "StartupOptions:SwaggerUrl";
-            public const string SwaggerName = "StartupOptions:SwaggerName";
-            public const string RootPath = "StartupOptions:RootPath";
-            public const string SourcePath = "StartupOptions:SourcePath";
+            public const string VersionDocument = "v1";
+            public const string TitleApplication = "ToDoAPI";
+            public const string Bearer = "Bearer";
+            public const string OpenApiDescription = "Please enter into field the word 'Bearer' following by space and JWT";
+            public const string OpenApiAuthorization = "Authorization";
+            public const string SwaggerUrl = "v1/swagger.json";
+            public const string SwaggerName = "StoreAPI V1";
         }
     }
 }
