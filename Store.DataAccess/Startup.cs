@@ -25,6 +25,7 @@ namespace Store.DataAccess
             services.AddTransient<IOrderItemRepository, OrderItemRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
 
             DataBaseInitialization.Initialize(services);
         }

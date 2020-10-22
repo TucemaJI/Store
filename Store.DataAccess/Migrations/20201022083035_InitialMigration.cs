@@ -55,7 +55,7 @@ namespace Store.DataAccess.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationData = table.Column<DateTime>(nullable: false),
+                    CreationData = table.Column<DateTime>(type: "date", nullable: false),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
@@ -70,7 +70,7 @@ namespace Store.DataAccess.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationData = table.Column<DateTime>(nullable: false),
+                    CreationData = table.Column<DateTime>(type: "date", nullable: false),
                     IsRemoved = table.Column<bool>(nullable: false),
                     TransactionId = table.Column<long>(nullable: false)
                 },
@@ -85,7 +85,7 @@ namespace Store.DataAccess.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationData = table.Column<DateTime>(nullable: false),
+                    CreationData = table.Column<DateTime>(type: "date", nullable: false),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -210,7 +210,7 @@ namespace Store.DataAccess.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationData = table.Column<DateTime>(nullable: false),
+                    CreationData = table.Column<DateTime>(type: "date", nullable: false),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     UserId = table.Column<long>(nullable: false),
@@ -265,7 +265,7 @@ namespace Store.DataAccess.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationData = table.Column<DateTime>(nullable: false),
+                    CreationData = table.Column<DateTime>(type: "date", nullable: false),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Amount = table.Column<long>(nullable: false),
                     Currency = table.Column<string>(nullable: true),
@@ -293,12 +293,12 @@ namespace Store.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Authors",
                 columns: new[] { "Id", "CreationData", "IsRemoved", "Name" },
-                values: new object[] { 1L, new DateTime(2020, 10, 4, 17, 3, 19, 330, DateTimeKind.Utc).AddTicks(3736), false, "Andrew Troelsen" });
+                values: new object[] { 1L, new DateTime(2020, 10, 22, 8, 30, 34, 796, DateTimeKind.Utc).AddTicks(6571), false, "Andrew Troelsen" });
 
             migrationBuilder.InsertData(
                 table: "PrintingEditions",
                 columns: new[] { "Id", "CreationData", "Currency", "Description", "IsRemoved", "Price", "Title", "Type" },
-                values: new object[] { 1L, new DateTime(2020, 10, 4, 17, 3, 19, 330, DateTimeKind.Utc).AddTicks(7439), 1, "The new best book for learning programming", false, 50.0, "C# 8.0", 1 });
+                values: new object[] { 1L, new DateTime(2020, 10, 22, 8, 30, 34, 797, DateTimeKind.Utc).AddTicks(458), 1, "The new best book for learning programming", false, 50.0, "C# 8.0", 1 });
 
             migrationBuilder.InsertData(
                 table: "AuthorsInPrintingEditions",

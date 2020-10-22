@@ -55,16 +55,29 @@ namespace Store.DataAccess.Initialization
             {
                 Id = 1,
                 Currency = Enums.Currency.USD,
-                Price = 50,
+                Price = 150,
                 Type = Enums.PrintingEditionType.Book,
                 Title = DatabaseInitializationOptions.BookName,
                 Description = DatabaseInitializationOptions.BookDescription,
             };
+
+            var pes = new PrintingEdition
+            {
+                Id = 2,
+                Currency = Enums.Currency.USD,
+                Price = 50,
+                Type = Enums.PrintingEditionType.Book,
+                Title = "C# 5.0",
+                Description = "OLd very good book",
+            };
             var aipe = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pe.Id };
-            
+            var aipes = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pes.Id };
+
             builder.Entity<AuthorInPrintingEdition>().HasData(aipe);
+            builder.Entity<AuthorInPrintingEdition>().HasData(aipes);
             builder.Entity<Author>().HasData(author);
             builder.Entity<PrintingEdition>().HasData(pe);
+            builder.Entity<PrintingEdition>().HasData(pes);
         }
     }
 }

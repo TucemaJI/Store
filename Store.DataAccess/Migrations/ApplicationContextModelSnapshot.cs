@@ -158,7 +158,7 @@ namespace Store.DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationData")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
@@ -174,7 +174,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2020, 10, 4, 17, 3, 19, 330, DateTimeKind.Utc).AddTicks(3736),
+                            CreationData = new DateTime(2020, 10, 22, 8, 30, 34, 796, DateTimeKind.Utc).AddTicks(6571),
                             IsRemoved = false,
                             Name = "Andrew Troelsen"
                         });
@@ -210,7 +210,7 @@ namespace Store.DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationData")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -253,7 +253,7 @@ namespace Store.DataAccess.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationData")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
@@ -284,7 +284,7 @@ namespace Store.DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationData")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
@@ -305,7 +305,7 @@ namespace Store.DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationData")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int>("Currency")
                         .HasColumnType("int");
@@ -333,7 +333,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2020, 10, 4, 17, 3, 19, 330, DateTimeKind.Utc).AddTicks(7439),
+                            CreationData = new DateTime(2020, 10, 22, 8, 30, 34, 797, DateTimeKind.Utc).AddTicks(458),
                             Currency = 1,
                             Description = "The new best book for learning programming",
                             IsRemoved = false,

@@ -1,5 +1,4 @@
 ﻿using Store.BusinessLogic.Models.Orders;
-using Store.BusinessLogic.Models.Payments;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
