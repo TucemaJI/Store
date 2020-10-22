@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using static Store.Shared.Constants.Constants;
-using Microsoft.Extensions.Configuration;
 
 namespace Store.Presentation.Providers
 {

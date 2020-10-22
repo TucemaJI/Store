@@ -88,7 +88,7 @@ namespace Store.Presentation
 
             });
             services.AddTransient<JwtProvider>();
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = StartupOptions.RootPath; });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -119,11 +119,11 @@ namespace Store.Presentation
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = StartupOptions.SourcePath;
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer("start");
+                    spa.UseAngularCliServer(StartupOptions.NpmCommand);
                 }
             });
         }

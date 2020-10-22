@@ -12,6 +12,9 @@
             public const string OpenApiAuthorization = "Authorization";
             public const string SwaggerUrl = "v1/swagger.json";
             public const string SwaggerName = "StoreAPI V1";
+            public const string RootPath = "ClientApp/dist";
+            public const string SourcePath = "ClientApp";
+            public const string NpmCommand = "start";
         }
     }
 }
