@@ -62,6 +62,7 @@ namespace Store.Presentation.Controllers
             var role = await _accountService.GetUserRoleAsync(email);
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
+            var temp = _configuration[JwtOptions.Issuer];
             await _accountService.WriteRefreshTokenToDbAsync(email, _configuration[JwtOptions.Issuer], refreshToken);
 
             return new

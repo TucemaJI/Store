@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using static Store.Shared.Enums.Enums;
 
 namespace Store.Presentation.Controllers
 {
-    [Authorize(Roles = nameof(UserRole.Admin))]
+    //[Authorize(Roles = nameof(UserRole.Admin))]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
@@ -76,8 +77,8 @@ namespace Store.Presentation.Controllers
             await _userService.BlockUserAsync(email);
         }
 
-        [HttpGet("FilterUsers")]
-        public async Task<List<UserModel>> FilterUsersAsync(string filter, string filterBy)
+        [HttpPost("FilterUsers")]
+        public async Task<List<UserModel>> FilterUsersAsync(UserFilter filter, string filterBy)
         {
             return await _userService.FilterUsersAsync(filter, filterBy);
         }

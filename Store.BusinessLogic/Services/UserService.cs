@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MailKit.Search;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.DataAccess.Models.Filters;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
 using System.Collections.Generic;
@@ -82,9 +85,12 @@ namespace Store.BusinessLogic.Services
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<List<UserModel>> FilterUsersAsync(string filter, string filterBy)
+        public async Task<List<UserModel>> FilterUsersAsync(UserFilter filter, string orderBy)
         {
-            var userModels = await GetUsersAsync();
+            var userModels = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
+                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
+                .ToListAsync();
+            return _userMapper.Map(userModels);
 
             throw new BusinessLogicException(ExceptionOptions.ProblemWithUserFiltration);
         }

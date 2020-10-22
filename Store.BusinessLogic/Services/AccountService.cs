@@ -64,8 +64,8 @@ namespace Store.BusinessLogic.Services
 
         public async Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email, string password)
         {
-            User user = new User { FirstName = firstName, LastName = lastName, Email = email, UserName = $"{firstName} {lastName}" };
-            await _userManager.CreateAsync(user, password);
+            User user = new User { FirstName = firstName, LastName = lastName, Email = email, UserName = $"{firstName}{lastName}" };
+            var test = await _userManager.CreateAsync(user, password);
             var createdUser = await FindUserByEmailAsync(email);
             return await _userManager.GenerateEmailConfirmationTokenAsync(createdUser);
         }
