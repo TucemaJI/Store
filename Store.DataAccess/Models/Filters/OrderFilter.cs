@@ -2,8 +2,14 @@
 {
     public class OrderFilter
     {
-        public string Payment { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public string Currency { get; set; } = string.Empty;
+        public string Payment { get; set; } 
+        public string Status { get; set; } 
+        public string Currency { get; set; }
+        public OrderFilter()
+        {
+            Payment = string.Empty;
+            Status = string.Empty;
+            Currency = string.Empty;
+        }
     }
 }

@@ -11,7 +11,7 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess
 {
-    public class Startup
+    public class Startup // todo Initialize to Extention
     {
         public static void Initialize(IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationContext>(options =>

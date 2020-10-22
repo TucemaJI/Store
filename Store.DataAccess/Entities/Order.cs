@@ -11,7 +11,7 @@ namespace Store.DataAccess.Entities
         public User User { get; set; }
         public long PaymentId { get; set; }
         public Payment Payment { get; set; }
-        public Status Status { get; set; }
+        public StatusType Status { get; set; }
         public List<OrderItem> OrderItems { get; set; }
         public Order()
         {

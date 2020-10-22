@@ -2,7 +2,7 @@
 {
     public partial class Enums
     {
-        public enum Status
+        public enum StatusType
         {
             None = 0,
             Paid = 1,

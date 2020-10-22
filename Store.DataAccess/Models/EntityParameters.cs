@@ -2,10 +2,10 @@
 
 namespace Store.DataAccess.Models
 {
-    public class EntityParameters
+    public class EntityParameters // todo magic numbers
     {
         public int PageNumber { get; set; }
-        private int _pageSize = 10;
+        private int _pageSize = PagedListOptions.DefaultPageSize;
         public int PageSize
         {
             get
@@ -19,7 +19,7 @@ namespace Store.DataAccess.Models
         }
         public EntityParameters()
         {
-            PageNumber = 1;
+            PageNumber = PagedListOptions.FirstPage;
         }
     }
 }

@@ -8,7 +8,7 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Initialization
 {
-    public class DataBaseInitialization
+    public class DataBaseInitialization // todo Extention Initialize and InitDB to Extention
     {
         public static async void Initialize(IServiceCollection services)
         {
@@ -54,7 +54,7 @@ namespace Store.DataAccess.Initialization
             var pe = new PrintingEdition
             {
                 Id = 1,
-                Currency = Enums.Currency.USD,
+                Currency = Enums.CurrencyType.USD,
                 Price = 150,
                 Type = Enums.PrintingEditionType.Book,
                 Title = DatabaseInitializationOptions.BookName,
@@ -64,7 +64,7 @@ namespace Store.DataAccess.Initialization
             var pes = new PrintingEdition
             {
                 Id = 2,
-                Currency = Enums.Currency.USD,
+                Currency = Enums.CurrencyType.USD,
                 Price = 50,
                 Type = Enums.PrintingEditionType.Book,
                 Title = "C# 5.0",

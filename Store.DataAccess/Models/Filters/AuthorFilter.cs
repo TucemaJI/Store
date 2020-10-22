@@ -2,6 +2,10 @@
 {
     public class AuthorFilter
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
+        public AuthorFilter()
+        {
+            Name = string.Empty;
+        }
     }
 }

@@ -8,8 +8,8 @@ namespace Store.BusinessLogic.Models.PrintingEditions
         public string Title { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public Status Status { get; set; }
-        public Currency Currency { get; set; }
+        public StatusType Status { get; set; }
+        public CurrencyType Currency { get; set; }
         public PrintingEditionType Type { get; set; }
 
     }

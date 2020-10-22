@@ -39,15 +39,11 @@ namespace Store.BusinessLogic.Services
             }
         }
 
-        public UserModel GetUserModel(User user)
-        {
-            return _userMapper.Map(user);
-        }
-
         public async Task<string> GetUserRoleAsync(string email)
         {
             var user = await FindUserByEmailAsync(email);
-            return (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            return role;
         }
 
         public async Task<IdentityResult> WriteRefreshTokenToDbAsync(string email, string issuer, string refreshToken)
@@ -59,13 +55,13 @@ namespace Store.BusinessLogic.Services
         public async Task<string> GetRefreshTokenAsync(JwtSecurityToken claims)
         {
             var user = await FindUserByEmailAsync(claims.Subject);
-            return await _userManager.GetAuthenticationTokenAsync(user, claims.Issuer, AccountServiceOptions.RefreshToken);
+            return await _userManager.GetAuthenticationTokenAsync(user, claims.Issuer, AccountServiceOptions.RefreshToken);// todo check result
         }
 
         public async Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email, string password)
         {
             User user = new User { FirstName = firstName, LastName = lastName, Email = email, UserName = $"{firstName}{lastName}" };
-            await _userManager.CreateAsync(user, password);
+            await _userManager.CreateAsync(user, password);// todo check creating user
             var createdUser = await FindUserByEmailAsync(email);
             return await _userManager.GenerateEmailConfirmationTokenAsync(createdUser);
         }
@@ -74,7 +70,7 @@ namespace Store.BusinessLogic.Services
         public async Task<IdentityResult> ConfirmEmailAsync(string email, string token)
         {
             var user = await FindUserByEmailAsync(email);
-            return await _userManager.ConfirmEmailAsync(user, token);
+            return await _userManager.ConfirmEmailAsync(user, token);// todo check result from controller
         }
 
         public async Task<IdentityResult> SignOutAsync(string email, string issuer)
@@ -83,7 +79,7 @@ namespace Store.BusinessLogic.Services
             return await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceOptions.RefreshToken);
         }
 
-        public async Task<string> RecoveryPasswordAsync(string email)
+        public async Task<string> RecoveryPasswordAsync(string email)// todo generation poasswords in provider and magic number 9
         {
             var user = await FindUserByEmailAsync(email);
             string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);

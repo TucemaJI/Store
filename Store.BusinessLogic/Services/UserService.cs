@@ -90,6 +90,7 @@ namespace Store.BusinessLogic.Services
             var userModels = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
                 .ToListAsync();
+            var sortedUserModels = userModels.OrderBy(x => x.Email);// todo Extention to OrderBy 
             return _userMapper.Map(userModels);
 
             throw new BusinessLogicException(ExceptionOptions.ProblemWithUserFiltration);

@@ -17,7 +17,7 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : BaseController// todo no logic in controller (create IjwtProveder in blogic)(reg in startup)
     {
         private readonly IAccountService _accountService;
         private readonly JwtProvider _jwtProvider;
@@ -43,7 +43,7 @@ namespace Store.Presentation.Controllers
             var role = await _accountService.GetUserRoleAsync(principal.Subject);
 
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
-
+            //todo check IdResult to service
             await _accountService.WriteRefreshTokenToDbAsync(principal.Subject, principal.Issuer, newRefreshToken);
 
             return new
@@ -62,7 +62,7 @@ namespace Store.Presentation.Controllers
             var role = await _accountService.GetUserRoleAsync(email);
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
-            await _accountService.WriteRefreshTokenToDbAsync(email, JwtOptions.Issuer, refreshToken);
+            await _accountService.WriteRefreshTokenToDbAsync(email, JwtOptions.Issuer, refreshToken);//todo check IdResult to service
 
             return new
             {
@@ -79,6 +79,8 @@ namespace Store.Presentation.Controllers
             {
                 throw new BusinessLogicException(ExceptionOptions.PasswordsAreDifferent);
             }
+
+            // todo check fname lname
 
             var token = await _accountService.CreateConfirmUserAsync(firstName, lastName, email, password);
 

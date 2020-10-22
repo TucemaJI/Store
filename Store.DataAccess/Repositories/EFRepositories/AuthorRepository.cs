@@ -11,14 +11,14 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class AuthorRepository : BaseEFRepository<Author>, IAuthorRepository
     {
-        private readonly ApplicationContext _applicationContext;
-        public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { _applicationContext = applicationContext; }
+        
+        public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
         public async Task<PagedList<Author>> GetListAsync(EntityParameters entityParameters)
         {
-            var authors = _applicationContext.Authors;
-            var temp = authors.FirstOrDefault();
-            return PagedList<Author>.ToPagedList(authors.OrderBy(on => on.Name).ToList()
+            
+            var temp = _dbSet.FirstOrDefault();
+            return PagedList<Author>.ToPagedList(_dbSet.OrderBy(on => on.Name).ToList()
                 , entityParameters.PageNumber
                 , entityParameters.PageSize);
         }
