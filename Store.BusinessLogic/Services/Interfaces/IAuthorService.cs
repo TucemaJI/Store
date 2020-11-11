@@ -1,5 +1,6 @@
 ﻿using Store.BusinessLogic.Models.Authors;
 using Store.DataAccess.Models;
+using Store.DataAccess.Models.Filters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,9 +10,8 @@ namespace Store.BusinessLogic.Services.Interfaces
     {
         public Task<AuthorModel> GetAuthorModelAsync(long id);
         public Task CreateAuthorAsync(AuthorModel model);
-
         public Task<List<AuthorModel>> GetAuthorModelsAsync();
-        public Task<PagedList<AuthorModel>> GetAuthorModelsAsync(EntityParameters entityParameters);
+        public Task<List<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter);
         public Task DeleteAuthorAsync(long id);
         public void UpdateAuthor(AuthorModel authorModel);
     }

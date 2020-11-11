@@ -11,7 +11,7 @@ namespace Store.BusinessLogic.Providers
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress(EmailOptions.Name, EmailOptions.Address));
+            emailMessage.From.Add(new MailboxAddress(EmailOptions.NAME, EmailOptions.ADDRESS));
             emailMessage.To.Add(new MailboxAddress(string.Empty, email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -21,8 +21,8 @@ namespace Store.BusinessLogic.Providers
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(EmailOptions.ConnectGmail);
-                await client.AuthenticateAsync(EmailOptions.Address, EmailOptions.Password);
+                await client.ConnectAsync(EmailOptions.GMAIL_CONNECTION);
+                await client.AuthenticateAsync(EmailOptions.ADDRESS, EmailOptions.PASSWORD);
                 await client.SendAsync(emailMessage);
             }
         }

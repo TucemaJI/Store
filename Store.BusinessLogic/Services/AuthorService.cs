@@ -3,8 +3,10 @@ using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Models;
+using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
@@ -23,7 +25,6 @@ namespace Store.BusinessLogic.Services
         {
             var author = _mapper.Map<AuthorModel, Author>(model);
             await _authorRepository.CreateAsync(author);
-            await _authorRepository.SaveAsync();
         }
 
         public async Task<AuthorModel> GetAuthorModelAsync(long id)
@@ -32,10 +33,10 @@ namespace Store.BusinessLogic.Services
             return _mapper.Map<Author, AuthorModel>(author);
         }
 
-        public async Task<PagedList<AuthorModel>> GetAuthorModelsAsync(EntityParameters entityParameters)
+        public async Task<List<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
         {
-            var authorList = await _authorRepository.GetListAsync(entityParameters);
-            return _mapper.Map<PagedList<Author>, PagedList<AuthorModel>>(authorList);
+            var authorList = await _authorRepository.GetFilterSortedPagedListAsync(filter);
+            return _mapper.Map<List<Author>, List<AuthorModel>>(authorList.ToList());
         }
 
         public async Task<List<AuthorModel>> GetAuthorModelsAsync()
@@ -47,14 +48,12 @@ namespace Store.BusinessLogic.Services
         public async Task DeleteAuthorAsync(long id)
         {
             await _authorRepository.DeleteAsync(id);
-            await _authorRepository.SaveAsync();
         }
 
         public void UpdateAuthor(AuthorModel authorModel)
         {
             var author = _mapper.Map<AuthorModel, Author>(authorModel);
-            _authorRepository.Update(author);
-            _authorRepository.SaveAsync();
+            _authorRepository.UpdateAsync(author);
         }
     }
 }

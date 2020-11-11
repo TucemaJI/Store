@@ -1,9 +1,9 @@
 ﻿namespace Store.Shared.Constants
 {
-    public class PagedListOptions // todo all consts CapsLock
+    public class PagedListOptions
     {
-        public const byte FirstPage = 1;
-        public const byte CorrectPageNumber = 1;
-        public const byte DefaultPageSize = 10;
+        public const byte FIRST_PAGE = 1;
+        public const byte CORRECTING_PAGE_NUMBER = 1;
+        public const byte DEFAULT_PAGE_SIZE = 10;
     }
 }

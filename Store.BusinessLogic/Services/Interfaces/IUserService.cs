@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogic.Models.Users;
 using Store.DataAccess.Models.Filters;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,6 +18,6 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<IdentityResult> DeleteUserAsync(UserModel userModel);
         public Task<IdentityResult> UpdateUserAsync(UserModel userModel);
         public Task BlockUserAsync(string email);
-        public Task<List<UserModel>> FilterUsersAsync(UserFilter filter, string filterBy);
+        public Task<List<UserModel>> FilterUsers(UserFilter filter);
     }
 }

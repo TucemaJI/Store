@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.PrintingEditions;
-using Store.BusinessLogic.Services;
+using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,29 +15,29 @@ namespace Store.Presentation.Controllers
 {
     public class PrintingEditionController : BaseController
     {
-        private readonly PrintingEditionService _printingEditionService;
-        public PrintingEditionController(PrintingEditionService printingEditionService, ILogger<PrintingEditionController> logger) : base(logger)
+        private readonly IPrintingEditionService _printingEditionService;
+        public PrintingEditionController(IPrintingEditionService printingEditionService, ILogger<PrintingEditionController> logger) : base(logger)
         {
             _printingEditionService = printingEditionService;
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("CreatePrintingEdition")]
-        public async Task CreatePrintingEditionAsync(PrintingEditionModel model)
+        public Task CreatePrintingEditionAsync(PrintingEditionModel model)
         {
-            await _printingEditionService.CreatePrintingEditionAsync(model);
+            return _printingEditionService.CreatePrintingEditionAsync(model);
         }
 
-        [HttpGet("GetPrintingEditions")]
-        public async Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync()
+        [HttpPost("GetPrintingEditions")]
+        public Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync([FromQuery]PrintingEditionFilter filter)
         {
-            return await _printingEditionService.GetPrintingEditionModelsAsync();
+            return _printingEditionService.GetPrintingEditionModelsAsync(filter);
         }
 
         [HttpGet("GetPrintingEdition")]
-        public async Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
+        public Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
         {
-            return await _printingEditionService.GetPrintingEditionModelAsync(id);
+            return _printingEditionService.GetPrintingEditionModelAsync(id);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
@@ -48,9 +49,9 @@ namespace Store.Presentation.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("DeletePrintingEdition")]
-        public async Task DeletePrintingEditionAsync(long id)
+        public Task DeletePrintingEditionAsync(long id)
         {
-            await _printingEditionService.DeletePrintingEditionAsync(id);
+            return _printingEditionService.DeletePrintingEditionAsync(id);
         }
     }
 }

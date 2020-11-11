@@ -10,7 +10,6 @@ namespace Store.DataAccess.Repositories.Interfaces
         Task<T> GetItemAsync(long id);
         Task CreateAsync(T item);
         Task DeleteAsync(long id);
-        void Update(T item);
-        Task SaveAsync();
+        void UpdateAsync(T item);
     }
 }

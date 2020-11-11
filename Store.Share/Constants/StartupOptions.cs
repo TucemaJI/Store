@@ -4,17 +4,17 @@
     {
         public class StartupOptions
         {
-            public const string Connection = "DefaultConnection";
-            public const string VersionDocument = "v1";
-            public const string TitleApplication = "ToDoAPI";
-            public const string Bearer = "Bearer";
-            public const string OpenApiDescription = "Please enter into field the word 'Bearer' following by space and JWT";
-            public const string OpenApiAuthorization = "Authorization";
-            public const string SwaggerUrl = "v1/swagger.json";
-            public const string SwaggerName = "StoreAPI V1";
-            public const string RootPath = "ClientApp/dist";
-            public const string SourcePath = "ClientApp";
-            public const string NpmCommand = "start";
+            public const string CONNECTION = "DefaultConnection";
+            public const string VERSION = "v1";
+            public const string TITLE_APPLICATION = "ToDoAPI";
+            public const string BEARER = "Bearer";
+            public const string OPEN_API_DESCRIPTION = "Please enter into field the word 'Bearer' following by space and JWT";
+            public const string OPEN_API_AUTHORIZATION = "Authorization";
+            public const string SWAGGER_URL = "v1/swagger.json";
+            public const string SWAGGER_NAME = "StoreAPI V1";
+            public const string ROOT_PATH = "ClientApp/dist";
+            public const string SOURCE_PATH = "ClientApp";
+            public const string NPM_COMMAND = "start";
         }
     }
 }

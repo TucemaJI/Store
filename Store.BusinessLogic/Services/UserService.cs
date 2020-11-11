@@ -1,12 +1,12 @@
-﻿using MailKit.Search;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
+using Store.DataAccess.Extentions;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
@@ -22,7 +22,8 @@ namespace Store.BusinessLogic.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserMapper _userMapper;
 
-        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, UserMapper userMapper)
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,
+            UserMapper userMapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -85,15 +86,22 @@ namespace Store.BusinessLogic.Services
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<List<UserModel>> FilterUsersAsync(UserFilter filter, string orderBy)
+        public async Task<List<UserModel>> FilterUsers(UserFilter filter)
         {
-            var userModels = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
-                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
-                .ToListAsync();
-            var sortedUserModels = userModels.OrderBy(x => x.Email);// todo Extention to OrderBy 
-            return _userMapper.Map(userModels);
+            var users = _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
+                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"));
+            if (string.IsNullOrWhiteSpace(filter.OrderByString))
+            {
+                filter.OrderByString = "Name";
+            }
+            var sortedUsers = await PagedList<User>.ToPagedListAsync(source: users.OrderBy(filter.OrderByString),
+                pageNumber: filter.EntityParameters.PageNumber,
+                pageSize: filter.EntityParameters.PageSize,
+                isDescending: filter.IsDescending);
 
-            throw new BusinessLogicException(ExceptionOptions.ProblemWithUserFiltration);
+            return _userMapper.Map(sortedUsers);
+
+            throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
         }
     }
 }

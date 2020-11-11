@@ -4,7 +4,8 @@
     {
         public class AccountServiceOptions
         {
-            public const string RefreshToken = "RefreshToken";
+            public const string REFRESH_TOKEN = "RefreshToken";
+            public const byte PASSWORD_LENGTH = 9;
         }
     }
 }

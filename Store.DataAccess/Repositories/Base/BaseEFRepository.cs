@@ -1,45 +1,61 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.AppContext;
+using Store.DataAccess.Models;
+using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Store.DataAccess.Extentions;
 
 namespace Store.DataAccess.Repositories.Base
 {
-    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class //todo dbSet instead of context
+    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class 
     {
-        private readonly ApplicationContext _applicationContext;
         protected readonly DbSet<T> _dbSet;
+        private readonly ApplicationContext _applicationContext;
         public BaseEFRepository(ApplicationContext applicationContext)
         {
+            _dbSet = applicationContext.Set<T>();
             _applicationContext = applicationContext;
-            _dbSet = _applicationContext.Set<T>();
         }
 
         public async Task CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity: entity);
+            await _applicationContext.SaveChangesAsync();
         }
         public async Task DeleteAsync(long item)
         {
-            var element = await _applicationContext.Set<T>().FindAsync(item);
-            _applicationContext.Set<T>().Remove(element);
+            var element = await _dbSet.FindAsync(item);
+            _dbSet.Remove(element);
+            await _applicationContext.SaveChangesAsync();
         }
         public async Task<T> GetItemAsync(long id)
         {
-            return await _applicationContext.Set<T>().FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
-        public Task<List<T>> GetListAsync()
+        public Task<List<T>> GetListAsync()// todo delete when filter works
         {
-            return _applicationContext.Set<T>().ToListAsync();
+            return _dbSet.ToListAsync();
         }
-        public Task SaveAsync()
+        public async void UpdateAsync(T item)
         {
-            return _applicationContext.SaveChangesAsync();
+            _dbSet.Update(item).State = EntityState.Modified;
+            await _applicationContext.SaveChangesAsync();
         }
-        public void Update(T item)
+        protected Task<PagedList<T>> GetSortedPagedList(BaseFilter filter, IQueryable<T> ts)
         {
-            _applicationContext.Entry(item).State = EntityState.Modified;
+            if (string.IsNullOrWhiteSpace(filter.OrderByString))
+            {
+                filter.OrderByString = "Id";
+            }
+
+            var sortedT = PagedList<T>.ToPagedListAsync(source: ts.OrderBy(filter.OrderByString),
+                pageNumber: filter.EntityParameters.PageNumber,
+                pageSize: filter.EntityParameters.PageSize,
+                isDescending: filter.IsDescending);
+            return sortedT;
         }
 
     }

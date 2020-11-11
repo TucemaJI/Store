@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.Authors;
-using Store.BusinessLogic.Services;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.DataAccess.Models;
+using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
-using Store.Presentation.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
@@ -23,10 +21,10 @@ namespace Store.Presentation.Controllers
             _authorService = authorService;
         }
 
-        [HttpGet("GetAuthorsWithFilter")]
-        public async Task<PagedList<AuthorModel>> GetAuthorModelsAsync([FromQuery] EntityParameters entityParemeters)
+        [HttpPost("GetAuthorsWithFilter")]
+        public Task<List<AuthorModel>> GetAuthorModelsAsync([FromQuery]AuthorFilter filter)
         {
-            return await _authorService.GetAuthorModelsAsync(entityParemeters);
+            return _authorService.GetAuthorModelsAsync(filter);
         }
 
         [HttpGet("GetAuthors")]
@@ -35,7 +33,7 @@ namespace Store.Presentation.Controllers
             return await _authorService.GetAuthorModelsAsync();
         }
 
-        [HttpGet("GetAuthor")]
+        [HttpGet("{id:long}")]
         public async Task<AuthorModel> GetAuthorModelAsync(long id)
         {
             return await _authorService.GetAuthorModelAsync(id);

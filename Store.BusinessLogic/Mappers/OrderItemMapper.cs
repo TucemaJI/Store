@@ -28,7 +28,7 @@ namespace Store.BusinessLogic.Mappers
                 IsRemoved = element.IsRemoved,
                 OrderId = element.OrderId,
                 PrintingEditionId = element.PrintingEditionId,
-                CreationData = element.CreationData,
+                CreationDate = element.CreationData,
             };
         }
     }

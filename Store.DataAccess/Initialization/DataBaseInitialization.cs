@@ -8,15 +8,16 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Initialization
 {
-    public class DataBaseInitialization // todo Extention Initialize and InitDB to Extention
+    public static class DataBaseInitialization 
     {
-        public static async void Initialize(IServiceCollection services)
+        public static async void Initialize(this IServiceCollection services)
         {
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var roleManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
             await InitializeUsersRolesAsync(userManager, roleManager);
         }
-        public static async Task InitializeUsersRolesAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        private static async Task InitializeUsersRolesAsync(UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             if (await roleManager.FindByNameAsync(Enums.UserRole.Admin.ToString()) == null)
             {
@@ -28,16 +29,17 @@ namespace Store.DataAccess.Initialization
                 await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Client.ToString()));
             }
 
-            if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.AdminEmail) == null)
+            if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.ADMIN_EMAIL) == null)
             {
                 User admin = new User 
                 {   
-                    Email = DatabaseInitializationOptions.AdminEmail,
-                    FirstName = DatabaseInitializationOptions.FirstName,
-                    LastName = DatabaseInitializationOptions.LastName,
-                    UserName = $"{DatabaseInitializationOptions.FirstName}{DatabaseInitializationOptions.LastName}" ,
+                    Email = DatabaseInitializationOptions.ADMIN_EMAIL,
+                    FirstName = DatabaseInitializationOptions.FIRST_NAME,
+                    LastName = DatabaseInitializationOptions.LAST_NAME,
+                    UserName = $"{DatabaseInitializationOptions.FIRST_NAME}{DatabaseInitializationOptions.LAST_NAME}" ,
                 };
-                IdentityResult createResult = await userManager.CreateAsync(admin, DatabaseInitializationOptions.Password);
+                IdentityResult createResult = await userManager.CreateAsync(admin,
+                    DatabaseInitializationOptions.PASSWORD);
 
                 if (createResult.Succeeded)
                 {
@@ -46,9 +48,9 @@ namespace Store.DataAccess.Initialization
             }
         }
 
-        public static void InitializeDB(ModelBuilder builder)
+        public static void InitializeDB(this ModelBuilder builder)
         {
-            var author = new Author {Id = 1, Name = DatabaseInitializationOptions.AuthorName, IsRemoved = false };
+            var author = new Author {Id = 1, Name = DatabaseInitializationOptions.AUTHOR_NAME, IsRemoved = false };
             
 
             var pe = new PrintingEdition
@@ -57,8 +59,8 @@ namespace Store.DataAccess.Initialization
                 Currency = Enums.CurrencyType.USD,
                 Price = 150,
                 Type = Enums.PrintingEditionType.Book,
-                Title = DatabaseInitializationOptions.BookName,
-                Description = DatabaseInitializationOptions.BookDescription,
+                Title = DatabaseInitializationOptions.BOOK_NAME,
+                Description = DatabaseInitializationOptions.BOOK_DESCRIPTION,
             };
 
             var pes = new PrintingEdition

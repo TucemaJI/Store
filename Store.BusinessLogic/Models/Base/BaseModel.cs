@@ -7,7 +7,7 @@ namespace Store.BusinessLogic.Models.Base
     {
         public ICollection<string> Errors { get; set; }
         public long Id { get; set; }
-        public DateTime CreationData { get; set; }
+        public DateTime CreationDate { get; set; }
         public bool IsRemoved { get; set; }
 
         public BaseModel()

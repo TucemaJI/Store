@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.Orders;
-using Store.BusinessLogic.Services;
+using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace Store.Presentation.Controllers
 {
     public class OrderController : BaseController
     {
-        private readonly OrderService _orderService;
-        public OrderController(OrderService orderService, ILogger<OrderController> logger) : base(logger)
+        private readonly IOrderService _orderService;
+        public OrderController(IOrderService orderService, ILogger<OrderController> logger) : base(logger)
         {
             _orderService = orderService;
         }
@@ -27,10 +28,10 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpGet("GetOrders")]
-        public async Task<List<OrderModel>> GetOrderModelsAsync()
+        [HttpPost("GetOrders")]
+        public Task<List<OrderModel>> GetOrderModelsAsync([FromQuery]OrderFilter filter)
         {
-            return await _orderService.GetOrderModelsAsync();
+            return _orderService.GetOrderModelsAsync(filter);
         }
 
         [Authorize]

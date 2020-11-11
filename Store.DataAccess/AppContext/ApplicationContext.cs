@@ -30,7 +30,7 @@ namespace Store.DataAccess.AppContext
 
             builder.Entity<User>()
                 .Property(u => u.UserName)
-                .HasComputedColumnSql(DatabaseInitializationOptions.FullName);
+                .HasComputedColumnSql(DatabaseInitializationOptions.FULL_NAME);
 
             builder.Entity<AuthorInPrintingEdition>()
                 .HasKey(t => new { t.AuthorId, t.PrintingEditionId });
@@ -42,8 +42,8 @@ namespace Store.DataAccess.AppContext
                 .HasOne(ape => ape.Author)
                 .WithMany(author => author.AuthorInPrintingEditions)
                 .HasForeignKey(ape => ape.AuthorId);
-            
-            DataBaseInitialization.InitializeDB(builder);
+
+            builder.InitializeDB();
         }
     }
 }

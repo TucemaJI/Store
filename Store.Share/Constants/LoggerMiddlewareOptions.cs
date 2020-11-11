@@ -4,10 +4,10 @@
     {
         public class LoggerMiddlewareOptions
         {
-            public const string FileName = "logger.txt";
-            public const string Logger = "Logger";
-            public const string RequestForm = "Request {method} {url} => {statusCode}";
-            public const string AppJson = "application/json";
+            public const string FILE_NAME = "logger.txt";
+            public const string LOGGER = "Logger";
+            public const string REQUEST_FORM = "Request {method} {url} => {statusCode}";
+            public const string APP_JSON = "application/json";
         }
     }
 }

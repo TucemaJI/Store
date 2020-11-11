@@ -7,6 +7,5 @@ namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IAuthorInPrintingEditionRepository : IBaseRepository<AuthorInPrintingEdition>
     {
-        public Task<List<AuthorInPrintingEdition>> GetListAsync(EntityParameters entityParameters);
     }
 }

@@ -2,6 +2,7 @@
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Models;
+using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Base;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Linq;
@@ -11,16 +12,13 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class AuthorRepository : BaseEFRepository<Author>, IAuthorRepository
     {
-        
         public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public async Task<PagedList<Author>> GetListAsync(EntityParameters entityParameters)
+        public Task<PagedList<Author>> GetFilterSortedPagedListAsync(AuthorFilter filter)
         {
-            
-            var temp = _dbSet.FirstOrDefault();
-            return PagedList<Author>.ToPagedList(_dbSet.OrderBy(on => on.Name).ToList()
-                , entityParameters.PageNumber
-                , entityParameters.PageSize);
+            var authors = _dbSet.Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"));
+            var sortedAuthors = GetSortedPagedList(filter: filter, ts: authors);
+            return sortedAuthors;
         }
     }
 }

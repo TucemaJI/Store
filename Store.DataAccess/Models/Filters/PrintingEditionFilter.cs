@@ -1,22 +1,14 @@
-﻿namespace Store.DataAccess.Models.Filters
+﻿using static Store.Shared.Enums.Enums;
+
+namespace Store.DataAccess.Models.Filters
 {
-    public class PrintingEditionFilter
+    public class PrintingEditionFilter : BaseFilter
     {
         public string Name { get; set; }
         public string Title { get; set; }
-        public string Currency { get; set; }
-        public string Type { get; set; }
-        public string MinPrice { get; set; }
-        public string MaxPrice { get; set; }
-        
-        public PrintingEditionFilter()
-        {
-            Name = string.Empty;
-            Title = string.Empty;
-            Currency = string.Empty;
-            Type = string.Empty;
-            MinPrice = string.Empty;
-            MaxPrice = string.Empty;
-        }
+        public CurrencyType Currency { get; set; }
+        public PrintingEditionType Type { get; set; }
+        public double MinPrice { get; set; }
+        public double MaxPrice { get; set; }
     }
 }

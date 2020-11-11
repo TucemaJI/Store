@@ -1,6 +1,7 @@
 ﻿using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,8 +18,9 @@ namespace Store.BusinessLogic.Services
         private readonly OrderItemMapper _orderItemMapper;
         private readonly PaymentMapper _paymentMapper;
 
-        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, IOrderItemRepository orderItemRepository,
-            OrderMapper orderMapper, PaymentMapper paymentMapper, OrderItemMapper orderItemMapper )
+        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository,
+            IOrderItemRepository orderItemRepository, OrderMapper orderMapper, PaymentMapper paymentMapper,
+            OrderItemMapper orderItemMapper )
         {
             _orderRepository = orderRepository;
             _orderItemRepository = orderItemRepository;
@@ -33,12 +35,11 @@ namespace Store.BusinessLogic.Services
             var order = _orderMapper.Map(model);
             await _orderItemRepository.CreateOrderItemsAsync(order.OrderItems);
             await _orderRepository.CreateAsync(order);
-            await _orderRepository.SaveAsync();
         }
 
-        public async Task<List<OrderModel>> GetOrderModelsAsync()
+        public async Task<List<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
         {
-            var orderList = await _orderRepository.GetListAsync();
+            var orderList = await _orderRepository.GetFilterSortedPagedListAsync(filter);
             var orderModelList = _orderMapper.Map(orderList);
             return orderModelList;
         }
@@ -49,17 +50,15 @@ namespace Store.BusinessLogic.Services
             return _orderMapper.Map(order);
         }
 
-        public async Task DeleteOrderAsync(long id)
+        public Task DeleteOrderAsync(long id)
         {
-            await _orderRepository.DeleteAsync(id);
-            await _orderRepository.SaveAsync();
+            return _orderRepository.DeleteAsync(id);
         }
 
         public void UpdateOrder(OrderModel orderModel)
         {
             var order = _orderMapper.Map(orderModel);
-            _orderRepository.Update(order);
-            _orderRepository.SaveAsync();
+            _orderRepository.UpdateAsync(order);
         }
     }
 }

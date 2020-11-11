@@ -1,13 +1,8 @@
 ﻿namespace Store.DataAccess.Models.Filters
 {
-    public class UserFilter
+    public class UserFilter : BaseFilter
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public UserFilter()
-        {
-            Name = string.Empty;
-            Email = string.Empty;
-        }
     }
 }
