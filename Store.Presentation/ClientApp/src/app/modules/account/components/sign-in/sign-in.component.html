@@ -1,0 +1,50 @@
+<mat-card class="card">
+    
+    <mat-card-title>
+        <mat-icon >person</mat-icon>
+</mat-card-title>
+        <p></p>
+    <mat-card-content class="content">
+        <h3>Sign In</h3>
+      <form>
+        <p>E-mail</p>
+        <p>
+          <mat-form-field class="label-width" appearance="outline">
+            <label >
+              <input  formControlName="email" matInput type="email">
+            </label>
+            <mat-error>
+                Please enter a valid email!
+              </mat-error>
+              <mat-error >
+                Email is required!
+              </mat-error>
+          </mat-form-field>
+        </p>
+  
+        <p>Password
+          <a class="forgot" routerLink="">Forgot your password?</a>
+        </p>
+        <p>
+          <mat-form-field class="label-width" appearance="outline">
+            <label >
+              <input formControlName="password" matInput type="password">
+            </label>
+              <mat-error >
+                Password is required!
+              </mat-error>
+          </mat-form-field>
+        </p>
+  
+        <p>
+          <mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox>
+          <button type="submit" class="sign-in" mat-raised-button>Sign-In</button>
+        </p>
+  
+        <p class="sign-up">
+          <label>New to Book Publishing Company?</label><br>
+          <a class="button-sign-up" routerLink="" mat-raised-button>Sign Up</a>
+        </p>
+      </form>
+    </mat-card-content>
+  </mat-card>
