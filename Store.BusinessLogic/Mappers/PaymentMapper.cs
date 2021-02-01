@@ -20,7 +20,7 @@ namespace Store.BusinessLogic.Mappers
             {
                 IsRemoved = element.IsRemoved,
                 TransactionId = element.TransactionId,
-                CreationData = element.CreationData,
+                CreationDate = element.CreationData,
             };
         }
     }

@@ -19,8 +19,8 @@ namespace Store.Presentation.Middlewares
         public LoggerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareOptions.FileName));
-            _logger = loggerFactory.CreateLogger(LoggerMiddlewareOptions.Logger);
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareOptions.FILE_NAME));
+            _logger = loggerFactory.CreateLogger(LoggerMiddlewareOptions.LOGGER);
         }
         public async Task Invoke(HttpContext context)
         {
@@ -36,7 +36,7 @@ namespace Store.Presentation.Middlewares
                     Errors = exception.Errors
                 };
                 var response = JsonSerializer.Serialize(model);
-                context.Response.ContentType = LoggerMiddlewareOptions.AppJson;
+                context.Response.ContentType = LoggerMiddlewareOptions.APP_JSON;
                 context.Response.StatusCode = (int)exception.Code;
                 await context.Response.WriteAsync(response);
             }

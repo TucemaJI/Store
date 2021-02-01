@@ -2,6 +2,6 @@
 {
     public class EntityParametersOptions
     {
-        public const byte MaxPageSize = 50;
+        public const byte MAX_PAGE_SIZE = 50;
     }
 }

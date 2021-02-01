@@ -2,6 +2,7 @@
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
 using System.Collections.Generic;
@@ -22,7 +23,6 @@ namespace Store.BusinessLogic.Services
         {
             var printingEdition = _printingEditionMapper.Map(model);
             await _printingEditionRepository.CreateAsync(printingEdition);
-            await _printingEditionRepository.SaveAsync();
         }
 
         public async Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync()
@@ -41,21 +41,20 @@ namespace Store.BusinessLogic.Services
         public void UpdatePrintingEdition(PrintingEditionModel printingEditionModel)
         {
             var printingEdition = _printingEditionMapper.Map(printingEditionModel);
-            _printingEditionRepository.Update(printingEdition);
-            _printingEditionRepository.SaveAsync();
+            _printingEditionRepository.UpdateAsync(printingEdition);
         }
 
         public async Task DeletePrintingEditionAsync(long id)
         {
             await _printingEditionRepository.DeleteAsync(id);
-            await _printingEditionRepository.SaveAsync();
         }
 
-        public async Task<List<PrintingEditionModel>> FilterPrintingEditionsAsync(string filter, string filterBy) 
+        public async Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
-            var printingEditionModels = await GetPrintingEditionModelsAsync();
-
-            throw new BusinessLogicException(ExceptionOptions.ProblemWithUserFiltration);
+            var printingEditions = await _printingEditionRepository.GetFilterSortedPagedListAsync(filter);
+            var printingEditionModels = _printingEditionMapper.Map(printingEditions);
+            return printingEditionModels;
+            throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
         }
     }
 }

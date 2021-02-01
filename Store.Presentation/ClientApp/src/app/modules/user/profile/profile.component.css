@@ -1,0 +1,19 @@
+.card{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+.right{
+    float: right;
+    cursor: pointer;
+    margin-top: -2.5%;
+}
+mat-card-title{
+    width: 40%;
+}
+.cancelButton{
+    margin-left: 1%;
+}
+.width{
+    width: 40%;
+}

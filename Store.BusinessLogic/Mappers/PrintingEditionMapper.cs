@@ -28,7 +28,7 @@ namespace Store.BusinessLogic.Mappers
                 Price = element.Price,
                 Title = element.Title,
                 Type = element.Type,
-                CreationData = element.CreationData,
+                CreationDate = element.CreationData,
             };
         }
     }

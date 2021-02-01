@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Store.BusinessLogic.Services.Interfaces;
 using Store.Shared.Constants;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,12 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation.Providers
 {
-    public class JwtProvider
+    public class JwtProvider : IJwtProvider
     {
         public readonly SymmetricSecurityKey securityKey;
         public JwtProvider()
         {
-            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.Key));
+            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.KEY));
         }
 
         public string CreateToken(string email, string role)
@@ -29,10 +30,10 @@ namespace Store.Presentation.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: JwtOptions.Issuer,
-                    audience: JwtOptions.Audience,
+                    issuer: JwtOptions.ISSUER,
+                    audience: JwtOptions.AUDIENCE,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(JwtOptions.Lifetime)),
+                    expires: now.Add(TimeSpan.FromMinutes(JwtOptions.LIFETIME)),
                     signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -41,8 +42,8 @@ namespace Store.Presentation.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = JwtOptions.Issuer,
-                ValidAudience = JwtOptions.Audience,
+                ValidIssuer = JwtOptions.ISSUER,
+                ValidAudience = JwtOptions.AUDIENCE,
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
@@ -56,7 +57,7 @@ namespace Store.Presentation.Providers
             JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new SecurityTokenException(ExceptionOptions.InvalidToken);
+                throw new SecurityTokenException(ExceptionOptions.INVALID_TOKEN);
             }
 
             return jwtSecurityToken;

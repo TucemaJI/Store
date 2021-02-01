@@ -1,0 +1,91 @@
+<div>
+    <p>Catalog</p>
+</div>
+
+<div>
+    <mat-card class="card">
+        <mat-card-title>
+            <p>My Profile</p>
+            <mat-icon (click)="editButton()" class="right" matTooltip="Edit profile">edit</mat-icon>
+            <mat-icon>person</mat-icon>
+        </mat-card-title>
+
+        <mat-card-content>
+            <form [formGroup]="profileForm">
+                <p>Your First name</p>
+                <mat-form-field class="width" appearance="outline">
+                    <label>
+                        <input formControlName="firstName" matInput type="text">
+                    </label>
+                    <mat-error align="end" *ngIf="hasError('firstName', 'required')">
+                        Please enter Your First name
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <p>Your Last name</p>
+                <mat-form-field class="width" appearance="outline">
+                    <label>
+                        <input formControlName="lastName" matInput type="text">
+                    </label>
+                    <mat-error align="end" *ngIf="hasError('lastName', 'required')">
+                        Please enter Your Last name
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <p>E-mail</p>
+                <mat-form-field class="width" appearance="outline">
+                    <label>
+                        <input formControlName="email" matInput type="email">
+                    </label>
+                    <mat-error align="end" *ngIf="hasError('email', 'required')">
+                        Please enter Your email
+                    </mat-error>
+                    <mat-error align="end" *ngIf="hasError('email', 'email')">
+                        Please enter a valid email address
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <div *ngIf="editbool">
+                    <p>Password</p>
+                    <mat-form-field class="width" appearance="outline">
+                        <label>
+                            <input formControlName="password" matInput type="password">
+                        </label>
+                        <mat-error align="end" *ngIf="hasError('password', 'required')">
+                            Please enter Your password
+                        </mat-error>
+                        <mat-error align="end" *ngIf="hasError('password', 'notHaveUpper')">
+                            Please enter at least 1 letter with upper case
+                        </mat-error>
+                        <mat-error align="end" *ngIf="hasError('password', 'notHaveSpecialSymbol')">
+                            Please enter at least 1 special symbol
+                        </mat-error>
+                        <mat-error align="end" *ngIf="hasError('password', 'notHaveNum')">
+                            Please enter at least 1 number
+                        </mat-error>
+                        <mat-error align="end" *ngIf="hasError('password', 'notHaveLength')">
+                            Please enter at least 6 characters
+                        </mat-error>
+                    </mat-form-field>
+                    <br>
+                    <p>Confirm password</p>
+                    <mat-form-field class="width" appearance="outline">
+                        <label>
+                            <input formControlName="confirmPassword" matInput type="password">
+                        </label>
+                        <mat-error align="end" *ngIf="hasError('confirmPassword', 'required')">
+                            Please enter Your password
+                        </mat-error>
+                        <mat-error align="end" *ngIf="profileForm.hasError('notSame')">
+                            Passwords must be equal
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </form>
+            <div *ngIf="editbool">
+                <button mat-raised-button type="submit">Save</button>
+                <button class="cancelButton" mat-raised-button type="reset">Cancel</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -14,7 +14,7 @@ using static Store.Shared.Enums.Enums;
 
 namespace Store.Presentation.Controllers
 {
-    //[Authorize(Roles = nameof(UserRole.Admin))]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
@@ -22,35 +22,36 @@ namespace Store.Presentation.Controllers
         {
             _userService = userService;
         }
-
+        
         [HttpPost("CreateUser")]
-        public async Task CreateUserAsync(UserModel model)
+        public Task CreateUserAsync(UserModel model)
         {
-            await _userService.CreateUserAsync(model);
+            return _userService.CreateUserAsync(model);
         }
 
+        [AllowAnonymous]
         [HttpGet("GetUser")]
-        public async Task<UserModel> GetUserAsync(string email)
+        public Task<UserModel> GetUserAsync(string email)
         {
-            return await _userService.GetUserAsync(email);
+            return _userService.GetUserAsync(email);
         }
 
         [HttpGet("GetAllUsers")]
-        public async Task<List<UserModel>> GetUsersAsync()
+        public Task<List<UserModel>> GetUsersAsync()
         {
-            return await _userService.GetUsersAsync();
+            return _userService.GetUsersAsync();
         }
 
         [HttpGet("GetRole")]
-        public async Task<string> GetRoleAsync(string email)
+        public Task<string> GetRoleAsync(string email)
         {
-            return await _userService.GetRoleAsync(email);
+            return _userService.GetRoleAsync(email);
         }
 
         [HttpGet("CreateRole")]
-        public async Task<IdentityResult> CreateRoleAsync(string roleName)
+        public Task<IdentityResult> CreateRoleAsync(string roleName)
         {
-            return await _userService.CreateRoleAsync(roleName);
+            return _userService.CreateRoleAsync(roleName);
         }
 
         [HttpGet("GetAllRoles")]
@@ -60,27 +61,27 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpDelete("DeleteUser")]
-        public async Task<IdentityResult> DeleteUserAsync(UserModel userModel)
+        public Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
-            return await _userService.DeleteUserAsync(userModel);
+            return _userService.DeleteUserAsync(userModel);
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
+        public Task<IdentityResult> UpdateUserAsync(UserModel userModel)
         {
-            return await _userService.UpdateUserAsync(userModel);
+            return _userService.UpdateUserAsync(userModel);
         }
 
         [HttpGet("BlockUser")]
-        public async Task BlockUserAsync(string email)
+        public Task BlockUserAsync(string email)
         {
-            await _userService.BlockUserAsync(email);
+            return _userService.BlockUserAsync(email);
         }
 
         [HttpPost("FilterUsers")]
-        public async Task<List<UserModel>> FilterUsersAsync(UserFilter filter, string filterBy)
+        public Task<List<UserModel>> FilterUsersAsync([FromQuery]UserFilter filter)
         {
-            return await _userService.FilterUsersAsync(filter, filterBy);
+            return _userService.FilterUsers(filter);
         }
     }
 }

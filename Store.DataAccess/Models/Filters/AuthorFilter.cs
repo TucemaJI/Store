@@ -1,11 +1,7 @@
 ﻿namespace Store.DataAccess.Models.Filters
 {
-    public class AuthorFilter
+    public class AuthorFilter : BaseFilter
     {
         public string Name { get; set; }
-        public AuthorFilter()
-        {
-            Name = string.Empty;
-        }
     }
 }

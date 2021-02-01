@@ -1,11 +1,13 @@
-﻿using Store.Shared.Constants;
+﻿using Store.DataAccess.Models.Filters;
+using Store.Shared.Constants;
 
 namespace Store.DataAccess.Models
 {
-    public class EntityParameters // todo magic numbers
+    public class EntityParameters
     {
         public int PageNumber { get; set; }
-        private int _pageSize = PagedListOptions.DefaultPageSize;
+
+        private int _pageSize = PagedListOptions.DEFAULT_PAGE_SIZE;
         public int PageSize
         {
             get
@@ -14,12 +16,12 @@ namespace Store.DataAccess.Models
             }
             set
             {
-                _pageSize = (value > EntityParametersOptions.MaxPageSize) ? EntityParametersOptions.MaxPageSize : value;
+                _pageSize = (value > EntityParametersOptions.MAX_PAGE_SIZE) ? EntityParametersOptions.MAX_PAGE_SIZE : value;
             }
         }
         public EntityParameters()
         {
-            PageNumber = PagedListOptions.FirstPage;
+            PageNumber = PagedListOptions.FIRST_PAGE;
         }
     }
 }

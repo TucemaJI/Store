@@ -11,11 +11,11 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess
 {
-    public class Startup // todo Initialize to Extention
+    public static class Startup // todo Initialize to Extention
     {
-        public static void Initialize(IServiceCollection services, IConfiguration configuration) {
+        public static void InitializeDA(this IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString(StartupOptions.Connection)), ServiceLifetime.Singleton);
+                options.UseSqlServer(configuration.GetConnectionString(StartupOptions.CONNECTION)), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
@@ -27,7 +27,7 @@ namespace Store.DataAccess
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
 
-            DataBaseInitialization.Initialize(services);
+            services.Initialize();
         }
     }
 }

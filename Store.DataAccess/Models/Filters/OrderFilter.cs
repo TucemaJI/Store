@@ -1,15 +1,11 @@
-﻿namespace Store.DataAccess.Models.Filters
+﻿using static Store.Shared.Enums.Enums;
+
+namespace Store.DataAccess.Models.Filters
 {
-    public class OrderFilter
+    public class OrderFilter : BaseFilter
     {
-        public string Payment { get; set; } 
-        public string Status { get; set; } 
+        public long Payment { get; set; } 
+        public StatusType Status { get; set; } 
         public string Currency { get; set; }
-        public OrderFilter()
-        {
-            Payment = string.Empty;
-            Status = string.Empty;
-            Currency = string.Empty;
-        }
     }
 }

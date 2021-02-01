@@ -9,15 +9,11 @@ namespace Store.DataAccess.Repositories.EFRepositories
 {
     public class OrderItemRepository : BaseEFRepository<OrderItem>, IOrderItemRepository
     {
-        private readonly ApplicationContext _applicationContext;
-        public OrderItemRepository(ApplicationContext applicationContext) : base(applicationContext)
-        {
-            _applicationContext = applicationContext;
-        }
+        public OrderItemRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
         public async Task CreateOrderItemsAsync(IEnumerable<OrderItem> list)
         {
-            await _applicationContext.OrderItems.AddRangeAsync(list);
+            await _dbSet.AddRangeAsync(list);
         }
     }
 }

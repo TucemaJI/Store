@@ -1,0 +1,99 @@
+<mat-card class="card">
+  <mat-card-title>
+    <mat-icon class="icon">person</mat-icon>
+  </mat-card-title>
+  <mat-card-content class="content">
+    <h3>Create account</h3>
+    <form [formGroup]="signUpForm" >
+      <p>Your First name</p>
+      <mat-form-field class="form-width" appearance="outline">
+        <label>
+          <input formControlName="firstName" matInput placeholder="First name" >
+        </label>
+        <mat-error align="end" *ngIf="hasError('firstName', 'required')">
+          Please enter Your First name
+        </mat-error>
+      </mat-form-field>
+
+
+      <p>Your Last name</p>
+      <mat-form-field class="form-width" appearance="outline">
+        <label>
+          <input formControlName="lastName" matInput placeholder="Last name">
+        </label>
+        <mat-error align="end" *ngIf="hasError('lastName', 'required')">
+          Please enter Your Last name
+        </mat-error>
+      </mat-form-field>
+
+
+      <p>Email</p>
+      <mat-form-field class="form-width" appearance="outline">
+        <label>
+          <input formControlName="email" matInput type="email" placeholder="E-mail">
+        </label>
+        <mat-error align="end" *ngIf="hasError('email', 'required')">
+          Please enter Your email
+        </mat-error>
+        <mat-error align="end" *ngIf="hasError('email', 'email')">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+
+
+      <p>
+        Password</p>
+      <mat-form-field class="form-width" appearance="outline">
+        <label>
+          <input formControlName="password" matInput type="password" placeholder="At least 6 characters">
+        </label>
+        <mat-error align="end" *ngIf="hasError('password', 'required')">
+          Please enter Your password
+        </mat-error>
+        <mat-error align="end" *ngIf="hasError('password', 'notHaveUpper')">
+          Please enter at least 1 letter with upper case
+        </mat-error>
+        <mat-error align="end" *ngIf="hasError('password', 'notHaveSpecialSymbol')">
+          Please enter at least 1 special symbol
+        </mat-error>
+        <mat-error align="end" *ngIf="hasError('password', 'notHaveNum')">
+          Please enter at least 1 number
+        </mat-error>
+        <mat-error align="end" *ngIf="hasError('password', 'notHaveLength')">
+          Please enter at least 6 characters
+        </mat-error>
+      </mat-form-field>
+
+
+      <p>
+        Confirm password</p>
+      <mat-form-field class="form-width" appearance="outline">
+        <label>
+          <input ngValidateEqual="password" formControlName="confirmPassword" matInput type="password"
+            placeholder="Password should be the same" [errorStateMatcher]="matcher" class="fullLength">
+        </label>
+        <mat-error align="end" *ngIf="hasError('confirmPassword', 'required')">
+          Please enter Your password
+        </mat-error>
+        <mat-error align="end" *ngIf="signUpForm.hasError('notSame')">
+          Passwords must be equal
+        </mat-error>
+      </mat-form-field>
+
+
+      <p>
+        <button class="button" mat-raised-button type="submit">Sign Up your
+          account</button>
+      </p>
+      <p></p>
+      <p>
+        <label>Already have an account?</label>
+        <a class='ref' routerLink="/sign-in">Sign-In</a>
+      </p>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<!-- <div>
+     <H3>Sign-UP</H3>
+   </div> -->

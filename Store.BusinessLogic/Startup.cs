@@ -5,14 +5,15 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess;
 
 namespace Store.BusinessLogic
 {
-    public class Startup
+    public static class Startup
     {
-        public static void Initialize(IServiceCollection services, IConfiguration configuration)
+        public static void InitializeBL(this IServiceCollection services, IConfiguration configuration)
         {
-            DataAccess.Startup.Initialize(services, configuration);
+            services.InitializeDA(configuration);
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
@@ -33,6 +34,7 @@ namespace Store.BusinessLogic
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddTransient<IMapper>(item => mapper);
             services.AddTransient<EmailProvider>();
+            services.AddTransient<PasswordProvider>();
         }
     }
 }

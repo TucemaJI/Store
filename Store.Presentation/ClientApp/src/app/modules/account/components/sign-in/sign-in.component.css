@@ -1,0 +1,23 @@
+.card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.forgot{
+    float: right;
+    cursor: pointer;
+}
+.sign-in{
+    background-color:lightgreen  ;
+    float: right;
+}
+
+.button-sign-up{
+    width: 100%;
+}
+.content{
+    width: 40%;
+}
+.label-width{
+    width: 100%;
+}
