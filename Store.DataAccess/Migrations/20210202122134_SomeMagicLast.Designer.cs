@@ -10,14 +10,14 @@ using Store.DataAccess.AppContext;
 namespace Store.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201022083035_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210202122134_SomeMagicLast")]
+    partial class SomeMagicLast
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -176,7 +176,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2020, 10, 22, 8, 30, 34, 796, DateTimeKind.Utc).AddTicks(6571),
+                            CreationData = new DateTime(2021, 2, 2, 12, 21, 32, 905, DateTimeKind.Utc).AddTicks(9509),
                             IsRemoved = false,
                             Name = "Andrew Troelsen"
                         });
@@ -201,6 +201,11 @@ namespace Store.DataAccess.Migrations
                         {
                             AuthorId = 1L,
                             PrintingEditionId = 1L
+                        },
+                        new
+                        {
+                            AuthorId = 1L,
+                            PrintingEditionId = 2L
                         });
                 });
 
@@ -309,9 +314,6 @@ namespace Store.DataAccess.Migrations
                     b.Property<DateTime>("CreationData")
                         .HasColumnType("date");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -320,6 +322,19 @@ namespace Store.DataAccess.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int>("ReturnedCurrency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubSubtitle")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("SubSubTitle");
+
+                    b.Property<string>("SubtitleReturned")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -335,12 +350,25 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2020, 10, 22, 8, 30, 34, 797, DateTimeKind.Utc).AddTicks(458),
-                            Currency = 1,
+                            CreationData = new DateTime(2021, 2, 2, 12, 21, 32, 906, DateTimeKind.Utc).AddTicks(2680),
                             Description = "The new best book for learning programming",
                             IsRemoved = false,
-                            Price = 50.0,
+                            Price = 150.0,
+                            ReturnedCurrency = 1,
+                            SubtitleReturned = "Subtitle2",
                             Title = "C# 8.0",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreationData = new DateTime(2021, 2, 2, 12, 21, 32, 906, DateTimeKind.Utc).AddTicks(5495),
+                            Description = "OLd very good book",
+                            IsRemoved = false,
+                            Price = 50.0,
+                            ReturnedCurrency = 1,
+                            SubtitleReturned = "Subtitle2",
+                            Title = "C# 5.0",
                             Type = 1
                         });
                 });

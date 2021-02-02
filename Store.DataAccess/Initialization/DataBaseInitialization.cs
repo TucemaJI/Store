@@ -51,12 +51,11 @@ namespace Store.DataAccess.Initialization
         public static void InitializeDB(this ModelBuilder builder)
         {
             var author = new Author {Id = 1, Name = DatabaseInitializationOptions.AUTHOR_NAME, IsRemoved = false };
-            
 
             var pe = new PrintingEdition
             {
                 Id = 1,
-                Currency = Enums.CurrencyType.USD,
+                ReturnedCurrency = Enums.CurrencyType.USD,
                 Price = 150,
                 Type = Enums.PrintingEditionType.Book,
                 Title = DatabaseInitializationOptions.BOOK_NAME,
@@ -66,7 +65,7 @@ namespace Store.DataAccess.Initialization
             var pes = new PrintingEdition
             {
                 Id = 2,
-                Currency = Enums.CurrencyType.USD,
+                ReturnedCurrency = Enums.CurrencyType.USD,
                 Price = 50,
                 Type = Enums.PrintingEditionType.Book,
                 Title = "C# 5.0",
@@ -80,6 +79,7 @@ namespace Store.DataAccess.Initialization
             builder.Entity<Author>().HasData(author);
             builder.Entity<PrintingEdition>().HasData(pe);
             builder.Entity<PrintingEdition>().HasData(pes);
+
         }
     }
 }

@@ -43,6 +43,10 @@ namespace Store.DataAccess.AppContext
                 .WithMany(author => author.AuthorInPrintingEditions)
                 .HasForeignKey(ape => ape.AuthorId);
 
+
+            builder.Entity<PrintingEdition>().Property(p => p.SubSubtitle).IsRequired().HasDefaultValue(string.Empty);
+            builder.Entity<PrintingEdition>().Property(p => p.SubtitleReturned).HasDefaultValue(string.Empty);
+
             builder.InitializeDB();
         }
     }

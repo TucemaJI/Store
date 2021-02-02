@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Scrutor;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services;
@@ -14,11 +15,17 @@ namespace Store.BusinessLogic
         public static void InitializeBL(this IServiceCollection services, IConfiguration configuration)
         {
             services.InitializeDA(configuration);
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IOrderService, OrderService>();
-            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+
+            // Makes my app not working
+            //services.Scan(scan => scan
+            //.AddTypes<IAccountService, AccountService>()
+            //.AsSelf()
+            //.WithTransientLifetime());
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthorService, AuthorService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<OrderItemMapper>();
             services.AddTransient<OrderMapper>();

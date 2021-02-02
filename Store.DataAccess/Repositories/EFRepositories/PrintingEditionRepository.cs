@@ -18,7 +18,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
         {
             var printingEditions = _dbSet.Include(item => item.AuthorsInPrintingEdition)
                 .ThenInclude(item => item.Author)
-                .Where(pE => pE.Currency == filter.Currency)
+                .Where(pE => pE.ReturnedCurrency == filter.Currency)
                 .Where(pE => EF.Functions.Like(pE.Title, $"%{filter.Title}%"))
                 .Where(pE => pE.Type == filter.Type)
                 .Where(pE => filter.MaxPrice >= pE.Price && pE.Price >= filter.MinPrice)

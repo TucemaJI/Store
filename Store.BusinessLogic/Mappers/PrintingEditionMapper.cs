@@ -9,7 +9,7 @@ namespace Store.BusinessLogic.Mappers
         {
             return new PrintingEdition
             {
-                Currency = element.Currency,
+                ReturnedCurrency = element.Currency,
                 Description = element.Description,
                 IsRemoved = element.IsRemoved,
                 Price = element.Price,
@@ -22,7 +22,7 @@ namespace Store.BusinessLogic.Mappers
         {
             return new PrintingEditionModel
             {
-                Currency = element.Currency,
+                Currency = element.ReturnedCurrency,
                 Description = element.Description,
                 IsRemoved = element.IsRemoved,
                 Price = element.Price,

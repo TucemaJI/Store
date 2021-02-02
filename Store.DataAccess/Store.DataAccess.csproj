@@ -15,6 +15,16 @@
     <Compile Remove="Migrations\20200917111734_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200918132750_InitialCreate.cs" />
     <Compile Remove="Migrations\20200918132750_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20210202095218_ReturnCurrency.cs" />
+    <Compile Remove="Migrations\20210202095218_ReturnCurrency.Designer.cs" />
+    <Compile Remove="Migrations\20210202101310_MagicWithAttrAndFuent.cs" />
+    <Compile Remove="Migrations\20210202101310_MagicWithAttrAndFuent.Designer.cs" />
+    <Compile Remove="Migrations\20210202110515_MagicWithAttrAndFuent.cs" />
+    <Compile Remove="Migrations\20210202110515_MagicWithAttrAndFuent.Designer.cs" />
+    <Compile Remove="Migrations\20210202111932_MagicDef.cs" />
+    <Compile Remove="Migrations\20210202111932_MagicDef.Designer.cs" />
+    <Compile Remove="Migrations\20210202112231_SomeMagic.cs" />
+    <Compile Remove="Migrations\20210202112231_SomeMagic.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Scrutor.AspNetCore" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

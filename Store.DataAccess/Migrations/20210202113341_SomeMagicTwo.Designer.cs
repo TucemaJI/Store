@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccess.AppContext;
 
 namespace Store.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210202113341_SomeMagicTwo")]
+    partial class SomeMagicTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,7 +176,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2021, 2, 2, 12, 34, 7, 75, DateTimeKind.Utc).AddTicks(7425),
+                            CreationData = new DateTime(2021, 2, 2, 11, 33, 40, 749, DateTimeKind.Utc).AddTicks(6063),
                             IsRemoved = false,
                             Name = "Andrew Troelsen"
                         });
@@ -330,12 +332,6 @@ namespace Store.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("SubSubTitle");
 
-                    b.Property<string>("SubtitleReturned")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("SubTitle");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -350,7 +346,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2021, 2, 2, 12, 34, 7, 76, DateTimeKind.Utc).AddTicks(448),
+                            CreationData = new DateTime(2021, 2, 2, 11, 33, 40, 749, DateTimeKind.Utc).AddTicks(9332),
                             Description = "The new best book for learning programming",
                             IsRemoved = false,
                             Price = 150.0,
@@ -361,7 +357,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 2L,
-                            CreationData = new DateTime(2021, 2, 2, 12, 34, 7, 76, DateTimeKind.Utc).AddTicks(3003),
+                            CreationData = new DateTime(2021, 2, 2, 11, 33, 40, 750, DateTimeKind.Utc).AddTicks(2111),
                             Description = "OLd very good book",
                             IsRemoved = false,
                             Price = 50.0,

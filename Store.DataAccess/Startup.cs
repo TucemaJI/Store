@@ -11,7 +11,7 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess
 {
-    public static class Startup // todo Initialize to Extention
+    public static class Startup
     {
         public static void InitializeDA(this IServiceCollection services, IConfiguration configuration) {
             services.AddDbContext<ApplicationContext>(options =>
@@ -19,6 +19,7 @@ namespace Store.DataAccess
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
             services.AddTransient<UserManager<User>>();
             services.AddTransient<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
             services.AddTransient<IAuthorRepository, AuthorRepository>();

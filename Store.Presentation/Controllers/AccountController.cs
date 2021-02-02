@@ -19,7 +19,7 @@ namespace Store.Presentation.Controllers
         private readonly IAccountService _accountService;
         private readonly EmailProvider _emailProvider;
         public AccountController(IAccountService accountService,
-            EmailProvider emailProvider, ILogger<AccountController> logger) 
+            EmailProvider emailProvider, ILogger<AccountController> logger)
             : base(logger)
         {
             _accountService = accountService;
@@ -27,23 +27,24 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("RefreshToken")]
-        public Task<object> RefreshAsync([FromBody]TokenModel model)
+        public Task<object> RefreshAsync([FromBody] TokenModel model)
         {
             return _accountService.RefreshAsync(model.AccessToken, model.RefreshToken);
         }
 
         [AllowAnonymous]
         [HttpPost("SignIn")]
-        public Task<object> SignInAsync([FromBody]SignInModel model)
+        public Task<object> SignInAsync([FromBody] SignInModel model)
         {
-            return  _accountService.SignInAsync(model.Email, model.Password);
+            return _accountService.SignInAsync(model.Email, model.Password);
         }
 
         [AllowAnonymous]
         [HttpPost("Registration")]
-        public async Task<string> RegisterAsync([FromBody]RegistrationModel model)
-        {            
-            var token = await _accountService.CreateConfirmUserAsync(model.FirstName, model.LastName, model.Email, model.Password, model.ConfirmPassword);
+        public async Task<string> RegisterAsync([FromBody] RegistrationModel model)
+        {
+            var token = await _accountService.CreateConfirmUserAsync(model.FirstName,
+                model.LastName, model.Email, model.Password, model.ConfirmPassword);
 
             var callbackUrl = Url.Action(
                 EmailOptions.CONFIRM_EMAIL,
@@ -58,10 +59,10 @@ namespace Store.Presentation.Controllers
 
         [HttpGet("CheckMail")]
         [AllowAnonymous]
-        public Task<string> ConfirmEmailAsync([FromBody]ConfirmModel model)
+        public Task<string> ConfirmEmailAsync([FromBody] ConfirmModel model)
         {
             return _accountService.ConfirmEmailAsync(model.Email, model.Token);
-           
+
         }
 
         [Authorize]
@@ -74,7 +75,7 @@ namespace Store.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost("ForgotPassword")]
-        public Task ForgotPasswordAsync([FromBody]string email)
+        public Task ForgotPasswordAsync([FromBody] string email)
         {
             return _accountService.RecoveryPasswordAsync(email);
 
