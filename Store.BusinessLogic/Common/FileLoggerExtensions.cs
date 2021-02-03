@@ -7,7 +7,7 @@ namespace Store.BusinessLogic.Common
         public static ILoggerFactory AddFile(this ILoggerFactory factory,
                                         string filePath)
         {
-            factory.AddProvider(new FileLoggerProvider(filePath));
+            factory.AddProvider(new FileLoggerProvide(filePath));
             return factory;
         }
     }

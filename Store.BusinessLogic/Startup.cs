@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
-using Store.BusinessLogic.Providers;
 using Store.DataAccess;
 using System;
 
@@ -16,8 +15,7 @@ namespace Store.BusinessLogic
 
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase))
-                    .Where(t => t.Name.EndsWith("mapper", StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
                 );
@@ -48,8 +46,15 @@ namespace Store.BusinessLogic
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddTransient<IMapper>(item => mapper);
-            services.AddTransient<EmailProvider>();
-            services.AddTransient<PasswordProvider>();
+
+            services.Scan(scan => scan.FromCallingAssembly()
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("provider", StringComparison.OrdinalIgnoreCase)))
+                .AsSelf()
+                .WithTransientLifetime()
+                );
+
+            //services.AddTransient<EmailProvider>();
+            //services.AddTransient<PasswordProvider>();
         }
     }
 }
