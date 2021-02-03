@@ -5,15 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Initialization;
-using Store.DataAccess.Repositories.EFRepositories;
-using Store.DataAccess.Repositories.Interfaces;
+using System;
 using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess
 {
     public static class Startup
     {
-        public static void InitializeDA(this IServiceCollection services, IConfiguration configuration) {
+        public static void InitializeDA(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString(StartupOptions.CONNECTION)), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
@@ -21,12 +21,21 @@ namespace Store.DataAccess
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<UserManager<User>>();
-            services.AddTransient<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
-            services.AddTransient<IAuthorRepository, AuthorRepository>();
-            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
-            services.AddTransient<IPaymentRepository, PaymentRepository>();
+
+            //services.AddTransient<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
+            //services.AddTransient<IAuthorRepository, AuthorRepository>();
+            //services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+            //services.AddTransient<IOrderRepository, OrderRepository>();
+            //services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
+            //services.AddTransient<IPaymentRepository, PaymentRepository>();
+
+            services.Scan(scan => scan
+                .FromCallingAssembly()
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("repository", StringComparison.OrdinalIgnoreCase)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime()
+                );
+
 
             services.Initialize();
         }

@@ -20,7 +20,7 @@ namespace Store.BusinessLogic.Services
 
         public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository,
             IOrderItemRepository orderItemRepository, OrderMapper orderMapper, PaymentMapper paymentMapper,
-            OrderItemMapper orderItemMapper )
+            OrderItemMapper orderItemMapper)
         {
             _orderRepository = orderRepository;
             _orderItemRepository = orderItemRepository;

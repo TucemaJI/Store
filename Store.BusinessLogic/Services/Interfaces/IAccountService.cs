@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services.Interfaces
 {
-    public interface IAccountService 
+    public interface IAccountService
     {
         public Task<object> RefreshAsync(string token, string refreshToken);
         public Task<object> SignInAsync(string email, string password);

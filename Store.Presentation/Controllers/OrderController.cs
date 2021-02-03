@@ -29,7 +29,7 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("GetOrders")]
-        public Task<List<OrderModel>> GetOrderModelsAsync([FromQuery]OrderFilter filter)
+        public Task<List<OrderModel>> GetOrderModelsAsync([FromQuery] OrderFilter filter)
         {
             return _orderService.GetOrderModelsAsync(filter);
         }

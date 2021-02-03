@@ -8,7 +8,7 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Initialization
 {
-    public static class DataBaseInitialization 
+    public static class DataBaseInitialization
     {
         public static async void Initialize(this IServiceCollection services)
         {
@@ -31,12 +31,12 @@ namespace Store.DataAccess.Initialization
 
             if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.ADMIN_EMAIL) == null)
             {
-                User admin = new User 
-                {   
+                User admin = new User
+                {
                     Email = DatabaseInitializationOptions.ADMIN_EMAIL,
                     FirstName = DatabaseInitializationOptions.FIRST_NAME,
                     LastName = DatabaseInitializationOptions.LAST_NAME,
-                    UserName = $"{DatabaseInitializationOptions.FIRST_NAME}{DatabaseInitializationOptions.LAST_NAME}" ,
+                    UserName = $"{DatabaseInitializationOptions.FIRST_NAME}{DatabaseInitializationOptions.LAST_NAME}",
                 };
                 IdentityResult createResult = await userManager.CreateAsync(admin,
                     DatabaseInitializationOptions.PASSWORD);
@@ -50,7 +50,7 @@ namespace Store.DataAccess.Initialization
 
         public static void InitializeDB(this ModelBuilder builder)
         {
-            var author = new Author {Id = 1, Name = DatabaseInitializationOptions.AUTHOR_NAME, IsRemoved = false };
+            var author = new Author { Id = 1, Name = DatabaseInitializationOptions.AUTHOR_NAME, IsRemoved = false };
 
             var pe = new PrintingEdition
             {

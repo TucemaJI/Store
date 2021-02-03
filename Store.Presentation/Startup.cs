@@ -1,19 +1,19 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Store.Presentation.Providers;
-using Store.Presentation.Middlewares;
+using Store.BusinessLogic;
+using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Microsoft.AspNetCore.Identity;
+using Store.Presentation.Extentions;
+using Store.Presentation.Middlewares;
+using Store.Presentation.Providers;
 using System.IdentityModel.Tokens.Jwt;
 using static Store.Shared.Constants.Constants;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.Extensions.Configuration;
-using Store.BusinessLogic;
-using Store.Presentation.Extentions;
-using Store.BusinessLogic.Services.Interfaces;
 
 namespace Store.Presentation
 {
@@ -37,7 +37,7 @@ namespace Store.Presentation
                 .AddDefaultTokenProviders();
             services.AddAuthorization();
             services.AddControllers();
-            services.ConfigureSwagger();            
+            services.ConfigureSwagger();
             services.AddTransient<IJwtProvider, JwtProvider>();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = StartupOptions.ROOT_PATH; });
         }

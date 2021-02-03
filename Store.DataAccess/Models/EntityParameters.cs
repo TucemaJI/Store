@@ -1,5 +1,4 @@
-﻿using Store.DataAccess.Models.Filters;
-using Store.Shared.Constants;
+﻿using Store.Shared.Constants;
 
 namespace Store.DataAccess.Models
 {

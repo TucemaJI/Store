@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.AppContext;
+using Store.DataAccess.Extentions;
 using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Store.DataAccess.Extentions;
 
 namespace Store.DataAccess.Repositories.Base
 {
-    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class 
+    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly DbSet<T> _dbSet;
         private readonly ApplicationContext _applicationContext;

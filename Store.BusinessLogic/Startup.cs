@@ -3,10 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Providers;
-using Store.BusinessLogic.Services;
-using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess;
-using Scrutor;
+using System;
 
 namespace Store.BusinessLogic
 {
@@ -16,22 +14,32 @@ namespace Store.BusinessLogic
         {
             services.InitializeDA(configuration);
 
-            // Makes my app not working
-            //services.Scan(scan =>
-            //    scan.FromApplicationDependencies()
-            //    .AddClasses()
-            //    .AsMatchingInterface());
-            services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<IAuthorService, AuthorService>();
-            services.AddTransient<IOrderService, OrderService>();
-            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
-            services.AddTransient<IUserService, UserService>();
+            services.Scan(scan => scan
+                .FromCallingAssembly()
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase))
+                    .Where(t => t.Name.EndsWith("mapper", StringComparison.OrdinalIgnoreCase)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime()
+                );
 
-            services.AddTransient<OrderItemMapper>();
-            services.AddTransient<OrderMapper>();
-            services.AddTransient<PaymentMapper>();
-            services.AddTransient<PrintingEditionMapper>();
-            services.AddTransient<UserMapper>();
+            //services.AddTransient<IAccountService, AccountService>();
+            //services.AddTransient<IAuthorService, AuthorService>();
+            //services.AddTransient<IOrderService, OrderService>();
+            //services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+            //services.AddTransient<IUserService, UserService>();
+
+            services.Scan(scan => scan
+                .FromCallingAssembly()
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("mapper", StringComparison.OrdinalIgnoreCase)))
+                .AsSelf()
+                .WithTransientLifetime()
+                );
+
+            //services.AddTransient<OrderItemMapper>();
+            //services.AddTransient<OrderMapper>();
+            //services.AddTransient<PaymentMapper>();
+            //services.AddTransient<PrintingEditionMapper>();
+            //services.AddTransient<UserMapper>();
 
             var mapperConfig = new MapperConfiguration(config =>
             {

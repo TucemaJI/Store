@@ -22,7 +22,7 @@ namespace Store.Presentation.Controllers
         {
             _userService = userService;
         }
-        
+
         [HttpPost("CreateUser")]
         public Task CreateUserAsync(UserModel model)
         {
@@ -79,7 +79,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("FilterUsers")]
-        public Task<List<UserModel>> FilterUsersAsync([FromQuery]UserFilter filter)
+        public Task<List<UserModel>> FilterUsersAsync([FromQuery] UserFilter filter)
         {
             return _userService.FilterUsers(filter);
         }

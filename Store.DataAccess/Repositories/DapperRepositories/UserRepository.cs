@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Store.DataAccess.Repositories.DapperRepositories
-{ 
+﻿namespace Store.DataAccess.Repositories.DapperRepositories
+{
     class UserRepository
     {
     }

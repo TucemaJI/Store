@@ -1,6 +1,6 @@
 ﻿namespace Store.BusinessLogic.Models.Users
 {
-    public class UserModel 
+    public class UserModel
     {
         public string Id { get; set; }
         public string FirstName { get; set; }

@@ -22,7 +22,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("GetAuthorsWithFilter")]
-        public Task<List<AuthorModel>> GetAuthorModelsAsync([FromQuery]AuthorFilter filter)
+        public Task<List<AuthorModel>> GetAuthorModelsAsync([FromQuery] AuthorFilter filter)
         {
             return _authorService.GetAuthorModelsAsync(filter);
         }

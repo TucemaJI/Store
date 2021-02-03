@@ -40,9 +40,9 @@ namespace Store.BusinessLogic.Services
             var role = await GetUserRoleAsync(principal.Subject);
 
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
-            
+
             var result = await WriteRefreshTokenToDbAsync(principal.Subject, principal.Issuer, newRefreshToken);
-            
+
             if (!result.Succeeded)
             {
                 throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
