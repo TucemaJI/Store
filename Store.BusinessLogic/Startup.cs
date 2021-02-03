@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Scrutor;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess;
+using Scrutor;
 
 namespace Store.BusinessLogic
 {
@@ -17,10 +17,10 @@ namespace Store.BusinessLogic
             services.InitializeDA(configuration);
 
             // Makes my app not working
-            //services.Scan(scan => scan
-            //.AddTypes<IAccountService, AccountService>()
-            //.AsSelf()
-            //.WithTransientLifetime());
+            //services.Scan(scan =>
+            //    scan.FromApplicationDependencies()
+            //    .AddClasses()
+            //    .AsMatchingInterface());
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IOrderService, OrderService>();
