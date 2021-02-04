@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { ILoginModel } from '../models/ILoginModel';
 
 @Injectable()
 export class HttpService {
 
     constructor(private http: HttpClient) { }
 
-    postData(user: User) {
+    postData(user: ILoginModel) {
         const body = { email: user.email, password: user.password };
         return this.http.post('https://localhost:44355/api/account/signin', body);
     }
@@ -16,10 +17,7 @@ export class HttpService {
         return this.http.post('https://localhost:44355/api/account/checkmail', body);
     }
 }
-export class User {
-    email: string;
-    password: string;
-}
+
 export class Token {
     accessToken: string;
     refreshToken: string;

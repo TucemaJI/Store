@@ -34,7 +34,7 @@ namespace Store.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost("SignIn")]
-        public Task<object> SignInAsync([FromBody] SignInModel model)
+        public Task<TokenModel> SignInAsync([FromBody] SignInModel model)
         {
             return _accountService.SignInAsync(model.Email, model.Password);
         }

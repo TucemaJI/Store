@@ -10,7 +10,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { AppEffects } from './app.effects';
+import { AppEffects } from './store/effects/app.effects';
 
 import { AccountModule } from './modules/account/account.module';
 import { AdministratorModule } from './modules/administrator/administrator.module';
@@ -24,6 +24,8 @@ import { MaterialModule } from './modules/shared/material.module';
 import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from './modules/account/services/HttpService';
+import { AccountEffects } from './modules/account/store/account.effects';
+import { appReducers } from './store/reducers/app.reducers';
 
 
 @NgModule({
@@ -35,9 +37,9 @@ import { HttpService } from './modules/account/services/HttpService';
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot([AppEffects, AccountEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
 

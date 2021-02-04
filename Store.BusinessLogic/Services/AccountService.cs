@@ -4,6 +4,7 @@ using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.Presentation.Models.AccountModels;
 using Store.Shared.Constants;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace Store.BusinessLogic.Services
             };
         }
 
-        public async Task<object> SignInAsync(string email, string password)
+        public async Task<TokenModel> SignInAsync(string email, string password)
         {
             var user = await FindUserByEmailAsync(email);
 
@@ -80,11 +81,13 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
             }
 
-            return new
+            var token = new TokenModel
             {
-                accessToken = _jwtProvider.CreateToken(email, role),
-                refreshToken,
+                AccessToken = _jwtProvider.CreateToken(email, role),
+                RefreshToken = refreshToken,
             };
+
+            return token;
         }
 
 

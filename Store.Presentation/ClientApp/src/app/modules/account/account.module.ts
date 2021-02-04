@@ -6,6 +6,8 @@ import { MaterialModule } from '../shared/material.module';
 import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
 import { ConfirmPasswordComponent } from './components/confirm-password/confirm-password.component';
 import { RouterModule } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+import * as fromAccount from './store/account.reducer'
 
 
 @NgModule({
@@ -14,6 +16,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule,
     MaterialModule,
+    StoreModule.forFeature(fromAccount.reducerKey, fromAccount.reducer),
 
   ],
   exports: [SignInComponent, SignUpComponent, PasswordRecoveryComponent, ConfirmPasswordComponent]

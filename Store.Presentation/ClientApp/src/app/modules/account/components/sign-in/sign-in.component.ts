@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpService, Token, User } from '../../services/HttpService';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/store/state/app.state';
+import { ILoginModel } from '../../models/ILoginModel';
+import { HttpService, Token } from '../../services/HttpService';
+import { EAccountActions, signIn } from '../../store/account.actions';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,7 +18,7 @@ export class SignInComponent implements OnInit {
   token: Token;
   done: boolean = false;
 
-  constructor(private router: Router, private httpService: HttpService) { }
+  constructor(private store: Store<IAppState>) { }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
@@ -27,13 +31,15 @@ export class SignInComponent implements OnInit {
     return this.userForm.controls[controlName].hasError(errorName);
   }
 
-  public submit(userFormValue: User) {
+  public submit(userFormValue) {
+    this.store.dispatch(signIn(userFormValue));
+    console.log(userFormValue);
     debugger;
-    this.httpService.postData(userFormValue)
-      .subscribe(
-        (data: Token) => { this.token = data; this.done = true; debugger; },
-        error => console.log(error)
-      );
+    // this.httpService.postData(userFormValue)
+    //   .subscribe(
+    //     (data: Token) => { this.token = data; this.done = true; debugger; },
+    //     error => console.log(error)
+    //   );
   }
 
 }
