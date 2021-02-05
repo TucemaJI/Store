@@ -29,6 +29,7 @@
     "@ngrx/store-devtools": "^10.1.2",
     "angular-alert-module": "^2.0.3",
     "bootstrap": "^4.6.0",
+    "ngx-pagination": "^5.0.0",
     "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.3",
     "tslib": "^2.1.0",

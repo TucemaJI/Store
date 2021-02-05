@@ -1,13 +1,11 @@
 import { Action, createReducer, on } from "@ngrx/store";
+import { Token } from "../services/HttpService";
 import * as AccountActions from "./account.actions";
 import { initialUserState, IUserState } from "./account.state";
 
-export interface State {
-
-}
 const accountReducer = createReducer(
     initialUserState,
-    on(AccountActions.signInSuccess, state => ({ ...state })),
+    on(AccountActions.signInSuccess, (state, {token}) => {debugger; return({ ...state, token: token })}),
     on(AccountActions.signUpSuccess, state => ({ ...state })),
     on(AccountActions.passwordRecoverySuccess, state => ({ ...state })),
 )

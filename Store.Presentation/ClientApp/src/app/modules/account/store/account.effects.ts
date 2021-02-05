@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EAccountActions } from "./account.actions";
-import { map, mergeMap, catchError, exhaustMap } from 'rxjs/operators';
+import { map, catchError, exhaustMap } from 'rxjs/operators';
 import { HttpService, Token } from '../services/HttpService'
 import { of } from "rxjs";
 import { ILoginModel } from "../models/ILoginModel";
@@ -14,10 +14,14 @@ export class AccountEffects {
         ofType(EAccountActions.SignIn),
         exhaustMap((loginModel: ILoginModel) => this.httpService.postData(loginModel)
             .pipe(
-                ofType(EAccountActions.SignInSuccess),
-                map((responce: Token) => ({ type: EAccountActions.SignInSuccess, props: responce })),
-                catchError(err => of(error({ err }))
-                )
+                map((responce: Token) => { debugger; return ({ type: EAccountActions.SignInSuccess, props: responce }) }),
+                catchError(err => of(error({ err })))
+
+                // .pipe(
+                //     ofType(EAccountActions.SignInSuccess),
+                //     map((responce: Token) => {debugger; return ({ type: EAccountActions.SignInSuccess, props: responce })}),
+                //     catchError(err => of(error({ err }))
+                //     )
 
                 // .subscribe(
                 //   (data: Token) => { this.token = data; this.done = true; debugger; },

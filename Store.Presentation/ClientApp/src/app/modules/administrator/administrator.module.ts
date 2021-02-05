@@ -4,6 +4,7 @@ import { AdministratorComponent } from './components/administrator/administrator
 import { ClientsComponent } from './components/clients/clients.component';
 import { MaterialModule } from '../shared/material.module';
 import { RouterModule } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     MaterialModule,
     RouterModule,
+    NgxPaginationModule,
   ],
   exports: [AdministratorComponent, ClientsComponent]
 })

@@ -8,6 +8,8 @@ import { ConfirmPasswordComponent } from './components/confirm-password/confirm-
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import * as fromAccount from './store/account.reducer'
+import { EffectsModule } from '@ngrx/effects';
+import { AccountEffects } from './store/account.effects';
 
 
 @NgModule({
@@ -16,8 +18,6 @@ import * as fromAccount from './store/account.reducer'
     CommonModule,
     RouterModule,
     MaterialModule,
-    StoreModule.forFeature(fromAccount.reducerKey, fromAccount.reducer),
-
   ],
   exports: [SignInComponent, SignUpComponent, PasswordRecoveryComponent, ConfirmPasswordComponent]
 
