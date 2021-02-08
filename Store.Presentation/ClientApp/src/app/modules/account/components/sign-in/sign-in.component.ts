@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { ILoginModel } from '../../models/ILoginModel';
-import { HttpService, Token } from '../../services/HttpService';
+import { HttpService} from '../../services/HttpService';
 import { EAccountActions, signIn } from '../../store/account.actions';
 
 @Component({
@@ -15,7 +15,6 @@ import { EAccountActions, signIn } from '../../store/account.actions';
 export class SignInComponent implements OnInit {
   userForm: FormGroup;
 
-  token: Token;
   done: boolean = false;
 
   constructor(private store: Store<IAppState>) { }

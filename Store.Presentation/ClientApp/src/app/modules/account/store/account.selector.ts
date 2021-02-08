@@ -1,10 +1,10 @@
 import { createSelector } from "@ngrx/store";
 import { IAppState } from "src/app/store/state/app.state";
-import { IUserState } from "./account.state";
+import { IAccountState } from "./account.state";
 
-const signIn = (state: IAppState) => state.user;
+const signIn = (state: IAppState) => state.account;
 
 export const selectAccount = createSelector(
     signIn,
-    (state: IUserState) => state.user,
+    (state: IAccountState) => state,
 )

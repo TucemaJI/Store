@@ -1,16 +1,16 @@
+import { state } from "@angular/animations";
 import { Action, createReducer, on } from "@ngrx/store";
-import { Token } from "../services/HttpService";
 import * as AccountActions from "./account.actions";
-import { initialUserState, IUserState } from "./account.state";
+import { initialUserState, IAccountState } from "./account.state";
 
-const accountReducer = createReducer(
+const createAccountReducer = createReducer(
     initialUserState,
-    on(AccountActions.signInSuccess, (state, {token}) => {debugger; return({ ...state, token: token })}),
-    on(AccountActions.signUpSuccess, state => ({ ...state })),
+    on(AccountActions.signInSuccess, (state, {accessToken, refreshToken}) => {debugger; return({ ...state, user: {...state.user, accessToken, refreshToken} })}),
+    on(AccountActions.signUpSuccess, state => ({ ...state,  })),
     on(AccountActions.passwordRecoverySuccess, state => ({ ...state })),
 )
 
-export const reducer = (state = initialUserState, action: Action): IUserState => {
-    return accountReducer(state, action);
+export const accountReducer = (state = initialUserState, action: Action): IAccountState => {
+    return createAccountReducer(state, action);
 }
 export const reducerKey = 'account';

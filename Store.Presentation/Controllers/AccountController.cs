@@ -41,7 +41,7 @@ namespace Store.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost("Registration")]
-        public async Task<string> RegisterAsync([FromBody] RegistrationModel model)
+        public async Task<RegistrationModel> RegisterAsync([FromBody] RegistrationModel model)
         {
             var token = await _accountService.CreateConfirmUserAsync(model.FirstName,
                 model.LastName, model.Email, model.Password, model.ConfirmPassword);
@@ -52,16 +52,17 @@ namespace Store.Presentation.Controllers
                 new { model.Email, token },
                 protocol: HttpContext.Request.Scheme);
             await _emailProvider.SendEmailAsync(model.Email, EmailOptions.CONFIRM_ACOUNT,
-                $"Confirm registration using this link: <a href='{callbackUrl}'>link</a>");
+                $"Confirm registration using this link: <a href='{callbackUrl}'>confirm registration</a>");
 
-            return EmailOptions.COMPLITING_REGISTRATION;
+            return model;
         }
 
         [HttpGet("CheckMail")]
         [AllowAnonymous]
-        public Task<string> ConfirmEmailAsync([FromBody] ConfirmModel model)
+        public Task<string> ConfirmEmailAsync(string email, string token)
         {
-            return _accountService.ConfirmEmailAsync(model.Email, model.Token);
+            var result = _accountService.ConfirmEmailAsync(email, token);
+            return result;
 
         }
 

@@ -1,7 +1,6 @@
 import { Action, createAction, props } from "@ngrx/store";
-import { IUser } from "../models/IUser";
+import { User } from "../models/User";
 import { ILoginModel } from "../models/ILoginModel";
-import { Token } from "../services/HttpService";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',
@@ -17,13 +16,13 @@ export const signIn = createAction(EAccountActions.SignIn, props<{
     loginModel: ILoginModel;
 }>());
 export const signInSuccess = createAction(EAccountActions.SignInSuccess, props<{
-    token: Token;
+    accessToken: string, refreshToken: string;
 }>());
 export const signUp = createAction(EAccountActions.SignUp, props<{
-    user: IUser;
+    user: User;
 }>());
 export const signUpSuccess = createAction(EAccountActions.SignUpSuccess, props<{
-    user: IUser;
+    resp: boolean;
 }>());
 export const passwordRecovery = createAction(EAccountActions.PasswordRecovery, props<{
     email: string;
