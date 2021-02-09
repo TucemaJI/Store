@@ -9,7 +9,8 @@ export enum EAccountActions {
     SignUpSuccess = '[User] Sign Up Success',
     PasswordRecovery = '[User] Password Recovery',
     PasswordRecoverySuccess = '[User] Password Recovery Success',
-
+    ConfirmPassword = '[User] Confirm',
+    ConfirmPasswordSuccess = '[User] ConfirmSuccess',
 }
 
 export const signIn = createAction(EAccountActions.SignIn, props<{
@@ -22,7 +23,13 @@ export const signUp = createAction(EAccountActions.SignUp, props<{
     user: User;
 }>());
 export const signUpSuccess = createAction(EAccountActions.SignUpSuccess, props<{
-    resp: boolean;
+    user: User;
+}>());
+export const confirmPassword = createAction(EAccountActions.ConfirmPassword, props<{
+    user: User;
+}>());
+export const confirmPasswordSuccess = createAction(EAccountActions.ConfirmPasswordSuccess, props<{
+    user: User;
 }>());
 export const passwordRecovery = createAction(EAccountActions.PasswordRecovery, props<{
     email: string;

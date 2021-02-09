@@ -14,6 +14,7 @@ namespace Store.BusinessLogic.Mappers
                 LastName = element.LastName,
                 Email = element.Email,
                 UserName = element.UserName,
+                EmailConfirmed = element.Confirmed,
             };
         }
 
@@ -26,6 +27,7 @@ namespace Store.BusinessLogic.Mappers
                 LastName = element.LastName,
                 Email = element.Email,
                 UserName = element.UserName,
+                Confirmed = element.EmailConfirmed,
             };
         }
     }

@@ -9,6 +9,7 @@ import { error } from "../../../store/actions/error.action"
 import { Token } from "../models/Token";
 import { User } from "../models/User";
 import { Router } from "@angular/router";
+import { IConfirmModel } from "../models/IConfirmModel";
 
 @Injectable()
 export class AccountEffects {
@@ -26,7 +27,7 @@ export class AccountEffects {
         ofType(EAccountActions.SignUp),
         exhaustMap((user: User) => this.httpService.postRegistration(user)
             .pipe(
-                map(() => ({ type: EAccountActions.SignUpSuccess }) ),
+                map((result: User) => ({ type: EAccountActions.SignUpSuccess, user: result })),
                 catchError(err => of(error({ err })))
             ))
     ))
@@ -34,6 +35,17 @@ export class AccountEffects {
         ofType(EAccountActions.SignUpSuccess),
         map(() => this.router.navigateByUrl("confirm-password"))
     ), { dispatch: false })
+
+    confirm$ = createEffect(() => this.actions$.pipe(
+        ofType(EAccountActions.ConfirmPassword),
+        exhaustMap((model: IConfirmModel) => this.httpService.postConfirm(model)
+            .pipe(
+                map((result: User) => ({ type: EAccountActions.ConfirmPasswordSuccess, user: result })),
+                catchError(err => of(error({ err })))
+            )
+        )
+    ))
+
     constructor(
         private actions$: Actions,
         private httpService: HttpService,

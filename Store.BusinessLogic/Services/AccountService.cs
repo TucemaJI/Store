@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
+using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
@@ -149,7 +150,8 @@ namespace Store.BusinessLogic.Services
             {
                 throw new BusinessLogicException(ExceptionOptions.NOT_CONFIRMED);
             }
-            return EmailOptions.EMAIL_CONFIRMED;
+            var message = "Email Confirmed";
+            return message;
         }
 
         public async Task<IdentityResult> SignOutAsync(string email, string issuer)

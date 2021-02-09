@@ -14,5 +14,6 @@ export const initialUserState: IAccountState = {
         confirmPassword: null,
         accessToken: null,
         refreshToken: null,
+        confirmed: null,
     }
 }

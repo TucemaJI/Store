@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { ILoginModel } from '../models/ILoginModel';
 import { User } from '../models/User';
+import { IConfirmModel } from '../models/IConfirmModel';
 
 @Injectable()
 export class HttpService {
@@ -20,6 +21,11 @@ export class HttpService {
 
     postEmail(email: Email) {
         const body = { email: email.email };
+        return this.http.post('https://localhost:44355/api/account/ForgotPassword', body);
+    }
+
+    postConfirm(model: IConfirmModel){
+        const body = {email: model.email, token: model.token,};
         return this.http.post('https://localhost:44355/api/account/checkmail', body);
     }
 }

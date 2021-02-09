@@ -45,12 +45,7 @@ namespace Store.Presentation.Controllers
         {
             var token = await _accountService.CreateConfirmUserAsync(model.FirstName,
                 model.LastName, model.Email, model.Password, model.ConfirmPassword);
-
-            var callbackUrl = Url.Action(
-                EmailOptions.CONFIRM_EMAIL,
-                EmailOptions.ACCOUNT,
-                new { model.Email, token },
-                protocol: HttpContext.Request.Scheme);
+            var callbackUrl = $"http://localhost:4200/confirm-password?mail={model.Email}&name={model.FirstName}&lName={model.LastName}&token={token}";
             await _emailProvider.SendEmailAsync(model.Email, EmailOptions.CONFIRM_ACOUNT,
                 $"Confirm registration using this link: <a href='{callbackUrl}'>confirm registration</a>");
 

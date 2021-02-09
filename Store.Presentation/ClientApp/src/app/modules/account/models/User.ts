@@ -6,6 +6,7 @@ export class User {
     confirmPassword: string;
     accessToken: string;
     refreshToken: string;
+    confirmed: boolean;
 
     constructor(model: User) {
         this.firstName = model.firstName;
@@ -15,6 +16,6 @@ export class User {
         this.confirmPassword = model.confirmPassword;
         this.accessToken = model.accessToken;
         this.refreshToken = model.refreshToken;
-
+        this.confirmed = model.confirmed;
     }
 }
