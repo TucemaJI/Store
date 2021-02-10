@@ -7,6 +7,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.Presentation.Models.AccountModels;
 using Store.Shared.Constants;
+using Store.Shared.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
@@ -137,12 +138,17 @@ namespace Store.BusinessLogic.Services
             {
                 throw new BusinessLogicException(ExceptionOptions.USER_NOT_CREATED);
             }
+            var role = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
+            if (!role.Succeeded)
+            {
+                throw new BusinessLogicException(ExceptionOptions.NOT_ADD_TO_ROLE);
+            }
             var createdUser = await FindUserByEmailAsync(email);
             return await _userManager.GenerateEmailConfirmationTokenAsync(createdUser);
         }
 
 
-        public async Task<string> ConfirmEmailAsync(string email, string token)
+        public async Task<UserModel> ConfirmEmailAsync(string email, string token, string password)
         {
             var user = await FindUserByEmailAsync(email);
             var result = await _userManager.ConfirmEmailAsync(user, token);
@@ -150,8 +156,12 @@ namespace Store.BusinessLogic.Services
             {
                 throw new BusinessLogicException(ExceptionOptions.NOT_CONFIRMED);
             }
-            var message = "Email Confirmed";
-            return message;
+
+            var userToken = await SignInAsync(user.Email, password);
+            var userModel = _userMapper.Map(user);
+            userModel.AccessToken = userToken.AccessToken;
+            userModel.RefreshToken = userToken.RefreshToken;
+            return userModel;
         }
 
         public async Task<IdentityResult> SignOutAsync(string email, string issuer)

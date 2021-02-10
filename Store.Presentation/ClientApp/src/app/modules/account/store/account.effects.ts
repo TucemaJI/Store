@@ -36,15 +36,19 @@ export class AccountEffects {
         map(() => this.router.navigateByUrl("confirm-password"))
     ), { dispatch: false })
 
-    confirm$ = createEffect(() => this.actions$.pipe(
+    confirmPas$ = createEffect(() => this.actions$.pipe(
         ofType(EAccountActions.ConfirmPassword),
         exhaustMap((model: IConfirmModel) => this.httpService.postConfirm(model)
             .pipe(
-                map((result: User) => ({ type: EAccountActions.ConfirmPasswordSuccess, user: result })),
+                map((result: User) => { debugger; return ({ type: EAccountActions.ConfirmPasswordSuccess, user: result }) }),
                 catchError(err => of(error({ err })))
             )
         )
     ))
+    confirmPasS$ = createEffect(() => this.actions$.pipe(
+        ofType(EAccountActions.ConfirmPasswordSuccess),
+        map(() => this.router.navigateByUrl(""))
+    ), { dispatch: false })
 
     constructor(
         private actions$: Actions,

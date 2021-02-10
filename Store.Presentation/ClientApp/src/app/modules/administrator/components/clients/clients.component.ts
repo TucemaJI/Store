@@ -4,8 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { IClients } from '../../models/IClients';
 
-const clientsData: IClients[] =[
-  {userName: 'Vasiliy', userEmail: 'vasya@gmail.com', status: true}
+const clientsData: IClients[] = [
+  { userFirstName: 'Vasiliy', userLastName: 'Zveno', userEmail: 'vasya@gmail.com', status: true }
 ]
 
 @Component({
@@ -16,6 +16,7 @@ const clientsData: IClients[] =[
 export class ClientsComponent implements OnInit {
 
   p: number = 1;
+  userName: string
   collection: any[] = clientsData;
   displayedColumns: string[] = ['userName', 'userEmail', 'status', 'buttons']
   dataSource: MatTableDataSource<IClients>;
@@ -23,7 +24,7 @@ export class ClientsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() { 
+  constructor() {
     this.dataSource = new MatTableDataSource(clientsData);
   }
 

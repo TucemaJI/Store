@@ -1,6 +1,7 @@
 import { Action, createAction, props } from "@ngrx/store";
 import { User } from "../models/User";
 import { ILoginModel } from "../models/ILoginModel";
+import { IConfirmModel } from "../models/IConfirmModel";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',
@@ -26,7 +27,7 @@ export const signUpSuccess = createAction(EAccountActions.SignUpSuccess, props<{
     user: User;
 }>());
 export const confirmPassword = createAction(EAccountActions.ConfirmPassword, props<{
-    user: User;
+    confirmModel: IConfirmModel;
 }>());
 export const confirmPasswordSuccess = createAction(EAccountActions.ConfirmPasswordSuccess, props<{
     user: User;

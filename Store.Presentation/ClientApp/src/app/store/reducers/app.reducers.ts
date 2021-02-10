@@ -5,5 +5,5 @@ import { accountReducer }  from "../../modules/account/store/account.reducer"
 
 export const appReducers: ActionReducerMap<IAppState, any> = {
     router: routerReducer,
-    account: accountReducer
+    account: accountReducer,
 }

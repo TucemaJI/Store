@@ -21,11 +21,12 @@ export class HttpService {
 
     postEmail(email: Email) {
         const body = { email: email.email };
+        debugger;
         return this.http.post('https://localhost:44355/api/account/ForgotPassword', body);
     }
 
-    postConfirm(model: IConfirmModel){
-        const body = {email: model.email, token: model.token,};
+    postConfirm(model: IConfirmModel) {
+        const body = { email: model.email, token: model.token, password: model.password };
         return this.http.post('https://localhost:44355/api/account/checkmail', body);
     }
 }

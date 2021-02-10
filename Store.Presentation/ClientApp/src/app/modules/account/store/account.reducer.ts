@@ -6,7 +6,8 @@ import { initialUserState, IAccountState } from "./account.state";
 const createAccountReducer = createReducer(
     initialUserState,
     on(AccountActions.signInSuccess, (state, { accessToken, refreshToken }) => { debugger; return ({ ...state, user: { ...state.user, accessToken, refreshToken } }) }),
-    on(AccountActions.signUpSuccess, (state, {user})=> ({ ...state, user: user})),
+    on(AccountActions.signUpSuccess, (state, { user }) => ({ ...state, user: user })),
+    on(AccountActions.confirmPasswordSuccess, (state, { user }) => ({ ...state, user: user })),
     on(AccountActions.passwordRecoverySuccess, state => ({ ...state })),
 )
 

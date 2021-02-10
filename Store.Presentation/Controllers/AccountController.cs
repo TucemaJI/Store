@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using Store.Presentation.Models.AccountModels;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 
@@ -45,19 +47,22 @@ namespace Store.Presentation.Controllers
         {
             var token = await _accountService.CreateConfirmUserAsync(model.FirstName,
                 model.LastName, model.Email, model.Password, model.ConfirmPassword);
-            var callbackUrl = $"http://localhost:4200/confirm-password?mail={model.Email}&name={model.FirstName}&lName={model.LastName}&token={token}";
+            
+            var callbackUrl = $"http://localhost:4200/confirm-password?mail={model.Email}&name={model.FirstName}" +
+                $"&lName={model.LastName}&pass={model.Password}&token={WebUtility.UrlEncode(token)}";
+
             await _emailProvider.SendEmailAsync(model.Email, EmailOptions.CONFIRM_ACOUNT,
                 $"Confirm registration using this link: <a href='{callbackUrl}'>confirm registration</a>");
 
             return model;
         }
 
-        [HttpGet("CheckMail")]
+        [HttpPost("CheckMail")]
         [AllowAnonymous]
-        public Task<string> ConfirmEmailAsync(string email, string token)
+        public Task<UserModel> ConfirmEmailAsync([FromBody] ConfirmModel model)
         {
-            var result = _accountService.ConfirmEmailAsync(email, token);
-            return result;
+            var userModel = _accountService.ConfirmEmailAsync(model.Email, model.Token, model.Password);
+            return userModel;
 
         }
 
