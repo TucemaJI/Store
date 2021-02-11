@@ -79,7 +79,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("FilterUsers")]
-        public Task<List<UserModel>> FilterUsersAsync([FromQuery] UserFilter filter)
+        public Task<List<UserModel>> FilterUsersAsync([FromBody] UserFilter filter)
         {
             return _userService.FilterUsers(filter);
         }

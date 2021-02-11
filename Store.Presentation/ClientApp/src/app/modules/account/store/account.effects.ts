@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EAccountActions } from "./account.actions";
 import { map, catchError, exhaustMap } from 'rxjs/operators';
-import { HttpService } from '../services/HttpService'
+import { AccountHttpService } from '../services/http.service'
 import { of } from "rxjs";
 import { ILoginModel } from "../models/ILoginModel";
 import { error } from "../../../store/actions/error.action"
@@ -52,7 +52,7 @@ export class AccountEffects {
 
     constructor(
         private actions$: Actions,
-        private httpService: HttpService,
+        private httpService: AccountHttpService,
         private router: Router
     ) { }
 }

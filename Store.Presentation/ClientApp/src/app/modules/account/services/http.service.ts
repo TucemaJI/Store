@@ -3,15 +3,21 @@ import { HttpClient } from "@angular/common/http";
 import { ILoginModel } from '../models/ILoginModel';
 import { User } from '../models/User';
 import { IConfirmModel } from '../models/IConfirmModel';
+import { Token } from '../models/Token';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
-export class HttpService {
+export class AccountHttpService {
 
     constructor(private http: HttpClient) { }
 
-    postLogin(user: ILoginModel) {
+    postLogin(user: ILoginModel): Observable<Token> {
         const body = { email: user.email, password: user.password };
-        return this.http.post('https://localhost:44355/api/account/signin', body);
+        debugger;
+        return this.http.post<Token>('https://localhost:44355/api/account/signin', body).pipe(
+            tap(token => { localStorage.setItem('token', token.accessToken) })
+        )
     }
 
     postRegistration(user: User) {

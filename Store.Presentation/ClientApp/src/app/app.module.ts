@@ -22,11 +22,14 @@ import { SharedModule } from './modules/shared/shared.module';
 import { UserModule } from './modules/user/user.module';
 import { MaterialModule } from './modules/shared/material.module';
 import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule } from 'ngx-toastr';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpService } from './modules/account/services/HttpService';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AccountHttpService } from './modules/account/services/http.service';
 import { AccountEffects } from './modules/account/store/account.effects';
 import { appReducers } from './store/reducers/app.reducers';
-
+import { TokenInterceptor } from './interceptors/auth.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
+import { AdministratorHttpService } from './modules/administrator/services/http.service';
+import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,7 @@ import { appReducers } from './store/reducers/app.reducers';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects]),
+    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
 
@@ -54,8 +57,17 @@ import { appReducers } from './store/reducers/app.reducers';
     UserModule,
 
     HttpClientModule,
+    JwtModule,
   ],
-  providers: [HttpService],
+  providers: [AccountHttpService,
+    AdministratorHttpService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

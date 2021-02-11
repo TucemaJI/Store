@@ -92,7 +92,7 @@ namespace Store.BusinessLogic.Services
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"));
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
-                filter.OrderByString = "Name";
+                filter.OrderByString = "FirstName";
             }
             var sortedUsers = await PagedList<User>.ToPagedListAsync(source: users.OrderBy(filter.OrderByString),
                 pageNumber: filter.EntityParameters.PageNumber,

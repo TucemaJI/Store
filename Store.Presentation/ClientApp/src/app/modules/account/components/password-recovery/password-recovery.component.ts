@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Email, HttpService } from '../../services/HttpService';
+import { Email, AccountHttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-password-recovery',
@@ -10,7 +10,7 @@ import { Email, HttpService } from '../../services/HttpService';
 export class PasswordRecoveryComponent implements OnInit {
   emailForm: FormGroup;
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: AccountHttpService) { }
 
   ngOnInit(): void {
     this.emailForm = new FormGroup({

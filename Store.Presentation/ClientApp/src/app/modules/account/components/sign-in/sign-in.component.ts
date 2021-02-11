@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { ILoginModel } from '../../models/ILoginModel';
-import { HttpService} from '../../services/HttpService';
+import { AccountHttpService} from '../../services/http.service';
 import { EAccountActions, signIn } from '../../store/account.actions';
 
 @Component({
@@ -32,13 +32,6 @@ export class SignInComponent implements OnInit {
 
   public submit(userFormValue) {
     this.store.dispatch(signIn(userFormValue));
-    console.log(userFormValue);
-    debugger;
-    // this.httpService.postData(userFormValue)
-    //   .subscribe(
-    //     (data: Token) => { this.token = data; this.done = true; debugger; },
-    //     error => console.log(error)
-    //   );
   }
 
 }
