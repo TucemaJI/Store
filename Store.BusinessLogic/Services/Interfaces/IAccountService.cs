@@ -8,7 +8,7 @@ namespace Store.BusinessLogic.Services.Interfaces
 {
     public interface IAccountService
     {
-        public Task<object> RefreshAsync(string token, string refreshToken);
+        public Task<TokenModel> RefreshAsync(string token, string refreshToken);
         public Task<TokenModel> SignInAsync(string email, string password);
         public Task<string> GetUserRoleAsync(string email);
         public Task<IdentityResult> WriteRefreshTokenToDbAsync(string email, string issuer,

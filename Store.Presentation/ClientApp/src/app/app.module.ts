@@ -31,6 +31,7 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { AdministratorHttpService } from './modules/administrator/services/http.service';
 import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
 import { AuthService } from './modules/account/services/auth.service';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,7 @@ import { AuthService } from './modules/account/services/auth.service';
     JwtModule.forRoot({
       config: {
         tokenGetter: ()=>{
-          return localStorage.getItem('token');
+          return localStorage.getItem('accessToken');
         }
       }
     }),
@@ -73,7 +74,12 @@ import { AuthService } from './modules/account/services/auth.service';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true,
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
 
   ],
   bootstrap: [AppComponent]

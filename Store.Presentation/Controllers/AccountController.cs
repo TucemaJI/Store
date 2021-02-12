@@ -27,9 +27,9 @@ namespace Store.Presentation.Controllers
             _accountService = accountService;
             _emailProvider = emailProvider;
         }
-
+        [AllowAnonymous]
         [HttpPost("RefreshToken")]
-        public Task<object> RefreshAsync([FromBody] TokenModel model)
+        public Task<TokenModel> RefreshAsync([FromBody] TokenModel model)
         {
             return _accountService.RefreshAsync(model.AccessToken, model.RefreshToken);
         }

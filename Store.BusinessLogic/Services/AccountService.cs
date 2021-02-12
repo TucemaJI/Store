@@ -32,7 +32,7 @@ namespace Store.BusinessLogic.Services
             _emailProvider = emailProvider;
         }
 
-        public async Task<object> RefreshAsync(string token, string refreshToken)
+        public async Task<TokenModel> RefreshAsync(string token, string refreshToken)
         {
             var principal = _jwtProvider.GetPrincipalFromExpiredToken(token);
             var savedRefreshToken = await GetRefreshTokenAsync(principal);
@@ -51,11 +51,12 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
             }
 
-            return new
+            var returnToken = new TokenModel
             {
-                token = _jwtProvider.CreateToken(principal.Subject, role),
-                refreshToken = newRefreshToken
+                AccessToken = _jwtProvider.CreateToken(principal.Subject, role),
+                RefreshToken = newRefreshToken
             };
+            return returnToken;
         }
 
         public async Task<TokenModel> SignInAsync(string email, string password)
