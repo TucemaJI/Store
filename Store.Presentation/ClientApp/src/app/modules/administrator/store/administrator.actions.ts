@@ -8,4 +8,4 @@ export enum EAdministratorActions {
 }
 
 export const getClients = createAction(EAdministratorActions.GetClients, props<{ pageModel: IPageModel }>());
-export const getClientsSuccess = createAction(EAdministratorActions.GetClientsSuccess, props<{ clients: IClients }>());
+export const getClientsSuccess = createAction(EAdministratorActions.GetClientsSuccess, props<{ clients: IClients[] }>());

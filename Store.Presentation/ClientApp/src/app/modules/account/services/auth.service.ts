@@ -4,9 +4,11 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable()
 export class AuthService {
     public saveToken(token: string) {
+        debugger;
         localStorage.setItem('token', token);
     }
     public getToken(): string {
+        debugger;
         return localStorage.getItem('token');
     }
     public isAuthenticated(): boolean {

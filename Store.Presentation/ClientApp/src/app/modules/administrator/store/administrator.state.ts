@@ -1,7 +1,7 @@
 import { IClients } from "../models/IClients";
 
 export interface IAdministratorState {
-    clients: IClients;
+    clients: IClients[];
 }
 export const initialAdministratorState = {
     clients: null,

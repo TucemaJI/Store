@@ -2,15 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { IClients } from '../../models/IClients';
 import { IPageModel } from '../../models/IPageModel';
 import { getClients } from '../../store/administrator.actions';
+import { selectAdministrator } from '../../store/administrator.selector';
 
-const clientsData: IClients[] = [
-  { userFirstName: 'Vasiliy', userLastName: 'Zveno', userEmail: 'vasya@gmail.com', status: true }
-]
+// const clientsData: IClients[] = [
+//   { userFirstName: 'Vasiliy', userLastName: 'Zveno', userEmail: 'vasya@gmail.com', status: true }
+// ]
 
 @Component({
   selector: 'app-clients',
@@ -18,7 +19,7 @@ const clientsData: IClients[] = [
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit {
-
+  clientsData: IClients[];
   pageModel;
   p: number = 1;
   userName: string;
@@ -26,7 +27,7 @@ export class ClientsComponent implements OnInit {
   dataSource: MatTableDataSource<IClients>;
 
   constructor(private store: Store<IAppState>) {
-    this.dataSource = new MatTableDataSource(clientsData);
+    this.dataSource = new MatTableDataSource(this.clientsData);
   }
 
   ngOnInit(): void {
@@ -40,8 +41,17 @@ export class ClientsComponent implements OnInit {
       email: '',
       name: '',
     };
-    
+
     this.store.dispatch(getClients(this.pageModel));
+
+    this.store.pipe(select(selectAdministrator)).subscribe(
+      data => {
+        this.clientsData = data;
+        this.dataSource = new MatTableDataSource(this.clientsData);
+        console.log(data);
+        console.log(this.clientsData);
+      }
+    )
   }
 
   applyFilter(event: Event) {

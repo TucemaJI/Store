@@ -1,6 +1,6 @@
 export interface IClients {
-  userFirstName: string;
-  userLastName: string;
-  userEmail: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   status: boolean;
 }

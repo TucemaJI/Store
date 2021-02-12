@@ -7,7 +7,6 @@ import { AuthService } from "../modules/account/services/auth.service";
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    debugger;
     const tok = localStorage.getItem('token');
     
     request = request.clone({

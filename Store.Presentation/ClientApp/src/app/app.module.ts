@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,9 +27,10 @@ import { AccountHttpService } from './modules/account/services/http.service';
 import { AccountEffects } from './modules/account/store/account.effects';
 import { appReducers } from './store/reducers/app.reducers';
 import { TokenInterceptor } from './interceptors/auth.interceptor';
-import { JwtModule } from '@auth0/angular-jwt';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { AdministratorHttpService } from './modules/administrator/services/http.service';
 import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
+import { AuthService } from './modules/account/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -57,10 +58,17 @@ import { AdministratorEffects } from './modules/administrator/store/administrato
     UserModule,
 
     HttpClientModule,
-    JwtModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: ()=>{
+          return localStorage.getItem('token');
+        }
+      }
+    }),
   ],
   providers: [AccountHttpService,
     AdministratorHttpService,
+    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
