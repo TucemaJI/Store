@@ -49,6 +49,15 @@ export class AccountEffects {
         ofType(EAccountActions.ConfirmPasswordSuccess),
         map(() => this.router.navigateByUrl(""))
     ), { dispatch: false })
+    refreshToken$ = createEffect(() => this.actions$.pipe(
+        ofType(EAccountActions.RefreshToken),
+        exhaustMap((token: Token) => this.httpService.postRefresh(token)
+            .pipe(
+                map((result: Token) => { debugger; return ({ type: EAccountActions.RefreshTokenSuccess, accessToken: result.accessToken, refreshToken: result.refreshToken }) }),
+                catchError(err => of(error({ err })))
+            )
+        )
+    ))
 
     constructor(
         private actions$: Actions,

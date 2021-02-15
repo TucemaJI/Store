@@ -38,13 +38,17 @@ export class AccountHttpService {
         return this.http.post('https://localhost:44355/api/account/checkmail', body);
     }
 
-    postRefresh(oldToken: Token): Token {
-        const body = { AccessToken: oldToken.accessToken, RefreshToken: oldToken.refreshToken };
+    postRefresh(token: Token) {
+        let tokenModel: Token = new Token();
+        tokenModel.accessToken = token.accessToken;
+        tokenModel.refreshToken = token.refreshToken;
+        //const body = { accessToken: token.accessToken, refreshToken: token.refreshToken };
         debugger;
-        return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', body).subscribe(
-            (accessToken, refreshToken) => { this.auth.saveToken(token:{accessToken, refreshToken}), catchError(err => of(error({ err }))) })
-            
-        
+        return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', tokenModel).pipe(
+            tap(result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) })
+        );
+
+
     }
 }
 

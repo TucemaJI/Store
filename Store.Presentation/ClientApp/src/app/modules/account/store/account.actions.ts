@@ -2,6 +2,7 @@ import { Action, createAction, props } from "@ngrx/store";
 import { User } from "../models/User";
 import { ILoginModel } from "../models/ILoginModel";
 import { IConfirmModel } from "../models/IConfirmModel";
+import { Token } from "../models/Token";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',
@@ -12,6 +13,8 @@ export enum EAccountActions {
     PasswordRecoverySuccess = '[User] Password Recovery Success',
     ConfirmPassword = '[User] Confirm',
     ConfirmPasswordSuccess = '[User] ConfirmSuccess',
+    RefreshToken = '[User] RefreshToken',
+    RefreshTokenSuccess = '[User] RefreshTokenSuccess'
 }
 
 export const signIn = createAction(EAccountActions.SignIn, props<{ loginModel: ILoginModel; }>());
@@ -24,3 +27,5 @@ export const confirmPassword = createAction(EAccountActions.ConfirmPassword, pro
 export const confirmPasswordSuccess = createAction(EAccountActions.ConfirmPasswordSuccess, props<{ user: User; }>());
 export const passwordRecovery = createAction(EAccountActions.PasswordRecovery, props<{ email: string; }>());
 export const passwordRecoverySuccess = createAction(EAccountActions.PasswordRecovery, props<{ email: string; }>());
+export const refreshToken = createAction(EAccountActions.RefreshToken, props<{ accessToken: string, refreshToken: string; }>());
+export const refreshTokenSuccess = createAction(EAccountActions.RefreshTokenSuccess, props<{ accessToken: string, refreshToken: string; }>())
