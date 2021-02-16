@@ -6,12 +6,8 @@ import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { IClients } from '../../models/IClients';
 import { IPageModel } from '../../models/IPageModel';
-import { getClients } from '../../store/administrator.actions';
+import { clientChange, getClients } from '../../store/administrator.actions';
 import { selectAdministrator } from '../../store/administrator.selector';
-
-// const clientsData: IClients[] = [
-//   { userFirstName: 'Vasiliy', userLastName: 'Zveno', userEmail: 'vasya@gmail.com', status: true }
-// ]
 
 @Component({
   selector: 'app-clients',
@@ -41,9 +37,7 @@ export class ClientsComponent implements OnInit {
       email: '',
       name: '',
     };
-
     this.store.dispatch(getClients(this.pageModel));
-
     this.store.pipe(select(selectAdministrator)).subscribe(
       data => {
         this.clientsData = data;
@@ -62,5 +56,36 @@ export class ClientsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
+  changeUserBlock(element: IClients) {
+    debugger;
+    let client: IClients = {
+      firstName: element.firstName,
+      lastName: element.lastName,
+      email: element.email,
+      isBlocked: element.isBlocked,
+    };
+    if (element.isBlocked) {
+      client.isBlocked = false;
+    }
+    if (!element.isBlocked) {
+      client.isBlocked = true;
+    }
+    this.store.dispatch(clientChange({ client }));
+    location.reload();
+  }
+  getClients() {
+    this.store.dispatch(getClients(this.pageModel));
+    this.store.pipe(select(selectAdministrator)).subscribe(
+      data => {
+        debugger;
+        this.clientsData = data;
+        this.dataSource = new MatTableDataSource(this.clientsData);
+        console.log(data);
+        console.log(this.clientsData);
+      }
+    )
+  }
+  deleteClient(element:IClients){
+    //HERE START
+  }
 }

@@ -14,5 +14,7 @@
         public const string FIRST_NAME_PROBLEM = "First name is null or white space";
         public const string LAST_NAME_PROBLEM = "Last name is null of white space";
         public const string NOT_ADD_TO_ROLE = "Not added to role";
+
+        public const string PASSWORD_NOT_REMOVED = "Password not removed";
     }
 }

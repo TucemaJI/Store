@@ -33,11 +33,11 @@
                             placeholder="search" />
                     </mat-menu>
                 </th>
-                <td mat-cell *matCellDef="let element"> <mat-slide-toggle></mat-slide-toggle> </td>
+                <td mat-cell *matCellDef="let element"> <mat-slide-toggle (change)="changeUserBlock(element)" [checked]="element.isBlocked"></mat-slide-toggle> </td>
             </ng-container>
             <ng-container matColumnDef="buttons">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element"><mat-icon>edit</mat-icon><mat-icon>highlight_off</mat-icon></td>
+                <td mat-cell *matCellDef="let element"><mat-icon>edit</mat-icon><mat-icon (click)="deleteClient(element)">highlight_off</mat-icon></td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

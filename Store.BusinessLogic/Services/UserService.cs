@@ -75,7 +75,33 @@ namespace Store.BusinessLogic.Services
         }
         public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
         {
-            var user = await _userManager.FindByIdAsync(userModel.Id);
+            var user = await _userManager.FindByEmailAsync(userModel.Email);
+            if (userModel.Password != null && userModel.ConfirmPassword == userModel.Password)
+            {
+                var result = await _userManager.RemovePasswordAsync(user);
+                if (!result.Succeeded)
+                {
+                    throw new BusinessLogicException(ExceptionOptions.PASSWORD_NOT_REMOVED);
+                }
+                var addPassword = await _userManager.AddPasswordAsync(user, userModel.Password);
+                if (!addPassword.Succeeded)
+                {
+                    throw new BusinessLogicException(ExceptionOptions.INCORRECT_PASSWORD);
+                }
+            }
+            if (userModel.FirstName != null)
+            {
+                user.FirstName = userModel.FirstName;
+            }
+            if (userModel.LastName != null)
+            {
+                user.LastName = userModel.LastName;
+            }
+            if (userModel.IsBlocked != null)
+            {
+                user.IsBlocked = (bool)userModel.IsBlocked;
+            }
+
             return await _userManager.UpdateAsync(user);
         }
 

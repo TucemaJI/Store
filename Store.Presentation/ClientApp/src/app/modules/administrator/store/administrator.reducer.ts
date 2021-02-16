@@ -5,7 +5,7 @@ import { IAdministratorState, initialAdministratorState } from "./administrator.
 const createAdministratorReducer = createReducer(
     initialAdministratorState,
     on(AdministratorActions.getClientsSuccess, (state, { clients }) => { debugger; return ({ ...state, clients : clients }) }),
-
+    //on(AdministratorActions.clientChangeSuccess,(state, {result})=> ({...state.clients,}))
 )
 
 export const administratorReducer = (state = initialAdministratorState, action: Action): IAdministratorState => {

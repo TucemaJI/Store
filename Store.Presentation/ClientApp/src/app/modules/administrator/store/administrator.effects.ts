@@ -19,6 +19,16 @@ export class AdministratorEffects {
             )
         )
     ))
+    changeClient$ = createEffect(() => this.actions$.pipe(
+        ofType(EAdministratorActions.ClientChange),
+        exhaustMap((client: IClients) => this.httpService.changeClient(client)
+            .pipe(
+                map((response: boolean) => ({ type: EAdministratorActions.ClientChangeSuccess, result: response })),
+                catchError(err => of(error({ err })))
+
+            )
+        )
+    ))
 
     constructor(
         private actions$: Actions,

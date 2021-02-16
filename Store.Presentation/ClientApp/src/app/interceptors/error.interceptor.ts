@@ -23,22 +23,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             catchError((err) => {
                 if (err.status === 401) {
-                    const testToken = localStorage.getItem('accessToken');
-                    debugger;
                     if (this.auth.isAuthenticated()) {
                         this.auth.refreshToken(token);
                     }
-                    // this.effects.refreshToken$.pipe(
-                    //     ofType(EAccountActions.RefreshToken),
-                    //     exhaustMap((token: Token) => this.httpService.postRefresh(token)
-                    //         .pipe(
-                    //             map((result: Token) => { debugger; return ({ type: EAccountActions.RefreshTokenSuccess, token: result }) }),
-                    //             catchError(err => of(error({ err })))
-                    //         )
-                    //     ))
-                    debugger;
                     const newAccessToken = localStorage.getItem('accessToken');
-                    debugger;
+
                     return next.handle(request.clone({
                         headers: null,
                         setHeaders: {
