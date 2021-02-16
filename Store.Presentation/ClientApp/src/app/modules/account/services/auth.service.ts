@@ -20,6 +20,11 @@ export class AuthService {
         const token = this.getToken();
         return this.jwtHelper.isTokenExpired(token);
     }
+    public refreshToken(token) {
+        this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', token).subscribe(
+            result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) }
+        )
+    }
 
     constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 }

@@ -10,38 +10,44 @@ import { EAccountActions, refreshToken } from '../modules/account/store/account.
 import { AccountEffects } from "../modules/account/store/account.effects";
 import { ofType } from "@ngrx/effects";
 import { error } from "../store/actions/error.action";
+import { AuthService } from "../modules/account/services/auth.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(public effects: AccountEffects, private httpService: AccountHttpService,) { }
+    constructor(public auth: AuthService, private httpService: AccountHttpService,) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const accessToken = localStorage.getItem('accessToken');
         const refToken = localStorage.getItem('refreshToken');
         const token: Token = { accessToken: accessToken, refreshToken: refToken };
-        
+
         return next.handle(request).pipe(
             catchError((err) => {
                 if (err.status === 401) {
+                    const testToken = localStorage.getItem('accessToken');
                     debugger;
-                    this.effects.refreshToken$.pipe(
-                        ofType(EAccountActions.RefreshToken),
-                        exhaustMap((token: Token) => this.httpService.postRefresh(token)
-                            .pipe(
-                                map((result: Token) => { debugger; return ({ type: EAccountActions.RefreshTokenSuccess, token: result }) }),
-                                catchError(err => of(error({ err })))
-                            )
-                        ))
+                    if (this.auth.isAuthenticated()) {
+                        this.auth.refreshToken(token);
+                    }
+                    // this.effects.refreshToken$.pipe(
+                    //     ofType(EAccountActions.RefreshToken),
+                    //     exhaustMap((token: Token) => this.httpService.postRefresh(token)
+                    //         .pipe(
+                    //             map((result: Token) => { debugger; return ({ type: EAccountActions.RefreshTokenSuccess, token: result }) }),
+                    //             catchError(err => of(error({ err })))
+                    //         )
+                    //     ))
                     debugger;
                     const newAccessToken = localStorage.getItem('accessToken');
-
+                    debugger;
                     return next.handle(request.clone({
+                        headers: null,
                         setHeaders: {
                             Authorization: 'Bearer ' + newAccessToken
                         }
                     }));
                 }
                 return throwError(err);
-            }),
+            }), retry(1),
         );
     }
 }
