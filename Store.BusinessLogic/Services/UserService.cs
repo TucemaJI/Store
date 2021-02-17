@@ -70,13 +70,19 @@ namespace Store.BusinessLogic.Services
 
         public async Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
-            var user = _userMapper.Map(userModel);
+            var user = await _userManager.FindByEmailAsync(userModel.Email);
+
             return await _userManager.DeleteAsync(user);
         }
         public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
         {
             var user = await _userManager.FindByEmailAsync(userModel.Email);
-            if (userModel.Password != null && userModel.ConfirmPassword == userModel.Password)
+            if (user == null)
+            {
+                user = await _userManager.FindByIdAsync(userModel.Id);
+                user.Email = userModel.Email;
+            }
+            if (!string.IsNullOrWhiteSpace(userModel.Password) && userModel.ConfirmPassword == userModel.Password)
             {
                 var result = await _userManager.RemovePasswordAsync(user);
                 if (!result.Succeeded)

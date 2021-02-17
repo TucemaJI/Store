@@ -1,0 +1,19 @@
+.image{
+    font-size: 800%;
+}
+.card{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+.right{
+    float: right;
+    margin-top: -0.5%;
+    margin-right: 63%;
+}
+.width{
+    width: 100%;
+}
+.save{
+    float:right;
+}

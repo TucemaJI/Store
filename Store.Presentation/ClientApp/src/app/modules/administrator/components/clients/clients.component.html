@@ -1,14 +1,14 @@
 <mat-card class="card">
     <mat-card-title>Users managment</mat-card-title>
     <mat-card-content>
-        <table mat-table [dataSource]="clientsData" 
+        <table mat-table
+            [dataSource]="dataSource "
             class="mat-elevation-z8">
             <ng-container matColumnDef="userName">
                 <th mat-header-cell *matHeaderCellDef>
                     User Name <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
                     <mat-menu #menu="matMenu">
-                        <input type="text" mat-menu-item 
-                            placeholder="search" />
+                        <input type="text" mat-menu-item placeholder="search" />
                     </mat-menu>
                 </th>
                 <!-- <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input> -->
@@ -16,28 +16,32 @@
             </ng-container>
 
             <ng-container matColumnDef="userEmail">
-                <th mat-header-cell *matHeaderCellDef> User Email 
+                <th mat-header-cell *matHeaderCellDef> User Email
                     <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
                     <mat-menu #menu="matMenu">
-                        <input type="text" mat-menu-item 
-                            placeholder="search" />
+                        <input type="text" mat-menu-item placeholder="search" />
                     </mat-menu>
                 </th>
                 <td mat-cell *matCellDef="let element"> {{element.email}} </td>
             </ng-container>
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status 
+                <th mat-header-cell *matHeaderCellDef> Status
                     <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
                     <mat-menu #menu="matMenu">
-                        <input type="text" mat-menu-item 
-                            placeholder="search" />
+                        <input type="text" mat-menu-item placeholder="search" />
                     </mat-menu>
                 </th>
-                <td mat-cell *matCellDef="let element"> <mat-slide-toggle (change)="changeUserBlock(element)" [checked]="element.isBlocked"></mat-slide-toggle> </td>
+                <td mat-cell *matCellDef="let element">
+                    <mat-slide-toggle (change)="changeUserBlock(element)" [checked]="element.isBlocked">
+                    </mat-slide-toggle>
+                </td>
             </ng-container>
             <ng-container matColumnDef="buttons">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element"><mat-icon>edit</mat-icon><mat-icon (click)="deleteClient(element)">highlight_off</mat-icon></td>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon (click)="editClient(element)">edit</mat-icon>
+                    <mat-icon (click)="deleteClient(element)">highlight_off</mat-icon>
+                </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -49,6 +53,7 @@
             <li *ngFor="let item of collection | paginate: { itemsPerPage: 10, currentPage: p }"> ... </li>
           </ul> -->
 
-        <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+        <pagination-controls maxSize="pageModel.pageParameters.pageSize" directionLinks="true" >
+        </pagination-controls>
     </mat-card-content>
 </mat-card>

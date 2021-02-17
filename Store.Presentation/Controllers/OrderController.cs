@@ -42,7 +42,7 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpDelete("DeleteOrder")]
+        [HttpPost("DeleteOrder")]
         public async Task DeleteOrderAsync(long id)
         {
             await _orderService.DeleteOrderAsync(id);

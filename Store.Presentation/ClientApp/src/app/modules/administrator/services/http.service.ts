@@ -21,9 +21,23 @@ export class AdministratorHttpService {
             firstName: client.client.firstName,
             lastName: client.client.lastName,
             email: client.client.email,
-            isBlocked: client.client.isBlocked
+            isBlocked: client.client.isBlocked,
+            password: client.client.password,
+            confirmPassword: client.client.confirmPassword,
+            id: client.client.id,
         }
         return this.http.put('https://localhost:44355/api/user/updateuser', body);
+    }
+    deleteClient(client) {
+        console.log(client);
+        debugger;
+        const body = {
+            firstName: client.client.firstName,
+            lastName: client.client.lastName,
+            email: client.client.email,
+            isBlocked: client.client.isBlocked
+        }
+        return this.http.post('https://localhost:44355/api/user/deleteuser', body);
     }
 
 }

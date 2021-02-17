@@ -1,13 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
+import { IChangeModel } from '../../models/IChangeModel';
 import { IClients } from '../../models/IClients';
 import { IPageModel } from '../../models/IPageModel';
-import { clientChange, getClients } from '../../store/administrator.actions';
+import { clientChange, deleteClient, getClients } from '../../store/administrator.actions';
 import { selectAdministrator } from '../../store/administrator.selector';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-clients',
@@ -22,7 +25,7 @@ export class ClientsComponent implements OnInit {
   displayedColumns: string[] = ['userName', 'userEmail', 'status', 'buttons'];
   dataSource: MatTableDataSource<IClients>;
 
-  constructor(private store: Store<IAppState>) {
+  constructor(private store: Store<IAppState>, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.clientsData);
   }
 
@@ -56,13 +59,16 @@ export class ClientsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  changeUserBlock(element: IClients) {
+  changeUserBlock(element) {
     debugger;
-    let client: IClients = {
+    let client: IChangeModel = {
       firstName: element.firstName,
       lastName: element.lastName,
       email: element.email,
       isBlocked: element.isBlocked,
+      password: element.password,
+      confirmPassword: element.confirmPassword,
+      id: element.id,
     };
     if (element.isBlocked) {
       client.isBlocked = false;
@@ -85,7 +91,28 @@ export class ClientsComponent implements OnInit {
       }
     )
   }
-  deleteClient(element:IClients){
-    //HERE START
+  deleteClient(element) {
+    const client: IClients = {
+      firstName: element.firstName,
+      lastName: element.lastName,
+      email: element.email,
+      isBlocked: element.isBlocked,
+    };
+    this.store.dispatch(deleteClient({ client }));
+    location.reload();
+  }
+  editClient(element) {
+    const client = {
+      firstName: element.firstName,
+      lastName: element.lastName,
+      email: element.email,
+      isBlocked: element.isBlocked,
+      id: element.id,
+    };
+    const dialog = this.dialog.open(EditProfileComponent, {
+      data: client,
+    })
+    
+    //this.store.dispatch(editClient({ client }))
   }
 }

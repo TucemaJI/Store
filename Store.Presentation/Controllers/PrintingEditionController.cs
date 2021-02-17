@@ -48,7 +48,7 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
-        [HttpDelete("DeletePrintingEdition")]
+        [HttpPost("DeletePrintingEdition")]
         public Task DeletePrintingEditionAsync(long id)
         {
             return _printingEditionService.DeletePrintingEditionAsync(id);

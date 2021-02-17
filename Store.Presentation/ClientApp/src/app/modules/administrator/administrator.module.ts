@@ -5,11 +5,12 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { MaterialModule } from '../shared/material.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 
 
 @NgModule({
-  declarations: [AdministratorComponent, ClientsComponent],
+  declarations: [AdministratorComponent, ClientsComponent, EditProfileComponent],
   imports: [
     CommonModule,
     MaterialModule,

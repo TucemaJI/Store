@@ -60,7 +60,7 @@ namespace Store.Presentation.Controllers
             return _userService.GetAllRoles();
         }
 
-        [HttpDelete("DeleteUser")]
+        [HttpPost("DeleteUser")]
         public Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
             return _userService.DeleteUserAsync(userModel);

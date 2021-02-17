@@ -47,7 +47,7 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
-        [HttpDelete("DeleteAuthor")]
+        [HttpPost("DeleteAuthor")]
 
         public async Task DeleteAuthorAsync(long id)
         {
