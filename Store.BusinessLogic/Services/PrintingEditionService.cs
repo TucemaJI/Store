@@ -1,7 +1,9 @@
 ﻿using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
@@ -49,11 +51,13 @@ namespace Store.BusinessLogic.Services
             await _printingEditionRepository.DeleteAsync(id);
         }
 
-        public async Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
+        public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
-            var printingEditions = await _printingEditionRepository.GetFilterSortedPagedListAsync(filter);
+            var printingEditions = await _printingEditionRepository.GetFilterSortedListAsync(filter);
             var printingEditionModels = _printingEditionMapper.Map(printingEditions);
-            return printingEditionModels;
+            var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count, filter.EntityParameters.PageNumber, filter.EntityParameters.PageSize);
+            var pageModel = new PageModel<PrintingEditionModel>(pagedList);
+            return pageModel;
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
         }
     }

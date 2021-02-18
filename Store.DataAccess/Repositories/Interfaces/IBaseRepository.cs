@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Store.DataAccess.Models;
+using Store.DataAccess.Models.Filters;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Store.DataAccess.Repositories.Interfaces

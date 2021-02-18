@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
@@ -22,7 +23,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("GetAuthorsWithFilter")]
-        public Task<List<AuthorModel>> GetAuthorModelsAsync([FromQuery] AuthorFilter filter)
+        public Task<PageModel<AuthorModel>> GetAuthorModelsAsync([FromQuery] AuthorFilter filter)
         {
             return _authorService.GetAuthorModelsAsync(filter);
         }

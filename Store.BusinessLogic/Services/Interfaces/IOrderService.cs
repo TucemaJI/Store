@@ -1,6 +1,6 @@
-﻿using Store.BusinessLogic.Models.Orders;
+﻿using Store.BusinessLogic.Models;
+using Store.BusinessLogic.Models.Orders;
 using Store.DataAccess.Models.Filters;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services.Interfaces
@@ -9,7 +9,7 @@ namespace Store.BusinessLogic.Services.Interfaces
     {
         public Task<OrderModel> GetOrderModelAsync(long id);
         public Task CreateOrderAsync(OrderModel model);
-        public Task<List<OrderModel>> GetOrderModelsAsync(OrderFilter filter);
+        public Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter);
         public Task DeleteOrderAsync(long id);
         public void UpdateOrder(OrderModel orderModel);
 

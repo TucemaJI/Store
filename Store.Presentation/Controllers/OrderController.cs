@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
@@ -29,7 +31,7 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("GetOrders")]
-        public Task<List<OrderModel>> GetOrderModelsAsync([FromQuery] OrderFilter filter)
+        public Task<PageModel<OrderModel>> GetOrderModelsAsync([FromQuery] OrderFilter filter)
         {
             return _orderService.GetOrderModelsAsync(filter);
         }

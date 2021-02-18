@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
@@ -36,11 +38,11 @@ namespace Store.Presentation.Controllers
             return _userService.GetUserAsync(email);
         }
 
-        [HttpGet("GetAllUsers")]
-        public Task<List<UserModel>> GetUsersAsync()
-        {
-            return _userService.GetUsersAsync();
-        }
+        //[HttpGet("GetAllUsers")]
+        //public Task<List<UserModel>> GetUsersAsync()
+        //{
+        //    return _userService.GetUsersAsync();
+        //}
 
         [HttpGet("GetRole")]
         public Task<string> GetRoleAsync(string email)
@@ -79,9 +81,13 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("FilterUsers")]
-        public Task<List<UserModel>> FilterUsersAsync([FromBody] UserFilter filter)
+        public Task<PageModel<UserModel>> FilterUsersAsync([FromBody] UserFilter filter)
         {
-            return _userService.FilterUsers(filter);
+            var userModels = _userService.FilterUsersAsync(filter);
+
+            var test = userModels.Result;
+
+            return userModels;
         }
     }
 }

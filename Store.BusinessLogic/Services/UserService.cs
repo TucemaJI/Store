@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
@@ -118,7 +119,7 @@ namespace Store.BusinessLogic.Services
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<List<UserModel>> FilterUsers(UserFilter filter)
+        public async Task<PageModel<UserModel>> FilterUsersAsync(UserFilter filter)
         {
             var users = _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"));
@@ -126,12 +127,20 @@ namespace Store.BusinessLogic.Services
             {
                 filter.OrderByString = "FirstName";
             }
-            var sortedUsers = await PagedList<User>.ToPagedListAsync(source: users.OrderBy(filter.OrderByString),
+
+            var sortedUsers = await PagedList<User>.ToSortedListAsync(source: users.OrderBy(filter.OrderByString),
                 pageNumber: filter.EntityParameters.PageNumber,
                 pageSize: filter.EntityParameters.PageSize,
                 isDescending: filter.IsDescending);
 
-            return _userMapper.Map(sortedUsers);
+            var sortedUserModels = _userMapper.Map(sortedUsers);
+
+            var pagedList = PagedList<UserModel>.ToPagedList(sortedUserModels, users.Count(), pageNumber: filter.EntityParameters.PageNumber,
+                pageSize: filter.EntityParameters.PageSize);
+
+            var pageModel = new PageModel<UserModel>(pagedList);
+
+            return pageModel;
 
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
         }

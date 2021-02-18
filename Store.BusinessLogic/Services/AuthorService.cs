@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
+using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
@@ -32,10 +34,15 @@ namespace Store.BusinessLogic.Services
             return _mapper.Map<Author, AuthorModel>(author);
         }
 
-        public async Task<List<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
+        public async Task<PageModel<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
         {
-            var authorList = await _authorRepository.GetFilterSortedPagedListAsync(filter);
-            return _mapper.Map<List<Author>, List<AuthorModel>>(authorList.ToList());
+            var authorList = await _authorRepository.GetFilterSortedListAsync(filter);
+            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
+            var pagedList = PagedList<AuthorModel>.ToPagedList(authorModelList, authorList.Count(), pageNumber: filter.EntityParameters.PageNumber,
+                pageSize: filter.EntityParameters.PageSize);
+
+            var pageModel = new PageModel<AuthorModel>(pagedList);
+            return pageModel;
         }
 
         public async Task<List<AuthorModel>> GetAuthorModelsAsync()

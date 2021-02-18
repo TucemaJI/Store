@@ -1,6 +1,8 @@
 ﻿using Store.BusinessLogic.Mappers;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
@@ -37,11 +39,13 @@ namespace Store.BusinessLogic.Services
             await _orderRepository.CreateAsync(order);
         }
 
-        public async Task<List<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
+        public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
         {
-            var orderList = await _orderRepository.GetFilterSortedPagedListAsync(filter);
+            var orderList = await _orderRepository.GetFilterSortedListAsync(filter);
             var orderModelList = _orderMapper.Map(orderList);
-            return orderModelList;
+            var pagedList = PagedList<OrderModel>.ToPagedList(orderModelList, orderList.Count, filter.EntityParameters.PageNumber, filter.EntityParameters.PageSize);
+            var pageModel = new PageModel<OrderModel>(pagedList);
+            return pageModel;
         }
 
         public async Task<OrderModel> GetOrderModelAsync(long id)
