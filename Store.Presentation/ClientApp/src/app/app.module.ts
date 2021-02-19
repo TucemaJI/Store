@@ -32,6 +32,7 @@ import { AdministratorHttpService } from './modules/administrator/services/http.
 import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
 import { AuthService } from './modules/account/services/auth.service';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
+    NgxPaginationModule,
 
     MaterialModule,
     AccountModule,

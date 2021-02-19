@@ -4,23 +4,24 @@ namespace Store.DataAccess.Models
 {
     public class EntityParameters
     {
-        public int PageNumber { get; set; }
+        public int CurrentPage { get; set; }
+        public int TotalItems { get; set; }
 
-        private int _pageSize = PagedListOptions.DEFAULT_PAGE_SIZE;
-        public int PageSize
+        private int _itemsPerPage = PagedListOptions.DEFAULT_PAGE_SIZE;
+        public int ItemsPerPage
         {
             get
             {
-                return _pageSize;
+                return _itemsPerPage;
             }
             set
             {
-                _pageSize = (value > EntityParametersOptions.MAX_PAGE_SIZE) ? EntityParametersOptions.MAX_PAGE_SIZE : value;
+                _itemsPerPage = (value > EntityParametersOptions.MAX_PAGE_SIZE) ? EntityParametersOptions.MAX_PAGE_SIZE : value;
             }
         }
         public EntityParameters()
         {
-            PageNumber = PagedListOptions.FIRST_PAGE;
+            CurrentPage = PagedListOptions.FIRST_PAGE;
         }
     }
 }

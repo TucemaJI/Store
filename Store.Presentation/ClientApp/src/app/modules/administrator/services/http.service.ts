@@ -10,7 +10,7 @@ export class AdministratorHttpService {
 
     postPage(pageModel: IPageModel) {
         const body = {
-            entityParameters: { pageNumber: pageModel.pageParameters.pageNumber, pageSize: pageModel.pageParameters.pageSize },
+            entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
             name: pageModel.name, email: pageModel.email,
         };

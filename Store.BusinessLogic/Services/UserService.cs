@@ -129,14 +129,14 @@ namespace Store.BusinessLogic.Services
             }
 
             var sortedUsers = await PagedList<User>.ToSortedListAsync(source: users.OrderBy(filter.OrderByString),
-                pageNumber: filter.EntityParameters.PageNumber,
-                pageSize: filter.EntityParameters.PageSize,
+                pageNumber: filter.EntityParameters.CurrentPage,
+                pageSize: filter.EntityParameters.ItemsPerPage,
                 isDescending: filter.IsDescending);
 
             var sortedUserModels = _userMapper.Map(sortedUsers);
 
-            var pagedList = PagedList<UserModel>.ToPagedList(sortedUserModels, users.Count(), pageNumber: filter.EntityParameters.PageNumber,
-                pageSize: filter.EntityParameters.PageSize);
+            var pagedList = PagedList<UserModel>.ToPagedList(sortedUserModels, users.Count(), pageNumber: filter.EntityParameters.CurrentPage,
+                pageSize: filter.EntityParameters.ItemsPerPage);
 
             var pageModel = new PageModel<UserModel>(pagedList);
 

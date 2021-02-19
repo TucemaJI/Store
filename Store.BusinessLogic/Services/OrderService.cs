@@ -43,7 +43,7 @@ namespace Store.BusinessLogic.Services
         {
             var orderList = await _orderRepository.GetFilterSortedListAsync(filter);
             var orderModelList = _orderMapper.Map(orderList);
-            var pagedList = PagedList<OrderModel>.ToPagedList(orderModelList, orderList.Count, filter.EntityParameters.PageNumber, filter.EntityParameters.PageSize);
+            var pagedList = PagedList<OrderModel>.ToPagedList(orderModelList, orderList.Count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<OrderModel>(pagedList);
             return pageModel;
         }

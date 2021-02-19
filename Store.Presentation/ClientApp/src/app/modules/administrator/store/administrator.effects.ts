@@ -6,6 +6,7 @@ import { error } from "src/app/store/actions/error.action";
 import { IChangeModel } from "../models/IChangeModel";
 import { IClients } from "../models/IClients";
 import { IPageModel } from "../models/IPageModel";
+import { IPageParameters } from "../models/IPageParameters";
 import { AdministratorHttpService } from "../services/http.service";
 import { EAdministratorActions } from "./administrator.actions";
 
@@ -15,7 +16,12 @@ export class AdministratorEffects {
         ofType(EAdministratorActions.GetClients),
         exhaustMap((pageModel: IPageModel) => this.httpService.postPage(pageModel)
             .pipe(
-                map((responce: IClients) => { debugger; return ({ type: EAdministratorActions.GetClientsSuccess, clients: responce }) }),
+                map((responce: { elements: IClients[], pageParameters: IPageParameters }) => {
+                    debugger; return ({
+                        type: EAdministratorActions.GetClientsSuccess,
+                        pageParameters: responce.pageParameters, clients: responce.elements
+                    })
+                }),
                 catchError(err => of(error({ err })))
             )
         )

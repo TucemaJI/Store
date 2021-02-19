@@ -55,7 +55,7 @@ namespace Store.BusinessLogic.Services
         {
             var printingEditions = await _printingEditionRepository.GetFilterSortedListAsync(filter);
             var printingEditionModels = _printingEditionMapper.Map(printingEditions);
-            var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count, filter.EntityParameters.PageNumber, filter.EntityParameters.PageSize);
+            var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
             return pageModel;
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);

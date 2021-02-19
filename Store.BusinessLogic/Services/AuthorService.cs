@@ -38,8 +38,8 @@ namespace Store.BusinessLogic.Services
         {
             var authorList = await _authorRepository.GetFilterSortedListAsync(filter);
             var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
-            var pagedList = PagedList<AuthorModel>.ToPagedList(authorModelList, authorList.Count(), pageNumber: filter.EntityParameters.PageNumber,
-                pageSize: filter.EntityParameters.PageSize);
+            var pagedList = PagedList<AuthorModel>.ToPagedList(authorModelList, authorList.Count(), pageNumber: filter.EntityParameters.CurrentPage,
+                pageSize: filter.EntityParameters.ItemsPerPage);
 
             var pageModel = new PageModel<AuthorModel>(pagedList);
             return pageModel;

@@ -1,8 +1,8 @@
+import { IClients } from "./IClients";
+import { IPageParameters } from "./IPageParameters";
+
 export interface IPageModel {
-    pageParameters: {
-        pageNumber: number;
-        pageSize: number;
-    };
+    pageParameters: IPageParameters
     isDescending: boolean;
     orderByString: string;
     name: string;

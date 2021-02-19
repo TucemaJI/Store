@@ -6,5 +6,5 @@ const getClients = (state: IAppState) => state.administrator;
 
 export const selectAdministrator = createSelector(
     getClients,
-    (state: IAdministratorState) => state.clients,
+    (state: IAdministratorState) => state,
 )

@@ -52,8 +52,8 @@ namespace Store.DataAccess.Repositories.Base
             }
 
             var sortedT = PagedList<T>.ToSortedListAsync(source: ts.OrderBy(filter.OrderByString),
-                pageNumber: filter.EntityParameters.PageNumber,
-                pageSize: filter.EntityParameters.PageSize,
+                pageNumber: filter.EntityParameters.CurrentPage,
+                pageSize: filter.EntityParameters.ItemsPerPage,
                 isDescending: filter.IsDescending);
 
             return sortedT;
