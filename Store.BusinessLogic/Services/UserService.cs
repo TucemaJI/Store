@@ -122,7 +122,8 @@ namespace Store.BusinessLogic.Services
         public async Task<PageModel<UserModel>> FilterUsersAsync(UserFilter filter)
         {
             var users = _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
-                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"));
+                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
+                .Where(u => u.IsBlocked.Equals(filter.IsBlocked));
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
                 filter.OrderByString = "FirstName";

@@ -1,18 +1,18 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { IClients } from "../models/IClients";
-import { IPageModel } from "../models/IPageModel";
+import { IClientsPageModel } from "../models/IClientsPageModel";
 
 @Injectable()
 export class AdministratorHttpService {
 
     constructor(private http: HttpClient) { }
 
-    postPage(pageModel: IPageModel) {
+    postPage(pageModel: IClientsPageModel) {
         const body = {
             entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
-            name: pageModel.name, email: pageModel.email,
+            name: pageModel.name, email: pageModel.email, isBlocked: pageModel.isBlocked,
         };
         return this.http.post('https://localhost:44355/api/user/filterusers', body);
     }

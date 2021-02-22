@@ -1,4 +1,4 @@
-export interface IChangeModel {
+export interface IChangeClientModel {
     firstName: string;
     lastName: string;
     email: string;

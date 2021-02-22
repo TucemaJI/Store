@@ -1,61 +1,56 @@
 <mat-card>
-    <mat-card-title>Users managment</mat-card-title>
+    <mat-card-title>Authors Page
+        <mat-icon class="right" (click)="addAuthor()">add_circle</mat-icon>
+    </mat-card-title>
     <mat-card-content>
-        <table mat-table [dataSource]="clientsData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
+        <table mat-table [dataSource]="authorsData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
          currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}" class="mat-elevation-z8">
-            <ng-container matColumnDef="userName">
+            <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef>
-                    User Name <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
+                    Id <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
                     <mat-menu #menu="matMenu">
                         <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilter($event, 'userName')"
                             mat-menu-item placeholder="search" />
                     </mat-menu>
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lastName}}</td>
+                <td mat-cell *matCellDef="let element"> {{element.id}}</td>
             </ng-container>
-            <ng-container matColumnDef="userEmail">
-                <th mat-header-cell *matHeaderCellDef> User Email
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name
                     <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
                     <mat-menu #menu="matMenu">
                         <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilter($event,'email')"
                             mat-menu-item placeholder="search" />
                     </mat-menu>
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status
+            <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef> Product
                     <mat-icon [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
                     <mat-menu #menu="matMenu">
                         <mat-slide-toggle [(ngModel)]="statusFilter" (ngModelChange)="filterSlide()">
                         </mat-slide-toggle>
                     </mat-menu>
                 </th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-slide-toggle (change)="changeUserBlock(element)" [checked]="element.isBlocked">
-                    </mat-slide-toggle>
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="buttons">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element"> {{element.product}}
                     <mat-icon (click)="editClient(element)">edit</mat-icon>
                     <mat-icon (click)="deleteClient(element)">highlight_off</mat-icon>
                 </td>
             </ng-container>
 
+            <!-- <ng-container matColumnDef="buttons">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon (click)="editClient(element)">edit</mat-icon>
+                    <mat-icon (click)="deleteClient(element)">highlight_off</mat-icon>
+                </td>
+            </ng-container> -->
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
-
-        <!-- <mat-paginator [length]="totalCount" [pageSize]="pageSize" 
-            ></mat-paginator> -->
-        <!-- <ul>
-            <li *ngFor="let item of collection | paginate: { itemsPerPage: 10, currentPage: p }"> ... </li>
-          </ul> -->
-
         <pagination-controls id="idPaginator" (pageChange)="pageChanged($event)"> </pagination-controls>
     </mat-card-content>
 </mat-card>

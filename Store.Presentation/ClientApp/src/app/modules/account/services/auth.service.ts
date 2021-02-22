@@ -6,6 +6,17 @@ import { Token } from "../models/Token";
 
 @Injectable()
 export class AuthService {
+
+    public isAdmin(): boolean{
+        const token = this.getToken();
+        const decoded = this.jwtHelper.decodeToken(token);
+        const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+        if(role === "Admin"){
+            return true;
+        }
+        return false;
+    }
+
     public saveToken(token) {
         debugger;
         console.log("NEW TOKEN");

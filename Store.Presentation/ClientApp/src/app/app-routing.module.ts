@@ -6,9 +6,10 @@ import { SignInComponent } from './modules/account/components/sign-in/sign-in.co
 import { SignUpComponent } from './modules/account/components/sign-up/sign-up.component';
 import { ClientsComponent } from './modules/administrator/components/clients/clients.component';
 import { AdministratorComponent } from './modules/administrator/components/administrator/administrator.component';
-import { TestGuard } from './modules/shared/guards/test.guard';
+import { AdminGuard } from './modules/shared/guards/admin.guard';
 import { HeaderComponent } from './modules/shared/header/header.component';
 import { ProfileComponent } from './modules/user/profile/profile.component';
+import { AuthorsComponent } from './modules/administrator/components/authors/authors.component';
 
 const routes: Routes = [
 
@@ -18,8 +19,9 @@ const routes: Routes = [
   { path: 'confirm-password', component: ConfirmPasswordComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'administrator', component: AdministratorComponent, canActivate: [TestGuard], children: [
-      { path: 'clients', component: ClientsComponent }, ]
+  { path: 'administrator', component: AdministratorComponent, canActivate: [AdminGuard], children: [
+      { path: 'clients', component: ClientsComponent },
+      { path: 'authors', component: AuthorsComponent },]
   },
 
 
@@ -29,6 +31,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [TestGuard]
+  providers: [AdminGuard]
 })
 export class AppRoutingModule { }

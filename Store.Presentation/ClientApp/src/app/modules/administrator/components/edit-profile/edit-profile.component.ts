@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { CheckerErrors } from 'src/app/modules/shared/validator';
 import { IAppState } from 'src/app/store/state/app.state';
-import { IChangeModel } from '../../models/IChangeModel';
+import { IChangeClientModel } from '../../models/IChangeClientModel';
 import { IClients } from '../../models/IClients';
 import { clientChange } from '../../store/administrator.actions';
 
@@ -36,7 +36,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   submit(profileFormValue) {
-    let client: IChangeModel = {
+    let client: IChangeClientModel = {
       firstName: profileFormValue.firstName,
       lastName: profileFormValue.lastName,
       email: profileFormValue.email,

@@ -6,11 +6,12 @@ import { MaterialModule } from '../shared/material.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { AuthorsComponent } from './components/authors/authors.component';
 
 
 
 @NgModule({
-  declarations: [AdministratorComponent, ClientsComponent, EditProfileComponent],
+  declarations: [AdministratorComponent, ClientsComponent, EditProfileComponent, AuthorsComponent],
   imports: [
     CommonModule,
     MaterialModule,

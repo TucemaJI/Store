@@ -30,7 +30,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatNativeDateModule} from '@angular/material/core';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
     exports: [
@@ -66,6 +66,7 @@ import { ReactiveFormsModule } from "@angular/forms";
         MatPaginatorModule,
         MatNativeDateModule,
         ReactiveFormsModule,
+        FormsModule,
     ]
 })
 export class MaterialModule {}

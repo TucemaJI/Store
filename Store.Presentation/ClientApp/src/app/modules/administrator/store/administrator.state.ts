@@ -1,9 +1,9 @@
 import { IClients } from "../models/IClients";
-import { IPageModel } from "../models/IPageModel";
+import { IClientsPageModel } from "../models/IClientsPageModel";
 
 export interface IAdministratorState {
     clients: IClients[];
-    pageModel: IPageModel;
+    pageModel: IClientsPageModel;
 }
 export const initialAdministratorState = {
     clients: null,

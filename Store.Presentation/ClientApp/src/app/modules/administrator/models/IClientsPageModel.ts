@@ -1,10 +1,10 @@
-import { IClients } from "./IClients";
 import { IPageParameters } from "./IPageParameters";
 
-export interface IPageModel {
+export interface IClientsPageModel {
     pageParameters: IPageParameters
     isDescending: boolean;
     orderByString: string;
     name: string;
     email: string;
+    isBlocked: boolean;
 }
