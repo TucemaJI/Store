@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Email, AccountHttpService } from '../../services/http.service';
+import { Email, AccountHttpService } from '../../../shared/services/account-http.service';
 
 @Component({
   selector: 'app-password-recovery',

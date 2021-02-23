@@ -23,15 +23,15 @@ import { UserModule } from './modules/user/user.module';
 import { MaterialModule } from './modules/shared/material.module';
 import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule } from 'ngx-toastr';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AccountHttpService } from './modules/account/services/http.service';
+import { AccountHttpService } from './modules/shared/services/account-http.service';
 import { AccountEffects } from './modules/account/store/account.effects';
 import { appReducers } from './store/reducers/app.reducers';
-import { TokenInterceptor } from './interceptors/auth.interceptor';
+import { TokenInterceptor } from './modules/shared/interceptors/auth.interceptor';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
-import { AdministratorHttpService } from './modules/administrator/services/http.service';
+import { AdministratorHttpService } from './modules/shared/services/administrator-http.service';
 import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
-import { AuthService } from './modules/account/services/auth.service';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { AuthService } from './modules/shared/services/auth.service';
+import { ErrorInterceptor } from './modules/shared/interceptors/error.interceptor';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
@@ -45,7 +45,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects]),
+    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects,]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,

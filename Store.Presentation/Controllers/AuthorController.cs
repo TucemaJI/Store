@@ -23,7 +23,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("GetAuthorsWithFilter")]
-        public Task<PageModel<AuthorModel>> GetAuthorModelsAsync([FromQuery] AuthorFilter filter)
+        public Task<PageModel<AuthorModel>> GetAuthorModelsAsync([FromBody] AuthorFilter filter)
         {
             return _authorService.GetAuthorModelsAsync(filter);
         }
@@ -42,7 +42,7 @@ namespace Store.Presentation.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("CreateAuthor")]
-        public async Task CreateAuthorAsync(AuthorModel authorModel)
+        public async Task CreateAuthorAsync([FromBody] AuthorModel authorModel)
         {
             await _authorService.CreateAuthorAsync(authorModel);
         }
@@ -50,14 +50,14 @@ namespace Store.Presentation.Controllers
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("DeleteAuthor")]
 
-        public async Task DeleteAuthorAsync(long id)
+        public async Task DeleteAuthorAsync([FromBody]AuthorModel authorModel)
         {
-            await _authorService.DeleteAuthorAsync(id);
+            await _authorService.DeleteAuthorAsync(authorModel);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("UpdateAuthor")]
-        public void UpdateAuthor(AuthorModel authorModel)
+        public void UpdateAuthor([FromBody]AuthorModel authorModel)
         {
             _authorService.UpdateAuthor(authorModel);
         }

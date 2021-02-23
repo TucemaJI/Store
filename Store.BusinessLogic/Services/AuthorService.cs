@@ -51,9 +51,9 @@ namespace Store.BusinessLogic.Services
             return _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
         }
 
-        public async Task DeleteAuthorAsync(long id)
+        public async Task DeleteAuthorAsync(AuthorModel authorModel)
         {
-            await _authorRepository.DeleteAsync(id);
+            await _authorRepository.DeleteAsync(authorModel.Id);
         }
 
         public void UpdateAuthor(AuthorModel authorModel)

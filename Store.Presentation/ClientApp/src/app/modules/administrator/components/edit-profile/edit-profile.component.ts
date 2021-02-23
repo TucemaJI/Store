@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { CheckerErrors } from 'src/app/modules/shared/validator';
 import { IAppState } from 'src/app/store/state/app.state';
-import { IChangeClientModel } from '../../models/IChangeClientModel';
-import { IClients } from '../../models/IClients';
+import { IChangeClientModel } from '../../../shared/models/IChangeClientModel';
+import { IClients } from '../../../shared/models/IClients';
 import { clientChange } from '../../store/administrator.actions';
 
 @Component({

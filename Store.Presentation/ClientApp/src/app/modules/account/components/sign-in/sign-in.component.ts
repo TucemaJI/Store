@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
-import { ILoginModel } from '../../models/ILoginModel';
-import { AccountHttpService} from '../../services/http.service';
+import { ILoginModel } from '../../../shared/models/ILoginModel';
+import { AccountHttpService} from '../../../shared/services/account-http.service';
 import { EAccountActions, signIn } from '../../store/account.actions';
 
 @Component({

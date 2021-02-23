@@ -1,8 +1,8 @@
 import { Action, createAction, props } from "@ngrx/store";
-import { User } from "../models/User";
-import { ILoginModel } from "../models/ILoginModel";
-import { IConfirmModel } from "../models/IConfirmModel";
-import { Token } from "../models/Token";
+import { User } from "../../shared/models/User";
+import { ILoginModel } from "../../shared/models/ILoginModel";
+import { IConfirmModel } from "../../shared/models/IConfirmModel";
+import { Token } from "../../shared/models/Token";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',

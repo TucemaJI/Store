@@ -2,14 +2,14 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EAccountActions } from "./account.actions";
 import { map, catchError, exhaustMap } from 'rxjs/operators';
-import { AccountHttpService } from '../services/http.service'
+import { AccountHttpService } from '../../shared/services/account-http.service'
 import { of } from "rxjs";
-import { ILoginModel } from "../models/ILoginModel";
+import { ILoginModel } from "../../shared/models/ILoginModel";
 import { error } from "../../../store/actions/error.action"
-import { Token } from "../models/Token";
-import { User } from "../models/User";
+import { Token } from "../../shared/models/Token";
+import { User } from "../../shared/models/User";
 import { Router } from "@angular/router";
-import { IConfirmModel } from "../models/IConfirmModel";
+import { IConfirmModel } from "../../shared/models/IConfirmModel";
 
 @Injectable()
 export class AccountEffects {

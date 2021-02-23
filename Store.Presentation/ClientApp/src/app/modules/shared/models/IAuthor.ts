@@ -1,5 +1,6 @@
 export interface IAuthor {
   id: number;
-  name: string;
+  firstName: string;
+  secondName: string;
   products: string[];
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { IConfirmModel } from '../../models/IConfirmModel';
+import { IConfirmModel } from '../../../shared/models/IConfirmModel';
 import { confirmPassword } from '../../store/account.actions';
 
 @Component({

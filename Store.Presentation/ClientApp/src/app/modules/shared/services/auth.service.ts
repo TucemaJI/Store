@@ -1,17 +1,18 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { resultMemoize } from "@ngrx/store";
 import { tap } from "rxjs/operators";
 import { Token } from "../models/Token";
 
 @Injectable()
 export class AuthService {
 
-    public isAdmin(): boolean{
+    public isAdmin(): boolean {
         const token = this.getToken();
         const decoded = this.jwtHelper.decodeToken(token);
         const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-        if(role === "Admin"){
+        if (role === "Admin") {
             return true;
         }
         return false;
@@ -32,8 +33,8 @@ export class AuthService {
         return this.jwtHelper.isTokenExpired(token);
     }
     public refreshToken(token) {
-        this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', token).subscribe(
-            result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) }
+        return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', token).pipe(
+            tap(result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) })
         )
     }
 

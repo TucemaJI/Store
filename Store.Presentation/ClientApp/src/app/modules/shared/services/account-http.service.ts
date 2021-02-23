@@ -39,12 +39,7 @@ export class AccountHttpService {
     }
 
     postRefresh(token: Token) {
-        let tokenModel: Token = new Token();
-        tokenModel.accessToken = token.accessToken;
-        tokenModel.refreshToken = token.refreshToken;
-        //const body = { accessToken: token.accessToken, refreshToken: token.refreshToken };
-        debugger;
-        return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', tokenModel).pipe(
+        return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', token).pipe(
             tap(result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) })
         );
 
