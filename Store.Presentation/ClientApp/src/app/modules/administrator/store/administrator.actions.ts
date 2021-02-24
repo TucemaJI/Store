@@ -21,7 +21,7 @@ export enum EAdministratorActions {
     ChangeAuthor = '[Administrator] Change Author',
     ChangeAuthorSuccess = '[Administrator] Change Author Success',
     DeleteAuthor = '[Administrator] Delete Author',
-    DeleteAuthorSuccess = '[Administrator] Delete Administrator Success',
+    DeleteAuthorSuccess = '[Administrator] Delete Author Success',
 }
 
 export const getClients = createAction(EAdministratorActions.GetClients, props<{ pageModel: IClientsPageModel }>());

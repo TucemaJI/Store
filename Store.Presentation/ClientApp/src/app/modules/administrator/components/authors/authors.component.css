@@ -2,6 +2,9 @@
     float:right;
     cursor: pointer;
 }
+.pointer{
+    cursor:pointer;
+}
 table {
     width: 100%;
   }

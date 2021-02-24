@@ -56,9 +56,10 @@ namespace Store.BusinessLogic.Services
             await _authorRepository.DeleteAsync(authorModel.Id);
         }
 
-        public void UpdateAuthor(AuthorModel authorModel)
+        public async void UpdateAuthorAsync(AuthorModel authorModel)
         {
-            var author = _mapper.Map<AuthorModel, Author>(authorModel);
+            var author = await _authorRepository.GetItemAsync(authorModel.Id);
+            author.Name = $"{authorModel.FirstName} {authorModel.LastName}";
             _authorRepository.UpdateAsync(author);
         }
     }

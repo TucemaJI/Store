@@ -13,7 +13,8 @@ namespace Store.BusinessLogic.Mappers
                 .ForMember(a => a.Name, opt => opt.MapFrom(c => $"{c.FirstName} {c.LastName}"));
             CreateMap<Author, AuthorModel>()
                 .ForMember(am => am.FirstName, opt => opt.MapFrom(c => GetNames(c).FirstOrDefault()))
-                .ForMember(am => am.LastName, opt => opt.MapFrom(c => GetNames(c).LastOrDefault()));
+                .ForMember(am => am.LastName, opt => opt.MapFrom(c => GetNames(c).LastOrDefault()))
+                .ForMember(am => am.PrintingEditions, opt => opt.MapFrom(c=> c.AuthorInPrintingEditions.Select(pe=>pe.PrintingEdition.Title)));
         }
 
         private string[] GetNames(Author author)

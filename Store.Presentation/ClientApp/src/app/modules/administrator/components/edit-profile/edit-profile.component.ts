@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { CheckerErrors } from 'src/app/modules/shared/validator';
 import { IAppState } from 'src/app/store/state/app.state';
@@ -18,7 +18,7 @@ export class EditProfileComponent implements OnInit {
   profileForm: FormGroup;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private store: Store<IAppState>) { }
+  constructor(public dialogRef: MatDialogRef<EditProfileComponent>, @Inject(MAT_DIALOG_DATA) public data, private store: Store<IAppState>) { }
 
   ngOnInit(): void {
     this.profileForm = new FormGroup({
@@ -48,5 +48,8 @@ export class EditProfileComponent implements OnInit {
     debugger;
     this.store.dispatch(clientChange({ client }));
     location.reload();
+  }
+  cancel() {
+    this.dialogRef.close();
   }
 }

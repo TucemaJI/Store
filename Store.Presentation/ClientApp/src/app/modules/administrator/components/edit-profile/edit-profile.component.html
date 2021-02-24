@@ -73,7 +73,7 @@
         </mat-form-field>
     </form>
     <div>
-        <button mat-raised-button type="reset">Cancel</button>
+        <button mat-raised-button (click)="cancel()" type="reset">Cancel</button>
         <button class="save" mat-raised-button (click)="submit(profileForm.value)" type="submit">Save</button>
     </div>
 </div>

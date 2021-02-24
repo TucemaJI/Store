@@ -7,11 +7,12 @@ import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { AuthorsComponent } from './components/authors/authors.component';
+import { EditAuthorComponent } from './components/edit-author/edit-author.component';
 
 
 
 @NgModule({
-  declarations: [AdministratorComponent, ClientsComponent, EditProfileComponent, AuthorsComponent],
+  declarations: [AdministratorComponent, ClientsComponent, EditProfileComponent, AuthorsComponent, EditAuthorComponent],
   imports: [
     CommonModule,
     MaterialModule,

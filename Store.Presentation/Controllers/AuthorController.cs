@@ -59,7 +59,7 @@ namespace Store.Presentation.Controllers
         [HttpPost("UpdateAuthor")]
         public void UpdateAuthor([FromBody]AuthorModel authorModel)
         {
-            _authorService.UpdateAuthor(authorModel);
+            _authorService.UpdateAuthorAsync(authorModel);
         }
     }
 }

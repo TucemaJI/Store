@@ -50,28 +50,28 @@ export class AdministratorHttpService {
         };
         return this.http.post('https://localhost:44355/api/author/getauthorswithfilter', body);
     }
-    addAuthor(author:IAuthor){
+    addAuthor(author) {
         const body = {
-            id:author.id,
-            firstName:author.firstName,
-            secondName:author.secondName,
+            firstName: author.author.firstName,
+            lastName: author.author.lastName,
         };
+        debugger;
         return this.http.post('https://localhost:44355/api/author/createauthor', body);
     }
-    changeAuthor(author:IAuthor){
+    changeAuthor(author) {
         const body = {
-            id:author.id,
-            firstName:author.firstName,
-            secondName:author.secondName,
-            products:author.products,
+            id: author.author.id,
+            firstName: author.author.firstName,
+            lastName: author.author.lastName,
+            printingEditions: author.author.printingEditions,
         }
         return this.http.post('https://localhost:44355/api/author/updateauthor', body);
     }
-    deleteAuthor(author:IAuthor){
+    deleteAuthor(author) {
         const body = {
-            id:author.id,
-            firstName:author.firstName,
-            secondName:author.secondName,
+            id: author.author.id,
+            firstName: author.author.firstName,
+            lastName: author.author.lastName,
         };
         return this.http.post('https://localhost:44355/api/author/deleteauthor', body);
     }

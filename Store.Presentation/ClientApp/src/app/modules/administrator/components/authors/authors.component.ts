@@ -4,8 +4,9 @@ import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { IAuthor } from '../../../shared/models/IAuthor';
 import { IPageParameters } from '../../../shared/models/IPageParameters';
-import { getAuthors } from '../../store/administrator.actions';
+import { deleteAuthor, getAuthors } from '../../store/administrator.actions';
 import { selectAdministrator } from '../../store/administrator.selector';
+import { EditAuthorComponent } from '../edit-author/edit-author.component';
 
 @Component({
   selector: 'app-authors',
@@ -15,10 +16,10 @@ import { selectAdministrator } from '../../store/administrator.selector';
 export class AuthorsComponent implements OnInit {
 
   displayedColumns: string[] = ['ID', 'Name', 'Product'];
-  pageModel:any;
+  pageModel: any;
   pageParameters: IPageParameters;
   authorsData: IAuthor[];
-  tempData: IAuthor;
+  serchTest: any;
 
   constructor(private store: Store<IAppState>, public dialog: MatDialog) { }
 
@@ -32,23 +33,12 @@ export class AuthorsComponent implements OnInit {
       pageParameters: this.pageParameters,
       isDescending: false,
       orderByString: '',
-      id: '',
+      id: null,
       name: '',
     };
+    debugger;
     this.store.dispatch(getAuthors(this.pageModel));
-    
-    // this.tempData = {
-    //   id: 36,
-    //   firstName: 'AuthorsName',
-    //   secondName:'AuthorsSecondName',
-    //   products: [
-    //     "firstbook",
-    //     'secondBook',
-    //   ]
-    // }
-    // this.authorsData = [
-    //   this.tempData,
-    // ]
+    this.getAuthors();
   }
 
   getAuthors() {
@@ -64,9 +54,27 @@ export class AuthorsComponent implements OnInit {
       }
     )
   }
-  addAuthor() { }
+  addAuthor() {
+    const dialog = this.dialog.open(EditAuthorComponent, {
+      data: { addForm: true }
+    })
+  }
   pageChanged(event) { }
   applyFilter() { }
   reverse() { }
-
+  editAuthor(element) {
+    const dialog = this.dialog.open(EditAuthorComponent, {
+      data: { addForm: false, element }
+    })
+  }
+  deleteAuthor(element) {
+    const author: IAuthor = {
+      id: element.id,
+      firstName: element.firstName,
+      lastName: element.lastName,
+      printingEditions: null,
+    }
+    this.store.dispatch(deleteAuthor({ author }));
+    location.reload();
+  }
 }

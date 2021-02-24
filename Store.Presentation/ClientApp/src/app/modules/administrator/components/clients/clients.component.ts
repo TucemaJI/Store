@@ -46,8 +46,6 @@ export class ClientsComponent implements OnInit {
     };
     this.store.dispatch(getClients(this.pageModel));
     this.getClients();
-
-
   }
 
   filterSlide(){

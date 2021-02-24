@@ -13,6 +13,6 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<List<AuthorModel>> GetAuthorModelsAsync();
         public Task<PageModel<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter);
         public Task DeleteAuthorAsync(AuthorModel authorModel);
-        public void UpdateAuthor(AuthorModel authorModel);
+        public void UpdateAuthorAsync(AuthorModel authorModel);
     }
 }
