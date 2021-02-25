@@ -1,0 +1,61 @@
+<mat-card>
+    <mat-card-title>Catalog
+        <input class="right">
+    </mat-card-title>
+    <mat-card-content>
+        <div class="menu">
+            <div> Categories <br>
+                <input type="checkbox"> Books<br>
+                <input type="checkbox"> Journal<br>
+                <input type="checkbox"> Newspaper<br>
+                <hr>
+                Price<br>
+                <input > - <input >$ <button mat-raised-button>OK</button><br>
+                <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+            </div>
+
+        </div>
+
+        <pagination-controls id="idPaginator" (pageChange)="pageChanged($event)"> </pagination-controls>
+
+        <!-- <table mat-table [dataSource]="testData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
+         currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}" class="mat-elevation-z8">
+                <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Id <mat-icon class="pointer" [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
+                        <mat-menu #menu="matMenu">
+                            <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilter($event, 'id')"
+                                mat-menu-item placeholder="search" />
+                        </mat-menu>
+                        <mat-icon class="pointer" (click)="reverse('id')">unfold_more</mat-icon>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+                </ng-container>
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef> Name
+                        <mat-icon class="pointer" [matMenuTriggerFor]="menu">arrow_drop_down</mat-icon>
+                        <mat-menu #menu="matMenu">
+                            <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilter($event,'name')"
+                                mat-menu-item placeholder="search" />
+                        </mat-menu>
+                        <mat-icon class="pointer" (click)="reverse('name')">unfold_more</mat-icon>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lastName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Product">
+                    <th mat-header-cell *matHeaderCellDef> Product </th>
+                    <td mat-cell *matCellDef="let element">
+                        <li *ngFor="let item of element.printingEditions"> {{item}} </li>
+                        <mat-icon class="right" (click)="deleteAuthor(element)">highlight_off</mat-icon>
+                        <mat-icon class="right" (click)="editAuthor(element)">edit</mat-icon>
+
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table> -->
+
+    </mat-card-content>
+</mat-card>

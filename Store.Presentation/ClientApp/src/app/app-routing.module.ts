@@ -10,19 +10,22 @@ import { AdminGuard } from './modules/shared/guards/admin.guard';
 import { HeaderComponent } from './modules/shared/header/header.component';
 import { ProfileComponent } from './modules/user/profile/profile.component';
 import { AuthorsComponent } from './modules/administrator/components/authors/authors.component';
+import { PrintingEditionComponent } from './modules/printing-edition/components/printing-edition/printing-edition.component';
 
 const routes: Routes = [
 
-  { path: '', component: SignInComponent },
+  { path: '', component: PrintingEditionComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'confirm-password', component: ConfirmPasswordComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'administrator', component: AdministratorComponent, canActivate: [AdminGuard], children: [
+  {
+    path: 'administrator', component: AdministratorComponent, canActivate: [AdminGuard], children: [
       { path: 'clients', component: ClientsComponent },
       { path: 'authors', component: AuthorsComponent },]
   },
+  { path: 'printing-edition', component: PrintingEditionComponent },
 
 
 
