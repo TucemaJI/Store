@@ -20,6 +20,7 @@ export class AuthorsComponent implements OnInit {
   pageParameters: IPageParameters;
   authorsData: IAuthor[];
   serchTest: any;
+  isDescending: boolean = false;
 
   constructor(private store: Store<IAppState>, public dialog: MatDialog) { }
 
@@ -31,9 +32,9 @@ export class AuthorsComponent implements OnInit {
     }
     this.pageModel = {
       pageParameters: this.pageParameters,
-      isDescending: false,
+      isDescending: this.isDescending,
       orderByString: '',
-      id: null,
+      id: '',
       name: '',
     };
     debugger;
@@ -59,9 +60,34 @@ export class AuthorsComponent implements OnInit {
       data: { addForm: true }
     })
   }
-  pageChanged(event) { }
-  applyFilter() { }
-  reverse() { }
+  pageChanged(event) {
+    this.pageModel.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
+    this.store.dispatch(getAuthors(this.pageModel));
+  }
+  applyFilter(event, filterName: string) {
+    this.pageModel = {
+      pageParameters: this.pageParameters,
+      isDescending: this.isDescending,
+      orderByString: filterName,
+      id: '',
+      name: '',
+    };
+    if (filterName === 'name') {
+      this.pageModel.name = event;
+    };
+    if (filterName === 'id') {
+      this.pageModel.id = event;
+    }
+    debugger;
+    this.store.dispatch(getAuthors(this.pageModel));
+  }
+  reverse(orderBy:string) {
+    this.isDescending = this.isDescending === true ? this.isDescending = false : this.isDescending = true;
+    this.pageModel.isDescending = this.isDescending;
+    this.pageModel.orderByString = orderBy;
+    debugger;
+    this.store.dispatch(getAuthors(this.pageModel));
+  }
   editAuthor(element) {
     const dialog = this.dialog.open(EditAuthorComponent, {
       data: { addForm: false, element }

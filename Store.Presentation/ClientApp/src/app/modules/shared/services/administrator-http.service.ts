@@ -48,6 +48,7 @@ export class AdministratorHttpService {
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
             name: pageModel.name, id: pageModel.id,
         };
+        debugger;
         return this.http.post('https://localhost:44355/api/author/getauthorswithfilter', body);
     }
     addAuthor(author) {

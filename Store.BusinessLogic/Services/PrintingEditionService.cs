@@ -8,6 +8,7 @@ using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
@@ -53,9 +54,10 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
-            var printingEditions = await _printingEditionRepository.GetFilterSortedListAsync(filter);
-            var printingEditionModels = _printingEditionMapper.Map(printingEditions);
-            var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var printingEditions =  _printingEditionRepository.GetFilteredList(filter);
+            var sortedPrintingEditions = await _printingEditionRepository.GetSortedListAsync(filter: filter, ts: printingEditions);
+            var printingEditionModels = _printingEditionMapper.Map(sortedPrintingEditions);
+            var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
             return pageModel;
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);

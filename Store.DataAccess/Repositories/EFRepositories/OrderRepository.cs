@@ -15,14 +15,14 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public OrderRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public Task<List<Order>> GetFilterSortedListAsync(OrderFilter filter)
+        public IQueryable<Order> GetFilteredList(OrderFilter filter)
         {
             var orders = _dbSet.Include(item => item.OrderItems)
                 .Where(o => o.PaymentId == filter.Payment)
                 .Where(o => o.Status == filter.Status)
                 .Where(o => o.OrderItems.Any(oi => EF.Functions.Like(oi.Currency, $"%{filter.Currency}%")));
-            var sortedOrders = GetSortedListAsync(filter: filter, ts: orders);
-            return sortedOrders;
+            
+            return orders;
         }
     }
 }

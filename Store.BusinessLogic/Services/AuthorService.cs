@@ -36,8 +36,9 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
         {
-            var authorList = await _authorRepository.GetFilterSortedListAsync(filter);
-            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
+            var authorList = _authorRepository.GetFilteredList(filter);
+            var sortedAuthors = await _authorRepository.GetSortedListAsync(filter: filter, ts: authorList);
+            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(sortedAuthors);
             var pagedList = PagedList<AuthorModel>.ToPagedList(authorModelList, authorList.Count(), pageNumber: filter.EntityParameters.CurrentPage,
                 pageSize: filter.EntityParameters.ItemsPerPage);
 

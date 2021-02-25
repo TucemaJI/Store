@@ -6,6 +6,7 @@ using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
@@ -41,9 +42,10 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
         {
-            var orderList = await _orderRepository.GetFilterSortedListAsync(filter);
-            var orderModelList = _orderMapper.Map(orderList);
-            var pagedList = PagedList<OrderModel>.ToPagedList(orderModelList, orderList.Count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var orderList = _orderRepository.GetFilteredList(filter);
+            var sortedOrders = await _orderRepository.GetSortedListAsync(filter: filter, ts: orderList);
+            var orderModelList = _orderMapper.Map(sortedOrders);
+            var pagedList = PagedList<OrderModel>.ToPagedList(orderModelList, orderList.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<OrderModel>(pagedList);
             return pageModel;
         }

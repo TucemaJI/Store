@@ -44,17 +44,15 @@ namespace Store.DataAccess.Repositories.Base
             _dbSet.Update(item).State = EntityState.Modified;
             await _applicationContext.SaveChangesAsync();
         }
-        protected Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> ts)
+        public Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> ts)
         {
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
                 filter.OrderByString = "Id";
             }
-
-            var sortedT = PagedList<T>.ToSortedListAsync(source: ts.OrderBy(filter.OrderByString),
+            var sortedT = PagedList<T>.ToSortedListAsync(source: ts.OrderBy(filter.OrderByString, filter.IsDescending),
                 pageNumber: filter.EntityParameters.CurrentPage,
-                pageSize: filter.EntityParameters.ItemsPerPage,
-                isDescending: filter.IsDescending);
+                pageSize: filter.EntityParameters.ItemsPerPage);
 
             return sortedT;
         }

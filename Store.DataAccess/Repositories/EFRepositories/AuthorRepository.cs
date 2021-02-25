@@ -15,13 +15,12 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public Task<List<Author>> GetFilterSortedListAsync(AuthorFilter filter)
+        public IQueryable<Author> GetFilteredList(AuthorFilter filter)
         {
             var authors = _dbSet.Include(item => item.AuthorInPrintingEditions).ThenInclude(i=>i.PrintingEdition)
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
-                .Where(a=>a.Id.ToString().Contains(filter.Id.ToString()));
-            var sortedAuthors = GetSortedListAsync(filter: filter, ts: authors);
-            return sortedAuthors;
+                .Where(a=>a.Id.ToString().Contains(filter.Id));
+            return authors;
         }
     }
 }

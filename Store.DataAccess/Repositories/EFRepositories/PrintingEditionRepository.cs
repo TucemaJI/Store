@@ -15,7 +15,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public PrintingEditionRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public Task<List<PrintingEdition>> GetFilterSortedListAsync(PrintingEditionFilter filter)
+        public IQueryable<PrintingEdition> GetFilteredList(PrintingEditionFilter filter)
         {
             var printingEditions = _dbSet.Include(item => item.AuthorsInPrintingEdition)
                 .ThenInclude(item => item.Author)
@@ -24,8 +24,8 @@ namespace Store.DataAccess.Repositories.EFRepositories
                 .Where(pE => pE.Type == filter.Type)
                 .Where(pE => filter.MaxPrice >= pE.Price && pE.Price >= filter.MinPrice)
                 .Where(pE => pE.AuthorsInPrintingEdition.Any(aipe => EF.Functions.Like(aipe.Author.Name, $"%{filter.Name}%")));
-            var sortedPrintingEditions = GetSortedListAsync(filter: filter, ts: printingEditions);
-            return sortedPrintingEditions;
+            
+            return printingEditions;
         }
     }
 }

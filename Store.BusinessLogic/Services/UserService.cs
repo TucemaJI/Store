@@ -129,10 +129,9 @@ namespace Store.BusinessLogic.Services
                 filter.OrderByString = "FirstName";
             }
 
-            var sortedUsers = await PagedList<User>.ToSortedListAsync(source: users.OrderBy(filter.OrderByString),
+            var sortedUsers = await PagedList<User>.ToSortedListAsync(source: users.OrderBy(filter.OrderByString, filter.IsDescending),
                 pageNumber: filter.EntityParameters.CurrentPage,
-                pageSize: filter.EntityParameters.ItemsPerPage,
-                isDescending: filter.IsDescending);
+                pageSize: filter.EntityParameters.ItemsPerPage);
 
             var sortedUserModels = _userMapper.Map(sortedUsers);
 
