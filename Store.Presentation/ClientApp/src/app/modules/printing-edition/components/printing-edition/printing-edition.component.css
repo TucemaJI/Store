@@ -3,7 +3,36 @@
 }
 .right{
     float:right;
+    width: 70%;
 }
 .menu{
     width:25%;
+}
+.line{
+    border-left: 1px solid lightgray;
+    height: 93%;
+    position: absolute;
+    left: 25.5%;
+    top: 7%;
+}
+.underTopLine{
+    margin-top: -15%;
+    margin-left: 60%;
+    padding-bottom: 15%;
+}
+.paginator{
+    padding-top: 26.5%;
+    padding-left: 80%;
+}
+.table{
+    right: 5%;
+    width: 105%;
+    margin-top: -15%;
+}
+li {
+    list-style-type: none;
+}
+.icon{
+    font-size: 800%;
+    color: lightskyblue;
 }

@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-title>Catalog
-        <input class="right">
+        <input class="right" placeholder="Search by book title">
     </mat-card-title>
     <mat-card-content>
         <div class="menu">
@@ -10,13 +10,47 @@
                 <input type="checkbox"> Newspaper<br>
                 <hr>
                 Price<br>
-                <input > - <input >$ <button mat-raised-button>OK</button><br>
+                <input> - <input>$ <button mat-raised-button>OK</button><br>
                 <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
             </div>
+        </div>
+        <div class="right">
+            <div class="line"></div>
+            <div class="underTopLine">
+                Currency
+                <mat-form-field appreance="fill">
+                    <mat-select>
+                        <mat-option *ngFor="let currency of currencies" [value]="currency.value">
+                            {{currency.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                Sort by
+                <mat-form-field appreance="fill">
 
+                    <mat-select>
+                        <mat-option *ngFor="let currency of currencies" [value]="currency.value">
+                            {{currency.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-grid-list class="table" cols="3" rowHeight="1.3:1">
+                    <mat-grid-tile  *ngFor="let pE of pEs | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
+                    currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}">
+                        <ul>
+                            <mat-icon class="icon">chrome_reader_mode</mat-icon>
+                            <li>{{pE.title}}</li>
+                            <li>{{pE.author}}</li>
+                            <li>{{pE.price}}</li>
+                        </ul>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
         </div>
 
-        <pagination-controls id="idPaginator" (pageChange)="pageChanged($event)"> </pagination-controls>
+
 
         <!-- <table mat-table [dataSource]="testData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
          currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}" class="mat-elevation-z8">
@@ -58,4 +92,7 @@
             </table> -->
 
     </mat-card-content>
+    <div class="paginator">
+        <pagination-controls id="idPaginator" (pageChange)="pageChanged($event)"> </pagination-controls>
+    </div>
 </mat-card>
