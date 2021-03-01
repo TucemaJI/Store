@@ -16,6 +16,7 @@ export class AdministratorHttpService {
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
             name: pageModel.name, email: pageModel.email, isBlocked: pageModel.isBlocked,
         };
+        debugger;
         return this.http.post('https://localhost:44355/api/user/filterusers', body);
     }
     changeClient(client) {

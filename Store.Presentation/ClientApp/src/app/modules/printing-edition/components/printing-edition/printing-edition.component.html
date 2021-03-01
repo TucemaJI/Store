@@ -10,7 +10,7 @@
                 <input type="checkbox"> Newspaper<br>
                 <hr>
                 Price<br>
-                <input> - <input>$ <button mat-raised-button>OK</button><br>
+                <input type="number" [(value)]="value"> - <input type="number"[(value)]="highValue">$ <button mat-raised-button>OK</button><br>
                 <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
             </div>
         </div>
@@ -20,8 +20,8 @@
                 Currency
                 <mat-form-field appreance="fill">
                     <mat-select>
-                        <mat-option *ngFor="let currency of currencies" [value]="currency.value">
-                            {{currency.viewValue}}
+                        <mat-option *ngFor="let currency of currencies|enumToArray" [value]="currency">
+                            {{currency}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -29,26 +29,27 @@
                 <mat-form-field appreance="fill">
 
                     <mat-select>
-                        <mat-option *ngFor="let currency of currencies" [value]="currency.value">
-                            {{currency.viewValue}}
+                        <mat-option *ngFor="let sort of sortBy" [value]="sort">
+                            {{sort}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div>
                 <mat-grid-list class="table" cols="3" rowHeight="1.3:1">
-                    <mat-grid-tile  *ngFor="let pE of pEs | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
+                    <mat-grid-tile  *ngFor="let pE of printingEditionsData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
                     currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}">
                         <ul>
                             <mat-icon class="icon">chrome_reader_mode</mat-icon>
                             <li>{{pE.title}}</li>
-                            <li>{{pE.author}}</li>
+                            <li>{{pE.authors}}</li>
                             <li>{{pE.price}}</li>
                         </ul>
                     </mat-grid-tile>
                 </mat-grid-list>
             </div>
         </div>
+        <button (click)="test()">Test</button>
 
 
 

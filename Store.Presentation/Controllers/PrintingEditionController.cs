@@ -31,7 +31,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("GetPrintingEditions")]
-        public Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync([FromQuery] PrintingEditionFilter filter)
+        public Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync([FromBody] PrintingEditionFilter filter)
         {
             return _printingEditionService.GetPrintingEditionModelsAsync(filter);
         }

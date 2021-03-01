@@ -1,5 +1,7 @@
 ﻿using Store.BusinessLogic.Models.PrintingEditions;
 using Store.DataAccess.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Store.BusinessLogic.Mappers
 {
@@ -20,6 +22,9 @@ namespace Store.BusinessLogic.Mappers
 
         public override PrintingEditionModel Map(PrintingEdition element)
         {
+
+            var test = element.AuthorsInPrintingEdition.Select(x => x.Author.Name);
+
             return new PrintingEditionModel
             {
                 Currency = element.ReturnedCurrency,
@@ -29,6 +34,7 @@ namespace Store.BusinessLogic.Mappers
                 Title = element.Title,
                 Type = element.Type,
                 CreationDate = element.CreationData,
+                Authors = element.AuthorsInPrintingEdition.Select(x=>x.Author.Name).ToList(),
             };
         }
     }

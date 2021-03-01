@@ -2,6 +2,7 @@
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.PrintingEditions;
+using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
@@ -17,10 +18,12 @@ namespace Store.BusinessLogic.Services
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly PrintingEditionMapper _printingEditionMapper;
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, PrintingEditionMapper printingEditionMapper)
+        private readonly ConverterProvider _converterProvider;
+        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, PrintingEditionMapper printingEditionMapper, ConverterProvider converterProvider)
         {
             _printingEditionRepository = printingEditionRepository;
             _printingEditionMapper = printingEditionMapper;
+            _converterProvider = converterProvider;
         }
         public async Task CreatePrintingEditionAsync(PrintingEditionModel model)
         {
@@ -54,6 +57,7 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
+            var test = _converterProvider.Convert();
             var printingEditions =  _printingEditionRepository.GetFilteredList(filter);
             var sortedPrintingEditions = await _printingEditionRepository.GetSortedListAsync(filter: filter, ts: printingEditions);
             var printingEditionModels = _printingEditionMapper.Map(sortedPrintingEditions);

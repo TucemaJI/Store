@@ -33,6 +33,9 @@ import { AdministratorEffects } from './modules/administrator/store/administrato
 import { AuthService } from './modules/shared/services/auth.service';
 import { ErrorInterceptor } from './modules/shared/interceptors/error.interceptor';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { EnumToArray } from './modules/shared/services/enum-to-array';
+import { PrintingEditionHttpService } from './modules/shared/services/printing-edition-http.service';
+import { PrintingEditionEffects } from './modules/printing-edition/store/printing-edition.effects';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects,]),
+    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects,PrintingEditionEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,
@@ -82,6 +85,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    PrintingEditionHttpService,
 
   ],
   bootstrap: [AppComponent]

@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { select, Store } from '@ngrx/store';
+import { AdministratorHttpService } from 'src/app/modules/shared/services/administrator-http.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { IChangeClientModel } from '../../../shared/models/IChangeClientModel';
 import { IClients } from '../../../shared/models/IClients';
@@ -28,7 +29,7 @@ export class ClientsComponent implements OnInit {
   pageParameters: IPageParameters;
   displayedColumns: string[] = ['userName', 'userEmail', 'status', 'buttons'];
 
-  constructor(private store: Store<IAppState>, public dialog: MatDialog) {
+  constructor(private store: Store<IAppState>, public dialog: MatDialog, private http: AdministratorHttpService) {
   }
 
   ngOnInit(): void {
@@ -44,11 +45,12 @@ export class ClientsComponent implements OnInit {
       email: '',
       name: '',
     };
+    //this.http.postClientsPage(this.pageModel).subscribe(data => console.log(data));
     this.store.dispatch(getClients(this.pageModel));
     this.getClients();
   }
 
-  filterSlide(){
+  filterSlide() {
     this.pageModel.isBlocked = this.statusFilter;
     this.store.dispatch(getClients(this.pageModel));
   }

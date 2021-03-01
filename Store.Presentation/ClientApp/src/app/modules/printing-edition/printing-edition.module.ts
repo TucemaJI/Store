@@ -5,11 +5,12 @@ import { MaterialModule } from '../shared/material.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { EnumToArray } from '../shared/services/enum-to-array';
 
 
 
 @NgModule({
-  declarations: [PrintingEditionComponent],
+  declarations: [PrintingEditionComponent, EnumToArray],
   imports: [
     CommonModule,
     MaterialModule,

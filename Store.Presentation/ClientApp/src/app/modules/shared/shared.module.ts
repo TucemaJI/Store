@@ -5,10 +5,11 @@ import { StoreModule } from '@ngrx/store';
 import { sharedReducer, sharedReducerNode } from './store/shared.reducer';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
+import { EnumToArray } from './services/enum-to-array';
 
 
 @NgModule({
-  declarations: [HeaderComponent],
+  declarations: [HeaderComponent, ],
   imports: [
     CommonModule,
     StoreModule.forFeature(sharedReducerNode, sharedReducer),
