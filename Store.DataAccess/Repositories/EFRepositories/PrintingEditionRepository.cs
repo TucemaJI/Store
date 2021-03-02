@@ -27,5 +27,9 @@ namespace Store.DataAccess.Repositories.EFRepositories
                 .Where(pE => pE.AuthorsInPrintingEdition.Any(aipe => EF.Functions.Like(aipe.Author.Name, $"%{filter.Name}%")));
             return printingEditions;
         }
+        public Task<double> GetMaxPriceAsync() {
+            var maxPrice = _dbSet.MaxAsync(pE => pE.Price);
+            return maxPrice;
+        }
     }
 }

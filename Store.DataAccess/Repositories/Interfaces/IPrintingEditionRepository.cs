@@ -10,5 +10,6 @@ namespace Store.DataAccess.Repositories.Interfaces
     public interface IPrintingEditionRepository : IBaseRepository<PrintingEdition>
     {
         public IQueryable<PrintingEdition> GetFilteredList(PrintingEditionFilter filter);
+        public Task<double> GetMaxPriceAsync();
     }
 }

@@ -4,7 +4,9 @@ using Store.BusinessLogic.Common;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Models.Base;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -48,7 +50,16 @@ namespace Store.Presentation.Middlewares
                     context.Request?.Method,
                     context.Request?.Path.Value,
                     context.Response?.StatusCode);
-            }
+                var model = new BaseModel
+                {
+                    Errors = new List<string> { LoggerMiddlewareOptions.UNHANDLED_EXCEPTION, }
+                };
+                var response = JsonSerializer.Serialize(model);
+                context.Response.ContentType = LoggerMiddlewareOptions.APP_JSON;
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await context.Response.WriteAsync(response);
+
+        }
         }
     }
 }

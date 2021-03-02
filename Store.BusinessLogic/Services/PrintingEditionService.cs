@@ -11,6 +11,7 @@ using Store.Shared.Constants;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Services
 {
@@ -57,14 +58,31 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
-            var test = _converterProvider.Convert();
             var printingEditions =  _printingEditionRepository.GetFilteredList(filter);
             var sortedPrintingEditions = await _printingEditionRepository.GetSortedListAsync(filter: filter, ts: printingEditions);
             var printingEditionModels = _printingEditionMapper.Map(sortedPrintingEditions);
+            if(filter.Currency == CurrencyType.None)
+            {
+                filter.Currency = CurrencyType.USD;
+            }
+            if (filter.Currency != CurrencyType.USD)
+            {
+                foreach (var element in printingEditionModels)
+                {
+                    element.Price = await _converterProvider.ConvertAsync(filter.Currency, element.Price);
+                    element.Currency = filter.Currency;
+                }
+            }
             var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
+            pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             return pageModel;
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
+        }
+        public Task<double> GetMaxPriceAsync()
+        {
+            var maxPrice = _printingEditionRepository.GetMaxPriceAsync();
+            return maxPrice;
         }
     }
 }

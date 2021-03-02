@@ -13,21 +13,42 @@ import { EPrintingEditionActions } from "./printing-edition.actions";
 export class PrintingEditionEffects {
     getPE$ = createEffect(() => this.actions$.pipe(
         ofType(EPrintingEditionActions.GetPE),
-        exhaustMap((pageModel: IPrintingEditionPageModel) => 
-        {
-        debugger;
-        return (
-        this.httpService.postPE(pageModel)
-            .pipe(
-                map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters }) => {debugger; return({
-                    type: EPrintingEditionActions.GetPESuccess,
-                    pageParameters: responce.pageParameters, printingEditions: responce.elements
-                })}),
-                catchError(err => of(error({ err })))
-            ))}
+        exhaustMap((pageModel: IPrintingEditionPageModel) => {
+            debugger;
+            return (
+                this.httpService.postPE(pageModel)
+                    .pipe(
+                        map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number }) => {
+                            debugger; return ({
+                                type: EPrintingEditionActions.GetPESuccess,
+                                pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice,
+                            })
+                        }),
+                        catchError(err => of(error({ err })))
+                    ))
+        }
+        )
+    ))
+    getMaxPrice$ = createEffect(() => this.actions$.pipe(
+        ofType(EPrintingEditionActions.GetMaxPrice),
+        exhaustMap(() => {
+            debugger;
+            return (
+                this.httpService.getMaxPrice()
+                    .pipe(
+                        map((responce: { maxPrice: number }) => {
+                            debugger; return ({
+                                type: EPrintingEditionActions.GetMaxPriceSuccess,
+                                maxPrice: responce.maxPrice,
+                            })
+                        }),
+                        catchError(err => of(error({ err })))
+                    ))
+        }
         )
     ))
     constructor(
         private actions$: Actions,
         private httpService: PrintingEditionHttpService,
-    ) { }}
+    ) { }
+}

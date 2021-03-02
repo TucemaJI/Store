@@ -16,5 +16,6 @@
         public const string NOT_ADD_TO_ROLE = "Not added to role";
 
         public const string PASSWORD_NOT_REMOVED = "Password not removed";
+        public const string CURRENCY_CONVERT_PROBLEM = "Problem with convert currency API";
     }
 }

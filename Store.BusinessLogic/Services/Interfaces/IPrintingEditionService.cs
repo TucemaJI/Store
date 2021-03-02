@@ -14,5 +14,6 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter);
         public Task DeletePrintingEditionAsync(long id);
         public void UpdatePrintingEdition(PrintingEditionModel printingEditionModel);
+        public Task<double> GetMaxPriceAsync();
     }
 }

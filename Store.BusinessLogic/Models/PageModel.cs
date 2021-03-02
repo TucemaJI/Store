@@ -7,6 +7,7 @@ namespace Store.BusinessLogic.Models
     {
         public List<T> Elements { get; set; }
         public EntityParameters PageParameters {get;set;}
+        public double MaxPrice { get; set; }
         public PageModel(PagedList<T> pagedList)
         {
             Elements = new List<T>(pagedList);

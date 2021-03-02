@@ -10,8 +10,12 @@
                 <input type="checkbox"> Newspaper<br>
                 <hr>
                 Price<br>
-                <input type="number" [(value)]="value"> - <input type="number"[(value)]="highValue">$ <button mat-raised-button>OK</button><br>
-                <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+                <!-- <input type="number" [(value)]="slider.value"> - <input type="number" [(value)]="slider.highValue">$
+                <button mat-raised-button>OK</button><br>
+                <ngx-slider [(value)]="slider.value" [(highValue)]="slider.highValue"
+                    [options]="sliderOptions(slider)"></ngx-slider> -->
+                <input type="number" [(value)]="value"> - <input type="number" [(value)]="highValue">$ <button mat-raised-button>OK</button><br>
+                <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="option"></ngx-slider>
             </div>
         </div>
         <div class="right">
@@ -37,7 +41,7 @@
             </div>
             <div>
                 <mat-grid-list class="table" cols="3" rowHeight="1.3:1">
-                    <mat-grid-tile  *ngFor="let pE of printingEditionsData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
+                    <mat-grid-tile *ngFor="let pE of printingEditionsData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
                     currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}">
                         <ul>
                             <mat-icon class="icon">chrome_reader_mode</mat-icon>
