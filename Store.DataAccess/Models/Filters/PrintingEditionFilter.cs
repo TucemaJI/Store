@@ -1,4 +1,5 @@
-﻿using static Store.Shared.Enums.Enums;
+﻿using System.Collections.Generic;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.DataAccess.Models.Filters
 {
@@ -7,7 +8,7 @@ namespace Store.DataAccess.Models.Filters
         public string Name { get; set; }
         public string Title { get; set; }
         public CurrencyType Currency { get; set; }
-        public PrintingEditionType PEType { get; set; }
+        public List<PrintingEditionType> PEType { get; set; }
         public double MinPrice { get; set; }
         public double MaxPrice { get; set; }
     }

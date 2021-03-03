@@ -55,10 +55,5 @@ namespace Store.Presentation.Controllers
         {
             return _printingEditionService.DeletePrintingEditionAsync(id);
         }
-        [HttpGet("GetMaxPrice")]
-        public Task GetMaxPriceAsync()
-        {
-            return _printingEditionService.GetMaxPriceAsync();
-        }
     }
 }

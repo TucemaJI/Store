@@ -19,7 +19,7 @@ export class AuthorsComponent implements OnInit {
   pageModel: any;
   pageParameters: IPageParameters;
   authorsData: IAuthor[];
-  serchTest: any;
+  searchText: any;
   isDescending: boolean = false;
 
   constructor(private store: Store<IAppState>, public dialog: MatDialog) { }

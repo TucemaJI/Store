@@ -18,10 +18,10 @@ export class PrintingEditionEffects {
             return (
                 this.httpService.postPE(pageModel)
                     .pipe(
-                        map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number }) => {
+                        map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number, minPrice: number }) => {
                             debugger; return ({
                                 type: EPrintingEditionActions.GetPESuccess,
-                                pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice,
+                                pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
                             })
                         }),
                         catchError(err => of(error({ err })))
@@ -29,24 +29,7 @@ export class PrintingEditionEffects {
         }
         )
     ))
-    getMaxPrice$ = createEffect(() => this.actions$.pipe(
-        ofType(EPrintingEditionActions.GetMaxPrice),
-        exhaustMap(() => {
-            debugger;
-            return (
-                this.httpService.getMaxPrice()
-                    .pipe(
-                        map((responce: { maxPrice: number }) => {
-                            debugger; return ({
-                                type: EPrintingEditionActions.GetMaxPriceSuccess,
-                                maxPrice: responce.maxPrice,
-                            })
-                        }),
-                        catchError(err => of(error({ err })))
-                    ))
-        }
-        )
-    ))
+    
     constructor(
         private actions$: Actions,
         private httpService: PrintingEditionHttpService,

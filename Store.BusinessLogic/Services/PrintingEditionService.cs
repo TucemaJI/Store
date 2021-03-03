@@ -76,13 +76,9 @@ namespace Store.BusinessLogic.Services
             var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
+            pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();
             return pageModel;
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
-        }
-        public Task<double> GetMaxPriceAsync()
-        {
-            var maxPrice = _printingEditionRepository.GetMaxPriceAsync();
-            return maxPrice;
         }
     }
 }

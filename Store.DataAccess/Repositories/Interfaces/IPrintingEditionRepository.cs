@@ -11,5 +11,6 @@ namespace Store.DataAccess.Repositories.Interfaces
     {
         public IQueryable<PrintingEdition> GetFilteredList(PrintingEditionFilter filter);
         public Task<double> GetMaxPriceAsync();
+        public Task<double> GetMinPriceAsync();
     }
 }

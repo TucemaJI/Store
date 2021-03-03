@@ -8,6 +8,7 @@ using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.DataAccess.Repositories.EFRepositories
 {
@@ -19,17 +20,22 @@ namespace Store.DataAccess.Repositories.EFRepositories
         {
             var printingEditions = _dbSet.Include(item => item.AuthorsInPrintingEdition)
                 .ThenInclude(item => item.Author)
-                //.Where(pE => pE.ReturnedCurrency == filter.Currency)
-                .Where(pE => EF.Functions.Like(pE.Title, $"%{filter.Title}%"))
-                .Where(pE => pE.Type == (filter.PEType == 0 ?  pE.Type : filter.PEType))
-                //.Where(pE => filter.PEType == 0 || filter.PEType == pE.Type)
+
+                //.Where(pE => pE.Type == (filter.PEType == 0 ?  pE.Type : filter.PEType))
+                .Where(pE => filter.PEType.Contains(PrintingEditionType.None) || filter.PEType.Contains(pE.Type))
                 .Where(pE => filter.MaxPrice >= pE.Price && pE.Price >= filter.MinPrice)
-                .Where(pE => pE.AuthorsInPrintingEdition.Any(aipe => EF.Functions.Like(aipe.Author.Name, $"%{filter.Name}%")));
+                .Where(pE => EF.Functions.Like(pE.Title, $"%{filter.Title}%") || pE.AuthorsInPrintingEdition.Any(aipe => EF.Functions.Like(aipe.Author.Name, $"%{filter.Name}%")));
+                //.Where(pE => pE.AuthorsInPrintingEdition.Any(aipe => EF.Functions.Like(aipe.Author.Name, $"%{filter.Name}%")));
             return printingEditions;
         }
         public Task<double> GetMaxPriceAsync() {
             var maxPrice = _dbSet.MaxAsync(pE => pE.Price);
             return maxPrice;
+        }
+        public Task<double> GetMinPriceAsync()
+        {
+            var minPrice = _dbSet.MinAsync(pE => pE.Price);
+            return minPrice;
         }
     }
 }
