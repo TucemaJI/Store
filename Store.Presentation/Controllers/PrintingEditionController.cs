@@ -36,7 +36,7 @@ namespace Store.Presentation.Controllers
             return _printingEditionService.GetPrintingEditionModelsAsync(filter);
         }
 
-        [HttpGet("GetPrintingEdition")]
+        [HttpGet("{id:long}")]
         public Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
         {
             return _printingEditionService.GetPrintingEditionModelAsync(id);

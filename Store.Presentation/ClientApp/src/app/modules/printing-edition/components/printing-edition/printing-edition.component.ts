@@ -6,8 +6,10 @@ import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { selectPrintingEditions } from '../../store/printing-edition.selector';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
-import { getPE } from 'src/app/modules/printing-edition/store/printing-edition.actions';
+import { getPEs } from 'src/app/modules/printing-edition/store/printing-edition.actions';
 import { EPrintingEditionType } from 'src/app/modules/shared/models/EPrintingEditionType';
+import { MatDialog } from '@angular/material/dialog';
+import { SelectPEComponent } from '../select-pe/select-pe.component';
 
 @Component({
   selector: 'app-printing-edition',
@@ -18,7 +20,7 @@ import { EPrintingEditionType } from 'src/app/modules/shared/models/EPrintingEdi
 export class PrintingEditionComponent implements OnInit {
 
   lowValue: number = 0;
-  highValue: number = 150;
+  highValue: number = 0;
   option: Options = {
     floor: 0,
     ceil: 0,
@@ -26,7 +28,7 @@ export class PrintingEditionComponent implements OnInit {
   isDescending: boolean = false;
   searchText: string = '';
 
-  selectedCurrency: string;
+  selectedCurrency: string = ECurrencyType[1];
   selectedSort: string;
 
   bookBox: boolean = false;
@@ -43,7 +45,7 @@ export class PrintingEditionComponent implements OnInit {
   pageModel: any;
   pageParameters: IPageParameters;
 
-  constructor(private store: Store<IAppState>,) { }
+  constructor(private store: Store<IAppState>) { }
 
   ngOnInit(): void {
     this.pageParameters = {
@@ -61,9 +63,9 @@ export class PrintingEditionComponent implements OnInit {
       currency: 0,
       pEType: [0],
       minPrice: this.lowValue,
-      maxPrice: this.highValue,
+      maxPrice: Number.MAX_SAFE_INTEGER,
     };
-    this.store.dispatch(getPE(this.pageModel));
+    this.store.dispatch(getPEs(this.pageModel));
     this.getPrintingEditions();
   }
 
@@ -72,41 +74,27 @@ export class PrintingEditionComponent implements OnInit {
       data => {
         if (data.printingEditions != null && data.pageModel != null) {
           this.printingEditionsData = data.printingEditions;
-debugger;
           this.option = {
             floor: data.pageModel.minPrice,
             ceil: data.pageModel.maxPrice,
           };
-debugger;
-          //this.highValue = data.pageModel.maxPrice;
-
+          if (this.highValue < 1) {
+            this.highValue = data.pageModel.maxPrice;
+          }
           this.pageParameters = data.pageModel.pageParameters;
           console.log(data);
         }
       }
-    )
+    );
   }
-  sliderOptions(option: Options): Options {
-    return {
-      floor: option.floor,
-      ceil: option.ceil,
-    };
 
-  }
-  pageChanged(event) { }
-
-  valueFilter(event){
-    debugger;
-    this.lowValue = event;
-    this.applyFilter();
-  }
-  hValueFilter(event){
-    debugger;
-    this.highValue = event;
-    this.applyFilter();
-  }
+  pageChanged(event) {
+    this.pageModel.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
+    this.store.dispatch(getPEs(this.pageModel));
+   }
 
   applyFilter() {
+    debugger;
     this.isDescending = this.selectedSort === 'Price: High to Low' ? true : false;
 
     let pETypes: EPrintingEditionType[] = [];
@@ -134,7 +122,6 @@ debugger;
       minPrice: this.lowValue,
       maxPrice: this.highValue,
     };
-    debugger;
-    this.store.dispatch(getPE(this.pageModel));
+    this.store.dispatch(getPEs(this.pageModel));
   }
 }

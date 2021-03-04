@@ -22,11 +22,9 @@ namespace Store.BusinessLogic.Mappers
 
         public override PrintingEditionModel Map(PrintingEdition element)
         {
-
-            var test = element.AuthorsInPrintingEdition.Select(x => x.Author.Name);
-
             return new PrintingEditionModel
             {
+                Id = element.Id,
                 Currency = element.ReturnedCurrency,
                 Description = element.Description,
                 IsRemoved = element.IsRemoved,

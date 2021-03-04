@@ -1,0 +1,27 @@
+.right{
+    float:right;
+    margin-top: -5%;
+    width: 15%;
+}
+.icon{
+    cursor: default;
+    font-size: 800%;
+    color: lightskyblue;
+}
+.title{
+    margin-top: -5.5%;
+    margin-left: 7%;
+}
+.button{
+    background-color: lightgreen;
+    width: 100%;
+}
+.money{
+    color: mediumseagreen;
+}
+.count{
+    margin-right: 5%;
+}
+.bottom{
+    margin-top: 3%;
+}

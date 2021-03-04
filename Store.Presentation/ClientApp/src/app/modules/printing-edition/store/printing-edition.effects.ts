@@ -11,8 +11,8 @@ import { EPrintingEditionActions } from "./printing-edition.actions";
 
 @Injectable()
 export class PrintingEditionEffects {
-    getPE$ = createEffect(() => this.actions$.pipe(
-        ofType(EPrintingEditionActions.GetPE),
+    getPEs$ = createEffect(() => this.actions$.pipe(
+        ofType(EPrintingEditionActions.GetPEs),
         exhaustMap((pageModel: IPrintingEditionPageModel) => {
             debugger;
             return (
@@ -20,7 +20,7 @@ export class PrintingEditionEffects {
                     .pipe(
                         map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number, minPrice: number }) => {
                             debugger; return ({
-                                type: EPrintingEditionActions.GetPESuccess,
+                                type: EPrintingEditionActions.GetPEsSuccess,
                                 pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
                             })
                         }),
@@ -28,8 +28,27 @@ export class PrintingEditionEffects {
                     ))
         }
         )
+    ));
+
+    getPE$ = createEffect(() => this.actions$.pipe(
+        ofType(EPrintingEditionActions.GetPE),
+        exhaustMap((id: number) => {
+            debugger;
+            return (
+                this.httpService.getPE(id)
+                    .pipe(
+                        map((responce: IPrintingEdition) => {
+                            debugger; return ({
+                                type: EPrintingEditionActions.GetPESuccess,
+                                printingEdition: responce,
+                            })
+                        }),
+                        catchError(err => of(error({ err })))
+                    ))
+        }
+        )
     ))
-    
+
     constructor(
         private actions$: Actions,
         private httpService: PrintingEditionHttpService,

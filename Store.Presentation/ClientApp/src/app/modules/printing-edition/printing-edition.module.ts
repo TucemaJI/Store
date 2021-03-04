@@ -6,11 +6,12 @@ import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { EnumToArray } from '../shared/services/enum-to-array';
+import { SelectPEComponent } from './components/select-pe/select-pe.component';
 
 
 
 @NgModule({
-  declarations: [PrintingEditionComponent, EnumToArray],
+  declarations: [PrintingEditionComponent, EnumToArray, SelectPEComponent,],
   imports: [
     CommonModule,
     MaterialModule,
@@ -18,6 +19,6 @@ import { EnumToArray } from '../shared/services/enum-to-array';
     NgxPaginationModule,
     NgxSliderModule,
   ],
-  exports: [PrintingEditionComponent,]
+  exports: [PrintingEditionComponent, SelectPEComponent,]
 })
 export class PrintingEditionModule { }

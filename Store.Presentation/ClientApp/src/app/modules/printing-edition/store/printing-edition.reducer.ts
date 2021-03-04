@@ -4,9 +4,9 @@ import { initialPrintingEditionsState, IPrintingEditionState } from "./printing-
 
 const createPrintingEditionReducer = createReducer(
     initialPrintingEditionsState,
-    on(PrintingEditionActions.getPESuccess, (state, { minPrice, maxPrice, pageParameters, printingEditions }) =>
+    on(PrintingEditionActions.getPEsSuccess, (state, { minPrice, maxPrice, pageParameters, printingEditions }) =>
         ({ ...state, printingEditions: printingEditions, pageModel: { ...state.pageModel, pageParameters: pageParameters, maxPrice: maxPrice, minPrice: minPrice } })),
-
+    on(PrintingEditionActions.getPESuccess, (state, { printingEdition }) => ({ ...state, printingEditions: [printingEdition], })),
 )
 
 export const printingEditionReducer = (state = initialPrintingEditionsState, action: Action): IPrintingEditionState => {

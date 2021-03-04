@@ -11,8 +11,9 @@
                 <input type="checkbox" [(ngModel)]="newspaperBox" (ngModelChange)="applyFilter()"> Newspaper<br>
                 <hr>
                 Price<br>
-                <input type="number" [ngModel]="lowValue" > - <input type="number" [(value)]="highValue">$ <button
-                    mat-raised-button (click)="applyFilter()">OK</button><br>
+                <input type="number" [value]="lowValue" (change)="lowValue = $event.target.value; applyFilter()"> -
+                <input type="number" [value]="highValue" (change)="highValue = $event.target.value; applyFilter()">$
+                <button mat-raised-button (click)="applyFilter()">OK</button><br>
                 <ngx-slider [(value)]="lowValue" [(highValue)]="highValue" [options]="option"
                     (userChangeEnd)="applyFilter()"></ngx-slider>
             </div>
@@ -22,7 +23,7 @@
             <div class="underTopLine">
                 Currency
                 <mat-form-field appreance="fill">
-                    <mat-select [(value)]="selectedCurrency">
+                    <mat-select [(value)]="selectedCurrency" (selectionChange)="applyFilter()">
                         <mat-option *ngFor="let currency of currencies|enumToArray" [value]="currency">
                             {{currency}}
                         </mat-option>
@@ -30,7 +31,7 @@
                 </mat-form-field>
                 Sort by
                 <mat-form-field appreance="fill">
-                    <mat-select [(value)]="selectedSort">
+                    <mat-select [(value)]="selectedSort" (selectionChange)="applyFilter()">
                         <mat-option *ngFor="let sort of sortBy" [value]="sort">
                             {{sort}}
                         </mat-option>
@@ -42,10 +43,10 @@
                     <mat-grid-tile *ngFor="let pE of printingEditionsData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
                     currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}">
                         <ul>
-                            <mat-icon class="icon">chrome_reader_mode</mat-icon>
+                            <mat-icon class="icon" routerLink="/pe/{{pE.id}}">chrome_reader_mode</mat-icon>
                             <li>{{pE.title}}</li>
                             <li>{{pE.authors}}</li>
-                            <li>{{pE.price}}</li>
+                            <li>{{pE.price}} {{selectedCurrency}}</li>
                         </ul>
                     </mat-grid-tile>
                 </mat-grid-list>

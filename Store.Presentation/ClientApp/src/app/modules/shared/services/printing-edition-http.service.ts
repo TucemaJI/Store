@@ -19,8 +19,8 @@ export class PrintingEditionHttpService {
         debugger;
         return this.http.post('https://localhost:44355/api/printingedition/getprintingeditions', body);
     }
-    getMaxPrice() {
-        return this.http.get('https://localhost:44355/api/printingedition/getmaxprice');
+    getPE(id) {
+        return this.http.get(`https://localhost:44355/api/printingedition/${id.id}`);
     }
 
 }

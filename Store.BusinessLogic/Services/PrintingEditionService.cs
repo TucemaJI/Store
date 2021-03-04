@@ -42,7 +42,8 @@ namespace Store.BusinessLogic.Services
         public async Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
         {
             var printingEdition = await _printingEditionRepository.GetItemAsync(id);
-            return _printingEditionMapper.Map(printingEdition);
+            var result = _printingEditionMapper.Map(printingEdition);
+            return result;
         }
 
         public void UpdatePrintingEdition(PrintingEditionModel printingEditionModel)

@@ -33,6 +33,7 @@ li {
     list-style-type: none;
 }
 .icon{
+    cursor: pointer;
     font-size: 800%;
     color: lightskyblue;
 }
