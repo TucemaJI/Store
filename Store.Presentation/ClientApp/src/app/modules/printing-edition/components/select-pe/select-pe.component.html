@@ -4,8 +4,8 @@
         <div class="left">
             <mat-icon class="icon">chrome_reader_mode</mat-icon>
             <div class="title">
-                <label>{{printingEdition.title}}</label><br>
-                <label>{{printingEdition.authors}}</label>
+                <label>{{printingEdition?.title}}</label><br>
+                <label>{{printingEdition?.authors}}</label>
             </div>
 
         </div>
@@ -17,7 +17,7 @@
             </button>
         </div>
         <div class="bottom">
-            <label>{{printingEdition.description}}</label>
+            <label>{{printingEdition?.description}}</label>
         </div>
     </mat-card-content>
 </mat-card>

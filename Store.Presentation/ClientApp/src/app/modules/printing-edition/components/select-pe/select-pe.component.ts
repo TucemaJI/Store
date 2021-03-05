@@ -5,8 +5,8 @@ import { pipe } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
 import { IAppState } from 'src/app/store/state/app.state';
-import { getPE } from '../../store/printing-edition.actions';
-import { selectPrintingEdition } from '../../store/printing-edition.selector';
+import { getPE, getPEs } from '../../store/printing-edition.actions';
+import { selectPrintingEditions } from '../../store/printing-edition.selector';
 
 @Component({
   selector: 'app-select-pe',
@@ -15,39 +15,42 @@ import { selectPrintingEdition } from '../../store/printing-edition.selector';
 })
 export class SelectPEComponent implements OnInit {
 
-  printingEdition: IPrintingEdition = {
-    authors: [],
-    description: "",
-    title: "",
-    currencyType: 0,
-    id: 0,
-    price: 0,
-    type: 0,
-  };
+  id: number;
+  printingEdition: IPrintingEdition;
 
   constructor(private route: ActivatedRoute, private store: Store<IAppState>) { }
-// HERE IS THE PROBLEM WITH PRIORITY
-  ngOnInit(): void {
+  ngOnInit() {
     const idStr = this.route.snapshot.paramMap.get('id');
-    const id = Number.parseInt(idStr);
+    //const id = Number.parseInt(idStr);
+    this.id = Number.parseInt(idStr);
     debugger;
-    this.store.pipe(select(selectPrintingEdition, id), filter(val => val !== null)).subscribe(
-      data => {
-        debugger;
-        this.printingEdition = data;
-      }
-    );
+    //this.selectPE(id);
     if (this.printingEdition === undefined) {
-      this.store.dispatch(getPE({ id }));
+      this.store.dispatch(getPE({ id: this.id }));
       debugger;
-      this.store.pipe(select(selectPrintingEdition, id)).subscribe(
-        data => {
-          if (data !== null) {
-            debugger;
-            this.printingEdition = data;
-          }
-        }
-      );
     }
   }
+
+  selectPE$ = this.store.pipe(select(selectPrintingEditions)).subscribe(
+    data => {
+      debugger;
+      if (data.printingEditions !== null) {
+        debugger;
+        this.printingEdition = data.printingEditions.find(el => el.id === this.id);
+      }
+    }
+  );
+
+  // selectPE(id: number) {
+  //   this.store.pipe(select(selectPrintingEditions)).subscribe(
+  //     data => {
+  //       if (data.printingEditions !== null) {
+  //         debugger;
+  //         this.printingEdition = data.printingEditions.find(el => el.id === id);
+  //       }
+  //     }
+  //   );
+  // }
+
+
 }

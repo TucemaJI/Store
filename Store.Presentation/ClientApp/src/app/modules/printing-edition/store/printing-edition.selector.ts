@@ -9,6 +9,6 @@ export const selectPrintingEditions = createSelector(
     getState,
     (state: IPrintingEditionState) => state,
 )
-export const selectPrintingEdition = createSelector(
-    getState, (state: IPrintingEditionState, id: number) => { return state.printingEditions.find(val => val.id === id) }
-)
+// export const selectPrintingEdition = createSelector(
+//     getState, (state: IPrintingEditionState, id: number) => { debugger; return state.printingEditions.find(val => val.id === id) }
+// )
