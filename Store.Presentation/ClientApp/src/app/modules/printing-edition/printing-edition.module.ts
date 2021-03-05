@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { EnumToArray } from '../shared/services/enum-to-array';
 import { SelectPEComponent } from './components/select-pe/select-pe.component';
+import { ShoppingCartModule } from 'ng-shopping-cart';
 
 
 
@@ -18,6 +19,7 @@ import { SelectPEComponent } from './components/select-pe/select-pe.component';
     RouterModule,
     NgxPaginationModule,
     NgxSliderModule,
+    ShoppingCartModule,
   ],
   exports: [PrintingEditionComponent, SelectPEComponent,]
 })

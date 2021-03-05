@@ -36,6 +36,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { EnumToArray } from './modules/shared/services/enum-to-array';
 import { PrintingEditionHttpService } from './modules/shared/services/printing-edition-http.service';
 import { PrintingEditionEffects } from './modules/printing-edition/store/printing-edition.effects';
+import { ShoppingCartModule } from 'ng-shopping-cart';
 
 @NgModule({
   declarations: [
@@ -48,10 +49,11 @@ import { PrintingEditionEffects } from './modules/printing-edition/store/printin
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects,PrintingEditionEffects]),
+    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects, PrintingEditionEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,
+    ShoppingCartModule.forRoot(),
 
     MaterialModule,
     AccountModule,
@@ -66,7 +68,7 @@ import { PrintingEditionEffects } from './modules/printing-edition/store/printin
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: ()=>{
+        tokenGetter: () => {
           return localStorage.getItem('accessToken');
         }
       }

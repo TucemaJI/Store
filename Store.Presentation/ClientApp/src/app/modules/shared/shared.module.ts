@@ -6,6 +6,7 @@ import { sharedReducer, sharedReducerNode } from './store/shared.reducer';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { EnumToArray } from './services/enum-to-array';
+import { ShoppingCartModule } from 'ng-shopping-cart';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { EnumToArray } from './services/enum-to-array';
     StoreModule.forFeature(sharedReducerNode, sharedReducer),
     RouterModule,
     MaterialModule,
+    ShoppingCartModule,
   ],
   exports: [HeaderComponent,]
 })

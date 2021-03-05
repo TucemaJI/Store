@@ -1,10 +1,10 @@
 <div>
     <h3 mat-dialog-title class="green">Checkout</h3>
     <div mat-dialog-content>
-        <table mat-table class="mat-elevation-z8" class="content" [dataSource]="cartData">
+        <table mat-table class="mat-elevation-z8" class="content" [(dataSource)]="cartData">
             <ng-container matColumnDef="product">
                 <th mat-header-cell *matHeaderCellDef> Product </th>
-                <td mat-cell *matCellDef="let element"> {{element.product}}</td>
+                <td mat-cell *matCellDef="let element"> {{element.name}}</td>
             </ng-container>
             <ng-container matColumnDef="unitPrice">
                 <th mat-header-cell *matHeaderCellDef> Unit price </th>
@@ -13,12 +13,12 @@
             <ng-container matColumnDef="count">
                 <th mat-header-cell *matHeaderCellDef> Qty </th>
                 <td mat-cell *matCellDef="let element">
-                    <input type="number" class="count" [(value)]="element.count">
+                    <input type="number" class="count" [(ngModel)]="element.quantity" (ngModelChange)="update()">
                 </td>
             </ng-container>
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef>Order amount</th>
-                <td mat-cell *matCellDef="let element"> {{element.amount}}
+                <td mat-cell *matCellDef="let element"> {{element.total()}}
                     <mat-icon class="delete" (click)="deleteProduct(element)">indeterminate_check_box_outline
                     </mat-icon>
                 </td>
@@ -26,7 +26,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <label> TOTAL PRICE: </label><br>
+        <label> TOTAL PRICE: {{total}}</label><br>
         <button mat-rised-button>Cancel</button>
         <button mat-rised-button>Buy Now</button>
     </div>
