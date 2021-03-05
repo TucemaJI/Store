@@ -16,6 +16,7 @@ import { selectPrintingEditions } from '../../store/printing-edition.selector';
 export class SelectPEComponent implements OnInit {
 
   id: number;
+  count: number = 1;
   printingEdition: IPrintingEdition;
 
   constructor(private route: ActivatedRoute, private store: Store<IAppState>) { }
@@ -40,6 +41,10 @@ export class SelectPEComponent implements OnInit {
       }
     }
   );
+
+  add() {
+    console.log(this.count);
+  }
 
   // selectPE(id: number) {
   //   this.store.pipe(select(selectPrintingEditions)).subscribe(

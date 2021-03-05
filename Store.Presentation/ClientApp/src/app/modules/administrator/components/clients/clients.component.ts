@@ -29,7 +29,7 @@ export class ClientsComponent implements OnInit {
   pageParameters: IPageParameters;
   displayedColumns: string[] = ['userName', 'userEmail', 'status', 'buttons'];
 
-  constructor(private store: Store<IAppState>, public dialog: MatDialog, private http: AdministratorHttpService) {
+  constructor(private store: Store<IAppState>, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {

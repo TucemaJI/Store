@@ -1,0 +1,59 @@
+<div>
+    <h3 mat-dialog-title class="green">Checkout</h3>
+    <div mat-dialog-content>
+        <table mat-table class="mat-elevation-z8" class="content" [dataSource]="cartData">
+            <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef> Product </th>
+                <td mat-cell *matCellDef="let element"> {{element.product}}</td>
+            </ng-container>
+            <ng-container matColumnDef="unitPrice">
+                <th mat-header-cell *matHeaderCellDef> Unit price </th>
+                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+            <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef> Qty </th>
+                <td mat-cell *matCellDef="let element">
+                    <input type="number" class="count" [(value)]="element.count">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef>Order amount</th>
+                <td mat-cell *matCellDef="let element"> {{element.amount}}
+                    <mat-icon class="delete" (click)="deleteProduct(element)">indeterminate_check_box_outline
+                    </mat-icon>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <label> TOTAL PRICE: </label><br>
+        <button mat-rised-button>Cancel</button>
+        <button mat-rised-button>Buy Now</button>
+    </div>
+</div>
+<!-- <div mat-dialog-content>
+    <h1 *ngIf="!addForm">Edit Author</h1>
+    <h1 *ngIf="addForm">Add new Author</h1>
+
+    <form [formGroup]="form">
+        <p>First name</p>
+        <mat-form-field class="width" appearance="outline">
+            <label>
+                <input formControlName="firstName" matInput type="text">
+            </label>
+        </mat-form-field>
+        <br>
+        <p>Last name</p>
+        <mat-form-field class="width" appearance="outline">
+            <label>
+                <input formControlName="lastName" matInput type="text">
+            </label>
+        </mat-form-field>
+        <br>
+
+    </form>
+    <div>
+        <button mat-raised-button (click)="cancel()" type="reset">Cancel</button>
+        <button class="save" mat-raised-button (click)="submit(form.value)" type="submit">Save</button>
+    </div>
+</div> -->

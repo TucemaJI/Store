@@ -10,9 +10,9 @@
 
         </div>
         <div class="right">
-            Qty: <input type="number" class="count">
+            Qty: <input type="number" class="count" [(ngModel)]="count">
             <label class="money">100$</label> <br><br>
-            <button class="button">
+            <button class="button" (click)="add()">
                 <mat-icon>shopping_cart</mat-icon>Add to Cart
             </button>
         </div>

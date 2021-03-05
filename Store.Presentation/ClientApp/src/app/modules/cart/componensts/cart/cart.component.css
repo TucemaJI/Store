@@ -1,0 +1,11 @@
+.count{
+    width: 50%;
+    float: right;
+    margin-right: 5%;
+}
+.content{
+    width: 90%;
+}
+.delete{
+    float: right;
+}
