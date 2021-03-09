@@ -36,7 +36,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { EnumToArray } from './modules/shared/services/enum-to-array';
 import { PrintingEditionHttpService } from './modules/shared/services/printing-edition-http.service';
 import { PrintingEditionEffects } from './modules/printing-edition/store/printing-edition.effects';
-import { ShoppingCartModule } from 'ng-shopping-cart';
+import { CartService, ShoppingCartModule } from 'ng-shopping-cart';
+import { ShoppingCartService } from './modules/shared/services/shopping-cart.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,8 @@ import { ShoppingCartModule } from 'ng-shopping-cart';
       multi: true,
     },
     PrintingEditionHttpService,
+    ShoppingCartService,
+    CookieService,
 
   ],
   bootstrap: [AppComponent]

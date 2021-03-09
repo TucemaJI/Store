@@ -8,8 +8,6 @@ import { selectPrintingEditions } from '../../store/printing-edition.selector';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
 import { getPEs } from 'src/app/modules/printing-edition/store/printing-edition.actions';
 import { EPrintingEditionType } from 'src/app/modules/shared/models/EPrintingEditionType';
-import { MatDialog } from '@angular/material/dialog';
-import { SelectPEComponent } from '../select-pe/select-pe.component';
 
 @Component({
   selector: 'app-printing-edition',

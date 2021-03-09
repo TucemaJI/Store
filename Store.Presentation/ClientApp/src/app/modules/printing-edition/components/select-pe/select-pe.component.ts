@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { BaseCartItem, CartService } from 'ng-shopping-cart';
-import { pipe } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BaseCartItem } from 'ng-shopping-cart';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
+import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';
-import { getPE, getPEs } from '../../store/printing-edition.actions';
+import { getPE } from '../../store/printing-edition.actions';
 import { selectPrintingEditions } from '../../store/printing-edition.selector';
 
 @Component({
@@ -16,55 +15,60 @@ import { selectPrintingEditions } from '../../store/printing-edition.selector';
 })
 export class SelectPEComponent implements OnInit {
 
-  id: number;
   count: number = 1;
   printingEdition: IPrintingEdition;
-  test;
 
-  constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: CartService<BaseCartItem>) { }
+  constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>) { }
   ngOnInit() {
     const idStr = this.route.snapshot.paramMap.get('id');
-    //const id = Number.parseInt(idStr);
-    this.id = Number.parseInt(idStr);
+    const id = Number.parseInt(idStr);
     debugger;
-    //this.selectPE(id);
+    this.selectPE(id);
     if (this.printingEdition === undefined) {
-      this.store.dispatch(getPE({ id: this.id }));
+      this.store.dispatch(getPE({ id: id }));
       debugger;
     }
   }
 
-  selectPE$ = this.store.pipe(select(selectPrintingEditions)).subscribe(
-    data => {
-      debugger;
-      if (data.printingEditions !== null) {
-        debugger;
-        this.printingEdition = data.printingEditions.find(el => el.id === this.id);
-      }
-    }
-  );
-// Here: "Qty with -number" not good
-// Cart in cookies
+  // selectPE$ = this.store.pipe(select(selectPrintingEditions)).subscribe(
+  //   data => {
+  //     debugger;
+  //     if (data.printingEditions !== null) {
+  //       debugger;
+  //       this.printingEdition = data.printingEditions.find(el => el.id === this.id);
+  //     }
+  //   }
+  // );
+
   add() {
+    if (this.count < 1) {
+      alert("Quantity cannot be less 1")
+      return;
+    }
+
     const item = new BaseCartItem({ id: this.printingEdition.id, name: this.printingEdition.title, price: this.printingEdition.price, quantity: this.count, data: this.printingEdition.currencyType });
-    if (this.cartService.getItem(this.printingEdition.id) !== undefined) {
-      this.cartService.getItem(this.printingEdition.id).setQuantity(this.cartService.getItem(this.printingEdition.id).getQuantity() + this.count);
-      this.cartService.addItem(this.cartService.getItem(this.printingEdition.id));
+
+    if (this.cartService.isExist(this.printingEdition.id.toString())) {
+      let itemFromCookie = this.cartService.getItem(this.printingEdition.id);
+      itemFromCookie.quantity = itemFromCookie.quantity + this.count;
+      debugger;
+      this.cartService.addItem(itemFromCookie);
       return;
     }
     this.cartService.addItem(item);
+
   }
 
-  // selectPE(id: number) {
-  //   this.store.pipe(select(selectPrintingEditions)).subscribe(
-  //     data => {
-  //       if (data.printingEditions !== null) {
-  //         debugger;
-  //         this.printingEdition = data.printingEditions.find(el => el.id === id);
-  //       }
-  //     }
-  //   );
-  // }
+  selectPE(id: number) {
+    this.store.pipe(select(selectPrintingEditions)).subscribe(
+      data => {
+        if (data.printingEditions !== null) {
+          debugger;
+          this.printingEdition = data.printingEditions.find(el => el.id === id);
+        }
+      }
+    );
+  }
 
 
 }

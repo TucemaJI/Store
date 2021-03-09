@@ -32,6 +32,7 @@
     "angular-alert-module": "^2.0.3",
     "bootstrap": "^4.6.0",
     "ng-shopping-cart": "^1.0.0",
+    "ngx-cookie-service": "^11.0.2",
     "ngx-pagination": "^5.0.0",
     "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.3",
