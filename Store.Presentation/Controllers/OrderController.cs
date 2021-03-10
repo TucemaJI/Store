@@ -4,10 +4,8 @@ using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,9 +22,9 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("CreateOrder")]
-        public async Task CreateOrderAsync(OrderModel model)
+        public async Task<long> CreateOrderAsync(OrderModel model)
         {
-            await _orderService.CreateOrderAsync(model);
+            return await _orderService.CreateOrderAsync(model);
         }
 
         [Authorize]
@@ -55,6 +53,12 @@ namespace Store.Presentation.Controllers
         public void UpdateOrder(OrderModel orderModel)
         {
             _orderService.UpdateOrder(orderModel);
+        }
+        [Authorize]
+        [HttpPost("Pay")]
+        public void Pay(OrderPayModel model)
+        {
+            _orderService.Pay(model);
         }
     }
 }

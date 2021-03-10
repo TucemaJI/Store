@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccess.AppContext;
 
 namespace Store.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210310134607_updateTransactionId")]
+    partial class updateTransactionId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,7 +176,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2021, 3, 10, 13, 51, 13, 107, DateTimeKind.Utc).AddTicks(1962),
+                            CreationData = new DateTime(2021, 3, 10, 13, 46, 6, 409, DateTimeKind.Utc).AddTicks(4543),
                             IsRemoved = false,
                             Name = "Andrew Troelsen"
                         });
@@ -324,6 +326,12 @@ namespace Store.DataAccess.Migrations
                     b.Property<int>("ReturnedCurrency")
                         .HasColumnType("int");
 
+                    b.Property<string>("SubSubtitle")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("SubtitleReturned")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -344,7 +352,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 1L,
-                            CreationData = new DateTime(2021, 3, 10, 13, 51, 13, 107, DateTimeKind.Utc).AddTicks(4973),
+                            CreationData = new DateTime(2021, 3, 10, 13, 46, 6, 409, DateTimeKind.Utc).AddTicks(7490),
                             Description = "The new best book for learning programming",
                             IsRemoved = false,
                             Price = 150.0,
@@ -355,7 +363,7 @@ namespace Store.DataAccess.Migrations
                         new
                         {
                             Id = 2L,
-                            CreationData = new DateTime(2021, 3, 10, 13, 51, 13, 107, DateTimeKind.Utc).AddTicks(7488),
+                            CreationData = new DateTime(2021, 3, 10, 13, 46, 6, 409, DateTimeKind.Utc).AddTicks(9979),
                             Description = "OLd very good book",
                             IsRemoved = false,
                             Price = 50.0,

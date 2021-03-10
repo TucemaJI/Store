@@ -19,7 +19,7 @@ namespace Store.DataAccess.AppContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
 
@@ -44,7 +44,6 @@ namespace Store.DataAccess.AppContext
                 .HasForeignKey(ape => ape.AuthorId);
 
 
-            builder.Entity<PrintingEdition>().Property(p => p.SubSubtitle).IsRequired().HasDefaultValue(string.Empty);
             builder.Entity<PrintingEdition>().Property(p => p.SubtitleReturned).HasDefaultValue(string.Empty);
 
             builder.InitializeDB();

@@ -10,7 +10,7 @@ namespace Store.DataAccess.Repositories.Interfaces
     {
         Task<List<T>> GetListAsync();
         Task<T> GetItemAsync(long id);
-        Task CreateAsync(T item);
+        Task<T> CreateAsync(T item);
         Task DeleteAsync(long id);
         void UpdateAsync(T item);
         Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> ts);

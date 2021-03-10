@@ -20,10 +20,11 @@ namespace Store.DataAccess.Repositories.Base
             _applicationContext = applicationContext;
         }
 
-        public async Task CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            await _dbSet.AddAsync(entity: entity);
+            var result =  await _dbSet.AddAsync(entity: entity);
             await _applicationContext.SaveChangesAsync();
+            return result.Entity;
         }
         public async Task DeleteAsync(long item)
         {

@@ -4,6 +4,6 @@ namespace Store.BusinessLogic.Models.Payments
 {
     public class PaymentModel : BaseModel
     {
-        public long TransactionId { get; set; }
+        public string TransactionId { get; set; }
     }
 }
