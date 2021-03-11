@@ -91,6 +91,7 @@ namespace Store.BusinessLogic.Services
                 order.Status = StatusType.Paid;
                 order.PaymentId = payment.Id;
                 _orderRepository.UpdateAsync(order);
+
             }
         }
         public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)

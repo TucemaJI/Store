@@ -1,0 +1,68 @@
+<div>
+    <h3 mat-dialog-title>Shop name</h3>
+    <div mat-dialog-content [formGroup]="paymentForm">
+            <mat-form-field class="form-width" appearance="outline">
+                <label>
+                    <input formControlName="cardNumber" matInput type="number" placeholder="Card number">
+                </label>
+                <mat-error align="end" *ngIf="hasError('cardNumber', 'required')">
+                    Please enter Your Card Number
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('cardNumber', 'minLength')">
+                    {{cardNumber.error}}
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('cardNumber', 'maxLength')">
+                    Please enter at least 1 special symbol
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-width" appearance="outline">
+                <label>
+                    <input formControlName="month" matInput type="number" placeholder="Month">
+                </label>
+                <mat-error align="end" *ngIf="hasError('month', 'required')">
+                    Please enter Your password
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('month', 'min')">
+                    Please enter Your password
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('month', 'max')">
+                    Please enter Your password
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-width" appearance="outline">
+                <label>
+                    <input formControlName="year" matInput type="number" placeholder="Year">
+                </label>
+                <mat-error align="end" *ngIf="hasError('year', 'required')">
+                    Please enter Your password
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('year', 'min')">
+                    Please enter Your password
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('year', 'max')">
+                    Please enter Your password
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-width" appearance="outline">
+                <label>
+                    <input formControlName="cvc" matInput type="number" placeholder="CVC">
+                </label>
+                <mat-error align="end" *ngIf="hasError('cvc', 'required')">
+                    Please enter Your password
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('cvc', 'minLength')">
+                    Please enter at least 1 letter with upper case
+                </mat-error>
+                <mat-error align="end" *ngIf="hasError('cvc', 'maxLength')">
+                    Please enter at least 1 special symbol
+                </mat-error>
+            </mat-form-field>
+
+            <p>
+                <button class="button" mat-raised-button (click)="submit(paymentForm.value)" type="submit">Pay</button>
+            </p>
+    </div>
+</div>

@@ -22,14 +22,14 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("CreateOrder")]
-        public async Task<long> CreateOrderAsync(OrderModel model)
+        public async Task<long> CreateOrderAsync([FromBody] OrderModel model)
         {
             return await _orderService.CreateOrderAsync(model);
         }
 
         [Authorize]
         [HttpPost("GetOrders")]
-        public Task<PageModel<OrderModel>> GetOrderModelsAsync([FromQuery] OrderFilter filter)
+        public Task<PageModel<OrderModel>> GetOrderModelsAsync([FromBody] OrderFilter filter)
         {
             return _orderService.GetOrderModelsAsync(filter);
         }
@@ -50,13 +50,13 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("UpdateOrder")]
-        public void UpdateOrder(OrderModel orderModel)
+        public void UpdateOrder([FromBody] OrderModel orderModel)
         {
             _orderService.UpdateOrder(orderModel);
         }
         [Authorize]
         [HttpPost("Pay")]
-        public void Pay(OrderPayModel model)
+        public void Pay([FromBody] OrderPayModel model)
         {
             _orderService.Pay(model);
         }

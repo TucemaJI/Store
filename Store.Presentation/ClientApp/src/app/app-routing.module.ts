@@ -12,6 +12,7 @@ import { ProfileComponent } from './modules/user/profile/profile.component';
 import { AuthorsComponent } from './modules/administrator/components/authors/authors.component';
 import { PrintingEditionComponent } from './modules/printing-edition/components/printing-edition/printing-edition.component';
 import { SelectPEComponent } from './modules/printing-edition/components/select-pe/select-pe.component';
+import { AuthorizeGuard } from './modules/shared/guards/authorize.guard';
 
 const routes: Routes = [
 
@@ -27,14 +28,13 @@ const routes: Routes = [
       { path: 'authors', component: AuthorsComponent },]
   },
   { path: 'printing-edition', component: PrintingEditionComponent },
-  { path: 'pe/:id', component: SelectPEComponent },
-
+  { path: 'pe/:id', component: SelectPEComponent, canActivate:[AuthorizeGuard] },
 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AdminGuard]
+  providers: [AdminGuard, AuthorizeGuard]
 })
 export class AppRoutingModule { }

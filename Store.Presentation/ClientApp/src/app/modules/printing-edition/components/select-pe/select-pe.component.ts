@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BaseCartItem } from 'ng-shopping-cart';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getPE } from '../../store/printing-edition.actions';
-import { selectPrintingEditions } from '../../store/printing-edition.selector';
+import { selectPrintingEditions, selectUser } from '../../store/printing-edition.selector';
 
 @Component({
   selector: 'app-select-pe',
@@ -17,8 +17,9 @@ export class SelectPEComponent implements OnInit {
 
   count: number = 1;
   printingEdition: IPrintingEdition;
+  userId: string;
 
-  constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>) { }
+  constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>, private router: Router) { }
   ngOnInit() {
     const idStr = this.route.snapshot.paramMap.get('id');
     const id = Number.parseInt(idStr);
@@ -41,11 +42,14 @@ export class SelectPEComponent implements OnInit {
   // );
 
   add() {
+    if (this.userId === undefined){
+      this.router.navigateByUrl("sign-in");
+    }
     if (this.count < 1) {
       alert("Quantity cannot be less 1")
       return;
     }
-
+    
     const item = new BaseCartItem({ id: this.printingEdition.id, name: this.printingEdition.title, price: this.printingEdition.price, quantity: this.count, data: this.printingEdition.currencyType });
 
     if (this.cartService.isExist(this.printingEdition.id.toString())) {
@@ -57,6 +61,17 @@ export class SelectPEComponent implements OnInit {
     }
     this.cartService.addItem(item);
 
+  }
+
+  selectUser() {
+    this.store.pipe(select(selectUser)).subscribe(
+      data => {
+        if (data !== null) {
+          debugger;
+          this.userId = data.id;
+        }
+      }
+    );
   }
 
   selectPE(id: number) {

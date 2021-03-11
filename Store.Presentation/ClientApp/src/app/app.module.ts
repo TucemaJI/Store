@@ -39,6 +39,8 @@ import { PrintingEditionEffects } from './modules/printing-edition/store/printin
 import { CartService, ShoppingCartModule } from 'ng-shopping-cart';
 import { ShoppingCartService } from './modules/shared/services/shopping-cart.service';
 import { CookieService } from 'ngx-cookie-service';
+import { CartEffects } from './modules/cart/store/cart.effects';
+import { OrderHttpService } from './modules/shared/services/order-http.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,7 @@ import { CookieService } from 'ngx-cookie-service';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects, PrintingEditionEffects]),
+    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects, PrintingEditionEffects, CartEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,
@@ -92,6 +94,7 @@ import { CookieService } from 'ngx-cookie-service';
     PrintingEditionHttpService,
     ShoppingCartService,
     CookieService,
+    OrderHttpService,
 
   ],
   bootstrap: [AppComponent]

@@ -7,7 +7,7 @@ namespace Store.BusinessLogic.Models.Orders
     public class OrderModel : BaseModel
     {
         public string Description { get; set; }
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         public long PaymentId { get; set; }
         public StatusType Status { get; set; }
         public List<OrderItemModel> OrderItemModels { get; set; }

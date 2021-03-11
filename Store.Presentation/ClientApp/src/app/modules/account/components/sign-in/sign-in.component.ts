@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { ILoginModel } from '../../../shared/models/ILoginModel';
-import { AccountHttpService} from '../../../shared/services/account-http.service';
+import { AccountHttpService } from '../../../shared/services/account-http.service';
 import { EAccountActions, signIn } from '../../store/account.actions';
 
 @Component({
@@ -15,9 +15,7 @@ import { EAccountActions, signIn } from '../../store/account.actions';
 export class SignInComponent implements OnInit {
   userForm: FormGroup;
 
-  done: boolean = false;
-
-  constructor(private store: Store<IAppState>) { }
+  constructor(private store: Store<IAppState>, private router: Router) { }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
@@ -32,6 +30,7 @@ export class SignInComponent implements OnInit {
 
   public submit(userFormValue) {
     this.store.dispatch(signIn(userFormValue));
+    this.router.navigateByUrl('');
   }
 
 }

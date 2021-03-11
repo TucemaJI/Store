@@ -85,8 +85,6 @@ namespace Store.Presentation.Controllers
         {
             var userModels = _userService.FilterUsersAsync(filter);
 
-            var test = userModels.Result;
-
             return userModels;
         }
     }
