@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Users;
 using Store.Presentation.Models.AccountModels;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,7 +11,7 @@ namespace Store.BusinessLogic.Services.Interfaces
     {
         public Task<TokenModel> RefreshAsync(string token, string refreshToken);
         public Task<TokenModel> SignInAsync(string email, string password);
-        public Task<string> GetUserRoleAsync(string email);
+        public Task<IdRoleModel> GetIdUserRoleAsync(string email);
         public Task<IdentityResult> WriteRefreshTokenToDbAsync(string email, string issuer,
             string refreshToken);
         public Task<string> GetRefreshTokenAsync(JwtSecurityToken claims);

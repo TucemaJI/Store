@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BaseCartItem } from 'ng-shopping-cart';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
+import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getPE } from '../../store/printing-edition.actions';
@@ -19,8 +20,9 @@ export class SelectPEComponent implements OnInit {
   printingEdition: IPrintingEdition;
   userId: string;
 
-  constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>, private router: Router) { }
+  constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>, private router: Router, private auth: AuthService) { }
   ngOnInit() {
+    this.auth.userIdChanged.subscribe((id) => this.userId = id);
     const idStr = this.route.snapshot.paramMap.get('id');
     const id = Number.parseInt(idStr);
     debugger;
@@ -42,14 +44,14 @@ export class SelectPEComponent implements OnInit {
   // );
 
   add() {
-    if (this.userId === undefined){
+    if (this.userId === undefined) {
       this.router.navigateByUrl("sign-in");
     }
     if (this.count < 1) {
       alert("Quantity cannot be less 1")
       return;
     }
-    
+
     const item = new BaseCartItem({ id: this.printingEdition.id, name: this.printingEdition.title, price: this.printingEdition.price, quantity: this.count, data: this.printingEdition.currencyType });
 
     if (this.cartService.isExist(this.printingEdition.id.toString())) {
@@ -63,16 +65,7 @@ export class SelectPEComponent implements OnInit {
 
   }
 
-  selectUser() {
-    this.store.pipe(select(selectUser)).subscribe(
-      data => {
-        if (data !== null) {
-          debugger;
-          this.userId = data.id;
-        }
-      }
-    );
-  }
+
 
   selectPE(id: number) {
     this.store.pipe(select(selectPrintingEditions)).subscribe(

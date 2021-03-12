@@ -5,6 +5,7 @@ import { IAppState } from 'src/app/store/state/app.state';
 import { CartComponent } from '../../cart/componensts/cart/cart.component';
 import { selectUser } from '../../printing-edition/store/printing-edition.selector';
 import { User } from '../models/User';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,22 +14,14 @@ import { User } from '../models/User';
 })
 export class HeaderComponent implements OnInit {
 
-  user: User;
+  userId: string;
 
-  constructor(public dialog: MatDialog, private store: Store<IAppState>) { }
+  constructor(public dialog: MatDialog, private auth: AuthService) { }
 
   ngOnInit(): void {
-  }
+    this.userId = this.auth.getId();
+    this.auth.userIdChanged.subscribe((id) => this.userId = id);
 
-  selectUser() {
-    this.store.pipe(select(selectUser)).subscribe(
-      data => {
-        if (data !== null) {
-          debugger;
-          this.user = data;
-        }
-      }
-    );
   }
 
   cart() {
