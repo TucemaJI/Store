@@ -9,7 +9,7 @@ export class OrderHttpService {
     constructor(private http: HttpClient) { }
 
     postCreateOrder(order: IOrderModel): Observable<Number> {
-        const body = { description: order.description, userId: order.userId, orderItems: order.orderItems };
+        const body = { description: order.description, userId: order.userId, orderItemModels: order.orderItemModels };
         debugger;
         return this.http.post<Number>('https://localhost:44355/api/order/createorder', body)
     }

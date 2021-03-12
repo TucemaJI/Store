@@ -6,6 +6,7 @@ import { BaseCartItem } from 'ng-shopping-cart';
 import { selectUser } from 'src/app/modules/printing-edition/store/printing-edition.selector';
 import { IOrderItemModel } from 'src/app/modules/shared/models/IOrderItemModel';
 import { IOrderModel } from 'src/app/modules/shared/models/IOrderModel';
+import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { createOrder } from '../../store/cart.actions';
@@ -26,12 +27,13 @@ export class CartComponent implements OnInit {
   userId: string;
 
   constructor(public dialogRef: MatDialogRef<CartComponent>, private cartService: ShoppingCartService<BaseCartItem>, private dialog: MatDialog, private store: Store<IAppState>,
-    private router: Router) { }
+    private router: Router, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.cartData = this.cartService.getItems();
     debugger;
     this.cartData.forEach(val => this.total += val.price * val.quantity);
+    this.userId = this.auth.getId();
   }
   update(item: BaseCartItem) {
     this.total = 0;
@@ -51,16 +53,23 @@ export class CartComponent implements OnInit {
   buy() {
     if (this.userId === undefined) {
       this.router.navigateByUrl("sign-in");
+      return;
     }
     let description: string = '';
     let orderItems: IOrderItemModel[] = [];
-    this.cartData.forEach(i => { description += i.name, description += i.quantity, orderItems.push({ pEid: i.id, count: i.quantity, amount: i.quantity * i.price }) })
+    this.cartData.forEach(i => {
+      description += i.name + " ", description += i.quantity + ', ', orderItems.push({
+        printingEditionId: i.id, count: i.quantity, amount: i.quantity * i.price,
+      })
+    })
+    debugger;
     const order: IOrderModel = {
+      isRemoved: false,
       userId: this.userId,
       status: null,
       paymentId: null,
       description: description,
-      orderItems: orderItems,
+      orderItemModels: orderItems,
     };
     this.store.dispatch(createOrder({ order }));
     let orderId: number;
@@ -72,19 +81,10 @@ export class CartComponent implements OnInit {
       }
     );
 
-    if (orderId !== null) {
+    if (orderId !== undefined) {
       const dialog = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
     }
   }
-  selectUser() {
-    this.store.pipe(select(selectUser)).subscribe(
-      data => {
-        if (data !== null) {
-          debugger;
-          this.userId = data.id;
-        }
-      }
-    );
-  }
+
 
 }

@@ -1,5 +1,6 @@
 export interface IOrderItemModel{
     amount: number;
-    pEid: number;
+    printingEditionId: number;
     count:number;
+
 }

@@ -5,5 +5,6 @@ export interface IOrderModel{
     userId: string;
     paymentId: number;
     status: boolean;
-    orderItems: IOrderItemModel[];
+    orderItemModels: IOrderItemModel[];
+    isRemoved: boolean;
 }
