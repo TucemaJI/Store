@@ -9,6 +9,7 @@ using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
 using Stripe;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,58 +42,71 @@ namespace Store.BusinessLogic.Services
         public async Task<long> CreateOrderAsync(OrderModel model)
         {
             var order = _orderMapper.Map(model);
-            await _orderItemRepository.CreateOrderItemsAsync(order.OrderItems);
+            order.Payment = new Payment();
+            await _paymentRepository.CreateAsync(order.Payment);
+            order.Status = StatusType.Unpaid;
             var createdOrder = await _orderRepository.CreateAsync(order);
+            await _orderItemRepository.CreateOrderItemsAsync(order.OrderItems);
             return createdOrder.Id;
         }
 
-        public async Task Pay(OrderPayModel model)
+        public async Task<bool> Pay(OrderPayModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Cardnumber) || string.IsNullOrWhiteSpace(model.Cardnumber) ||
-                model.Month <= 0 || model.Month > 12 || model.OrderId <= 0 || model.Value <= 0 || model.Year <= 0)
+            if (string.IsNullOrWhiteSpace(model.Cardnumber) || model.Cvc < 0 || model.Cvc > 999 ||
+                model.Month <= 0 || model.Month > 12 || model.OrderId < 0 || model.Value <= 0 || model.Year <= 0)
             {
                 throw new BusinessLogicException(ExceptionOptions.WRONG_PAYMENT);
             };
-
+            try
+            {
             StripeConfiguration.ApiKey = "sk_test_4eC39HqLyjWDarjtT1zdp7dc";
 
-            var optionsToken = new TokenCreateOptions
-            {
-                Card = new TokenCardOptions
+                var cvc = model.Cvc.ToString();
+                var optionsToken = new TokenCreateOptions
                 {
-                    Number = model.Cardnumber,
-                    ExpMonth = model.Month,
-                    ExpYear = model.Year,
-                    Cvc = model.Cvc,
-                }
-            };
-
-            var serviceToken = await new TokenService().CreateAsync(optionsToken);
-
-            var order = await _orderRepository.GetItemAsync(model.OrderId);
-
-            var options = new ChargeCreateOptions
-            {
-                Amount = model.Value,
-                Currency = CurrencyType.USD.ToString(),
-                Description = order.Description,
-                Source = serviceToken.Id,
-            };
-
-            var service = new ChargeService();
-            Charge charge = await service.CreateAsync(options);
-
-            if (charge.Paid)
-            {
-                var payment = new Payment() {
-                    TransactionId = charge.Id,
+                    Card = new TokenCardOptions
+                    {
+                        Name = "Jenny Rosen",
+                        Number = model.Cardnumber,
+                        ExpMonth = model.Month,
+                        ExpYear = model.Year,
+                        Cvc = cvc,
+                    }
                 };
-                payment = await _paymentRepository.CreateAsync(payment);
-                order.Status = StatusType.Paid;
-                order.PaymentId = payment.Id;
-                _orderRepository.UpdateAsync(order);
+            
+                var serviceToken = new TokenService();
+                var stripeToken = serviceToken.Create(optionsToken);
 
+                var order = await _orderRepository.GetItemAsync(model.OrderId);
+
+                var options = new ChargeCreateOptions
+                {
+                    Amount = model.Value,
+                    Currency = CurrencyType.USD.ToString(),
+                    Description = order.Description,
+                    Source = stripeToken.Id,
+                };
+
+                var service = new ChargeService();
+                Charge charge = await service.CreateAsync(options);
+
+                if (charge.Paid)
+                {
+                    var payment = await _paymentRepository.GetItemAsync(order.PaymentId);
+                    payment.TransactionId = charge.Id;
+                    _paymentRepository.UpdateAsync(payment);
+                    order.Status = StatusType.Paid;
+                    order.PaymentId = payment.Id;
+                    _orderRepository.UpdateAsync(order);
+
+                }
+                return charge.Paid;
             }
+            catch (Exception ex)
+            {
+                var test = ex;
+            }
+            return false;
         }
         public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
         {

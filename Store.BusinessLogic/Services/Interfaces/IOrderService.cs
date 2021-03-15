@@ -12,7 +12,7 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter);
         public Task DeleteOrderAsync(long id);
         public void UpdateOrder(OrderModel orderModel);
-        public Task Pay(OrderPayModel model);
+        public Task<bool> Pay(OrderPayModel model);
 
     }
 }

@@ -22,9 +22,9 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("CreateOrder")]
-        public async Task<long> CreateOrderAsync([FromBody] OrderModel model)
+        public Task<long> CreateOrderAsync([FromBody] OrderModel model)
         {
-            return await _orderService.CreateOrderAsync(model);
+            return _orderService.CreateOrderAsync(model);
         }
 
         [Authorize]
@@ -36,16 +36,16 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpGet("GetOrder")]
-        public async Task<OrderModel> GetOrderModelAsync(long id)
+        public Task<OrderModel> GetOrderModelAsync(long id)
         {
-            return await _orderService.GetOrderModelAsync(id);
+            return _orderService.GetOrderModelAsync(id);
         }
 
         [Authorize]
         [HttpPost("DeleteOrder")]
-        public async Task DeleteOrderAsync(long id)
+        public Task DeleteOrderAsync(long id)
         {
-            await _orderService.DeleteOrderAsync(id);
+            return _orderService.DeleteOrderAsync(id);
         }
 
         [Authorize]
@@ -56,9 +56,9 @@ namespace Store.Presentation.Controllers
         }
         [Authorize]
         [HttpPost("Pay")]
-        public void Pay([FromBody] OrderPayModel model)
+        public Task<bool> Pay([FromBody] OrderPayModel model)
         {
-            _orderService.Pay(model);
+            return _orderService.Pay(model);
         }
     }
 }

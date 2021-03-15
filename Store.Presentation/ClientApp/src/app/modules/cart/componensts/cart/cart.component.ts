@@ -75,15 +75,18 @@ export class CartComponent implements OnInit {
     let orderId: number;
     this.store.pipe(select(selectOrderId)).subscribe(
       data => {
-        if (data != null) {
+        if (data != undefined) {
           orderId = data;
+          console.log(orderId);
+          debugger;
+          this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
         }
       }
     );
-
-    if (orderId !== undefined) {
-      const dialog = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
-    }
+// debugger;
+//     if (orderId !== undefined) {
+//       const dialog = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
+//     }
   }
 
 

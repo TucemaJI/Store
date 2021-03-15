@@ -19,10 +19,10 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.paymentForm = new FormGroup({
-      cardNumber: new FormControl('', [Validators.required, Validators.maxLength(16), Validators.minLength(16)]),
+      cardNumber: new FormControl('', [Validators.required, Validators.maxLength(16), Validators.minLength(16), Validators.pattern('[0-9]{16}')],),
       month: new FormControl('', [Validators.required, Validators.min(1), Validators.max(12)]),
-      year: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
-      cvc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]),
+      year: new FormControl('', [Validators.required, Validators.min(0), Validators.max(9999)]),
+      cvc: new FormControl('', [Validators.required, Validators.min(0), Validators.max(999), ]),
     });
   }
   public hasError = (controlName: string, errorName: string) => {
@@ -38,7 +38,8 @@ export class PaymentComponent implements OnInit {
       orderId: this.data.orderId,
       value: this.data.total,
     }
-    this.store.dispatch(pay(paymentFormValue));
+    debugger;
+    this.store.dispatch(pay({payment}));
     console.log(paymentFormValue);
     debugger;
   }

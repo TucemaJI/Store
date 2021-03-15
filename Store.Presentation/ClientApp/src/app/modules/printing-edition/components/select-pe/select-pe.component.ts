@@ -22,6 +22,7 @@ export class SelectPEComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>, private router: Router, private auth: AuthService) { }
   ngOnInit() {
+    this.userId = this.auth.getId();
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
     const idStr = this.route.snapshot.paramMap.get('id');
     const id = Number.parseInt(idStr);

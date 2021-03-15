@@ -3,16 +3,13 @@
     <div mat-dialog-content [formGroup]="paymentForm">
             <mat-form-field class="form-width" appearance="outline">
                 <label>
-                    <input formControlName="cardNumber" matInput type="number" placeholder="Card number">
+                    <input formControlName="cardNumber" matInput type="text" placeholder="Card number">
                 </label>
                 <mat-error align="end" *ngIf="hasError('cardNumber', 'required')">
                     Please enter Your Card Number
                 </mat-error>
-                <mat-error align="end" *ngIf="hasError('cardNumber', 'minLength')">
-                    {{cardNumber.error}}
-                </mat-error>
-                <mat-error align="end" *ngIf="hasError('cardNumber', 'maxLength')">
-                    Please enter at least 1 special symbol
+                <mat-error align="end" *ngIf="hasError('cardNumber', 'pattern')">
+                    Length must be equal 16 and has only digits
                 </mat-error>
             </mat-form-field>
 
@@ -21,13 +18,13 @@
                     <input formControlName="month" matInput type="number" placeholder="Month">
                 </label>
                 <mat-error align="end" *ngIf="hasError('month', 'required')">
-                    Please enter Your password
+                    Please enter card month
                 </mat-error>
                 <mat-error align="end" *ngIf="hasError('month', 'min')">
-                    Please enter Your password
+                    Month cannot be less than 0
                 </mat-error>
                 <mat-error align="end" *ngIf="hasError('month', 'max')">
-                    Please enter Your password
+                    Month cannot be more than 12
                 </mat-error>
             </mat-form-field>
 
@@ -36,13 +33,13 @@
                     <input formControlName="year" matInput type="number" placeholder="Year">
                 </label>
                 <mat-error align="end" *ngIf="hasError('year', 'required')">
-                    Please enter Your password
+                    Please enter card year
                 </mat-error>
                 <mat-error align="end" *ngIf="hasError('year', 'min')">
-                    Please enter Your password
+                    Year cannot be less than 0
                 </mat-error>
                 <mat-error align="end" *ngIf="hasError('year', 'max')">
-                    Please enter Your password
+                    Year cannot be more than 99
                 </mat-error>
             </mat-form-field>
 
@@ -51,13 +48,13 @@
                     <input formControlName="cvc" matInput type="number" placeholder="CVC">
                 </label>
                 <mat-error align="end" *ngIf="hasError('cvc', 'required')">
-                    Please enter Your password
+                    Please enter Your cvc
                 </mat-error>
-                <mat-error align="end" *ngIf="hasError('cvc', 'minLength')">
-                    Please enter at least 1 letter with upper case
+                <mat-error align="end" *ngIf="hasError('cvc', 'min')">
+                    Cvc cannot be less than 0
                 </mat-error>
-                <mat-error align="end" *ngIf="hasError('cvc', 'maxLength')">
-                    Please enter at least 1 special symbol
+                <mat-error align="end" *ngIf="hasError('cvc', 'max')">
+                    Cvc cannot be more than 999
                 </mat-error>
             </mat-form-field>
 
