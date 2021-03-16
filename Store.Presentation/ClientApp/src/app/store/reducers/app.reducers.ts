@@ -5,6 +5,7 @@ import { accountReducer }  from "../../modules/account/store/account.reducer"
 import { administratorReducer } from "src/app/modules/administrator/store/administrator.reducer";
 import { printingEditionReducer } from "src/app/modules/printing-edition/store/printing-edition.reducer";
 import { cartReducer } from "src/app/modules/cart/store/cart.reducer";
+import { orderReducer } from "src/app/modules/order/store/order.reducer";
 
 export const appReducers: ActionReducerMap<IAppState, any> = {
     router: routerReducer,
@@ -12,4 +13,5 @@ export const appReducers: ActionReducerMap<IAppState, any> = {
     administrator: administratorReducer,
     printingEditions: printingEditionReducer,
     cart: cartReducer,
+    order: orderReducer,
 }

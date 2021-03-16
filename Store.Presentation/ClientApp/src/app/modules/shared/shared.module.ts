@@ -5,7 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { sharedReducer, sharedReducerNode } from './store/shared.reducer';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
-import { EnumToArray } from './services/enum-to-array';
+import { EnumToArrayPipe } from './services/enum-to-array.pipe';
 import { ShoppingCartModule } from 'ng-shopping-cart';
 
 

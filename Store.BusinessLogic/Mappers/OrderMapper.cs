@@ -20,6 +20,8 @@ namespace Store.BusinessLogic.Mappers
 
         public override OrderModel Map(Order element)
         {
+            long amount = 0;
+            element.OrderItems.ForEach(x => amount += x.Amount);
             return new OrderModel
             {
                 Description = element.Description,
@@ -29,6 +31,8 @@ namespace Store.BusinessLogic.Mappers
                 CreationDate = element.CreationData,
                 OrderItemModels = new OrderItemMapper().Map(element.OrderItems),
                 Status = element.Status,
+                TotalAmount = amount,
+                Id = element.Id,
             };
         }
     }

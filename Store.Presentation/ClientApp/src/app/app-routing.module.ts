@@ -13,6 +13,7 @@ import { AuthorsComponent } from './modules/administrator/components/authors/aut
 import { PrintingEditionComponent } from './modules/printing-edition/components/printing-edition/printing-edition.component';
 import { SelectPEComponent } from './modules/printing-edition/components/select-pe/select-pe.component';
 import { AuthorizeGuard } from './modules/shared/guards/authorize.guard';
+import { OrdersComponent } from './modules/order/components/orders/orders.component';
 
 const routes: Routes = [
 
@@ -28,8 +29,8 @@ const routes: Routes = [
       { path: 'authors', component: AuthorsComponent },]
   },
   { path: 'printing-edition', component: PrintingEditionComponent },
-  { path: 'pe/:id', component: SelectPEComponent, canActivate:[AuthorizeGuard] },
-
+  { path: 'pe/:id', component: SelectPEComponent, canActivate: [AuthorizeGuard] },
+  { path: 'orders', component: OrdersComponent, canActivate: [AuthorizeGuard] },
 ];
 
 @NgModule({

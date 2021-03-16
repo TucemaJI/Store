@@ -5,14 +5,14 @@ import { MaterialModule } from '../shared/material.module';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { EnumToArray } from '../shared/services/enum-to-array';
+import { EnumToArrayPipe } from '../shared/services/enum-to-array.pipe';
 import { SelectPEComponent } from './components/select-pe/select-pe.component';
 import { ShoppingCartModule } from 'ng-shopping-cart';
 
 
 
 @NgModule({
-  declarations: [PrintingEditionComponent, EnumToArray, SelectPEComponent,],
+  declarations: [PrintingEditionComponent, EnumToArrayPipe, SelectPEComponent,],
   imports: [
     CommonModule,
     MaterialModule,

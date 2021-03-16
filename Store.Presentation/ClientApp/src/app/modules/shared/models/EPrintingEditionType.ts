@@ -4,3 +4,9 @@ export enum EPrintingEditionType {
     journal = 2,
     newspaper = 3,
 }
+
+export const PrintingEditionLabel = new Map<number, string>([
+    [EPrintingEditionType.book, "Book"],
+    [EPrintingEditionType.journal, "Journal"],
+    [EPrintingEditionType.newspaper, "Newspaper"],
+]);

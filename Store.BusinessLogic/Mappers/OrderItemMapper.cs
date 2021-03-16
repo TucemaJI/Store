@@ -29,6 +29,8 @@ namespace Store.BusinessLogic.Mappers
                 OrderId = element.OrderId,
                 PrintingEditionId = element.PrintingEditionId,
                 CreationDate = element.CreationData,
+                Type = element.PrintingEdition.Type,
+                Title = element.PrintingEdition.Title,
             };
         }
     }

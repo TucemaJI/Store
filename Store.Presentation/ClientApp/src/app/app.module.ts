@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { InjectionToken, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,26 +21,26 @@ import { PrintingEditionModule } from './modules/printing-edition/printing-editi
 import { SharedModule } from './modules/shared/shared.module';
 import { UserModule } from './modules/user/user.module';
 import { MaterialModule } from './modules/shared/material.module';
-import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule } from 'ngx-toastr';
+import { ToastNoAnimationModule } from 'ngx-toastr';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AccountHttpService } from './modules/shared/services/account-http.service';
 import { AccountEffects } from './modules/account/store/account.effects';
 import { appReducers } from './store/reducers/app.reducers';
 import { TokenInterceptor } from './modules/shared/interceptors/auth.interceptor';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { JwtModule } from '@auth0/angular-jwt';
 import { AdministratorHttpService } from './modules/shared/services/administrator-http.service';
 import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
 import { AuthService } from './modules/shared/services/auth.service';
 import { ErrorInterceptor } from './modules/shared/interceptors/error.interceptor';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { EnumToArray } from './modules/shared/services/enum-to-array';
 import { PrintingEditionHttpService } from './modules/shared/services/printing-edition-http.service';
 import { PrintingEditionEffects } from './modules/printing-edition/store/printing-edition.effects';
-import { CartService, ShoppingCartModule } from 'ng-shopping-cart';
+import { ShoppingCartModule } from 'ng-shopping-cart';
 import { ShoppingCartService } from './modules/shared/services/shopping-cart.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CartEffects } from './modules/cart/store/cart.effects';
 import { OrderHttpService } from './modules/shared/services/order-http.service';
+import { OrderEffects } from './modules/order/store/order.effects';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,7 @@ import { OrderHttpService } from './modules/shared/services/order-http.service';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects, PrintingEditionEffects, CartEffects]),
+    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects, PrintingEditionEffects, CartEffects, OrderEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,

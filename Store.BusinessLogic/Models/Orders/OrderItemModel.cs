@@ -1,4 +1,5 @@
 ﻿using Store.BusinessLogic.Models.Base;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Models.Orders
 {
@@ -9,5 +10,7 @@ namespace Store.BusinessLogic.Models.Orders
         public long PrintingEditionId { get; set; }
         public long OrderId { get; set; }
         public long Count { get; set; }
+        public PrintingEditionType Type { get; set; }
+        public string Title { get; set; }
     }
 }

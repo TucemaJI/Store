@@ -5,5 +5,14 @@ export enum ECurrencyType {
     GBP = 3,
     CHF = 4,
     JPY = 5,
-    UAH = 6,
+    RUB = 6,
 }
+
+export const CurrencyLabel = new Map<number, string>([
+    [ECurrencyType.USD, "USD"],
+    [ECurrencyType.EUR, "EUR"],
+    [ECurrencyType.GBP, "GBP"],
+    [ECurrencyType.CHF, "CHF"],
+    [ECurrencyType.JPY, "JPY"],
+    [ECurrencyType.RUB, "RUB"],
+])

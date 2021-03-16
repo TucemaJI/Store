@@ -64,12 +64,14 @@ export class CartComponent implements OnInit {
     })
     debugger;
     const order: IOrderModel = {
+      id: null,
       isRemoved: false,
       userId: this.userId,
       status: null,
       paymentId: null,
       description: description,
       orderItemModels: orderItems,
+      totalAmount: null,
     };
     this.store.dispatch(createOrder({ order }));
     let orderId: number;
@@ -83,10 +85,10 @@ export class CartComponent implements OnInit {
         }
       }
     );
-// debugger;
-//     if (orderId !== undefined) {
-//       const dialog = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
-//     }
+    // debugger;
+    //     if (orderId !== undefined) {
+    //       const dialog = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
+    //     }
   }
 
 
