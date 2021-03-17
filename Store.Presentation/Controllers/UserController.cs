@@ -33,16 +33,10 @@ namespace Store.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetUser")]
-        public Task<UserModel> GetUserAsync(string email)
+        public Task<UserModel> GetUserAsync(string id)
         {
-            return _userService.GetUserAsync(email);
+            return _userService.GetUserAsync(id);
         }
-
-        //[HttpGet("GetAllUsers")]
-        //public Task<List<UserModel>> GetUsersAsync()
-        //{
-        //    return _userService.GetUsersAsync();
-        //}
 
         [HttpGet("GetRole")]
         public Task<string> GetRoleAsync(string email)

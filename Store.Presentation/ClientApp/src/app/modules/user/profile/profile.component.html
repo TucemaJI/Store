@@ -15,7 +15,7 @@
                 <p>Your First name</p>
                 <mat-form-field class="width" appearance="outline">
                     <label>
-                        <input formControlName="firstName" matInput type="text">
+                        <input formControlName="firstName" [ngModel]="user?.firstName" matInput type="text">
                     </label>
                     <mat-error align="end" *ngIf="hasError('firstName', 'required')">
                         Please enter Your First name
@@ -25,7 +25,7 @@
                 <p>Your Last name</p>
                 <mat-form-field class="width" appearance="outline">
                     <label>
-                        <input formControlName="lastName" matInput type="text">
+                        <input formControlName="lastName" [ngModel]="user?.lastName" matInput type="text">
                     </label>
                     <mat-error align="end" *ngIf="hasError('lastName', 'required')">
                         Please enter Your Last name
@@ -35,7 +35,7 @@
                 <p>E-mail</p>
                 <mat-form-field class="width" appearance="outline">
                     <label>
-                        <input formControlName="email" matInput type="email">
+                        <input formControlName="email" [ngModel]="user?.email" matInput type="email">
                     </label>
                     <mat-error align="end" *ngIf="hasError('email', 'required')">
                         Please enter Your email
@@ -83,8 +83,8 @@
                 </div>
             </form>
             <div *ngIf="editbool">
-                <button mat-raised-button type="submit">Save</button>
-                <button class="cancelButton" mat-raised-button type="reset">Cancel</button>
+                <button mat-raised-button (click)="save(profileForm.value)" type="submit">Save</button>
+                <button class="cancelButton" (click)="cancel()" mat-raised-button type="reset">Cancel</button>
             </div>
         </mat-card-content>
     </mat-card>

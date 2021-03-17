@@ -41,9 +41,13 @@ namespace Store.BusinessLogic.Services
             }
         }
 
-        public async Task<UserModel> GetUserAsync(string email)
+        public async Task<UserModel> GetUserAsync(string id)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.WRONG_ID);
+            }
             return _userMapper.Map(user);
         }
 

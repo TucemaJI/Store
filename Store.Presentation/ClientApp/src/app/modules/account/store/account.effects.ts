@@ -16,7 +16,7 @@ export class AccountEffects {
 
     login$ = createEffect(() => this.actions$.pipe(
         ofType(EAccountActions.SignIn),
-        exhaustMap((loginModel: ILoginModel) => this.httpService.postLogin(loginModel)
+        exhaustMap((action:{loginModel: ILoginModel, remember:boolean}) => this.httpService.postLogin(action.loginModel, action.remember)
             .pipe(
                 map((responce: Token) => { debugger; return ({ type: EAccountActions.SignInSuccess, accessToken: responce.accessToken, refreshToken: responce.refreshToken }) }),
                 catchError(err => of(error({ err })))
@@ -57,7 +57,27 @@ export class AccountEffects {
                 catchError(err => of(error({ err })))
             )
         )
-    ))
+    ));
+    getUser$ = createEffect(() => this.actions$.pipe(
+        ofType(EAccountActions.GetUser),
+        exhaustMap((action: { userId: string }) => {
+            debugger; return this.httpService.getUser(action.userId)
+                .pipe(
+                    map((result: User) => ({ type: EAccountActions.GetUserSuccess, user: result })),
+                    catchError(err => of(error({ err })))
+                )
+        })
+    ));
+    editUser$ = createEffect(() => this.actions$.pipe(
+        ofType(EAccountActions.EditUser),
+        exhaustMap((action: { user: User }) => {
+            debugger; return this.httpService.editUser(action.user)
+                .pipe(
+                    map((result: boolean) => ({ type: EAccountActions.GetUserSuccess, result: result })),
+                    catchError(err => of(error({ err })))
+                )
+        })
+    ));
 
     constructor(
         private actions$: Actions,

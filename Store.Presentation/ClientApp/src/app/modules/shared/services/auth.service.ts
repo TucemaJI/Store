@@ -29,11 +29,13 @@ export class AuthService {
         }
     }
 
-    public saveToken(token) {
+    public saveToken(token, remember: boolean) {
         debugger;
         console.log("NEW TOKEN");
         localStorage.setItem('accessToken', token.accessToken);
-        localStorage.setItem('refreshToken', token.refreshToken);
+        if (remember) {
+            localStorage.setItem('refreshToken', token.refreshToken);
+        }
         const id = this.jwtHelper.decodeToken(token.accessToken)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
         this.userIdChanged.next(id);
     }

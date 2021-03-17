@@ -14,6 +14,7 @@ import { EAccountActions, signIn } from '../../store/account.actions';
 })
 export class SignInComponent implements OnInit {
   userForm: FormGroup;
+  remember: boolean = false;
 
   constructor(private store: Store<IAppState>, private router: Router) { }
 
@@ -29,7 +30,11 @@ export class SignInComponent implements OnInit {
   }
 
   public submit(userFormValue) {
-    this.store.dispatch(signIn(userFormValue));
+    const model: ILoginModel = {
+      email: userFormValue.email,
+      password: userFormValue.password,
+    }
+    this.store.dispatch(signIn({ loginModel: model, remember: this.remember }));
     this.router.navigateByUrl('');
   }
 

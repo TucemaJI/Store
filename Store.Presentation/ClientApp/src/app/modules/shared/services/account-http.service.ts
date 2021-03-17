@@ -14,11 +14,11 @@ export class AccountHttpService {
 
     constructor(private http: HttpClient, private auth: AuthService) { }
 
-    postLogin(user: ILoginModel): Observable<Token> {
+    postLogin(user: ILoginModel, remember:boolean): Observable<Token> {
         const body = { email: user.email, password: user.password };
         debugger;
         return this.http.post<Token>('https://localhost:44355/api/account/signin', body).pipe(
-            tap(token => { this.auth.saveToken(token) })
+            tap(token => { this.auth.saveToken(token, remember) })
         )
     }
 
@@ -42,8 +42,16 @@ export class AccountHttpService {
         return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', token).pipe(
             tap(result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) })
         );
+    }
 
+    getUser(id: string) {
+        debugger;
+        return this.http.get(`https://localhost:44355/api/user/getuser?id=${id}`);
+    }
 
+    editUser(user: User) {
+        const body = { firstName: user.firstName, lastName: user.lastName, email: user.email, password: user.password, confirmPassword: user.confirmPassword, id: user.id };
+        return this.http.put('https://localhost:44355/api/user/updateuser', body);
     }
 }
 

@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'confirm-password', component: ConfirmPasswordComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthorizeGuard] },
   {
     path: 'administrator', component: AdministratorComponent, canActivate: [AdminGuard], children: [
       { path: 'clients', component: ClientsComponent },

@@ -19,5 +19,6 @@
         public const string PASSWORD_NOT_REMOVED = "Password not removed";
         public const string CURRENCY_CONVERT_PROBLEM = "Problem with convert currency API";
         public const string WRONG_PAYMENT = "Payment form is invalid";
+        public const string WRONG_ID = "Wrong id, user not find";
     }
 }

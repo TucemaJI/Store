@@ -10,12 +10,14 @@
       <a class="company" *ngIf="userId===undefined" routerLink='/sign-in'>Log in</a>
 
 
-      <button mat-icon-button>
-        <mat-icon>
-          <!-- mat-menu -->
-          person_outline
-        </mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon> person_outline </mat-icon>
       </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="profile">My Profile</button>
+        <button mat-menu-item routerLink="orders">My Orders</button>
+        <button mat-menu-item (click)="logOut()" routerLink="">Log Out</button>
+      </mat-menu>
 
       <button mat-icon-button *ngIf="userId!==undefined" (click)="cart()">
         <mat-icon>

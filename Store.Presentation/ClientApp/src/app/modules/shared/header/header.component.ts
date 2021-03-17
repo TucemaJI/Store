@@ -24,6 +24,10 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  logOut(): void {
+    localStorage.clear();
+  }
+
   cart() {
     const dialog = this.dialog.open(CartComponent).updateSize("300%");
   }
