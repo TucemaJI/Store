@@ -1,8 +1,7 @@
-import { User } from "../../shared/models/User";
+import { IUser } from "../../shared/models/IUser.model";
 
 export interface IAccountState {
-    user: User
-
+    user: IUser
 }
 
 export const initialUserState: IAccountState = {

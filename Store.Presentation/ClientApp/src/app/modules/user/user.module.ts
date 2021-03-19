@@ -4,8 +4,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { MaterialModule } from '../shared/material.module';
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
   declarations: [ProfileComponent],
   imports: [

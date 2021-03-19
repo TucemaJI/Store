@@ -1,7 +1,6 @@
 import { createSelector } from "@ngrx/store";
 import { IAppState } from "src/app/store/state/app.state";
 import { IAccountState } from "../../account/store/account.state";
-import { IPrintingEdition } from "../../shared/models/IPrintingEdition";
 import { IPrintingEditionState } from "./printing-edition.state";
 
 const getPEState = (state: IAppState) => state.printingEditions;

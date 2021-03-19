@@ -9,8 +9,6 @@ import { EnumToArrayPipe } from '../shared/services/enum-to-array.pipe';
 import { SelectPEComponent } from './components/select-pe/select-pe.component';
 import { ShoppingCartModule } from 'ng-shopping-cart';
 
-
-
 @NgModule({
   declarations: [PrintingEditionComponent, EnumToArrayPipe, SelectPEComponent,],
   imports: [
@@ -23,4 +21,5 @@ import { ShoppingCartModule } from 'ng-shopping-cart';
   ],
   exports: [PrintingEditionComponent, SelectPEComponent,]
 })
+
 export class PrintingEditionModule { }

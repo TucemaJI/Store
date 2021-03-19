@@ -19,7 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.DataAccess", "Store.D
 		{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC} = {57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Shared", "Store.Share\Store.Shared.csproj", "{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Shared", "Store.Share\Store.Shared.csproj", "{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Admin", "Store.Admin\Store.Admin.csproj", "{90460692-A0AB-40F7-A336-A55205D67027}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3C7ED1AB-3A97-436E-B73D-271C57823804} = {3C7ED1AB-3A97-436E-B73D-271C57823804}
+		{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC} = {57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +49,10 @@ Global
 		{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57EAB9FC-EAF4-4DD5-8935-C32C938A4CBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90460692-A0AB-40F7-A336-A55205D67027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90460692-A0AB-40F7-A336-A55205D67027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90460692-A0AB-40F7-A336-A55205D67027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90460692-A0AB-40F7-A336-A55205D67027}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

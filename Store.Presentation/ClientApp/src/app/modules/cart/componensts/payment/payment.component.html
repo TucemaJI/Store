@@ -3,12 +3,12 @@
     <div mat-dialog-content [formGroup]="paymentForm">
             <mat-form-field class="form-width" appearance="outline">
                 <label>
-                    <input formControlName="cardNumber" matInput type="text" placeholder="Card number">
+                    <input formControlName="cardnumber" matInput type="text" placeholder="Card number">
                 </label>
-                <mat-error align="end" *ngIf="hasError('cardNumber', 'required')">
+                <mat-error align="end" *ngIf="hasError('cardnumber', 'required')">
                     Please enter Your Card Number
                 </mat-error>
-                <mat-error align="end" *ngIf="hasError('cardNumber', 'pattern')">
+                <mat-error align="end" *ngIf="hasError('cardnumber', 'pattern')">
                     Length must be equal 16 and has only digits
                 </mat-error>
             </mat-form-field>

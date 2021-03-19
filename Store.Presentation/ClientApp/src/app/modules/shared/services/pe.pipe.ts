@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { PrintingEditionLabel } from "../models/EPrintingEditionType";
+import { PrintingEditionLabel } from "../models/printing-edition-type.enum";
 
 @Pipe({ name: 'pe' })
 

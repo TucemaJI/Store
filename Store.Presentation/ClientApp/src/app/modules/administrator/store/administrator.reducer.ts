@@ -12,4 +12,5 @@ const createAdministratorReducer = createReducer(
 export const administratorReducer = (state = initialAdministratorState, action: Action): IAdministratorState => {
     return createAdministratorReducer(state, action);
 }
+
 export const reducerKey = 'administrator';

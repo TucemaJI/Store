@@ -3,16 +3,16 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { error } from "../../../store/actions/error.action";
 import { of } from "rxjs";
 import { catchError, exhaustMap, map } from "rxjs/operators";
-import { IOrderModel } from "../../shared/models/IOrderModel";
+import { IOrder } from "../../shared/models/IOrder.model";
 import { OrderHttpService } from "../../shared/services/order-http.service";
 import { ECartActions } from "./cart.actions";
-import { IPayModel } from "../../shared/models/IPayModel";
+import { IPay } from "../../shared/models/IPay.model";
 
 @Injectable()
 export class CartEffects {
     createOrder$ = createEffect(() => this.actions$.pipe(
         ofType(ECartActions.CreateOrder),
-        exhaustMap((orderAction: {type:string, order:IOrderModel}) => {
+        exhaustMap((orderAction: {type:string, order:IOrder}) => {
             debugger; return (
                 this.httpService.postCreateOrder(orderAction.order)
                     .pipe(
@@ -29,7 +29,7 @@ export class CartEffects {
 
     pay$ = createEffect(() => this.actions$.pipe(
         ofType(ECartActions.Pay),
-        exhaustMap((payAction: {type:string, payment:IPayModel}) => {
+        exhaustMap((payAction: {type:string, payment:IPay}) => {
             debugger; return (
                 this.httpService.postPay(payAction.payment)
                     .pipe(

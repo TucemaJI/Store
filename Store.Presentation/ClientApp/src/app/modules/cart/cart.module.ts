@@ -4,8 +4,6 @@ import { CartComponent } from './componensts/cart/cart.component';
 import { MaterialModule } from '../shared/material.module';
 import { PaymentComponent } from './componensts/payment/payment.component';
 
-
-
 @NgModule({
   declarations: [CartComponent, PaymentComponent],
   imports: [
@@ -14,4 +12,5 @@ import { PaymentComponent } from './componensts/payment/payment.component';
   ],
   exports: [CartComponent,],
 })
+
 export class CartModule { }

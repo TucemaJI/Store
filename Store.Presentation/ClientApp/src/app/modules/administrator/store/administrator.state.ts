@@ -1,12 +1,13 @@
-import { IAuthor } from "../../shared/models/IAuthor";
-import { IClients } from "../../shared/models/IClients";
-import { IClientsPageModel } from "../../shared/models/IClientsPageModel";
+import { IAuthor } from "../../shared/models/IAuthor.model";
+import { IClient } from "../../shared/models/IClient.model";
+import { IClientsPage } from "../../shared/models/IClientsPage.model";
 
 export interface IAdministratorState {
-    clients: IClients[];
+    clients: IClient[];
     authors: IAuthor[];
-    pageModel: IClientsPageModel;
+    pageModel: IClientsPage;
 }
+
 export const initialAdministratorState = {
     clients: null,
     authors: null,

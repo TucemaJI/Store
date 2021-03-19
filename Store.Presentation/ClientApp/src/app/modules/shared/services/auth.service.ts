@@ -1,10 +1,9 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { resultMemoize } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { tap } from "rxjs/operators";
-import { Token } from "../models/Token";
+import { IToken } from "../models/IToken.model";
 
 @Injectable()
 export class AuthService {
@@ -54,7 +53,7 @@ export class AuthService {
         return isAuth;
     }
     public refreshToken(token) {
-        return this.http.post<Token>('https://localhost:44355/api/account/refreshtoken', token).pipe(
+        return this.http.post<IToken>('https://localhost:44355/api/account/refreshtoken', token).pipe(
             tap(result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) })
         )
     }

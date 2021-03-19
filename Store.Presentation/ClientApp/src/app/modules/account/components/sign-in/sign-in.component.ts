@@ -3,9 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
-import { ILoginModel } from '../../../shared/models/ILoginModel';
-import { AccountHttpService } from '../../../shared/services/account-http.service';
-import { EAccountActions, signIn } from '../../store/account.actions';
+import { ILogin } from '../../../shared/models/ILogin.model';
+import { signIn } from '../../store/account.actions';
 
 @Component({
   selector: 'app-sign-in',
@@ -25,12 +24,12 @@ export class SignInComponent implements OnInit {
     });
   }
 
-  public hasError = (controlName: string, errorName: string) => {
+  public hasError = (controlName: string, errorName: string): boolean => {
     return this.userForm.controls[controlName].hasError(errorName);
   }
 
-  public submit(userFormValue) {
-    const model: ILoginModel = {
+  public submit(userFormValue: ILogin): void {
+    const model: ILogin = {
       email: userFormValue.email,
       password: userFormValue.password,
     }

@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { IAuthor } from 'src/app/modules/shared/models/IAuthor.model';
 import { IAppState } from 'src/app/store/state/app.state';
-import { isUndefined } from 'util';
 import { addAuthor, changeAuthor } from '../../store/administrator.actions';
 
 @Component({
@@ -34,15 +34,13 @@ export class EditAuthorComponent implements OnInit {
     }
   }
 
-  submit(formValue) {
-    debugger;
-    let author = {
+  submit(formValue: IAuthor): void {
+    let author: IAuthor = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       id: null,
       printingEditions: null,
     }
-    debugger;
     if (this.addForm) {
       this.store.dispatch(addAuthor({ author }));
     }
@@ -52,7 +50,7 @@ export class EditAuthorComponent implements OnInit {
     }
     location.reload();
   }
-  cancel() {
+  cancel(): void {
     this.dialogRef.close();
   }
 }

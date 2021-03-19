@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Store.Presentation.Providers;
+using Store.BusinessLogic.Providers;
 using System;
 using static Store.Shared.Constants.Constants;
 

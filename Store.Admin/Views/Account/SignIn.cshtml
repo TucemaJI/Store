@@ -1,0 +1,15 @@
+﻿@model Store.BusinessLogic.Models.Account.SignInModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+    <h3>Sign In</h3>
+    <form asp-controller="Account" asp-action="SignIn" method="post" >
+        <p> E-mail <input asp-for="Email" type="email"></p>
+        <p> Password <input asp-for="Password" type="password"> </p>
+
+        <button type="submit"> Sign-In </button>
+    </form>
+</div>

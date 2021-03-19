@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { StatusLabel } from "../models/EStatus";
+import { StatusLabel } from "../models/status-type.enum";
 
 @Pipe({ name: 'status' })
 

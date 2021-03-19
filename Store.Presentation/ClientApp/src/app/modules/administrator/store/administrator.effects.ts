@@ -3,12 +3,12 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { catchError, exhaustMap, map } from "rxjs/operators";
 import { error } from "src/app/store/actions/error.action";
-import { IAuthor } from "../../shared/models/IAuthor";
-import { IAuthorsPageModel } from "../../shared/models/IAuthorsPageModel";
-import { IChangeClientModel } from "../../shared/models/IChangeClientModel";
-import { IClients } from "../../shared/models/IClients";
-import { IClientsPageModel } from "../../shared/models/IClientsPageModel";
-import { IPageParameters } from "../../shared/models/IPageParameters";
+import { IAuthor } from "../../shared/models/IAuthor.model";
+import { IAuthorsPage } from "../../shared/models/IAuthorsPage.model";
+import { IChangeClient } from "../../shared/models/IChangeClient.model";
+import { IClient } from "../../shared/models/IClient.model";
+import { IClientsPage } from "../../shared/models/IClientsPage.model";
+import { IPageParameters } from "../../shared/models/IPageParameters.model";
 import { AdministratorHttpService } from "../../shared/services/administrator-http.service";
 import { EAdministratorActions } from "./administrator.actions";
 
@@ -16,9 +16,9 @@ import { EAdministratorActions } from "./administrator.actions";
 export class AdministratorEffects {
     getUsers$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.GetClients),
-        exhaustMap((pageModel: IClientsPageModel) => this.httpService.postClientsPage(pageModel)
+        exhaustMap((action: { pageModel: IClientsPage }) => this.httpService.postClientsPage(action.pageModel)
             .pipe(
-                map((responce: { elements: IClients[], pageParameters: IPageParameters }) => ({
+                map((responce: { elements: IClient[], pageParameters: IPageParameters }) => ({
                     type: EAdministratorActions.GetClientsSuccess,
                     pageParameters: responce.pageParameters, clients: responce.elements
                 })),
@@ -28,7 +28,7 @@ export class AdministratorEffects {
     ))
     changeClient$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.ClientChange),
-        exhaustMap((client: IChangeClientModel) => this.httpService.changeClient(client)
+        exhaustMap((action: { client: IChangeClient }) => this.httpService.changeClient(action.client)
             .pipe(
                 map((response: boolean) => ({ type: EAdministratorActions.ClientChangeSuccess, result: response })),
                 catchError(err => of(error({ err })))
@@ -38,7 +38,7 @@ export class AdministratorEffects {
     ))
     deleteClient$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.DeleteClient),
-        exhaustMap((client: IClients) => this.httpService.deleteClient(client)
+        exhaustMap((action: { client: IClient }) => this.httpService.deleteClient(action.client)
             .pipe(
                 map((response) => ({ type: EAdministratorActions.DeleteClientSuccess, result: response })),
                 catchError(err => of(error({ err })))
@@ -46,9 +46,9 @@ export class AdministratorEffects {
         )
     ))
 
-    getAuthors$ = createEffect(()=> this.actions$.pipe(
+    getAuthors$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.GetAuthors),
-        exhaustMap((pageModel: IAuthorsPageModel) => this.httpService.postAuthorPage(pageModel)
+        exhaustMap((action: { pageModel: IAuthorsPage }) => this.httpService.postAuthorPage(action.pageModel)
             .pipe(
                 map((responce: { elements: IAuthor[], pageParameters: IPageParameters }) => ({
                     type: EAdministratorActions.GetAuthorsSuccess,
@@ -58,9 +58,9 @@ export class AdministratorEffects {
             )
         )
     ))
-    addAuthor$ = createEffect(()=> this.actions$.pipe(
+    addAuthor$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.AddAuthor),
-        exhaustMap((author:IAuthor) => this.httpService.addAuthor(author)
+        exhaustMap((action: { author: IAuthor }) => this.httpService.addAuthor(action.author)
             .pipe(
                 map((response: boolean) => ({ type: EAdministratorActions.AddAuthorSuccess, result: response })),
                 catchError(err => of(error({ err })))
@@ -68,9 +68,9 @@ export class AdministratorEffects {
             )
         )
     ))
-    changeAuthor$ = createEffect(()=> this.actions$.pipe(
+    changeAuthor$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.ChangeAuthor),
-        exhaustMap((author:IAuthor) => this.httpService.changeAuthor(author)
+        exhaustMap((action: { author: IAuthor }) => this.httpService.changeAuthor(action.author)
             .pipe(
                 map((response: boolean) => ({ type: EAdministratorActions.ChangeAuthorSuccess, result: response })),
                 catchError(err => of(error({ err })))
@@ -78,9 +78,9 @@ export class AdministratorEffects {
             )
         )
     ))
-    deleteAuthor$ = createEffect(()=> this.actions$.pipe(
+    deleteAuthor$ = createEffect(() => this.actions$.pipe(
         ofType(EAdministratorActions.DeleteAuthor),
-        exhaustMap((author:IAuthor) => this.httpService.deleteAuthor(author)
+        exhaustMap((action: { author: IAuthor }) => this.httpService.deleteAuthor(action.author)
             .pipe(
                 map((response: boolean) => ({ type: EAdministratorActions.DeleteAuthorSuccess, result: response })),
                 catchError(err => of(error({ err })))

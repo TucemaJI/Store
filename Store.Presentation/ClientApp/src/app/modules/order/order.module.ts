@@ -7,8 +7,6 @@ import { CurrencyPipe } from '../shared/services/currency.pipe';
 import { PEPipe } from '../shared/services/pe.pipe';
 import { StatusPipe } from '../shared/services/status.pipe';
 
-
-
 @NgModule({
   declarations: [OrdersComponent, CurrencyPipe, PEPipe, StatusPipe],
   imports: [
@@ -17,4 +15,5 @@ import { StatusPipe } from '../shared/services/status.pipe';
     NgxPaginationModule,
   ]
 })
+
 export class OrderModule { }

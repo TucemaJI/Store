@@ -4,8 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { CheckerErrors } from 'src/app/modules/shared/validator';
 import { IAppState } from 'src/app/store/state/app.state';
-import { IChangeClientModel } from '../../../shared/models/IChangeClientModel';
-import { IClients } from '../../../shared/models/IClients';
+import { IChangeClient } from '../../../shared/models/IChangeClient.model';
 import { clientChange } from '../../store/administrator.actions';
 
 @Component({
@@ -31,12 +30,12 @@ export class EditProfileComponent implements OnInit {
     }, { validators: CheckerErrors.checkPasswords });
   }
 
-  public hasError = (controlName: string, errorName: string) => {
+  public hasError = (controlName: string, errorName: string): boolean => {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
 
-  submit(profileFormValue) {
-    let client: IChangeClientModel = {
+  submit(profileFormValue: IChangeClient): void {
+    let client: IChangeClient = {
       firstName: profileFormValue.firstName,
       lastName: profileFormValue.lastName,
       email: profileFormValue.email,
@@ -45,11 +44,11 @@ export class EditProfileComponent implements OnInit {
       id: this.data.id,
       isBlocked: this.data.isBlocked,
     };
-    debugger;
     this.store.dispatch(clientChange({ client }));
     location.reload();
   }
-  cancel() {
+  
+  cancel(): void {
     this.dialogRef.close();
   }
 }

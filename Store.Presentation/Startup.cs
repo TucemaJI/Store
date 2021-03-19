@@ -7,11 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogic;
+using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.Presentation.Extentions;
 using Store.Presentation.Middlewares;
-using Store.Presentation.Providers;
 using System.IdentityModel.Tokens.Jwt;
 using static Store.Shared.Constants.Constants;
 

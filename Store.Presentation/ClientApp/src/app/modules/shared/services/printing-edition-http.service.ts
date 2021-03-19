@@ -1,16 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
-import { IPrintingEdition } from "../models/IPrintingEdition";
-import { IPrintingEditionPageModel } from "../models/IPrintingEditionPageModel";
+import { IPrintingEditionPage } from "../models/IPEPage.model";
 
 @Injectable()
 export class PrintingEditionHttpService {
 
     constructor(private http: HttpClient) { }
 
-    postPE(pageModel: IPrintingEditionPageModel) {
+    postPE(pageModel: IPrintingEditionPage) {
         const body = {
             entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,

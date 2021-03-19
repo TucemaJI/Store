@@ -1,17 +1,12 @@
-import { isNull } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgControl, NgModel } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { select, Store } from '@ngrx/store';
-import { AdministratorHttpService } from 'src/app/modules/shared/services/administrator-http.service';
+import { Consts } from 'src/app/modules/shared/consts';
+import { IClientsPage } from 'src/app/modules/shared/models/IClientsPage.model';
 import { IAppState } from 'src/app/store/state/app.state';
-import { IChangeClientModel } from '../../../shared/models/IChangeClientModel';
-import { IClients } from '../../../shared/models/IClients';
-import { IClientsPageModel } from '../../../shared/models/IClientsPageModel';
-import { IPageParameters } from '../../../shared/models/IPageParameters';
+import { IChangeClient } from '../../../shared/models/IChangeClient.model';
+import { IClient as IClient } from '../../../shared/models/IClient.model';
+import { IPageParameters } from '../../../shared/models/IPageParameters.model';
 import { clientChange, deleteClient, getClients } from '../../store/administrator.actions';
 import { selectAdministrator } from '../../store/administrator.selector';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
@@ -22,45 +17,40 @@ import { EditProfileComponent } from '../edit-profile/edit-profile.component';
   styleUrls: ['./clients.component.css'],
 })
 export class ClientsComponent implements OnInit {
-  clientsData: IClients[];
+  clientsData: IClient[];
   searhText: string;
   statusFilter: boolean;
-  pageModel: any;
+  pageModel: IClientsPage;
   pageParameters: IPageParameters;
-  displayedColumns: string[] = ['userName', 'userEmail', 'status', 'buttons'];
+  displayedColumns: string[] = Consts.CLIENTS_COLUMNS;
 
-  constructor(private store: Store<IAppState>, public dialog: MatDialog) {
-  }
+  constructor(private store: Store<IAppState>, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.pageParameters = {
-      itemsPerPage: 5,
-      currentPage: 1,
-      totalItems: 0,
-    }
+    this.pageParameters = Consts.CLIENTS_PAGE_PARAMETERS;
     this.pageModel = {
       pageParameters: this.pageParameters,
       isDescending: false,
+      isBlocked: null,
       orderByString: '',
       email: '',
       name: '',
     };
-    //this.http.postClientsPage(this.pageModel).subscribe(data => console.log(data));
-    this.store.dispatch(getClients(this.pageModel));
+    this.store.dispatch(getClients({ pageModel: this.pageModel }));
     this.getClients();
   }
 
-  filterSlide() {
+  filterSlide(): void {
     this.pageModel.isBlocked = this.statusFilter;
-    this.store.dispatch(getClients(this.pageModel));
+    this.store.dispatch(getClients({ pageModel: this.pageModel }));
   }
 
-  pageChanged(event) {
+  pageChanged(event: number): void {
     this.pageModel.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
-    this.store.dispatch(getClients(this.pageModel));
+    this.store.dispatch(getClients({ pageModel: this.pageModel }));
   }
 
-  applyFilter(event, filterName: string) {
+  applyFilter(event: string, filterName: string): void {
     this.pageModel = {
       pageParameters: this.pageParameters,
       isDescending: false,
@@ -69,34 +59,27 @@ export class ClientsComponent implements OnInit {
       name: '',
       isBlocked: this.statusFilter,
     };
-    if (filterName === 'userName') {
+    if (filterName === Consts.FILTER_USERNAME) {
       this.pageModel.name = event;
     };
-    if (filterName === 'email') {
+    if (filterName === Consts.FILTER_EMAIL) {
       this.pageModel.email = event;
     }
-    this.store.dispatch(getClients(this.pageModel));
+    this.store.dispatch(getClients({ pageModel: this.pageModel }));
   }
-  changeUserBlock(element) {
-    let client: IChangeClientModel = {
-      firstName: element.firstName,
-      lastName: element.lastName,
-      email: element.email,
-      isBlocked: element.isBlocked,
-      password: element.password,
-      confirmPassword: element.confirmPassword,
-      id: element.id,
-    };
+
+  changeUserBlock(element: IChangeClient): void {
     if (element.isBlocked) {
-      client.isBlocked = false;
+      element.isBlocked = false;
     }
     if (!element.isBlocked) {
-      client.isBlocked = true;
+      element.isBlocked = true;
     }
-    this.store.dispatch(clientChange({ client }));
+    this.store.dispatch(clientChange({ client: element }));
     location.reload();
   }
-  getClients() {
+
+  getClients(): void {
     this.store.pipe(select(selectAdministrator)).subscribe(
 
       data => {
@@ -104,31 +87,19 @@ export class ClientsComponent implements OnInit {
           this.clientsData = data.clients;
 
           this.pageParameters = data.pageModel.pageParameters;
-          console.log(data);
         }
       }
     )
   }
-  deleteClient(element) {
-    const client: IClients = {
-      firstName: element.firstName,
-      lastName: element.lastName,
-      email: element.email,
-      isBlocked: element.isBlocked,
-    };
-    this.store.dispatch(deleteClient({ client }));
+
+  deleteClient(element: IClient): void {
+    this.store.dispatch(deleteClient({ client: element }));
     location.reload();
   }
-  editClient(element) {
-    const client = {
-      firstName: element.firstName,
-      lastName: element.lastName,
-      email: element.email,
-      isBlocked: element.isBlocked,
-      id: element.id,
-    };
+
+  editClient(element: IClient): void {
     const dialog = this.dialog.open(EditProfileComponent, {
-      data: client,
+      data: element,
     })
   }
 }

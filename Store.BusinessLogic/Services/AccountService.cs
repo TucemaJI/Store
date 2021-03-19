@@ -6,7 +6,7 @@ using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.Presentation.Models.AccountModels;
+using Store.BusinessLogic.Models.Account;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
 using System.IdentityModel.Tokens.Jwt;
@@ -184,10 +184,13 @@ namespace Store.BusinessLogic.Services
 
             var password = _passwordProvider.GeneratePassword(AccountServiceOptions.PASSWORD_LENGTH);
 
-            await _userManager.ResetPasswordAsync(user, resetToken, password);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, password);
 
-            await _emailProvider.SendEmailAsync(email, EmailOptions.NEW_PASSWORD,
-                $"Here is your new password: {password}");
+            if (result.Succeeded)
+            {
+                await _emailProvider.SendEmailAsync(email, EmailOptions.NEW_PASSWORD,
+                    $"Here is your new password: {password}");
+            }
         }
         private async Task<User> FindUserByEmailAsync(string email)
         {

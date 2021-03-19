@@ -4,11 +4,11 @@ import { Observable } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
 @Injectable()
-export class AuthorizeGuard implements CanActivate{
- 
-constructor(@Inject(AuthService) private auth: AuthService){}
+export class AuthorizeGuard implements CanActivate {
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
-       return this.auth.isAuthenticated();
+    constructor(@Inject(AuthService) private auth: AuthService) { }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+        return this.auth.isAuthenticated();
     }
 }

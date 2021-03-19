@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Email, AccountHttpService } from '../../../shared/services/account-http.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/store/state/app.state';
+import { passwordRecovery } from '../../store/account.actions';
 
 @Component({
   selector: 'app-password-recovery',
@@ -9,8 +11,9 @@ import { Email, AccountHttpService } from '../../../shared/services/account-http
 })
 export class PasswordRecoveryComponent implements OnInit {
   emailForm: FormGroup;
+  passwordSent: boolean;
 
-  constructor(private httpService: AccountHttpService) { }
+  constructor(private store: Store<IAppState>) { }
 
   ngOnInit(): void {
     this.emailForm = new FormGroup({
@@ -18,23 +21,15 @@ export class PasswordRecoveryComponent implements OnInit {
     });
   }
 
-  passwordSent: boolean;
-
-
-
-  public hasError = (controlName: string, errorName: string) => {
+  public hasError = (controlName: string, errorName: string): boolean => {
     return this.emailForm.controls[controlName].hasError(errorName);
   }
 
-  public continue(email: Email) {
+  public continue(email: { email: string }): void {
     if (this.emailForm.valid) {
       debugger;
+      this.store.dispatch(passwordRecovery(email));
       this.passwordSent = true;
-      this.httpService.postEmail(email)
-      .subscribe(
-        () => { this.passwordSent = true;debugger;},
-        error => console.log(error)
-      );
     }
   }
 

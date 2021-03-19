@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { CurrencyLabel } from "../models/ECurrencyType";
+import { CurrencyLabel } from "../models/currency-type.enum";
 
 @Pipe({ name: 'currency' })
 

@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { IAppState } from 'src/app/store/state/app.state';
 import { CartComponent } from '../../cart/componensts/cart/cart.component';
-import { selectUser } from '../../printing-edition/store/printing-edition.selector';
-import { User } from '../models/User';
+import { Consts } from '../consts';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -21,15 +18,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.auth.getId();
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
-
   }
 
   logOut(): void {
     localStorage.clear();
   }
 
-  cart() {
-    const dialog = this.dialog.open(CartComponent).updateSize("300%");
+  cart(): void {
+    const dialog = this.dialog.open(CartComponent).updateSize(Consts.CART_DIALOG_SIZE);
   }
 
 }

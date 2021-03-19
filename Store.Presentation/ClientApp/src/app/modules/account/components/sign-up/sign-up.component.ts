@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { IUser } from 'src/app/modules/shared/models/IUser.model';
 import { CheckerErrors, MyErrorStateMatcher } from 'src/app/modules/shared/validator';
 import { IAppState } from 'src/app/store/state/app.state';
 import { signUp } from '../../store/account.actions';
@@ -30,14 +31,12 @@ export class SignUpComponent implements OnInit {
     }, { validators: CheckerErrors.checkPasswords });
   }
   
-  public hasError = (controlName: string, errorName: string) => {
+  public hasError = (controlName: string, errorName: string): boolean => {
     return this.signUpForm.controls[controlName].hasError(errorName);
   }
 
-  public submit(signUpFormValue) {
-    this.store.dispatch(signUp(signUpFormValue));
-    console.log(signUpFormValue);
-    debugger;
+  public submit(user: IUser) {
+    this.store.dispatch(signUp({user}));
   }
 }
 

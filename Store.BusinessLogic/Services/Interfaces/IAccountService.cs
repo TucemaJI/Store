@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogic.Models;
+using Store.BusinessLogic.Models.Account;
 using Store.BusinessLogic.Models.Users;
-using Store.Presentation.Models.AccountModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 

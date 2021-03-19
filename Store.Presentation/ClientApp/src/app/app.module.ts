@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,11 +9,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { AppEffects } from './store/effects/app.effects';
-
 import { AccountModule } from './modules/account/account.module';
 import { AdministratorModule } from './modules/administrator/administrator.module';
-import { AuthorModule } from './modules/author/author.module';
 import { CartModule } from './modules/cart/cart.module';
 import { OrderModule } from './modules/order/order.module';
 import { PrintingEditionModule } from './modules/printing-edition/printing-edition.module';
@@ -53,22 +49,19 @@ import { OrderEffects } from './modules/order/store/order.effects';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects, AccountEffects, AdministratorEffects, PrintingEditionEffects, CartEffects, OrderEffects]),
+    EffectsModule.forRoot([AccountEffects, AdministratorEffects, PrintingEditionEffects, CartEffects, OrderEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,
     ShoppingCartModule.forRoot(),
-
     MaterialModule,
     AccountModule,
     AdministratorModule,
-    AuthorModule,
     CartModule,
     OrderModule,
     PrintingEditionModule,
     SharedModule,
     UserModule,
-
     HttpClientModule,
     JwtModule.forRoot({
       config: {
@@ -95,7 +88,6 @@ import { OrderEffects } from './modules/order/store/order.effects';
     ShoppingCartService,
     CookieService,
     OrderHttpService,
-
   ],
   bootstrap: [AppComponent]
 })

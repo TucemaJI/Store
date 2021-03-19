@@ -1,9 +1,9 @@
-import { IPrintingEdition } from "../../shared/models/IPrintingEdition";
-import { IPrintingEditionPageModel } from "../../shared/models/IPrintingEditionPageModel";
+import { IPrintingEdition } from "../../shared/models/IPrintingEdition.model";
+import { IPrintingEditionPage } from "../../shared/models/IPEPage.model";
 
 export interface IPrintingEditionState {
     printingEditions: IPrintingEdition[];
-    pageModel: IPrintingEditionPageModel;
+    pageModel: IPrintingEditionPage;
 }
 export const initialPrintingEditionsState = {
     printingEditions: null,

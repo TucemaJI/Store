@@ -1,9 +1,9 @@
-import { IOrderModel } from "../../shared/models/IOrderModel";
-import { IOrderPageModel } from "../../shared/models/IOrderPageModel";
+import { IOrder } from "../../shared/models/IOrder.model";
+import { IOrderPage } from "../../shared/models/IOrderPage.model";
 
 export interface IOrderState {
-    orders: IOrderModel[];
-    pageModel: IOrderPageModel;
+    orders: IOrder[];
+    pageModel: IOrderPage;
 }
 
 export const initialOrderState: IOrderState = {

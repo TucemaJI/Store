@@ -3,16 +3,15 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BaseCartItem } from 'ng-shopping-cart';
-import { selectUser } from 'src/app/modules/printing-edition/store/printing-edition.selector';
-import { IOrderItemModel } from 'src/app/modules/shared/models/IOrderItemModel';
-import { IOrderModel } from 'src/app/modules/shared/models/IOrderModel';
+import { IOrderItem } from 'src/app/modules/shared/models/IOrderItem.model';
+import { IOrder } from 'src/app/modules/shared/models/IOrder.model';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { createOrder } from '../../store/cart.actions';
 import { selectOrderId } from '../../store/cart.selector';
-import { initialCartState } from '../../store/cart.state';
 import { PaymentComponent } from '../payment/payment.component';
+import { Consts } from 'src/app/modules/shared/consts';
 
 @Component({
   selector: 'app-cart',
@@ -22,7 +21,7 @@ import { PaymentComponent } from '../payment/payment.component';
 export class CartComponent implements OnInit {
 
   cartData: BaseCartItem[];
-  displayedColumns: string[] = ['product', 'unitPrice', 'count', 'amount'];
+  displayedColumns: string[] = Consts.CART_COLUMNS;
   total: number = 0;
   userId: string;
 
@@ -31,39 +30,35 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartData = this.cartService.getItems();
-    debugger;
     this.cartData.forEach(val => this.total += val.price * val.quantity);
     this.userId = this.auth.getId();
   }
-  update(item: BaseCartItem) {
+
+  update(item: BaseCartItem): void {
     this.total = 0;
-    debugger;
     this.cartService.addItem(item);
     this.cartData.forEach(val => this.total += val.price * val.quantity);
-    debugger;
   }
-  deleteProduct(item: BaseCartItem) {
-    debugger;
+  deleteProduct(item: BaseCartItem): void {
     this.cartService.removeItem(item.id);
     this.cartData = this.cartService.getItems();
   }
-  cancel() {
+  cancel(): void {
     this.dialogRef.close();
   }
-  buy() {
+  buy(): void {
     if (this.userId === undefined) {
-      this.router.navigateByUrl("sign-in");
+      this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
       return;
     }
     let description: string = '';
-    let orderItems: IOrderItemModel[] = [];
+    let orderItems: IOrderItem[] = [];
     this.cartData.forEach(i => {
       description += i.name + " ", description += i.quantity + ', ', orderItems.push({
         printingEditionId: i.id, count: i.quantity, amount: i.quantity * i.price,
       })
-    })
-    debugger;
-    const order: IOrderModel = {
+    });
+    const order: IOrder = {
       id: null,
       isRemoved: false,
       userId: this.userId,
@@ -80,16 +75,9 @@ export class CartComponent implements OnInit {
         if (data != undefined) {
           orderId = data;
           console.log(orderId);
-          debugger;
           this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
         }
       }
     );
-    // debugger;
-    //     if (orderId !== undefined) {
-    //       const dialog = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
-    //     }
   }
-
-
 }

@@ -12,4 +12,5 @@ const createPrintingEditionReducer = createReducer(
 export const printingEditionReducer = (state = initialPrintingEditionsState, action: Action): IPrintingEditionState => {
     return createPrintingEditionReducer(state, action);
 }
+
 export const reducerKey = 'printingEditions';

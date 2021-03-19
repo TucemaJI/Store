@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
 import { editUser, getUser } from '../../account/store/account.actions';
 import { selectUser } from '../../printing-edition/store/printing-edition.selector';
-import { User } from '../../shared/models/User';
+import { IUser } from '../../shared/models/IUser.model';
 import { AuthService } from '../../shared/services/auth.service';
 import { CheckerErrors } from '../../shared/validator';
 
@@ -16,7 +16,7 @@ import { CheckerErrors } from '../../shared/validator';
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
 
-  user: User;
+  user: IUser;
   editbool: Boolean;
   userId: string;
 
@@ -38,35 +38,32 @@ export class ProfileComponent implements OnInit {
     }, { validators: CheckerErrors.checkPasswords });
   }
 
-  getUserForm() {
+  getUserForm(): void {
     this.store.pipe(select(selectUser)).subscribe(
 
       data => {
         if (data.id != null) {
           this.user = data;
-
-          console.log(data);
         }
       }
     )
   }
 
-  public hasError = (controlName: string, errorName: string) => {
+  public hasError = (controlName: string, errorName: string): boolean => {
     return this.profileForm.controls[controlName].hasError(errorName);
   }
 
-  public editButton() {
+  public editButton(): void {
     this.editbool = true;
     CheckerErrors.edit(this.profileForm);
   }
 
-  public cancel() {
+  public cancel(): void {
     location.reload();
   }
 
-  public save(profileFormValue) {
-    console.log(profileFormValue);
-    const eUser: User = {
+  public save(profileFormValue: IUser): void {
+    const eUser: IUser = {
       accessToken: this.user.accessToken,
       confirmPassword: profileFormValue.confirmPassword,
       confirmed: this.user.confirmed,
@@ -79,7 +76,6 @@ export class ProfileComponent implements OnInit {
     }
 
     this.store.dispatch(editUser({ user: eUser }));
-    debugger;
   }
 
 }

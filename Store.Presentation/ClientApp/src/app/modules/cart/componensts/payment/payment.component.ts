@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { IPayModel } from 'src/app/modules/shared/models/IPayModel';
+import { IPay } from 'src/app/modules/shared/models/IPay.model';
 import { IAppState } from 'src/app/store/state/app.state';
 import { pay } from '../../store/cart.actions';
 
@@ -22,26 +22,23 @@ export class PaymentComponent implements OnInit {
       cardNumber: new FormControl('', [Validators.required, Validators.maxLength(16), Validators.minLength(16), Validators.pattern('[0-9]{16}')],),
       month: new FormControl('', [Validators.required, Validators.min(1), Validators.max(12)]),
       year: new FormControl('', [Validators.required, Validators.min(0), Validators.max(9999)]),
-      cvc: new FormControl('', [Validators.required, Validators.min(0), Validators.max(999), ]),
+      cvc: new FormControl('', [Validators.required, Validators.min(0), Validators.max(999),]),
     });
   }
-  public hasError = (controlName: string, errorName: string) => {
+
+  public hasError = (controlName: string, errorName: string): boolean => {
     return this.paymentForm.controls[controlName].hasError(errorName);
   }
 
-  public submit(paymentFormValue) {
-    const payment: IPayModel = {
-      cardnumber: paymentFormValue.cardNumber,
+  public submit(paymentFormValue: IPay): void {
+    const payment: IPay = {
+      cardnumber: paymentFormValue.cardnumber,
       cvc: paymentFormValue.cvc,
       month: paymentFormValue.month,
       year: paymentFormValue.year,
       orderId: this.data.orderId,
       value: this.data.total,
     }
-    debugger;
-    this.store.dispatch(pay({payment}));
-    console.log(paymentFormValue);
-    debugger;
+    this.store.dispatch(pay({ payment }));
   }
-
 }

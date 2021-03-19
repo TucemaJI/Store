@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BaseCartItem } from 'ng-shopping-cart';
-import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition';
+import { Consts } from 'src/app/modules/shared/consts';
+import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition.model';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getPE } from '../../store/printing-edition.actions';
-import { selectPrintingEditions, selectUser } from '../../store/printing-edition.selector';
+import { selectPrintingEditions } from '../../store/printing-edition.selector';
 
 @Component({
   selector: 'app-select-pe',
@@ -16,7 +17,7 @@ import { selectPrintingEditions, selectUser } from '../../store/printing-edition
 })
 export class SelectPEComponent implements OnInit {
 
-  count: number = 1;
+  count: number = Consts.QUANTITY_MINIMUM_VALUE;
   printingEdition: IPrintingEdition;
   userId: string;
 
@@ -24,32 +25,20 @@ export class SelectPEComponent implements OnInit {
   ngOnInit() {
     this.userId = this.auth.getId();
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
-    const idStr = this.route.snapshot.paramMap.get('id');
+    const idStr = this.route.snapshot.paramMap.get(Consts.ID);
     const id = Number.parseInt(idStr);
-    debugger;
     this.selectPE(id);
     if (this.printingEdition === undefined) {
-      this.store.dispatch(getPE({ id: id }));
-      debugger;
+      this.store.dispatch(getPE({ id }));
     }
   }
 
-  // selectPE$ = this.store.pipe(select(selectPrintingEditions)).subscribe(
-  //   data => {
-  //     debugger;
-  //     if (data.printingEditions !== null) {
-  //       debugger;
-  //       this.printingEdition = data.printingEditions.find(el => el.id === this.id);
-  //     }
-  //   }
-  // );
-
-  add() {
+  add(): void {
     if (this.userId === undefined) {
-      this.router.navigateByUrl("sign-in");
+      this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
     }
-    if (this.count < 1) {
-      alert("Quantity cannot be less 1")
+    if (this.count < Consts.QUANTITY_MINIMUM_VALUE) {
+      alert(Consts.QUANTITY_MINIMUM)
       return;
     }
 
@@ -58,26 +47,19 @@ export class SelectPEComponent implements OnInit {
     if (this.cartService.isExist(this.printingEdition.id.toString())) {
       let itemFromCookie = this.cartService.getItem(this.printingEdition.id);
       itemFromCookie.quantity = itemFromCookie.quantity + this.count;
-      debugger;
       this.cartService.addItem(itemFromCookie);
       return;
     }
     this.cartService.addItem(item);
-
   }
 
-
-
-  selectPE(id: number) {
+  selectPE(id: number): void {
     this.store.pipe(select(selectPrintingEditions)).subscribe(
       data => {
         if (data.printingEditions !== null) {
-          debugger;
           this.printingEdition = data.printingEditions.find(el => el.id === id);
         }
       }
     );
   }
-
-
 }

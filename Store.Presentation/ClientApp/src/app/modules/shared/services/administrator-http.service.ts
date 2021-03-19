@@ -1,16 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { IAuthor } from "../models/IAuthor";
-import { IAuthorsPageModel } from "../models/IAuthorsPageModel";
-import { IClients } from "../models/IClients";
-import { IClientsPageModel } from "../models/IClientsPageModel";
+import { IAuthorsPage } from "../models/IAuthorsPage.model";
+import { IClientsPage } from "../models/IClientsPage.model";
 
 @Injectable()
 export class AdministratorHttpService {
 
     constructor(private http: HttpClient) { }
 
-    postClientsPage(pageModel: IClientsPageModel) {
+    postClientsPage(pageModel: IClientsPage) {
         const body = {
             entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
@@ -43,7 +41,7 @@ export class AdministratorHttpService {
         return this.http.post('https://localhost:44355/api/user/deleteuser', body);
     }
 
-    postAuthorPage(pageModel: IAuthorsPageModel) {
+    postAuthorPage(pageModel: IAuthorsPage) {
         const body = {
             entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,

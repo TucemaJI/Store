@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogic.Models.Account;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
-using Store.Presentation.Models.AccountModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Threading.Tasks;
@@ -75,8 +75,8 @@ namespace Store.Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("ForgotPassword")]
-        public Task ForgotPasswordAsync([FromBody] string email)
+        [HttpGet("ForgotPassword")]
+        public Task ForgotPasswordAsync(string email)
         {
             return _accountService.RecoveryPasswordAsync(email);
 
