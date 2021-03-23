@@ -15,6 +15,10 @@
             public const string ROOT_PATH = "ClientApp/dist";
             public const string SOURCE_PATH = "ClientApp";
             public const string NPM_COMMAND = "start";
+            public const string SERVICE = "service";
+            public const string MAPPER = "mapper";
+            public const string PROVIDER = "provider";
+            public const string REPOSITORY = "repository";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
@@ -6,6 +7,7 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
+using Store.Shared.Constants;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,46 +24,46 @@ namespace Store.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAuthorAsync(AuthorModel model)
+        public Task CreateAuthorAsync(AuthorModel model)
         {
             var author = _mapper.Map<AuthorModel, Author>(model);
-            await _authorRepository.CreateAsync(author);
+            var result = _authorRepository.CreateAsync(author);
+            return result;
         }
 
         public async Task<AuthorModel> GetAuthorModelAsync(long id)
         {
-            var author = await _authorRepository.GetItemAsync(id);
-            return _mapper.Map<Author, AuthorModel>(author);
+            var author = _authorRepository.GetItemAsync(id);
+            var result = _mapper.Map<AuthorModel>(await author);
+            return result;
         }
 
         public async Task<PageModel<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
         {
-            var authorList = _authorRepository.GetFilteredList(filter);
-            var sortedAuthors = await _authorRepository.GetSortedListAsync(filter: filter, ts: authorList);
-            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(sortedAuthors);
-            var pagedList = PagedList<AuthorModel>.ToPagedList(authorModelList, authorList.Count(), pageNumber: filter.EntityParameters.CurrentPage,
+            var authorQuery = _authorRepository.GetFilteredQuery(filter);
+            var sortedAuthors = _authorRepository.GetSortedListAsync(filter: filter, query: authorQuery);
+            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(await sortedAuthors);
+            var pagedList = PagedList<AuthorModel>.ToPagedList(authorModelList, authorQuery.Count(), pageNumber: filter.EntityParameters.CurrentPage,
                 pageSize: filter.EntityParameters.ItemsPerPage);
 
             var pageModel = new PageModel<AuthorModel>(pagedList);
             return pageModel;
         }
 
-        public async Task<List<AuthorModel>> GetAuthorModelsAsync()
+        public Task DeleteAuthorAsync(AuthorModel authorModel)
         {
-            var authorList = await _authorRepository.GetListAsync();
-            return _mapper.Map<List<Author>, List<AuthorModel>>(authorList);
+            return _authorRepository.DeleteAsync(authorModel.Id);
         }
 
-        public async Task DeleteAuthorAsync(AuthorModel authorModel)
-        {
-            await _authorRepository.DeleteAsync(authorModel.Id);
-        }
-
-        public async void UpdateAuthorAsync(AuthorModel authorModel)
+        public async Task UpdateAuthorAsync(AuthorModel authorModel)
         {
             var author = await _authorRepository.GetItemAsync(authorModel.Id);
-            author.Name = $"{authorModel.FirstName} {authorModel.LastName}";
-            _authorRepository.UpdateAsync(author);
+            if (author is null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.AUTHOR_NOT_FOUND);
+            }
+            var mappedEntity = _mapper.Map<Author>(authorModel);
+            await _authorRepository.UpdateAsync(mappedEntity);
         }
     }
 }

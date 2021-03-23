@@ -6,7 +6,6 @@ using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
 
@@ -28,12 +27,6 @@ namespace Store.Presentation.Controllers
             return _authorService.GetAuthorModelsAsync(filter);
         }
 
-        [HttpGet("GetAuthors")]
-        public async Task<List<AuthorModel>> GetAuthorModelsAsync()
-        {
-            return await _authorService.GetAuthorModelsAsync();
-        }
-
         [HttpGet("{id:long}")]
         public async Task<AuthorModel> GetAuthorModelAsync(long id)
         {
@@ -42,22 +35,22 @@ namespace Store.Presentation.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("CreateAuthor")]
-        public async Task CreateAuthorAsync([FromBody] AuthorModel authorModel)
+        public Task CreateAuthorAsync([FromBody] AuthorModel authorModel)
         {
-            await _authorService.CreateAuthorAsync(authorModel);
+            return _authorService.CreateAuthorAsync(authorModel);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("DeleteAuthor")]
 
-        public async Task DeleteAuthorAsync([FromBody]AuthorModel authorModel)
+        public async Task DeleteAuthorAsync([FromBody] AuthorModel authorModel)
         {
             await _authorService.DeleteAuthorAsync(authorModel);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("UpdateAuthor")]
-        public void UpdateAuthor([FromBody]AuthorModel authorModel)
+        public void UpdateAuthor([FromBody] AuthorModel authorModel)
         {
             _authorService.UpdateAuthorAsync(authorModel);
         }

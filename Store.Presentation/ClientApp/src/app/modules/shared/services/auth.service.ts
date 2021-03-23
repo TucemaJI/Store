@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from "rxjs";
 import { tap } from "rxjs/operators";
+import { Consts } from "../consts";
 import { IToken } from "../models/IToken.model";
 
 @Injectable()
@@ -13,8 +14,8 @@ export class AuthService {
     public isAdmin(): boolean {
         const token = this.getToken();
         const decoded = this.jwtHelper.decodeToken(token);
-        const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-        if (role === "Admin") {
+        const role = decoded[Consts.ROLE];
+        if (role === Consts.ADMIN) {
             return true;
         }
         return false;
@@ -23,39 +24,32 @@ export class AuthService {
     public getId(): string {
         const token = this.getToken();
         if (token !== null) {
-            const id = this.jwtHelper.decodeToken(token)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            const id = this.jwtHelper.decodeToken(token)[Consts.IDENTIFIER];
             return id;
         }
     }
 
     public saveToken(token, remember: boolean) {
-        debugger;
-        console.log("NEW TOKEN");
-        localStorage.setItem('accessToken', token.accessToken);
+        localStorage.setItem(Consts.ACCESS_TOKEN, token.accessToken);
         if (remember) {
-            localStorage.setItem('refreshToken', token.refreshToken);
+            localStorage.setItem(Consts.REFRESH_TOKEN, token.refreshToken);
         }
-        const id = this.jwtHelper.decodeToken(token.accessToken)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+        const id = this.jwtHelper.decodeToken(token.accessToken)[Consts.IDENTIFIER];
         this.userIdChanged.next(id);
     }
+
     public getToken(): string {
-        debugger;
-        return localStorage.getItem('accessToken');
+        return localStorage.getItem(Consts.ACCESS_TOKEN);
     }
+    
     public isAuthenticated(): boolean {
         const token = this.getToken();
         const isAuth = !this.jwtHelper.isTokenExpired(token);
         if (isAuth) {
-            const id = this.jwtHelper.decodeToken(token)["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            const id = this.jwtHelper.decodeToken(token)[Consts.IDENTIFIER];
             this.userIdChanged.next(id);
         }
-        debugger;
         return isAuth;
-    }
-    public refreshToken(token) {
-        return this.http.post<IToken>('https://localhost:44355/api/account/refreshtoken', token).pipe(
-            tap(result => { localStorage.setItem('accessToken', result.accessToken), localStorage.setItem('refreshToken', result.refreshToken) })
-        )
     }
 
     constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }

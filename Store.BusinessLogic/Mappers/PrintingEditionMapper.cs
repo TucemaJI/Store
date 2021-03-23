@@ -1,6 +1,5 @@
 ﻿using Store.BusinessLogic.Models.PrintingEditions;
 using Store.DataAccess.Entities;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Store.BusinessLogic.Mappers
@@ -32,7 +31,7 @@ namespace Store.BusinessLogic.Mappers
                 Title = element.Title,
                 Type = element.Type,
                 CreationDate = element.CreationData,
-                Authors = element.AuthorsInPrintingEdition.Select(x=>x.Author.Name).ToList(),
+                Authors = element.AuthorsInPrintingEdition.Select(x => x.Author.Name).ToList(),
             };
         }
     }

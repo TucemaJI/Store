@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Store.Shared.Constants
+﻿namespace Store.Shared.Constants
 {
     public partial class Constants
     {

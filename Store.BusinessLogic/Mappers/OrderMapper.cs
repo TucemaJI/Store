@@ -1,5 +1,6 @@
 ﻿using Store.BusinessLogic.Models.Orders;
 using Store.DataAccess.Entities;
+using System.Linq;
 
 namespace Store.BusinessLogic.Mappers
 {
@@ -20,8 +21,6 @@ namespace Store.BusinessLogic.Mappers
 
         public override OrderModel Map(Order element)
         {
-            long amount = 0;
-            element.OrderItems.ForEach(x => amount += x.Amount);
             return new OrderModel
             {
                 Description = element.Description,
@@ -31,7 +30,7 @@ namespace Store.BusinessLogic.Mappers
                 CreationDate = element.CreationData,
                 OrderItemModels = new OrderItemMapper().Map(element.OrderItems),
                 Status = element.Status,
-                TotalAmount = amount,
+                TotalAmount = element.OrderItems.Sum(x => x.Amount),
                 Id = element.Id,
             };
         }

@@ -5,7 +5,12 @@
 export const environment = {
   production: false,
   apiURL: 'https://localhost:44355/api',
-  
+  accountC: '/account',
+  userC: '/user',
+  authorC: '/author',
+  orderC: '/order',
+  peC: '/printingedition',
+  title: 'StoreApp',
 };
 
 /*

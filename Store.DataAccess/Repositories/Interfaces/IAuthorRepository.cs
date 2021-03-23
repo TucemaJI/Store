@@ -1,5 +1,4 @@
 ﻿using Store.DataAccess.Entities;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,7 @@ namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IAuthorRepository : IBaseRepository<Author>
     {
-        public IQueryable<Author> GetFilteredList(AuthorFilter filter);
+        public IQueryable<Author> GetFilteredQuery(AuthorFilter filter);
+        public Task<bool> ExistAsync(List<long> ids);
     }
 }

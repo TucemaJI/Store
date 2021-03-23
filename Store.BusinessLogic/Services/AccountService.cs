@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
-using Store.BusinessLogic.Models;
-using Store.BusinessLogic.Models.Users;
+using Store.BusinessLogic.Models.Account;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.BusinessLogic.Models.Account;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 
@@ -19,128 +18,120 @@ namespace Store.BusinessLogic.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<User> _userManager;
-        private readonly UserMapper _userMapper;
+        private readonly RegisterMapper _registerMapper;
         private readonly PasswordProvider _passwordProvider;
         private readonly IJwtProvider _jwtProvider;
         private readonly EmailProvider _emailProvider;
-        public AccountService(UserManager<User> userManager, UserMapper userMapper,
+        public AccountService(UserManager<User> userManager, RegisterMapper registerMapper,
             PasswordProvider passwordProvider, IJwtProvider jwtProvider, EmailProvider emailProvider)
         {
             _userManager = userManager;
-            _userMapper = userMapper;
+            _registerMapper = registerMapper;
             _passwordProvider = passwordProvider;
             _jwtProvider = jwtProvider;
             _emailProvider = emailProvider;
         }
 
-        public async Task<TokenModel> RefreshAsync(string token, string refreshToken)
+        public async Task<TokenModel> RefreshAsync(TokenModel model)
         {
-            var principal = _jwtProvider.GetPrincipalFromExpiredToken(token);
-            var savedRefreshToken = await GetRefreshTokenAsync(principal);
-            if (savedRefreshToken != refreshToken)
+            if (model.RefreshToken is null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.NO_REFRESH_TOKEN);
+            }
+
+            var principal = _jwtProvider.GetPrincipalFromExpiredToken(model.AccessToken);
+
+            var user = await FindUserByEmailAsync(principal.Subject);
+
+            var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceOptions.REFRESH_TOKEN);
+
+            if (authenticationToken == string.Empty)
+            {
+                throw new BusinessLogicException(ExceptionOptions.NO_REFRESH_TOKEN);
+            }
+
+            if (authenticationToken != model.RefreshToken)
             {
                 throw new BusinessLogicException(ExceptionOptions.INVALID_REFRESH_TOKEN);
             }
-            var idRole = await GetIdUserRoleAsync(principal.Subject);
 
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
 
-            var result = await WriteRefreshTokenToDbAsync(principal.Subject, principal.Issuer, newRefreshToken);
+            var result = await _userManager.SetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceOptions.REFRESH_TOKEN, newRefreshToken);
 
             if (!result.Succeeded)
             {
                 throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
             }
 
+            var role = principal.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+            var id = principal.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
             var returnToken = new TokenModel
             {
-                AccessToken = _jwtProvider.CreateToken(principal.Subject, idRole.Role, idRole.Id),
+                AccessToken = _jwtProvider.CreateToken(principal.Subject, role, id),
                 RefreshToken = newRefreshToken
             };
             return returnToken;
         }
 
-        public async Task<TokenModel> SignInAsync(string email, string password)
+        public async Task<TokenModel> SignInAsync(SignInModel model)
         {
-            var user = await FindUserByEmailAsync(email);
+            var user = await FindUserByEmailAsync(model.Email);
+            if (user is null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.NOT_FOUND_USER);
+            }
 
             if (user.IsBlocked)
             {
                 throw new BusinessLogicException(ExceptionOptions.USER_BLOCKED);
             }
 
-            if (!await _userManager.CheckPasswordAsync(user, password))
+            if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 throw new BusinessLogicException(ExceptionOptions.INCORRECT_PASSWORD);
             }
 
-            var idRole = await GetIdUserRoleAsync(email);
-
             var refreshToken = _jwtProvider.GenerateRefreshToken();
 
-            var result = await WriteRefreshTokenToDbAsync(email, JwtOptions.ISSUER, refreshToken);
+            var result = await _userManager.SetAuthenticationTokenAsync(user, JwtOptions.ISSUER, AccountServiceOptions.REFRESH_TOKEN, refreshToken);
 
             if (!result.Succeeded)
             {
                 throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
             }
 
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
             var token = new TokenModel
             {
-                AccessToken = _jwtProvider.CreateToken(email, idRole.Role, idRole.Id),
+                AccessToken = _jwtProvider.CreateToken(model.Email, role, user.Id),
                 RefreshToken = refreshToken,
             };
 
             return token;
         }
 
-
-
-        public async Task<IdRoleModel> GetIdUserRoleAsync(string email)
+        public async Task<IdentityResult> RegistrationAsync(RegistrationModel model)
         {
-            var user = await FindUserByEmailAsync(email);
-            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-            var result = new IdRoleModel { Id = user.Id, Role = role };
-            return result;
-        }
-
-        public async Task<IdentityResult> WriteRefreshTokenToDbAsync(string email, string issuer, string refreshToken)
-        {
-            var user = await FindUserByEmailAsync(email);
-            return await _userManager.SetAuthenticationTokenAsync(user, issuer, AccountServiceOptions.REFRESH_TOKEN, refreshToken);
-        }
-
-        public async Task<string> GetRefreshTokenAsync(JwtSecurityToken claims)
-        {
-            var user = await FindUserByEmailAsync(claims.Subject);
-            var result = await _userManager.GetAuthenticationTokenAsync(user, claims.Issuer, AccountServiceOptions.REFRESH_TOKEN);
-            if (result == string.Empty)
-            {
-                throw new BusinessLogicException(ExceptionOptions.NO_REFRESH_TOKEN);
-            }
-            return result;
-        }
-
-        public async Task<string> CreateConfirmUserAsync(string firstName, string lastName, string email,
-            string password, string confirmPassword)
-        {
-            if (password != confirmPassword)
+            if (model.Password != model.ConfirmPassword)
             {
                 throw new BusinessLogicException(ExceptionOptions.PASSWORDS_DIFFERENT);
             }
 
-            if (string.IsNullOrWhiteSpace(firstName))
+            if (string.IsNullOrWhiteSpace(model.FirstName))
             {
                 throw new BusinessLogicException(ExceptionOptions.FIRST_NAME_PROBLEM);
             }
 
-            if (string.IsNullOrWhiteSpace(lastName))
+            if (string.IsNullOrWhiteSpace(model.LastName))
             {
                 throw new BusinessLogicException(ExceptionOptions.LAST_NAME_PROBLEM);
             }
 
-            var user = new User { FirstName = firstName, LastName = lastName, Email = email, UserName = $"{firstName}{lastName}" };
-            var result = await _userManager.CreateAsync(user, password);
+            var user = _registerMapper.Map(model);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
                 throw new BusinessLogicException(ExceptionOptions.USER_NOT_CREATED);
@@ -150,31 +141,28 @@ namespace Store.BusinessLogic.Services
             {
                 throw new BusinessLogicException(ExceptionOptions.NOT_ADD_TO_ROLE);
             }
-            var createdUser = await FindUserByEmailAsync(email);
-            return await _userManager.GenerateEmailConfirmationTokenAsync(createdUser);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = string.Format(AccountServiceOptions.CALLBACK_URL, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
+            await _emailProvider.SendEmailAsync(user.Email, EmailOptions.CONFIRM_ACOUNT, string.Format(AccountServiceOptions.MESSAGE, callbackUrl));
+            return role;
         }
 
-
-        public async Task<UserModel> ConfirmEmailAsync(string email, string token, string password)
+        public async Task<IdentityResult> ConfirmEmailAsync(ConfirmModel model)
         {
-            var user = await FindUserByEmailAsync(email);
-            var result = await _userManager.ConfirmEmailAsync(user, token);
+            var user = await FindUserByEmailAsync(model.Email);
+            var result = await _userManager.ConfirmEmailAsync(user, model.Token);
             if (!result.Succeeded)
             {
                 throw new BusinessLogicException(ExceptionOptions.NOT_CONFIRMED);
             }
-
-            var userToken = await SignInAsync(user.Email, password);
-            var userModel = _userMapper.Map(user);
-            userModel.AccessToken = userToken.AccessToken;
-            userModel.RefreshToken = userToken.RefreshToken;
-            return userModel;
+            return result;
         }
 
         public async Task<IdentityResult> SignOutAsync(string email, string issuer)
         {
             var user = await FindUserByEmailAsync(email);
-            return await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceOptions.REFRESH_TOKEN);
+            var result = await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceOptions.REFRESH_TOKEN);
+            return result;
         }
 
         public async Task RecoveryPasswordAsync(string email)
@@ -189,17 +177,17 @@ namespace Store.BusinessLogic.Services
             if (result.Succeeded)
             {
                 await _emailProvider.SendEmailAsync(email, EmailOptions.NEW_PASSWORD,
-                    $"Here is your new password: {password}");
+                    string.Concat(EmailOptions.NEW_PASSWORD, password));
             }
         }
         private async Task<User> FindUserByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user != null)
+            if (user is null)
             {
-                return user;
+                throw new BusinessLogicException($"{ExceptionOptions.NOT_FOUND_USER}{email}");
             }
-            throw new BusinessLogicException($"Not found {email} user");
+            return user;
         }
     }
 }

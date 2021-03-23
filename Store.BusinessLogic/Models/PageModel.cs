@@ -6,7 +6,7 @@ namespace Store.BusinessLogic.Models
     public class PageModel<T> where T : class
     {
         public List<T> Elements { get; set; }
-        public EntityParameters PageParameters {get;set;}
+        public EntityParameters PageParameters { get; set; }
         public double MaxPrice { get; set; }
         public double MinPrice { get; set; }
         public PageModel(PagedList<T> pagedList)

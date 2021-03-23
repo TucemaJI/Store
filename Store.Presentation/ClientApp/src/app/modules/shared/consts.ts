@@ -44,5 +44,42 @@ export class Consts {
     public static BEARER = 'Bearer ';
     public static ACCESS_TOKEN = 'accessToken';
     public static REFRESH_TOKEN = 'refreshToken';
-    public static SIGN_IN = `${environment.apiURL}`
+    public static ROLE = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+    public static ADMIN = 'Admin';
+    public static IDENTIFIER = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
+    public static CURRENCY = 'currency';
+    public static ENUM_TO_ARRAY = 'enumToArray';
+    public static PE = 'pe';
+    public static STATUS = 'status';
+    public static PASSWORD = 'password';
+    public static CONFIRM_PASSWORD = 'confirmPassword';
+    public static FIRST_NAME = 'firstName';
+    public static LAST_NAME = 'lastName';
+    public static EMAIL = 'email';
+    public static VALID_LETTERS = /[A-Z]/;
+    public static VALID_SYMBOLS = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    public static VALID_NUM = /[0-9]/;
+    public static VALID_MIN_LENGTH = 6;
+    public static TO_SEPARATE_ENUM = 2;
+    public static EXPIRE_DAYS = 60;
+    public static SIGN_IN = `${environment.apiURL}${environment.accountC}/signin`;
+    public static REGISTRATION = `${environment.apiURL}${environment.accountC}/registration`;
+    public static FORGOT_PASSWORD = `${environment.apiURL}${environment.accountC}/ForgotPassword?email=`;
+    public static CHECKMAIL = `${environment.apiURL}${environment.accountC}/checkmail`;
+    public static POST_REFRESH_TOKEN = `${environment.apiURL}${environment.accountC}/refreshtoken`;
+    public static GET_USER = `${environment.apiURL}${environment.userC}/getuser?id=`;
+    public static UPDATE_USER = `${environment.apiURL}${environment.userC}/updateuser`;
+    public static FILTER_USERS = `${environment.apiURL}${environment.userC}/filterusers`;
+    public static DELETE_USER = `${environment.apiURL}${environment.userC}/deleteuser`;
+    public static GET_AUTHORS = `${environment.apiURL}${environment.authorC}/getauthorswithfilter`;
+    public static CREATE_AUTHOR = `${environment.apiURL}${environment.authorC}/createauthor`;
+    public static UPDATE_AUTHOR = `${environment.apiURL}${environment.authorC}/updateauthor`;
+    public static DELETE_AUTHOR = `${environment.apiURL}${environment.authorC}/deleteauthor`;
+    public static CREATE_ORDER = `${environment.apiURL}${environment.orderC}/createorder`;
+    public static PAY = `${environment.apiURL}${environment.authorC}/pay`;
+    public static GET_ORDERS = `${environment.apiURL}${environment.authorC}/GetOrders`;
+    public static GET_PES = `${environment.apiURL}${environment.peC}/getprintingeditions`;
+    public static GET_PE = `${environment.apiURL}${environment.authorC}/`;
+
+
 }

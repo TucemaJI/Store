@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BaseCartItem } from "ng-shopping-cart";
 import { CookieService } from "ngx-cookie-service";
+import { Consts } from "../consts";
 
 @Injectable()
 export class ShoppingCartService<T extends BaseCartItem> {
@@ -10,20 +11,16 @@ export class ShoppingCartService<T extends BaseCartItem> {
         return t;
     }
     getItems(): T[] {
-        debugger;
         const strT = this.cookie.getAll();
         let t: T[] = new Array();
-        debugger;
         for (let i in strT) {
             t.push(JSON.parse(this.cookie.get(i)));
         };
-        console.log(t)
         return t;
     }
     addItem(item: T): void {
         const str = JSON.stringify(item);
-        debugger;
-        this.cookie.set(item.id, str, 60, '/');
+        this.cookie.set(item.id, str, Consts.EXPIRE_DAYS, '/');
     }
     removeItem(id: any): void {
         if (this.cookie.check(id)) {

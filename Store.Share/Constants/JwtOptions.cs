@@ -8,6 +8,7 @@
             public const string ISSUER = "MyAuthServer";
             public const string KEY = "mysupersecret_secretkey!123";
             public const byte LIFETIME = byte.MaxValue;
+            public const byte LENGTH = 32;
         }
     }
 }

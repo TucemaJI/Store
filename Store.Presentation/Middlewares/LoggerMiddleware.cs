@@ -59,7 +59,7 @@ namespace Store.Presentation.Middlewares
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(response);
 
-        }
+            }
         }
     }
 }

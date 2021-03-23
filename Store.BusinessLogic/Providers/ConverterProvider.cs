@@ -15,14 +15,15 @@ namespace Store.BusinessLogic.Providers
         {
             var request = new HttpRequestMessage(HttpMethod.Get, string.Format(ConverterProviderOptions.PATH_TO_API, type));
             HttpResponseMessage requestResult;
-            using (HttpClient client = new HttpClient()) {
-                requestResult = await client.SendAsync(request); 
+            using (HttpClient client = new HttpClient())
+            {
+                requestResult = await client.SendAsync(request);
             }
             if (!requestResult.IsSuccessStatusCode)
             {
                 throw new BusinessLogicException(ExceptionOptions.CURRENCY_CONVERT_PROBLEM);
             }
-            var jObject =  JObject.Parse(await requestResult.Content.ReadAsStringAsync());
+            var jObject = JObject.Parse(await requestResult.Content.ReadAsStringAsync());
             var rate = jObject[ConverterProviderOptions.ROOT][type.ToString()].Value<double>();
             var result = Math.Round(rate * price, ConverterProviderOptions.SYMBOLS_AFTER_COMMA);
             return result;

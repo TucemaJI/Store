@@ -1,20 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogic.Providers;
-using Store.BusinessLogic.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
 using Store.BusinessLogic.Models.Account;
+using Store.BusinessLogic.Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace Store.Admin.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService, ILogger<AccountController> logger) 
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger)
         {
             _accountService = accountService;
         }
@@ -22,7 +19,7 @@ namespace Store.Admin.Controllers
         [HttpPost("RefreshToken")]
         public Task<TokenModel> RefreshAsync([FromBody] TokenModel model)
         {
-            return _accountService.RefreshAsync(model.AccessToken, model.RefreshToken);
+            return _accountService.RefreshAsync(model);
         }
 
         [HttpGet]
@@ -30,11 +27,11 @@ namespace Store.Admin.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> SignInAsync(SignInModel model)
         {
-            var result = await _accountService.SignInAsync(model.Email, model.Password);
+            var result = await _accountService.SignInAsync(model);
             HttpContext.Response.Cookies.Append("accessKey", result.AccessToken);
             HttpContext.Response.Cookies.Append("refreshKey", result.RefreshToken);
             return View();

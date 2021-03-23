@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
 using Store.DataAccess;
+using Stripe;
 using System;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic
 {
@@ -13,31 +15,21 @@ namespace Store.BusinessLogic
         {
             services.InitializeDA(configuration);
 
+            StripeConfiguration.ApiKey = OrderServiceOptions.API_KEY;
+
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.SERVICE, StringComparison.OrdinalIgnoreCase)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
                 );
 
-            //services.AddTransient<IAccountService, AccountService>();
-            //services.AddTransient<IAuthorService, AuthorService>();
-            //services.AddTransient<IOrderService, OrderService>();
-            //services.AddTransient<IPrintingEditionService, PrintingEditionService>();
-            //services.AddTransient<IUserService, UserService>();
-
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("mapper", StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.MAPPER, StringComparison.OrdinalIgnoreCase)))
                 .AsSelf()
                 .WithTransientLifetime()
                 );
-
-            //services.AddTransient<OrderItemMapper>();
-            //services.AddTransient<OrderMapper>();
-            //services.AddTransient<PaymentMapper>();
-            //services.AddTransient<PrintingEditionMapper>();
-            //services.AddTransient<UserMapper>();
 
             var mapperConfig = new MapperConfiguration(config =>
             {
@@ -48,13 +40,11 @@ namespace Store.BusinessLogic
             services.AddTransient<IMapper>(item => mapper);
 
             services.Scan(scan => scan.FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("provider", StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.PROVIDER, StringComparison.OrdinalIgnoreCase)))
                 .AsSelf()
                 .WithTransientLifetime()
                 );
 
-            //services.AddTransient<EmailProvider>();
-            //services.AddTransient<PasswordProvider>();
         }
     }
 }

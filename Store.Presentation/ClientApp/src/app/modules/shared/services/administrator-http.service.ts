@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Consts } from "../consts";
 import { IAuthorsPage } from "../models/IAuthorsPage.model";
 import { IClientsPage } from "../models/IClientsPage.model";
 
@@ -15,7 +16,7 @@ export class AdministratorHttpService {
             name: pageModel.name, email: pageModel.email, isBlocked: pageModel.isBlocked,
         };
         debugger;
-        return this.http.post('https://localhost:44355/api/user/filterusers', body);
+        return this.http.post(Consts.FILTER_USERS, body);
     }
     changeClient(client) {
         const body = {
@@ -27,7 +28,7 @@ export class AdministratorHttpService {
             confirmPassword: client.client.confirmPassword,
             id: client.client.id,
         }
-        return this.http.put('https://localhost:44355/api/user/updateuser', body);
+        return this.http.put(Consts.UPDATE_USER, body);
     }
     deleteClient(client) {
         console.log(client);
@@ -38,7 +39,7 @@ export class AdministratorHttpService {
             email: client.client.email,
             isBlocked: client.client.isBlocked
         }
-        return this.http.post('https://localhost:44355/api/user/deleteuser', body);
+        return this.http.post(Consts.DELETE_USER, body);
     }
 
     postAuthorPage(pageModel: IAuthorsPage) {
@@ -48,7 +49,7 @@ export class AdministratorHttpService {
             name: pageModel.name, id: pageModel.id,
         };
         debugger;
-        return this.http.post('https://localhost:44355/api/author/getauthorswithfilter', body);
+        return this.http.post(Consts.GET_AUTHORS, body);
     }
     addAuthor(author) {
         const body = {
@@ -56,7 +57,7 @@ export class AdministratorHttpService {
             lastName: author.author.lastName,
         };
         debugger;
-        return this.http.post('https://localhost:44355/api/author/createauthor', body);
+        return this.http.post(Consts.CREATE_AUTHOR, body);
     }
     changeAuthor(author) {
         const body = {
@@ -65,7 +66,7 @@ export class AdministratorHttpService {
             lastName: author.author.lastName,
             printingEditions: author.author.printingEditions,
         }
-        return this.http.post('https://localhost:44355/api/author/updateauthor', body);
+        return this.http.post(Consts.UPDATE_AUTHOR, body);
     }
     deleteAuthor(author) {
         const body = {
@@ -73,7 +74,7 @@ export class AdministratorHttpService {
             firstName: author.author.firstName,
             lastName: author.author.lastName,
         };
-        return this.http.post('https://localhost:44355/api/author/deleteauthor', body);
+        return this.http.post(Consts.DELETE_AUTHOR, body);
     }
 
 }

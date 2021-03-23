@@ -14,6 +14,7 @@ using Store.Shared.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Services
 {
@@ -43,8 +44,8 @@ namespace Store.BusinessLogic.Services
 
         public async Task<UserModel> GetUserAsync(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if(user == null)
+            var user = await FindUserByIdAsync(id);
+            if (user is null)
             {
                 throw new BusinessLogicException(ExceptionOptions.WRONG_ID);
             }
@@ -54,43 +55,46 @@ namespace Store.BusinessLogic.Services
         public async Task<List<UserModel>> GetUsersAsync()
         {
             var userList = await _userManager.Users.ToListAsync();
-            var userModelList = new List<UserModel>();
 
-            userModelList = _userMapper.Map(userList);
+            var userModelList = _userMapper.Map(userList);
             return userModelList;
         }
-        public async Task<string> GetRoleAsync(string email)
+        public async Task<string> GetRoleAsync(string id)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            return (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            var user = await FindUserByIdAsync(id);
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            return role;
         }
-        public async Task<IdentityResult> CreateRoleAsync(string roleName)
+        public Task<IdentityResult> CreateRoleAsync(string roleName)
         {
-            return await _roleManager.CreateAsync(new IdentityRole(roleName));
+            var result = _roleManager.CreateAsync(new IdentityRole(roleName));
+            return result;
         }
-        public IEnumerable<IdentityRole> GetAllRoles()
+        public Task<List<IdentityRole>> GetAllRolesAsync()
         {
-            return _roleManager.Roles;
+            var result = _roleManager.Roles.ToListAsync();
+            return result;
         }
 
         public async Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
-            var user = await _userManager.FindByEmailAsync(userModel.Email);
-
-            return await _userManager.DeleteAsync(user);
+            var user = await FindUserByIdAsync(userModel.Id);
+            var result = await _userManager.DeleteAsync(user);
+            return result;
         }
-        public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
+        public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)// VALIDATE MODEL IN MODEL (I DONT NEED IT CAUSE THEY CAN BE NULL)
         {
-            var user = await _userManager.FindByEmailAsync(userModel.Email);
-            if (user == null)
+            var user = await FindUserByIdAsync(userModel.Id);
+
+            if (!string.IsNullOrWhiteSpace(userModel.Email))
             {
-                user = await _userManager.FindByIdAsync(userModel.Id);
                 user.Email = userModel.Email;
             }
+
             if (!string.IsNullOrWhiteSpace(userModel.Password) && userModel.ConfirmPassword == userModel.Password)
             {
-                var result = await _userManager.RemovePasswordAsync(user);
-                if (!result.Succeeded)
+                var removed = await _userManager.RemovePasswordAsync(user);
+                if (!removed.Succeeded)
                 {
                     throw new BusinessLogicException(ExceptionOptions.PASSWORD_NOT_REMOVED);
                 }
@@ -100,20 +104,21 @@ namespace Store.BusinessLogic.Services
                     throw new BusinessLogicException(ExceptionOptions.INCORRECT_PASSWORD);
                 }
             }
-            if (userModel.FirstName != null)
+            if (!string.IsNullOrWhiteSpace(userModel.FirstName))
             {
                 user.FirstName = userModel.FirstName;
             }
-            if (userModel.LastName != null)
+            if (!string.IsNullOrWhiteSpace(userModel.LastName))
             {
                 user.LastName = userModel.LastName;
             }
-            if (userModel.IsBlocked != null)
+            if (userModel.IsBlocked is not null)
             {
                 user.IsBlocked = (bool)userModel.IsBlocked;
             }
 
-            return await _userManager.UpdateAsync(user);
+            var result = await _userManager.UpdateAsync(user);
+            return result;
         }
 
         public async Task BlockUserAsync(string email)
@@ -130,7 +135,7 @@ namespace Store.BusinessLogic.Services
                 .Where(u => u.IsBlocked.Equals(filter.IsBlocked));
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
-                filter.OrderByString = "FirstName";
+                filter.OrderByString = UserServiceOptions.DEFAULT_SEARCH_STRING;
             }
 
             var sortedUsers = await PagedList<User>.ToSortedListAsync(source: users.OrderBy(filter.OrderByString, filter.IsDescending),
@@ -148,5 +153,15 @@ namespace Store.BusinessLogic.Services
 
             throw new BusinessLogicException(ExceptionOptions.FILTRATION_PROBLEM);
         }
+        private async Task<User> FindUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.NOT_FOUND_USER);
+            }
+            return user;
+        }
+
     }
 }

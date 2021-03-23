@@ -4,6 +4,7 @@ using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
+using Store.DataAccess.Entities;
 using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
@@ -18,25 +19,36 @@ namespace Store.BusinessLogic.Services
     public class PrintingEditionService : IPrintingEditionService
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
+        private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
+        private readonly IAuthorRepository _authorRepository;
         private readonly PrintingEditionMapper _printingEditionMapper;
         private readonly ConverterProvider _converterProvider;
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, PrintingEditionMapper printingEditionMapper, ConverterProvider converterProvider)
+        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, PrintingEditionMapper printingEditionMapper,
+            ConverterProvider converterProvider, IAuthorInPrintingEditionRepository authorInPrintingEditionRepository, IAuthorRepository authorRepository)
         {
             _printingEditionRepository = printingEditionRepository;
             _printingEditionMapper = printingEditionMapper;
             _converterProvider = converterProvider;
+            _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
+            _authorRepository = authorRepository;
         }
         public async Task CreatePrintingEditionAsync(PrintingEditionModel model)
         {
             var printingEdition = _printingEditionMapper.Map(model);
-            await _printingEditionRepository.CreateAsync(printingEdition);
-        }
+            var exist = await _authorRepository.ExistAsync(model.AuthorsIdList);
 
-        public async Task<List<PrintingEditionModel>> GetPrintingEditionModelsAsync()
-        {
-            var printingEditions = await _printingEditionRepository.GetListAsync();
-            var printingEditionModels = _printingEditionMapper.Map(printingEditions);
-            return printingEditionModels;
+            if (exist is false)
+            {
+                throw new BusinessLogicException(ExceptionOptions.AUTHOR_NOT_FOUND);
+            }
+
+            await _printingEditionRepository.CreateAsync(printingEdition);
+
+            var authorInPrintingEditionList = new List<AuthorInPrintingEdition>();
+
+            model.AuthorsIdList.ForEach(authorId => authorInPrintingEditionList.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = printingEdition.Id }));
+
+            await _authorInPrintingEditionRepository.CreateRangeAsync(authorInPrintingEditionList);
         }
 
         public async Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
@@ -46,23 +58,49 @@ namespace Store.BusinessLogic.Services
             return result;
         }
 
-        public void UpdatePrintingEdition(PrintingEditionModel printingEditionModel)
+        public async Task UpdatePrintingEdition(PrintingEditionModel printingEditionModel)
         {
             var printingEdition = _printingEditionMapper.Map(printingEditionModel);
-            _printingEditionRepository.UpdateAsync(printingEdition);
+
+            var printingEditionEntity = await _printingEditionRepository.GetItemAsync(printingEditionModel.Id);
+
+            if (printingEditionEntity is null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.PRINTING_EDITION_NOT_FOUND);
+            }
+
+            var exist = await _authorRepository.ExistAsync(printingEditionModel.AuthorsIdList);
+
+            if (exist is false)
+            {
+                throw new BusinessLogicException(ExceptionOptions.AUTHOR_NOT_FOUND);
+            }
+
+            printingEdition.AuthorsInPrintingEdition.Clear();
+
+            printingEditionModel.AuthorsIdList.ForEach(authorId => printingEdition.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = printingEdition.Id }));
+
+            await _printingEditionRepository.UpdateAsync(printingEdition);
         }
 
         public async Task DeletePrintingEditionAsync(long id)
         {
-            await _printingEditionRepository.DeleteAsync(id);
+            var printingEditionEntity = await _printingEditionRepository.GetItemAsync(id);
+
+            if (printingEditionEntity is null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.PRINTING_EDITION_NOT_FOUND);
+            }
+
+            await _printingEditionRepository.DeleteAsync(id);// CHECK AUTO REMOVE RELATION
         }
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
-            var printingEditions =  _printingEditionRepository.GetFilteredList(filter);
-            var sortedPrintingEditions = await _printingEditionRepository.GetSortedListAsync(filter: filter, ts: printingEditions);
+            var printingEditions = _printingEditionRepository.GetFilteredList(filter);
+            var sortedPrintingEditions = await _printingEditionRepository.GetSortedListAsync(filter: filter, query: printingEditions);
             var printingEditionModels = _printingEditionMapper.Map(sortedPrintingEditions);
-            if(filter.Currency == CurrencyType.None)
+            if (filter.Currency == CurrencyType.None)
             {
                 filter.Currency = CurrencyType.USD;
             }

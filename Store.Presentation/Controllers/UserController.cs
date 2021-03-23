@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
 using System.Collections.Generic;
@@ -39,9 +38,9 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpGet("GetRole")]
-        public Task<string> GetRoleAsync(string email)
+        public Task<string> GetRoleAsync(string id)
         {
-            return _userService.GetRoleAsync(email);
+            return _userService.GetRoleAsync(id);
         }
 
         [HttpGet("CreateRole")]
@@ -51,9 +50,9 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpGet("GetAllRoles")]
-        public IEnumerable<IdentityRole> GetAllRoles()
+        public Task<List<IdentityRole>> GetAllRoles()
         {
-            return _userService.GetAllRoles();
+            return _userService.GetAllRolesAsync();
         }
 
         [HttpPost("DeleteUser")]

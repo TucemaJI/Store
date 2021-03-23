@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Consts } from "../consts";
 import { IPrintingEditionPage } from "../models/IPEPage.model";
 
 @Injectable()
@@ -13,11 +14,10 @@ export class PrintingEditionHttpService {
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
             name: pageModel.name, title: pageModel.title, currency: pageModel.currency, pEType: pageModel.pEType, minPrice: pageModel.minPrice, maxPrice: pageModel.maxPrice,
         };
-        debugger;
-        return this.http.post('https://localhost:44355/api/printingedition/getprintingeditions', body);
+        return this.http.post(Consts.GET_PES, body);
     }
-    getPE(id) {
-        return this.http.get(`https://localhost:44355/api/printingedition/${id.id}`);
+    getPE(id: number) {
+        return this.http.get(`${Consts.GET_PE}${id}`);
     }
 
 }

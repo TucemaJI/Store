@@ -7,6 +7,7 @@ using Store.DataAccess.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Repositories.Base
 {
@@ -20,38 +21,34 @@ namespace Store.DataAccess.Repositories.Base
             _applicationContext = applicationContext;
         }
 
-        public async Task<T> CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
-            var result =  await _dbSet.AddAsync(entity: entity);
+            await _dbSet.AddAsync(entity: entity);
             await _applicationContext.SaveChangesAsync();
-            return result.Entity;
         }
         public async Task DeleteAsync(long item)
         {
-            var element = await _dbSet.FindAsync(item);
-            _dbSet.Remove(element);
+            var element = _dbSet.FindAsync(item);
+            _dbSet.Remove(await element);
             await _applicationContext.SaveChangesAsync();
         }
-        public async Task<T> GetItemAsync(long id)
+        public async Task<T> GetItemAsync(long id)//USING VALUETASK?
         {
             return await _dbSet.FindAsync(id);
         }
-        public Task<List<T>> GetListAsync()// todo delete when filter works
-        {
-            return _dbSet.ToListAsync();
-        }
-        public async void UpdateAsync(T item)
+
+        public async Task UpdateAsync(T item)
         {
             _dbSet.Update(item).State = EntityState.Modified;
             await _applicationContext.SaveChangesAsync();
         }
-        public Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> ts)
+        public Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> query)
         {
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
-                filter.OrderByString = "Id";
+                filter.OrderByString = RepositoryOptions.DEFAULT_SEARCH;
             }
-            var sortedT = PagedList<T>.ToSortedListAsync(source: ts.OrderBy(filter.OrderByString, filter.IsDescending),
+            var sortedT = PagedList<T>.ToSortedListAsync(source: query.OrderBy(filter.OrderByString, filter.IsDescending),
                 pageNumber: filter.EntityParameters.CurrentPage,
                 pageSize: filter.EntityParameters.ItemsPerPage);
 

@@ -14,7 +14,7 @@ namespace Store.BusinessLogic.Mappers
             CreateMap<Author, AuthorModel>()
                 .ForMember(am => am.FirstName, opt => opt.MapFrom(c => GetNames(c).FirstOrDefault()))
                 .ForMember(am => am.LastName, opt => opt.MapFrom(c => GetNames(c).LastOrDefault()))
-                .ForMember(am => am.PrintingEditions, opt => opt.MapFrom(c=> c.AuthorInPrintingEditions.Select(pe=>pe.PrintingEdition.Title)));
+                .ForMember(am => am.PrintingEditions, opt => opt.MapFrom(c => c.AuthorInPrintingEditions.Select(pe => pe.PrintingEdition.Title)));
         }
 
         private string[] GetNames(Author author)

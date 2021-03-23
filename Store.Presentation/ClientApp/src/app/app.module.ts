@@ -37,6 +37,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { CartEffects } from './modules/cart/store/cart.effects';
 import { OrderHttpService } from './modules/shared/services/order-http.service';
 import { OrderEffects } from './modules/order/store/order.effects';
+import { Consts } from './modules/shared/consts';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,7 @@ import { OrderEffects } from './modules/order/store/order.effects';
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return localStorage.getItem('accessToken');
+          return localStorage.getItem(Consts.ACCESS_TOKEN);
         }
       }
     }),

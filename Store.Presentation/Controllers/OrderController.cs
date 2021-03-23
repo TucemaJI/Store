@@ -49,12 +49,6 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpPost("UpdateOrder")]
-        public void UpdateOrder([FromBody] OrderModel orderModel)
-        {
-            _orderService.UpdateOrder(orderModel);
-        }
-        [Authorize]
         [HttpPost("Pay")]
         public Task<bool> Pay([FromBody] OrderPayModel model)
         {

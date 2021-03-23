@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.Admin.Models;
-using Store.BusinessLogic.Services.Interfaces;
 using System.Diagnostics;
 
 namespace Store.Admin.Controllers

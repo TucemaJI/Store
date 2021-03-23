@@ -22,16 +22,9 @@ namespace Store.DataAccess
 
             services.AddTransient<UserManager<User>>();
 
-            //services.AddTransient<IAuthorInPrintingEditionRepository, AuthorInPrintingEditionRepository>();
-            //services.AddTransient<IAuthorRepository, AuthorRepository>();
-            //services.AddTransient<IOrderItemRepository, OrderItemRepository>();
-            //services.AddTransient<IOrderRepository, OrderRepository>();
-            //services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
-            //services.AddTransient<IPaymentRepository, PaymentRepository>();
-
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith("repository", StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.REPOSITORY, StringComparison.OrdinalIgnoreCase)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
                 );

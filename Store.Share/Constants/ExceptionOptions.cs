@@ -20,5 +20,9 @@
         public const string CURRENCY_CONVERT_PROBLEM = "Problem with convert currency API";
         public const string WRONG_PAYMENT = "Payment form is invalid";
         public const string WRONG_ID = "Wrong id, user not find";
+        public const string NOT_FOUND_USER = "Not found user ";
+        public const string AUTHOR_NOT_FOUND = "Author not found";
+
+        public const string PRINTING_EDITION_NOT_FOUND = "Printing edition not found";
     }
 }

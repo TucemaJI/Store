@@ -66,10 +66,10 @@ namespace Store.BusinessLogic.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
+            var randomNumber = new byte[JwtOptions.LENGTH];
+            using (var random = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(randomNumber);
+                random.GetBytes(randomNumber);
                 return Convert.ToBase64String(randomNumber);
             }
         }
