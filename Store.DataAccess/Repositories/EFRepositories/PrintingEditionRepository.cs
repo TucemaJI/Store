@@ -16,9 +16,8 @@ namespace Store.DataAccess.Repositories.EFRepositories
 
         public IQueryable<PrintingEdition> GetFilteredList(PrintingEditionFilter filter)
         {
-            var printingEditions = _dbSet.Include(item => item.AuthorsInPrintingEdition)
-                .ThenInclude(item => item.Author)
-                .Where(printingEdition => filter.PrintingEditionType.Contains(PrintingEditionType.None) || filter.PrintingEditionType.Contains(printingEdition.Type))
+            var printingEditions = _dbSet.Include(item => item.AuthorsInPrintingEdition).ThenInclude(item => item.Author)
+                .Where(printingEdition => filter.PrintingEditionTypeList.Contains(PrintingEditionType.None) || filter.PrintingEditionTypeList.Contains(printingEdition.Type))
                 .Where(printingEdition => filter.MaxPrice >= printingEdition.Price && printingEdition.Price >= filter.MinPrice)
                 .Where(printingEdition => EF.Functions.Like(printingEdition.Title, $"%{filter.Title}%") || printingEdition.AuthorsInPrintingEdition.Any(item => EF.Functions.Like(item.Author.Name, $"%{filter.Name}%")));
             return printingEditions;

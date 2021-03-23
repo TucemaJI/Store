@@ -11,8 +11,8 @@
         <mat-icon> person_outline </mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="profile">My Profile</button>
-        <button mat-menu-item routerLink="orders">My Orders</button>
+        <button mat-menu-item (click)="check()" routerLink="profile">My Profile</button>
+        <button mat-menu-item (click)="check()" routerLink="orders">My Orders</button>
         <button mat-menu-item (click)="logOut()" routerLink="">Log Out</button>
       </mat-menu>
 

@@ -15,7 +15,6 @@ namespace Store.BusinessLogic
         {
             services.InitializeDA(configuration);
 
-            StripeConfiguration.ApiKey = OrderServiceOptions.API_KEY;
 
             services.Scan(scan => scan
                 .FromCallingAssembly()

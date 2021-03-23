@@ -9,6 +9,7 @@ using Store.DataAccess.Repositories.Interfaces;
 using Stripe;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Services
@@ -38,13 +39,11 @@ namespace Store.BusinessLogic.Services
             orderEntity.Status = StatusType.Unpaid;
             await _orderRepository.CreateAsync(orderEntity);
             await _orderItemRepository.CreateOrderItemsAsync(orderEntity.OrderItems);
-            return orderEntity.Id;// Check if id exist in debugger
+            return orderEntity.Id;
         }
 
         public async Task<bool> Pay(OrderPayModel model)
         {
-            //StripeConfiguration.ApiKey = OrderServiceOptions.API_KEY;// TO STARTUP
-
             var cvc = model.Cvc.ToString();
             var optionsToken = new TokenCreateOptions
             {
@@ -67,7 +66,7 @@ namespace Store.BusinessLogic.Services
                 Amount = model.Value,
                 Currency = CurrencyType.USD.ToString(),
                 Description = order.Description,
-                Source = stripeToken.Id,// try not use source (token from angular)
+                Source = stripeToken.Id,
             };
 
             var service = new ChargeService();

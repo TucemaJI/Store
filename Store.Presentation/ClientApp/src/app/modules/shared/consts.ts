@@ -76,8 +76,8 @@ export class Consts {
     public static UPDATE_AUTHOR = `${environment.apiURL}${environment.authorC}/updateauthor`;
     public static DELETE_AUTHOR = `${environment.apiURL}${environment.authorC}/deleteauthor`;
     public static CREATE_ORDER = `${environment.apiURL}${environment.orderC}/createorder`;
-    public static PAY = `${environment.apiURL}${environment.authorC}/pay`;
-    public static GET_ORDERS = `${environment.apiURL}${environment.authorC}/GetOrders`;
+    public static PAY = `${environment.apiURL}${environment.orderC}/pay`;
+    public static GET_ORDERS = `${environment.apiURL}${environment.orderC}/getorders`;
     public static GET_PES = `${environment.apiURL}${environment.peC}/getprintingeditions`;
     public static GET_PE = `${environment.apiURL}${environment.authorC}/`;
 

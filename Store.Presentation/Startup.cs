@@ -12,6 +12,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.Presentation.Extentions;
 using Store.Presentation.Middlewares;
+using Stripe;
 using System.IdentityModel.Tokens.Jwt;
 using static Store.Shared.Constants.Constants;
 
@@ -28,7 +29,10 @@ namespace Store.Presentation
 
         public void ConfigureServices(IServiceCollection services)
         {
+            StripeConfiguration.ApiKey = OrderServiceOptions.API_KEY;
             services.InitializeBL(Configuration);
+
+
 
             services.AddCors();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

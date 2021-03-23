@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
     this.store.pipe(select(selectUser)).subscribe(
 
       data => {
-        if (data.id != null) {
+        if (data != null) {
           this.user = data;
         }
       }
@@ -74,8 +74,8 @@ export class ProfileComponent implements OnInit {
       password: profileFormValue.password,
       refreshToken: this.user.refreshToken,
     }
-
     this.store.dispatch(editUser({ user: eUser }));
+    location.reload();
   }
 
 }

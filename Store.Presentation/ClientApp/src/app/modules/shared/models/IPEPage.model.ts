@@ -9,7 +9,7 @@ export interface IPrintingEditionPage {
     name: string,
     title: string,
     currency: ECurrencyType,
-    pEType: EPrintingEditionType[],
+    printingEditionTypeList: EPrintingEditionType[],
     minPrice: number,
     maxPrice: number,
 }

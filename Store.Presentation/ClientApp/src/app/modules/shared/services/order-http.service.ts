@@ -12,16 +12,16 @@ export class OrderHttpService {
 
     postCreateOrder(order: IOrder): Observable<Number> {
         const body = { description: order.description, userId: order.userId, orderItemModels: order.orderItemModels };
-        return this.http.post<Number>(Consts.CREATE_ORDER, body)
+        return this.http.post<Number>(Consts.CREATE_ORDER, body);
     }
     postPay(payment: IPay) {
         const body = { cardnumber: payment.cardnumber, cvc: payment.cvc, month: payment.month, year: payment.year, orderId: payment.orderId, value: payment.value, };
-        return this.http.post(Consts.PAY, body)
+        return this.http.post(Consts.PAY, body);
     }
     postGetOrders(pageModel: IOrderPage) {
         const body = {
-            entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
-            isDescending: pageModel.isDescending, orderByString: pageModel.orderByString, status: pageModel.status, userId: pageModel.userId,
+            entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage, },
+            isDescending: pageModel.isDescending, orderByString: pageModel.orderByString, userId: pageModel.userId, status: pageModel.status,
         };
         return this.http.post(Consts.GET_ORDERS, body);
     }

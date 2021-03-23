@@ -53,7 +53,7 @@ export class PrintingEditionComponent implements OnInit {
       name: "",
       title: "",
       currency: 0,
-      pEType: [0],
+      printingEditionTypeList: [0],
       minPrice: this.lowValue,
       maxPrice: Number.MAX_SAFE_INTEGER,
     };
@@ -108,7 +108,7 @@ export class PrintingEditionComponent implements OnInit {
       name: this.searchText,
       title: this.searchText,
       currency: this.currencies[this.selectedCurrency],
-      pEType: pETypes,
+      printingEditionTypeList: pETypes,
       minPrice: this.lowValue,
       maxPrice: this.highValue,
     };

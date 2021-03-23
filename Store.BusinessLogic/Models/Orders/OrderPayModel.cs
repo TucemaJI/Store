@@ -6,15 +6,15 @@ namespace Store.BusinessLogic.Models
     {
         [Required, StringLength(16)]
         public string Cardnumber { get; set; }
-        [Required, MinLength(0), MaxLength(12)]
+        [Required]
         public long Month { get; set; }
-        [Required, MinLength(2000), MaxLength(2099)]
+        [Required]
         public long Year { get; set; }
-        [Required, MinLength(0), MaxLength(999)]
+        [Required]
         public long Cvc { get; set; }
-        [Required, MinLength(1)]
+        [Required]
         public long Value { get; set; }
-        [Required, MinLength(0)]
+        [Required]
         public long OrderId { get; set; }
     }
 }

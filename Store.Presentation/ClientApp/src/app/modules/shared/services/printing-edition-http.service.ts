@@ -12,7 +12,8 @@ export class PrintingEditionHttpService {
         const body = {
             entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
-            name: pageModel.name, title: pageModel.title, currency: pageModel.currency, pEType: pageModel.pEType, minPrice: pageModel.minPrice, maxPrice: pageModel.maxPrice,
+            name: pageModel.name, title: pageModel.title, currency: pageModel.currency, printingEditionTypeList: pageModel.printingEditionTypeList,
+            minPrice: pageModel.minPrice, maxPrice: pageModel.maxPrice,
         };
         return this.http.post(Consts.GET_PES, body);
     }

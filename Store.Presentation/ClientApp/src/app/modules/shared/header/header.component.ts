@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CartComponent } from '../../cart/componensts/cart/cart.component';
 import { Consts } from '../consts';
 import { AuthService } from '../services/auth.service';
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   userId: string;
 
-  constructor(public dialog: MatDialog, private auth: AuthService) { }
+  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.userId = this.auth.getId();
@@ -28,4 +29,9 @@ export class HeaderComponent implements OnInit {
     const dialog = this.dialog.open(CartComponent).updateSize(Consts.CART_DIALOG_SIZE);
   }
 
+  check():void{
+    if (this.userId === undefined) {
+      this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
+    }
+  }
 }
