@@ -4,7 +4,7 @@ import { initialOrderState, IOrderState } from "./order.state";
 
 const createOrderReducer = createReducer(
     initialOrderState,
-    on(OrderActions.getOrderSuccess, (state, { pageParameters, orders }) => ({ ...state, orders: orders, pageModel: { ...state.pageModel, pageParameters: pageParameters, } })),
+    on(OrderActions.getOrdersSuccess, (state, { pageParameters, orders }) => ({ ...state, orders: orders, pageModel: { ...state.pageModel, pageParameters: pageParameters, } })),
 )
 
 export const orderReducer = (state = initialOrderState, action: Action): IOrderState => {

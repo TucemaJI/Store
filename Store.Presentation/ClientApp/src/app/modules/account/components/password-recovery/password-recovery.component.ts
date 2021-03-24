@@ -27,7 +27,6 @@ export class PasswordRecoveryComponent implements OnInit {
 
   public continue(email: { email: string }): void {
     if (this.emailForm.valid) {
-      debugger;
       this.store.dispatch(passwordRecovery(email));
       this.passwordSent = true;
     }

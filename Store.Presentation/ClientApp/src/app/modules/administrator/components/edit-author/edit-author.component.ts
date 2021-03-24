@@ -19,7 +19,6 @@ export class EditAuthorComponent implements OnInit {
 
   ngOnInit(): void {
     this.addForm = this.data.addForm;
-    debugger;
     if (this.addForm) {
       this.form = new FormGroup({
         firstName: new FormControl(),

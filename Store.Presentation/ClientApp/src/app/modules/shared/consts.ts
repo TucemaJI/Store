@@ -19,7 +19,6 @@ export class Consts {
     public static FILTER_USERNAME = 'userName';
     public static FILTER_EMAIL = 'email';
     public static CART_COLUMNS = ['product', 'unitPrice', 'count', 'amount'];
-    public static ROUTE_SIGN_IN = 'sign-in';
     public static ORDERS_COLUMNS = ['Order ID', 'Order time', 'Product', 'Title', 'Qty', 'Order amount', 'Order Status'];
     public static ORDERS_PAGE_PARAMETERS = {
         itemsPerPage: 10,
@@ -37,6 +36,8 @@ export class Consts {
         currentPage: 1,
         totalItems: 0,
     }
+    public static ROUTE_SIGN_IN = 'sign-in';
+    public static ROUTE_CONFIRM_EMAIL = "confirm-email";
     public static SORT_BY = 'Price';
     public static QUANTITY_MINIMUM = "Quantity cannot be less 1";
     public static QUANTITY_MINIMUM_VALUE = 1;
@@ -79,7 +80,7 @@ export class Consts {
     public static PAY = `${environment.apiURL}${environment.orderC}/pay`;
     public static GET_ORDERS = `${environment.apiURL}${environment.orderC}/getorders`;
     public static GET_PES = `${environment.apiURL}${environment.peC}/getprintingeditions`;
-    public static GET_PE = `${environment.apiURL}${environment.authorC}/`;
+    public static GET_PE = `${environment.apiURL}${environment.peC}/`;
 
 
 }

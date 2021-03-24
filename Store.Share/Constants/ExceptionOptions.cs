@@ -24,5 +24,6 @@
         public const string AUTHOR_NOT_FOUND = "Author not found";
 
         public const string PRINTING_EDITION_NOT_FOUND = "Printing edition not found";
+        public const string USER_EXIST = "User with this email already exist";
     }
 }

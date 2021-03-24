@@ -24,6 +24,8 @@ export class CartComponent implements OnInit {
   displayedColumns: string[] = Consts.CART_COLUMNS;
   total: number = 0;
   userId: string;
+  orderCreated: boolean;
+  orderId: number;
 
   constructor(public dialogRef: MatDialogRef<CartComponent>, private cartService: ShoppingCartService<BaseCartItem>, private dialog: MatDialog, private store: Store<IAppState>,
     private router: Router, private auth: AuthService) { }
@@ -32,6 +34,11 @@ export class CartComponent implements OnInit {
     this.cartData = this.cartService.getItems();
     this.cartData.forEach(val => this.total += val.price * val.quantity);
     this.userId = this.auth.getId();
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (this.orderCreated === true) {
+        location.reload();
+      };
+    });
   }
 
   update(item: BaseCartItem): void {
@@ -39,13 +46,16 @@ export class CartComponent implements OnInit {
     this.cartService.addItem(item);
     this.cartData.forEach(val => this.total += val.price * val.quantity);
   }
+
   deleteProduct(item: BaseCartItem): void {
     this.cartService.removeItem(item.id);
     this.cartData = this.cartService.getItems();
   }
+
   cancel(): void {
     this.dialogRef.close();
   }
+
   buy(): void {
     if (this.userId === undefined) {
       this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
@@ -69,15 +79,19 @@ export class CartComponent implements OnInit {
       totalAmount: null,
     };
     this.store.dispatch(createOrder({ order }));
-    let orderId: number;
+    let dialogref: MatDialogRef<PaymentComponent>;
     this.store.pipe(select(selectOrderId)).subscribe(
       data => {
-        if (data != undefined) {
-          orderId = data;
-          console.log(orderId);
-          this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: orderId } });
+        if (data != null) {
+          this.orderId = data;
+          this.orderCreated = true;
+          dialogref = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: this.orderId } });
+          this.cartService.clean();
         }
       }
     );
+    if (this.orderCreated && dialogref.afterClosed()) {
+      this.router.navigateByUrl('/');;
+    }
   }
 }

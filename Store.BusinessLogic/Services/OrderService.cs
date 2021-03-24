@@ -9,7 +9,6 @@ using Store.DataAccess.Repositories.Interfaces;
 using Stripe;
 using System.Linq;
 using System.Threading.Tasks;
-using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Services
@@ -17,16 +16,13 @@ namespace Store.BusinessLogic.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IOrderItemRepository _orderItemRepository;
         private readonly IPaymentRepository _paymentRepository;
 
         private readonly OrderMapper _orderMapper;
 
-        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository,
-            IOrderItemRepository orderItemRepository, OrderMapper orderMapper)
+        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, OrderMapper orderMapper)
         {
             _orderRepository = orderRepository;
-            _orderItemRepository = orderItemRepository;
             _paymentRepository = paymentRepository;
 
             _orderMapper = orderMapper;
@@ -35,10 +31,8 @@ namespace Store.BusinessLogic.Services
         {
             var orderEntity = _orderMapper.Map(model);
             orderEntity.Payment = new Payment();
-            await _paymentRepository.CreateAsync(orderEntity.Payment);
             orderEntity.Status = StatusType.Unpaid;
             await _orderRepository.CreateAsync(orderEntity);
-            await _orderItemRepository.CreateOrderItemsAsync(orderEntity.OrderItems);
             return orderEntity.Id;
         }
 
@@ -89,7 +83,7 @@ namespace Store.BusinessLogic.Services
             var orderQuery = _orderRepository.GetFilteredQuery(filter);
             var sortedOrders = await _orderRepository.GetSortedListAsync(filter: filter, query: orderQuery);
             var orderModelList = _orderMapper.Map(sortedOrders);
-            var pagedList = PagedList<OrderModel>.ToPagedList(orderModelList, orderQuery.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var pagedList = new PagedList<OrderModel>(orderModelList, orderQuery.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<OrderModel>(pagedList);
             return pageModel;
         }

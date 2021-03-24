@@ -92,7 +92,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionOptions.PRINTING_EDITION_NOT_FOUND);
             }
 
-            await _printingEditionRepository.DeleteAsync(id);// CHECK AUTO REMOVE RELATION
+            await _printingEditionRepository.DeleteAsync(id);
         }
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
@@ -112,7 +112,7 @@ namespace Store.BusinessLogic.Services
                     element.Currency = filter.Currency;
                 }
             }
-            var pagedList = PagedList<PrintingEditionModel>.ToPagedList(printingEditionModels, printingEditions.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var pagedList = new PagedList<PrintingEditionModel>(printingEditionModels, printingEditions.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();

@@ -13,13 +13,14 @@ import { PrintingEditionComponent } from './modules/printing-edition/components/
 import { SelectPEComponent } from './modules/printing-edition/components/select-pe/select-pe.component';
 import { AuthorizeGuard } from './modules/shared/guards/authorize.guard';
 import { OrdersComponent } from './modules/order/components/orders/orders.component';
+import { Consts } from './modules/shared/consts';
 
 const routes: Routes = [
 
   { path: '', component: PrintingEditionComponent },
-  { path: 'sign-in', component: SignInComponent },
+  { path: Consts.ROUTE_SIGN_IN, component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
-  { path: 'confirm-email', component: ConfirmEmailComponent },
+  { path: Consts.ROUTE_CONFIRM_EMAIL, component: ConfirmEmailComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthorizeGuard] },
   {

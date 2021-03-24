@@ -15,7 +15,6 @@ export class AdministratorHttpService {
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
             name: pageModel.name, email: pageModel.email, isBlocked: pageModel.isBlocked,
         };
-        debugger;
         return this.http.post(Consts.FILTER_USERS, body);
     }
     changeClient(client) {
@@ -32,7 +31,6 @@ export class AdministratorHttpService {
     }
     deleteClient(client) {
         console.log(client);
-        debugger;
         const body = {
             firstName: client.client.firstName,
             lastName: client.client.lastName,
@@ -48,7 +46,6 @@ export class AdministratorHttpService {
             isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
             name: pageModel.name, id: pageModel.id,
         };
-        debugger;
         return this.http.post(Consts.GET_AUTHORS, body);
     }
     addAuthor(author) {
@@ -56,7 +53,6 @@ export class AdministratorHttpService {
             firstName: author.author.firstName,
             lastName: author.author.lastName,
         };
-        debugger;
         return this.http.post(Consts.CREATE_AUTHOR, body);
     }
     changeAuthor(author) {

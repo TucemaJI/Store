@@ -13,18 +13,17 @@ import { EOrderActions } from "./order.action"
 export class OrderEffects {
     getOrders$ = createEffect(() => this.actions$.pipe(
         ofType(EOrderActions.GetOrders),
-        exhaustMap((action: { type: string, pageModel: IOrderPage }) => {
-            debugger; return (
-                this.httpService.postGetOrders(action.pageModel)
-                    .pipe(
-                        map((responce: { elements: IOrder[], pageParameters: IPageParameters }) => ({
-                            type: EOrderActions.GetOrdersSuccess,
-                            pageParameters: responce.pageParameters, orders: responce.elements
-                        })),
-                        catchError(err => of(error({ err })))
-                    )
-            )
-        })
+        exhaustMap((action: { type: string, pageModel: IOrderPage }) =>
+            this.httpService.postGetOrders(action.pageModel)
+                .pipe(
+                    map((responce: { elements: IOrder[], pageParameters: IPageParameters }) => ({
+                        type: EOrderActions.GetOrdersSuccess,
+                        pageParameters: responce.pageParameters, orders: responce.elements
+                    })),
+                    catchError(err => of(error({ err })))
+                )
+        )
+
     ))
 
     constructor(

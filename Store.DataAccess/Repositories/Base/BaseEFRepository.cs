@@ -32,7 +32,7 @@ namespace Store.DataAccess.Repositories.Base
             _dbSet.Remove(await element);
             await _applicationContext.SaveChangesAsync();
         }
-        public async Task<T> GetItemAsync(long id)//USING VALUETASK?
+        public async Task<T> GetItemAsync(long id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -48,9 +48,8 @@ namespace Store.DataAccess.Repositories.Base
             {
                 filter.OrderByString = RepositoryOptions.DEFAULT_SEARCH;
             }
-            var sortedT = PagedList<T>.ToSortedListAsync(source: query.OrderBy(filter.OrderByString, filter.IsDescending),
-                pageNumber: filter.EntityParameters.CurrentPage,
-                pageSize: filter.EntityParameters.ItemsPerPage);
+            var sortedT = query.OrderBy(filter.OrderByString, filter.IsDescending)
+                .ToSortedListAsync(filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
 
             return sortedT;
         }

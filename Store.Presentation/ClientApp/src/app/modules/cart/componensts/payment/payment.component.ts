@@ -24,7 +24,6 @@ export class PaymentComponent implements OnInit {
       year: new FormControl('', [Validators.required, Validators.min(0), Validators.max(9999)]),
       cvc: new FormControl('', [Validators.required, Validators.min(0), Validators.max(999),]),
     });
-    debugger;
   }
 
   public hasError = (controlName: string, errorName: string): boolean => {

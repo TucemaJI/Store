@@ -1,4 +1,4 @@
-<div>
+<ng-template #notCreated>
     <h3 mat-dialog-title class="green">Checkout</h3>
     <div mat-dialog-content>
         <table mat-table class="mat-elevation-z8" class="content" [(dataSource)]="cartData">
@@ -29,4 +29,14 @@
         <button mat-rised-button (click)="cancel()">Cancel</button>
         <button mat-rised-button (click)="buy()">Buy Now</button>
     </div>
-</div>
+</ng-template>
+<ng-template [ngIf]="orderCreated" [ngIfElse]="notCreated">
+    <mat-card class="confirm">
+      <mat-icon class="green">done</mat-icon>
+      <mat-card-content>
+        <label>Thank You for your purchase!</label><br>
+        <label>Order number is: {{orderId}}</label><br>
+        <button routerLink="" (click)="cancel()" mat-raised-button>Continue</button>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>

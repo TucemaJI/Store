@@ -18,9 +18,8 @@ namespace Store.DataAccess
                 options.UseSqlServer(configuration.GetConnectionString(StartupOptions.CONNECTION)), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
+                .AddSignInManager()
                 .AddEntityFrameworkStores<ApplicationContext>();
-
-            services.AddTransient<UserManager<User>>();
 
             services.Scan(scan => scan
                 .FromCallingAssembly()

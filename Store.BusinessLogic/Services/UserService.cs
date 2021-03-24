@@ -138,13 +138,12 @@ namespace Store.BusinessLogic.Services
                 filter.OrderByString = UserServiceOptions.DEFAULT_SEARCH_STRING;
             }
 
-            var sortedUsers = await PagedList<User>.ToSortedListAsync(source: users.OrderBy(filter.OrderByString, filter.IsDescending),
-                pageNumber: filter.EntityParameters.CurrentPage,
-                pageSize: filter.EntityParameters.ItemsPerPage);
+            var sortedUsers = await users.OrderBy(filter.OrderByString, filter.IsDescending)
+                .ToSortedListAsync(pageNumber: filter.EntityParameters.CurrentPage, pageSize: filter.EntityParameters.ItemsPerPage);
 
             var sortedUserModels = _userMapper.Map(sortedUsers);
 
-            var pagedList = PagedList<UserModel>.ToPagedList(sortedUserModels, users.Count(), pageNumber: filter.EntityParameters.CurrentPage,
+            var pagedList = new PagedList<UserModel>(sortedUserModels, users.Count(), pageNumber: filter.EntityParameters.CurrentPage,
                 pageSize: filter.EntityParameters.ItemsPerPage);
 
             var pageModel = new PageModel<UserModel>(pagedList);

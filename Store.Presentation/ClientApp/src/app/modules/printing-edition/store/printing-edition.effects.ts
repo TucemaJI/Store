@@ -16,12 +16,11 @@ export class PrintingEditionEffects {
         exhaustMap((action: { pageModel: IPrintingEditionPage }) =>
             this.httpService.postPE(action.pageModel)
                 .pipe(
-                    map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number, minPrice: number }) => {
-                        return ({
-                            type: EPrintingEditionActions.GetPEsSuccess,
-                            pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
-                        })
-                    }),
+                    map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number, minPrice: number }) => ({
+                        type: EPrintingEditionActions.GetPEsSuccess,
+                        pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
+                    })
+                    ),
                     catchError(err => of(error({ err })))
                 )
         )
@@ -32,12 +31,11 @@ export class PrintingEditionEffects {
         exhaustMap((action: { id: number }) =>
             this.httpService.getPE(action.id)
                 .pipe(
-                    map((responce: IPrintingEdition) => {
-                        return ({
-                            type: EPrintingEditionActions.GetPESuccess,
-                            printingEdition: responce,
-                        })
-                    }),
+                    map((responce: IPrintingEdition) => ({
+                        type: EPrintingEditionActions.GetPESuccess,
+                        printingEdition: responce,
+                    })
+                    ),
                     catchError(err => of(error({ err })))
                 )
         )

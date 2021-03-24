@@ -22,14 +22,16 @@ namespace Store.BusinessLogic.Services
         private readonly PasswordProvider _passwordProvider;
         private readonly IJwtProvider _jwtProvider;
         private readonly EmailProvider _emailProvider;
+        private readonly SignInManager<User> _signInManager;
         public AccountService(UserManager<User> userManager, RegisterMapper registerMapper,
-            PasswordProvider passwordProvider, IJwtProvider jwtProvider, EmailProvider emailProvider)
+            PasswordProvider passwordProvider, IJwtProvider jwtProvider, EmailProvider emailProvider, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _registerMapper = registerMapper;
             _passwordProvider = passwordProvider;
             _jwtProvider = jwtProvider;
             _emailProvider = emailProvider;
+            _signInManager = signInManager;
         }
 
         public async Task<TokenModel> RefreshAsync(TokenModel model)
@@ -95,6 +97,13 @@ namespace Store.BusinessLogic.Services
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
 
+            //var test = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+
+            //if (!test.Succeeded)
+            //{
+            //    throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
+            //}
+
             var result = await _userManager.SetAuthenticationTokenAsync(user, JwtOptions.ISSUER, AccountServiceOptions.REFRESH_TOKEN, refreshToken);
 
             if (!result.Succeeded)
@@ -118,6 +127,12 @@ namespace Store.BusinessLogic.Services
             if (model.Password != model.ConfirmPassword)
             {
                 throw new BusinessLogicException(ExceptionOptions.PASSWORDS_DIFFERENT);
+            }
+
+            var isExist = await _userManager.FindByEmailAsync(model.Email);
+            if(isExist is not null)
+            {
+                throw new BusinessLogicException(ExceptionOptions.USER_EXIST);
             }
 
             if (string.IsNullOrWhiteSpace(model.FirstName))

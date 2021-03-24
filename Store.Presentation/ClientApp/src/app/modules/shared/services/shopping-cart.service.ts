@@ -24,9 +24,11 @@ export class ShoppingCartService<T extends BaseCartItem> {
     }
     removeItem(id: any): void {
         if (this.cookie.check(id)) {
-            debugger;
             this.cookie.delete(id,'/');
         }
+    }
+    clean():void{
+        this.cookie.deleteAll('/');
     }
     isExist(id: string): boolean {
         const t = this.cookie.get(id);

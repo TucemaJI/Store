@@ -16,7 +16,6 @@ export class AccountHttpService {
 
     postLogin(user: ILogin, remember: boolean): Observable<IToken> {
         const body = { email: user.email, password: user.password };
-        debugger;
         return this.http.post<IToken>(Consts.SIGN_IN, body).pipe(
             tap(token => { this.auth.saveToken(token, remember) })
         )
@@ -28,12 +27,11 @@ export class AccountHttpService {
     }
 
     sendEmail(email: string) {
-        debugger;
         return this.http.get(`${Consts.FORGOT_PASSWORD}${email}`);
     }
 
     postConfirm(model: IConfirm) {
-        const body = { email: model.email, token: model.token, password: model.password };
+        const body = { email: model.email, token: model.token};
         return this.http.post(Consts.CHECKMAIL, body);
     }
 
@@ -44,7 +42,6 @@ export class AccountHttpService {
     }
 
     getUser(id: string) {
-        debugger;
         return this.http.get(`${Consts.GET_USER}${id}`);
     }
 

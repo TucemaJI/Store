@@ -10,4 +10,4 @@ export enum EOrderActions {
 }
 
 export const getOrders = createAction(EOrderActions.GetOrders, props<{ pageModel: IOrderPage }>());
-export const getOrderSuccess = createAction(EOrderActions.GetOrdersSuccess, props<{ pageParameters: IPageParameters, orders: IOrder[] }>());
+export const getOrdersSuccess = createAction(EOrderActions.GetOrdersSuccess, props<{ pageParameters: IPageParameters, orders: IOrder[] }>());

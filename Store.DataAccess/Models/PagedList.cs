@@ -24,20 +24,5 @@ namespace Store.DataAccess.Models
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             AddRange(items);
         }
-        public static async Task<List<T>> ToSortedListAsync(IOrderedQueryable<T> source, int pageNumber, int pageSize)
-        {
-            var items = await source.Skip((pageNumber - PagedListOptions.CORRECTING_PAGE_NUMBER) * pageSize).Take(pageSize).ToListAsync();
-
-            return items;
-        }
-
-        public static PagedList<T> ToPagedList(List<T> items, int count, int pageNumber, int pageSize)
-        {
-
-            var result = new PagedList<T>(items, count, pageNumber, pageSize);
-
-            return result;
-        }
-
     }
 }

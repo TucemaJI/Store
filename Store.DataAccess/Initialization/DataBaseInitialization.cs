@@ -31,14 +31,15 @@ namespace Store.DataAccess.Initialization
 
             if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.ADMIN_EMAIL) == null)
             {
-                User admin = new User
+                var admin = new User
                 {
                     Email = DatabaseInitializationOptions.ADMIN_EMAIL,
                     FirstName = DatabaseInitializationOptions.FIRST_NAME,
                     LastName = DatabaseInitializationOptions.LAST_NAME,
                     UserName = $"{DatabaseInitializationOptions.FIRST_NAME}{DatabaseInitializationOptions.LAST_NAME}",
+                    EmailConfirmed = true,
                 };
-                IdentityResult createResult = await userManager.CreateAsync(admin,
+                var createResult = await userManager.CreateAsync(admin,
                     DatabaseInitializationOptions.PASSWORD);
 
                 if (createResult.Succeeded)

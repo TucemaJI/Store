@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Store.BusinessLogic.Providers;
 using System;
+using System.Text;
 using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation.Extentions
@@ -12,6 +13,9 @@ namespace Store.Presentation.Extentions
         public static void ConfigureAuthentication(this IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddCookie(IdentityConstants.ApplicationScheme)
+                    .AddCookie(IdentityConstants.ExternalScheme)
+                    .AddCookie(IdentityConstants.TwoFactorUserIdScheme)
                     .AddJwtBearer(options =>
                     {
                         options.RequireHttpsMetadata = false;
@@ -23,7 +27,7 @@ namespace Store.Presentation.Extentions
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
-                            IssuerSigningKey = new JwtProvider().securityKey,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.KEY)),
                             ValidateIssuerSigningKey = true,
                         };
                     });

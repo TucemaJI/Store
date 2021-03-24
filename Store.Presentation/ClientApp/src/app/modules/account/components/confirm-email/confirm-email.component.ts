@@ -26,14 +26,14 @@ export class ConfirmEmailComponent implements OnInit {
       this.name = params.name;
       this.lName = params.lName;
       this.password = params.pass;
-      this.confirmModel = { email: this.mail, token: this.token, password: this.password }
+      this.confirmModel = { email: this.mail, token: this.token }
       if (this.mail !== undefined) {
         this.fromLink = true;
       }
     });
   }
-  
-  public submit(confirmModel: IConfirm): void {
-    this.store.dispatch(confirmEmail({ confirmModel }));
+
+  public submit(): void {
+    this.store.dispatch(confirmEmail({ model: this.confirmModel }));
   }
 }

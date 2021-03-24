@@ -12,36 +12,32 @@ import { IPay } from "../../shared/models/IPay.model";
 export class CartEffects {
     createOrder$ = createEffect(() => this.actions$.pipe(
         ofType(ECartActions.CreateOrder),
-        exhaustMap((orderAction: {type:string, order:IOrder}) => {
-            debugger; return (
-                this.httpService.postCreateOrder(orderAction.order)
-                    .pipe(
-                        map((responce: Number) => ({
-                            type: ECartActions.CreateOrderSuccess,
-                            orderId: responce
-                        })),
-                        catchError(err => of(error({ err })))
-                    )
-            )
-        }
+        exhaustMap((orderAction: { type: string, order: IOrder }) =>
+            this.httpService.postCreateOrder(orderAction.order)
+                .pipe(
+                    map((responce: Number) => ({
+                        type: ECartActions.CreateOrderSuccess,
+                        orderId: responce
+                    })),
+                    catchError(err => of(error({ err })))
+                )
         )
+
     ))
 
     pay$ = createEffect(() => this.actions$.pipe(
         ofType(ECartActions.Pay),
-        exhaustMap((payAction: {type:string, payment:IPay}) => {
-            debugger; return (
-                this.httpService.postPay(payAction.payment)
-                    .pipe(
-                        map((responce: boolean) => ({
-                            type: ECartActions.PaySuccess,
-                            result: responce
-                        })),
-                        catchError(err => of(error({ err })))
-                    )
-            )
-        }
+        exhaustMap((payAction: { type: string, payment: IPay }) =>
+            this.httpService.postPay(payAction.payment)
+                .pipe(
+                    map((responce: boolean) => ({
+                        type: ECartActions.PaySuccess,
+                        result: responce
+                    })),
+                    catchError(err => of(error({ err })))
+                )
         )
+
     ))
 
     constructor(

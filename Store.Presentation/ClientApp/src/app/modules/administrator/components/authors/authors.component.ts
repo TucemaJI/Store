@@ -47,7 +47,6 @@ export class AuthorsComponent implements OnInit {
           this.authorsData = data.authors;
 
           this.pageParameters = data.pageModel.pageParameters;
-          console.log(data);
         }
       }
     )

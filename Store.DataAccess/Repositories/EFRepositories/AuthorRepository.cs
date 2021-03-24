@@ -15,7 +15,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
         public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
         public IQueryable<Author> GetFilteredQuery(AuthorFilter filter)
-        {// Check sql query
+        {
             var authors = _dbSet.Include(item => item.AuthorInPrintingEditions).ThenInclude(i => i.PrintingEdition)
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
                 .Where(a => a.Id.ToString().Contains(filter.Id));

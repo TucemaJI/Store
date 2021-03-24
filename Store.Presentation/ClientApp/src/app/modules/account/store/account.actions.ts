@@ -26,7 +26,7 @@ export const signInSuccess = createAction(EAccountActions.SignInSuccess, props<{
 }>());
 export const signUp = createAction(EAccountActions.SignUp, props<{ user: IUser; }>());
 export const signUpSuccess = createAction(EAccountActions.SignUpSuccess, props<{ user: IUser; }>());
-export const confirmEmail = createAction(EAccountActions.ConfirmEmail, props<{ confirmModel: IConfirm; }>());
+export const confirmEmail = createAction(EAccountActions.ConfirmEmail, props<{ model: IConfirm; }>());
 export const confirmEmailSuccess = createAction(EAccountActions.ConfirmEmailSuccess, props<{ user: IUser; }>());
 export const passwordRecovery = createAction(EAccountActions.PasswordRecovery, props<{ email: string; }>());
 export const passwordRecoverySuccess = createAction(EAccountActions.PasswordRecovery, props<{ result: string; }>());

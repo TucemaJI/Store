@@ -1,8 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from "rxjs";
-import { tap } from "rxjs/operators";
 import { Consts } from "../consts";
 import { IToken } from "../models/IToken.model";
 
@@ -29,7 +27,7 @@ export class AuthService {
         }
     }
 
-    public saveToken(token, remember: boolean) {
+    public saveToken(token: IToken, remember: boolean) {
         localStorage.setItem(Consts.ACCESS_TOKEN, token.accessToken);
         if (remember) {
             localStorage.setItem(Consts.REFRESH_TOKEN, token.refreshToken);
@@ -41,7 +39,7 @@ export class AuthService {
     public getToken(): string {
         return localStorage.getItem(Consts.ACCESS_TOKEN);
     }
-    
+
     public isAuthenticated(): boolean {
         const token = this.getToken();
         const isAuth = !this.jwtHelper.isTokenExpired(token);
@@ -52,5 +50,5 @@ export class AuthService {
         return isAuth;
     }
 
-    constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+    constructor(private jwtHelper: JwtHelperService) { }
 }

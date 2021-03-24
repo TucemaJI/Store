@@ -13,11 +13,7 @@ namespace Store.BusinessLogic.Providers
 {
     public class JwtProvider : IJwtProvider
     {
-        public readonly SymmetricSecurityKey securityKey;
-        public JwtProvider()
-        {
-            securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.KEY));
-        }
+        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.KEY));
 
         public string CreateToken(string email, string role, string id)
         {
@@ -35,7 +31,7 @@ namespace Store.BusinessLogic.Providers
                     audience: JwtOptions.AUDIENCE,
                     claims: claims,
                     expires: now.Add(TimeSpan.FromMinutes(JwtOptions.LIFETIME)),
-                    signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
+                    signingCredentials: new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
@@ -48,7 +44,7 @@ namespace Store.BusinessLogic.Providers
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
-                IssuerSigningKey = securityKey,
+                IssuerSigningKey = SecurityKey,
                 ValidateIssuerSigningKey = true,
                 ValidateLifetime = false,
             };

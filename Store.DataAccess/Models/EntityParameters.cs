@@ -2,7 +2,7 @@
 
 namespace Store.DataAccess.Models
 {
-    public class EntityParameters
+    public class EntityParameters //TO SHARED + RENAME
     {
         public int CurrentPage { get; set; }
         public int TotalItems { get; set; }
