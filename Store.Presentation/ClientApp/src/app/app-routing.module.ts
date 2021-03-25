@@ -19,18 +19,18 @@ const routes: Routes = [
 
   { path: '', component: PrintingEditionComponent },
   { path: Consts.ROUTE_SIGN_IN, component: SignInComponent },
-  { path: 'sign-up', component: SignUpComponent },
+  { path: Consts.ROUTE_SIGN_UP, component: SignUpComponent },
   { path: Consts.ROUTE_CONFIRM_EMAIL, component: ConfirmEmailComponent },
-  { path: 'password-recovery', component: PasswordRecoveryComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthorizeGuard] },
+  { path: Consts.ROUTE_PASSWORD_RECOVERY, component: PasswordRecoveryComponent },
+  { path: Consts.ROUTE_PROFILE, component: ProfileComponent, canActivate: [AuthorizeGuard] },
   {
     path: 'administrator', component: AdministratorComponent, canActivate: [AdminGuard], children: [
       { path: 'clients', component: ClientsComponent },
       { path: 'authors', component: AuthorsComponent },]
   },
-  { path: 'printing-edition', component: PrintingEditionComponent },
-  { path: 'pe/:id', component: SelectPEComponent },
-  { path: 'orders', component: OrdersComponent, canActivate: [AuthorizeGuard] },
+  { path: Consts.ROUTE_PRINTING_EDITIONS, component: PrintingEditionComponent },
+  { path: Consts.ROUTE_PRINTING_EDITION, component: SelectPEComponent },
+  { path: Consts.ROUTE_ORDERS, component: OrdersComponent, canActivate: [AuthorizeGuard] },
 ];
 
 @NgModule({

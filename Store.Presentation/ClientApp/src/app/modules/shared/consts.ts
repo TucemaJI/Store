@@ -38,6 +38,13 @@ export class Consts {
     }
     public static ROUTE_SIGN_IN = 'sign-in';
     public static ROUTE_CONFIRM_EMAIL = "confirm-email";
+    public static ROUTE_SIGN_UP = "sign-up";
+    public static ROUTE_PASSWORD_RECOVERY = "password-recovery";
+    public static ROUTE_PROFILE = "profile";
+    public static ROUTE_PRINTING_EDITIONS = "printing-edition";
+    public static ROUTE_PRINTING_EDITION = "pe/:id";
+    public static ROUTE_ORDERS = "orders";
+    
     public static SORT_BY = 'Price';
     public static QUANTITY_MINIMUM = "Quantity cannot be less 1";
     public static QUANTITY_MINIMUM_VALUE = 1;
@@ -50,7 +57,7 @@ export class Consts {
     public static IDENTIFIER = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
     public static CURRENCY = 'currency';
     public static ENUM_TO_ARRAY = 'enumToArray';
-    public static PE = 'pe';
+    public static PRINTING_EDITION_PIPE = 'printingeditionpipe';
     public static STATUS = 'status';
     public static PASSWORD = 'password';
     public static CONFIRM_PASSWORD = 'confirmPassword';

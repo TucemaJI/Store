@@ -97,7 +97,7 @@ namespace Store.BusinessLogic.Services
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
             var sortedPrintingEditions = _printingEditionRepository.GetPrintingEditionListAsync(filter);
-            var printingEditionModels = _printingEditionMapper.Map(await sortedPrintingEditions.Item1);
+            var printingEditionModels = _printingEditionMapper.Map(await sortedPrintingEditions.printingEditionList);
             if (filter.Currency == CurrencyType.None)
             {
                 filter.Currency = CurrencyType.USD;
@@ -110,7 +110,7 @@ namespace Store.BusinessLogic.Services
                     element.Currency = filter.Currency;
                 }
             }
-            var pagedList = new PagedList<PrintingEditionModel>(printingEditionModels, await sortedPrintingEditions.Item2, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var pagedList = new PagedList<PrintingEditionModel>(printingEditionModels, await sortedPrintingEditions.count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();

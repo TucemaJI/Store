@@ -15,13 +15,13 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public OrderRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public (Task<List<Order>>, Task<int>) GetOrderListAsync(OrderFilter filter)
+        public (Task<List<Order>> orderList, Task<int> count) GetOrderListAsync(OrderFilter filter)
         {
             var query = _dbSet.Include(item => item.OrderItems).ThenInclude(item => item.PrintingEdition)
                 .Where(o => o.UserId == filter.UserId)
                 .Where(o => filter.Status == StatusType.None || o.Status == filter.Status);
             var orders = GetSortedListAsync(filter, query);
-            var result = (orders, query.CountAsync());
+            var result = (orderList: orders, count:query.CountAsync());
             return result;
         }
     }

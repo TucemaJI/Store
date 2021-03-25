@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from "@angular/core";
 import { Consts } from "../consts";
 import { PrintingEditionLabel } from "../models/printing-edition-type.enum";
 
-@Pipe({ name: Consts.PE })
+@Pipe({ name: Consts.PRINTING_EDITION_PIPE })
 
-export class PEPipe implements PipeTransform {
+export class PrintiongEditionPipe implements PipeTransform {
     transform(value: number, args?: any[]): string {
         return PrintingEditionLabel.get(value);
     }
