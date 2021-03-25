@@ -9,7 +9,6 @@ using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services
@@ -40,10 +39,9 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
         {
-            var authorQuery = _authorRepository.GetFilteredQuery(filter);
-            var sortedAuthors = _authorRepository.GetSortedListAsync(filter: filter, query: authorQuery);
-            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(await sortedAuthors);
-            var pagedList = new PagedList<AuthorModel>(authorModelList, authorQuery.Count(), pageNumber: filter.EntityParameters.CurrentPage,
+            var sortedAuthors = _authorRepository.GetAuthorListAsync(filter);
+            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(await sortedAuthors.Item1);
+            var pagedList = new PagedList<AuthorModel>(authorModelList, await sortedAuthors.Item2, pageNumber: filter.EntityParameters.CurrentPage,
                 pageSize: filter.EntityParameters.ItemsPerPage);
 
             var pageModel = new PageModel<AuthorModel>(pagedList);

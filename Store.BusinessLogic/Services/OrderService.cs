@@ -7,7 +7,6 @@ using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Stripe;
-using System.Linq;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
 
@@ -80,10 +79,9 @@ namespace Store.BusinessLogic.Services
         }
         public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
         {
-            var orderQuery = _orderRepository.GetFilteredQuery(filter);
-            var sortedOrders = await _orderRepository.GetSortedListAsync(filter: filter, query: orderQuery);
-            var orderModelList = _orderMapper.Map(sortedOrders);
-            var pagedList = new PagedList<OrderModel>(orderModelList, orderQuery.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var sortedOrders = _orderRepository.GetOrderListAsync(filter); ;
+            var orderModelList = _orderMapper.Map(await sortedOrders.Item1);
+            var pagedList = new PagedList<OrderModel>(orderModelList, await sortedOrders.Item2, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<OrderModel>(pagedList);
             return pageModel;
         }

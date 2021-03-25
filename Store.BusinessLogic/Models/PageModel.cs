@@ -11,7 +11,7 @@ namespace Store.BusinessLogic.Models
         public double MinPrice { get; set; }
         public PageModel(PagedList<T> pagedList)
         {
-            Elements = new List<T>(pagedList);
+            Elements = pagedList;
 
             PageParameters = new EntityParameters
             {

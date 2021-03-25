@@ -10,7 +10,6 @@ using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
 
@@ -97,9 +96,8 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter)
         {
-            var printingEditions = _printingEditionRepository.GetFilteredList(filter);
-            var sortedPrintingEditions = await _printingEditionRepository.GetSortedListAsync(filter: filter, query: printingEditions);
-            var printingEditionModels = _printingEditionMapper.Map(sortedPrintingEditions);
+            var sortedPrintingEditions = _printingEditionRepository.GetPrintingEditionListAsync(filter);
+            var printingEditionModels = _printingEditionMapper.Map(await sortedPrintingEditions.Item1);
             if (filter.Currency == CurrencyType.None)
             {
                 filter.Currency = CurrencyType.USD;
@@ -112,7 +110,7 @@ namespace Store.BusinessLogic.Services
                     element.Currency = filter.Currency;
                 }
             }
-            var pagedList = new PagedList<PrintingEditionModel>(printingEditionModels, printingEditions.Count(), filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var pagedList = new PagedList<PrintingEditionModel>(printingEditionModels, await sortedPrintingEditions.Item2, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<PrintingEditionModel>(pagedList);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();

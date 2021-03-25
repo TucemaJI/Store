@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.Shared.Constants;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Store.DataAccess.Extentions

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogic.Mappers;
 using Store.DataAccess;
-using Stripe;
 using System;
 using static Store.Shared.Constants.Constants;
 

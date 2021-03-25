@@ -63,7 +63,7 @@ namespace Store.BusinessLogic.Services
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
+                throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
             }
 
             var role = principal.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
@@ -90,25 +90,13 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionOptions.USER_BLOCKED);
             }
 
-            if (!await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                throw new BusinessLogicException(ExceptionOptions.INCORRECT_PASSWORD);
-            }
-
             var refreshToken = _jwtProvider.GenerateRefreshToken();
 
-            //var test = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-
-            //if (!test.Succeeded)
-            //{
-            //    throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
-            //}
-
-            var result = await _userManager.SetAuthenticationTokenAsync(user, JwtOptions.ISSUER, AccountServiceOptions.REFRESH_TOKEN, refreshToken);
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED_TO_DB);
+                throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
             }
 
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
@@ -130,7 +118,7 @@ namespace Store.BusinessLogic.Services
             }
 
             var isExist = await _userManager.FindByEmailAsync(model.Email);
-            if(isExist is not null)
+            if (isExist is not null)
             {
                 throw new BusinessLogicException(ExceptionOptions.USER_EXIST);
             }

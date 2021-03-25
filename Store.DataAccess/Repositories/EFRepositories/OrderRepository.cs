@@ -4,7 +4,9 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Base;
 using Store.DataAccess.Repositories.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.DataAccess.Repositories.EFRepositories
@@ -13,12 +15,14 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public OrderRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public IQueryable<Order> GetFilteredQuery(OrderFilter filter)
+        public (Task<List<Order>>, Task<int>) GetOrderListAsync(OrderFilter filter)
         {
-            var orders = _dbSet.Include(item => item.OrderItems).ThenInclude(item => item.PrintingEdition)
+            var query = _dbSet.Include(item => item.OrderItems).ThenInclude(item => item.PrintingEdition)
                 .Where(o => o.UserId == filter.UserId)
                 .Where(o => filter.Status == StatusType.None || o.Status == filter.Status);
-            return orders;
+            var orders = GetSortedListAsync(filter, query);
+            var result = (orders, query.CountAsync());
+            return result;
         }
     }
 }

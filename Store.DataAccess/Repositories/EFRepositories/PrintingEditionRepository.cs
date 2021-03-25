@@ -4,6 +4,7 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Base;
 using Store.DataAccess.Repositories.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
@@ -14,13 +15,15 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public PrintingEditionRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public IQueryable<PrintingEdition> GetFilteredList(PrintingEditionFilter filter)
+        public (Task<List<PrintingEdition>>, Task<int>) GetPrintingEditionListAsync(PrintingEditionFilter filter)
         {
-            var printingEditions = _dbSet.Include(item => item.AuthorsInPrintingEdition).ThenInclude(item => item.Author)
+            var query = _dbSet.Include(item => item.AuthorsInPrintingEdition).ThenInclude(item => item.Author)
                 .Where(printingEdition => filter.PrintingEditionTypeList.Contains(PrintingEditionType.None) || filter.PrintingEditionTypeList.Contains(printingEdition.Type))
                 .Where(printingEdition => filter.MaxPrice >= printingEdition.Price && printingEdition.Price >= filter.MinPrice)
                 .Where(printingEdition => EF.Functions.Like(printingEdition.Title, $"%{filter.Title}%") || printingEdition.AuthorsInPrintingEdition.Any(item => EF.Functions.Like(item.Author.Name, $"%{filter.Name}%")));
-            return printingEditions;
+            var printingEditions = GetSortedListAsync(filter, query);
+            var result = (printingEditions, query.CountAsync());
+            return result;
         }
         public Task<double> GetMaxPriceAsync()
         {

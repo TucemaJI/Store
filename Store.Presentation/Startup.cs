@@ -1,27 +1,19 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogic;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.DataAccess.AppContext;
 using Store.DataAccess.Entities;
-using Store.DataAccess.Initialization;
 using Store.Presentation.Extentions;
 using Store.Presentation.Middlewares;
 using Stripe;
-using System;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation
@@ -38,9 +30,9 @@ namespace Store.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             StripeConfiguration.ApiKey = OrderServiceOptions.API_KEY;
-            
+
             services.InitializeBL(Configuration);
-            
+
             services.AddCors();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.ConfigureAuthentication();
