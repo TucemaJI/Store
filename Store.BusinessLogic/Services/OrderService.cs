@@ -79,9 +79,9 @@ namespace Store.BusinessLogic.Services
         }
         public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
         {
-            var sortedOrders = _orderRepository.GetOrderListAsync(filter); ;
-            var orderModelList = _orderMapper.Map(await sortedOrders.orderList);
-            var pagedList = new PagedList<OrderModel>(orderModelList, await sortedOrders.count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+            var sortedOrders = await _orderRepository.GetOrderListAsync(filter); ;
+            var orderModelList = _orderMapper.Map(sortedOrders.orderList);
+            var pagedList = new PagedList<OrderModel>(orderModelList, sortedOrders.count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
             var pageModel = new PageModel<OrderModel>(pagedList);
             return pageModel;
         }
