@@ -52,13 +52,6 @@ namespace Store.BusinessLogic.Services
             return _userMapper.Map(user);
         }
 
-        public async Task<List<UserModel>> GetUsersAsync()
-        {
-            var userList = await _userManager.Users.ToListAsync();
-
-            var userModelList = _userMapper.Map(userList);
-            return userModelList;
-        }
         public async Task<string> GetRoleAsync(string id)
         {
             var user = await FindUserByIdAsync(id);
@@ -132,7 +125,7 @@ namespace Store.BusinessLogic.Services
         {
             var users = _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
-                .Where(u => u.IsBlocked.Equals(filter.IsBlocked));
+                .Where(u => filter.IsBlocked.Equals(null)||u.IsBlocked.Equals(filter.IsBlocked));
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
                 filter.OrderByString = UserServiceOptions.DEFAULT_SEARCH_STRING;

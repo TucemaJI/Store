@@ -13,15 +13,14 @@ import { Consts } from "../consts";
 export class ErrorInterceptor implements HttpInterceptor {
     constructor(public auth: AuthService, private store: Store<IAppState>) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const accessToken = localStorage.getItem(Consts.ACCESS_TOKEN);
-        const refToken = localStorage.getItem(Consts.REFRESH_TOKEN);
-        const token: IToken = { accessToken: accessToken, refreshToken: refToken };
+
+        const token: IToken = this.auth.getTokens();
 
         return next.handle(request).pipe(
             catchError((err) => {
                 if (err.status === 401) {
-                    if (this.auth.isAuthenticated()) {
-                        this.store.dispatch(refreshToken(token));
+                    if (!this.auth.isAuthenticated()) {
+                        this.store.dispatch(refreshToken({token}));
                     }
                     const newAccessToken = localStorage.getItem(Consts.ACCESS_TOKEN);
 

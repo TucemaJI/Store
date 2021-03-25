@@ -50,5 +50,12 @@ export class AuthService {
         return isAuth;
     }
 
+    public getTokens():IToken{
+        const accessToken = localStorage.getItem(Consts.ACCESS_TOKEN);
+        const refToken = localStorage.getItem(Consts.REFRESH_TOKEN);
+        const token: IToken = { accessToken: accessToken, refreshToken: refToken };
+        return token;
+    }
+
     constructor(private jwtHelper: JwtHelperService) { }
 }

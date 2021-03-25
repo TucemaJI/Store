@@ -66,6 +66,8 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
             }
 
+            await _signInManager.RefreshSignInAsync(user);
+
             var role = principal.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
             var id = principal.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
@@ -92,11 +94,18 @@ namespace Store.BusinessLogic.Services
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
 
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+            var signIn = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+
+            if (!signIn.Succeeded)
+            {
+                throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
+            }
+
+            var result = await _userManager.SetAuthenticationTokenAsync(user, JwtOptions.ISSUER, AccountServiceOptions.REFRESH_TOKEN, refreshToken);
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
+                throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED);
             }
 
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();

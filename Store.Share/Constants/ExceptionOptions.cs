@@ -25,5 +25,6 @@
 
         public const string PRINTING_EDITION_NOT_FOUND = "Printing edition not found";
         public const string USER_EXIST = "User with this email already exist";
+        public const string REFRESH_TOKEN_NOT_WRITED = "Refresh token not writed to database";
     }
 }

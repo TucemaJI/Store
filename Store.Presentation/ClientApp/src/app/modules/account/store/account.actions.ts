@@ -2,6 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { IUser } from "../../shared/models/IUser.model";
 import { ILogin } from "../../shared/models/ILogin.model";
 import { IConfirm } from "../../shared/models/IConfirm.model";
+import { IToken } from "../../shared/models/IToken.model";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',
@@ -30,7 +31,7 @@ export const confirmEmail = createAction(EAccountActions.ConfirmEmail, props<{ m
 export const confirmEmailSuccess = createAction(EAccountActions.ConfirmEmailSuccess, props<{ user: IUser; }>());
 export const passwordRecovery = createAction(EAccountActions.PasswordRecovery, props<{ email: string; }>());
 export const passwordRecoverySuccess = createAction(EAccountActions.PasswordRecovery, props<{ result: string; }>());
-export const refreshToken = createAction(EAccountActions.RefreshToken, props<{ accessToken: string, refreshToken: string; }>());
+export const refreshToken = createAction(EAccountActions.RefreshToken, props<{ token: IToken }>());
 export const refreshTokenSuccess = createAction(EAccountActions.RefreshTokenSuccess, props<{ accessToken: string, refreshToken: string; }>());
 export const getUser = createAction(EAccountActions.GetUser, props<{ userId: string }>());
 export const getUserSuccess = createAction(EAccountActions.GetUserSuccess, props<{ user: IUser }>());

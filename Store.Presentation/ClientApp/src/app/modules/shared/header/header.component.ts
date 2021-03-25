@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/store/state/app.state';
+import { refreshToken } from '../../account/store/account.actions';
 import { CartComponent } from '../../cart/componensts/cart/cart.component';
 import { Consts } from '../consts';
 import { AuthService } from '../services/auth.service';
@@ -14,7 +17,7 @@ export class HeaderComponent implements OnInit {
 
   userId: string;
 
-  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router) { }
+  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store:Store<IAppState>) { }
 
   ngOnInit(): void {
     this.userId = this.auth.getId();
@@ -23,6 +26,7 @@ export class HeaderComponent implements OnInit {
 
   logOut(): void {
     localStorage.clear();
+    location.reload();
   }
 
   cart(): void {
@@ -33,5 +37,9 @@ export class HeaderComponent implements OnInit {
     if (this.userId === undefined) {
       this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
     }
+    if (!this.auth.isAuthenticated()) {
+      const token = this.auth.getTokens();
+      this.store.dispatch(refreshToken({token}));
+  }
   }
 }
