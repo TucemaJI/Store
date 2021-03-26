@@ -1,0 +1,14 @@
+﻿@page
+@model Store.Presentation.Areas.Admin.Pages.LoginPageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+}
+<div class="text-center">
+    <h3>Sign In</h3>
+    <form method="post">
+        <p> E-mail <input asp-for="SignInModel.Email" type="email"></p>
+        <p> Password <input asp-for="SignInModel.Password" type="password"> </p>
+
+        <button type="submit"> Sign-In </button>
+    </form>
+</div>

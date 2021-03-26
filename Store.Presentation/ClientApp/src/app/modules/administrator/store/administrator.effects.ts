@@ -18,9 +18,9 @@ export class AdministratorEffects {
         ofType(EAdministratorActions.GetClients),
         exhaustMap((action: { pageModel: IClientsPage }) => this.httpService.postClientsPage(action.pageModel)
             .pipe(
-                map((responce: { elements: IClient[], pageParameters: IPageOptions }) => ({
+                map((responce: { elements: IClient[], pageOptions: IPageOptions }) => ({
                     type: EAdministratorActions.GetClientsSuccess,
-                    pageParameters: responce.pageParameters, clients: responce.elements
+                    pageOptions: responce.pageOptions, clients: responce.elements
                 })),
                 catchError(err => of(error({ err })))
             )
@@ -50,9 +50,9 @@ export class AdministratorEffects {
         ofType(EAdministratorActions.GetAuthors),
         exhaustMap((action: { pageModel: IAuthorsPage }) => this.httpService.postAuthorPage(action.pageModel)
             .pipe(
-                map((responce: { elements: IAuthor[], pageParameters: IPageOptions }) => ({
+                map((responce: { elements: IAuthor[], pageOptions: IPageOptions }) => ({
                     type: EAdministratorActions.GetAuthorsSuccess,
-                    pageParameters: responce.pageParameters, authors: responce.elements
+                    pageOptions: responce.pageOptions, authors: responce.elements
                 })),
                 catchError(err => of(error({ err })))
             )

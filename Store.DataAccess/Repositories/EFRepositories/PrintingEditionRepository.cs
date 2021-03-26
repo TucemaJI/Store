@@ -22,7 +22,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
                 .Where(printingEdition => filter.MaxPrice >= printingEdition.Price && printingEdition.Price >= filter.MinPrice)
                 .Where(printingEdition => EF.Functions.Like(printingEdition.Title, $"%{filter.Title}%") || printingEdition.AuthorsInPrintingEdition.Any(item => EF.Functions.Like(item.Author.Name, $"%{filter.Name}%")));
             var printingEditions = await GetSortedListAsync(filter, query);
-            filter.EntityParameters.TotalItems = await query.CountAsync();
+            filter.PageOptions.TotalItems = await query.CountAsync();
             return printingEditions;
         }
         public Task<double> GetMaxPriceAsync()

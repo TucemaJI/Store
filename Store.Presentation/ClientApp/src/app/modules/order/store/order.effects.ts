@@ -16,9 +16,9 @@ export class OrderEffects {
         exhaustMap((action: { type: string, pageModel: IOrderPage }) =>
             this.httpService.postGetOrders(action.pageModel)
                 .pipe(
-                    map((responce: { elements: IOrder[], pageParameters: IPageOptions }) => ({
+                    map((responce: { elements: IOrder[], pageOptions: IPageOptions }) => ({
                         type: EOrderActions.GetOrdersSuccess,
-                        pageParameters: responce.pageParameters, orders: responce.elements
+                        pageOptions: responce.pageOptions, orders: responce.elements
                     })),
                     catchError(err => of(error({ err })))
                 )

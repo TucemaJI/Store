@@ -21,7 +21,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
                 .Where(o => o.UserId == filter.UserId)
                 .Where(o => filter.Status == StatusType.None || o.Status == filter.Status);
             var orders = await GetSortedListAsync(filter, query);
-            filter.EntityParameters.TotalItems = await query.CountAsync();
+            filter.PageOptions.TotalItems = await query.CountAsync();
             return orders;
         }
     }

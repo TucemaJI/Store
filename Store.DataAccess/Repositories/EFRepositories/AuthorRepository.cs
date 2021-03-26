@@ -20,7 +20,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
                 .Where(a => a.Id.Equals(filter.Id));
             var authors = await GetSortedListAsync(filter, query);
-            filter.EntityParameters.TotalItems = await query.CountAsync();
+            filter.PageOptions.TotalItems = await query.CountAsync();
             return authors;
         }
 

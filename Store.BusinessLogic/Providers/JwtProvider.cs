@@ -16,7 +16,7 @@ namespace Store.BusinessLogic.Providers
     {
         private readonly IOptions<JwtOptions> _options;
 
-        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtConsts.KEY));
+        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_options.Value.Key));
         public JwtProvider(IOptions<JwtOptions> options)
         {
             _options = options;
@@ -69,7 +69,7 @@ namespace Store.BusinessLogic.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[_options.Value.Length];
+            var randomNumber = new byte[_options.Value.RefreshTokenLength];
             using (var random = RandomNumberGenerator.Create())
             {
                 random.GetBytes(randomNumber);

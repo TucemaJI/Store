@@ -81,7 +81,7 @@ namespace Store.BusinessLogic.Services
         {
             var sortedOrders = await _orderRepository.GetOrderListAsync(filter);
             var orderModelList = _orderMapper.Map(sortedOrders);
-            var pageModel = new PageModel<OrderModel>(orderModelList, filter.EntityParameters);
+            var pageModel = new PageModel<OrderModel>(orderModelList, filter.PageOptions);
             return pageModel;
         }
 

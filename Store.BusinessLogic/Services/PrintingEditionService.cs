@@ -114,7 +114,7 @@ namespace Store.BusinessLogic.Services
                     element.Currency = filter.Currency;
                 }
             }
-            var pageModel = new PageModel<PrintingEditionModel>(printingEditionModels, filter.EntityParameters);
+            var pageModel = new PageModel<PrintingEditionModel>(printingEditionModels, filter.PageOptions);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();
             return pageModel;

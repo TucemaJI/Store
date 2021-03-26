@@ -44,7 +44,7 @@ namespace Store.BusinessLogic.Services
         {
             var sortedAuthors = await _authorRepository.GetAuthorListAsync(filter);
             var authorModelList = _mapper.Map<List<AuthorModel>>(sortedAuthors);
-            var pageModel = new PageModel<AuthorModel>(authorModelList, filter.EntityParameters);
+            var pageModel = new PageModel<AuthorModel>(authorModelList, filter.PageOptions);
             return pageModel;
         }
 

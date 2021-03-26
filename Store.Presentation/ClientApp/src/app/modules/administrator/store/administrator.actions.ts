@@ -25,14 +25,14 @@ export enum EAdministratorActions {
 }
 
 export const getClients = createAction(EAdministratorActions.GetClients, props<{ pageModel: IClientsPage }>());
-export const getClientsSuccess = createAction(EAdministratorActions.GetClientsSuccess, props<{ pageParameters: IPageOptions, clients: IClient[] }>());
+export const getClientsSuccess = createAction(EAdministratorActions.GetClientsSuccess, props<{ pageOptions: IPageOptions, clients: IClient[] }>());
 export const clientChange = createAction(EAdministratorActions.ClientChange, props<{ client: IChangeClient }>());
 export const clientChangeSuccess = createAction(EAdministratorActions.ClientChangeSuccess, props<{ result: boolean }>());
 export const deleteClient = createAction(EAdministratorActions.DeleteClient, props<{ client: IClient }>());
 export const deleteClientSuccess = createAction(EAdministratorActions.DeleteClientSuccess, props<{ result: boolean }>());
 
 export const getAuthors = createAction(EAdministratorActions.GetAuthors, props<{ pageModel: IAuthorsPage }>());
-export const getAuthorsSuccess = createAction(EAdministratorActions.GetAuthorsSuccess, props<{ pageParameters: IPageOptions, authors: IAuthor[] }>());
+export const getAuthorsSuccess = createAction(EAdministratorActions.GetAuthorsSuccess, props<{ pageOptions: IPageOptions, authors: IAuthor[] }>());
 export const addAuthor = createAction(EAdministratorActions.AddAuthor, props<{ author: IAuthor }>());
 export const addAuthorSuccess = createAction(EAdministratorActions.AddAuthorSuccess, props<{ result }>());
 export const changeAuthor = createAction(EAdministratorActions.ChangeAuthor, props<{author:IAuthor}>());

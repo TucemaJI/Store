@@ -6,6 +6,6 @@
         public string Issuer { get; set; }
         public string Key { get; set; }
         public byte Lifetime { get; set; }
-        public byte Length { get; set; }
+        public byte RefreshTokenLength { get; set; }
     }
 }

@@ -11,6 +11,6 @@ export enum EPrintingEditionActions {
 }
 
 export const getPEs = createAction(EPrintingEditionActions.GetPEs, props<{ pageModel: IPrintingEditionPage }>());
-export const getPEsSuccess = createAction(EPrintingEditionActions.GetPEsSuccess, props<{ minPrice: number, maxPrice: number, pageParameters: IPageOptions, printingEditions: IPrintingEdition[] }>());
+export const getPEsSuccess = createAction(EPrintingEditionActions.GetPEsSuccess, props<{ minPrice: number, maxPrice: number, pageOptions: IPageOptions, printingEditions: IPrintingEdition[] }>());
 export const getPE = createAction(EPrintingEditionActions.GetPE, props<{ id: number }>());
 export const getPESuccess = createAction(EPrintingEditionActions.GetPESuccess, props<{ printingEdition: IPrintingEdition }>());

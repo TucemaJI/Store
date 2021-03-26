@@ -16,9 +16,9 @@ export class PrintingEditionEffects {
         exhaustMap((action: { pageModel: IPrintingEditionPage }) =>
             this.httpService.postPE(action.pageModel)
                 .pipe(
-                    map((responce: { elements: IPrintingEdition[], pageParameters: IPageOptions, maxPrice: number, minPrice: number }) => ({
+                    map((responce: { elements: IPrintingEdition[], pageOptions: IPageOptions, maxPrice: number, minPrice: number }) => ({
                         type: EPrintingEditionActions.GetPEsSuccess,
-                        pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
+                        pageOptions: responce.pageOptions, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
                     })
                     ),
                     catchError(err => of(error({ err })))

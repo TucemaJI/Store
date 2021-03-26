@@ -95,16 +95,16 @@ namespace Store.BusinessLogic.Services
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
                 .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
                 .OrderBy(filter.OrderByString, filter.IsDescending)
-                .ToSortedListAsync(pageNumber: filter.EntityParameters.CurrentPage, pageSize: filter.EntityParameters.ItemsPerPage);
+                .ToSortedListAsync(pageNumber: filter.PageOptions.CurrentPage, pageSize: filter.PageOptions.ItemsPerPage);
 
             var sortedUserModels = _userMapper.Map(users);
 
-            filter.EntityParameters.TotalItems = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
+            filter.PageOptions.TotalItems = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
                 .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
                 .CountAsync();
 
-            var pageModel = new PageModel<UserModel>(sortedUserModels, filter.EntityParameters);
+            var pageModel = new PageModel<UserModel>(sortedUserModels, filter.PageOptions);
 
             return pageModel;
 

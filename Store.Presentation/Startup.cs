@@ -47,6 +47,7 @@ namespace Store.Presentation
             services.ConfigureSwagger(Configuration);
             services.AddTransient<IJwtProvider, JwtProvider>();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = Configuration[StartupConsts.ROOT_PATH]; });
+            services.AddRazorPages();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -75,6 +76,7 @@ namespace Store.Presentation
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
 
             app.UseSpa(spa =>

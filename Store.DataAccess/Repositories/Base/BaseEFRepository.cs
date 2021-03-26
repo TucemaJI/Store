@@ -48,7 +48,7 @@ namespace Store.DataAccess.Repositories.Base
                 filter.OrderByString = RepositoryConsts.DEFAULT_SEARCH;
             }
             var sortedT = query.OrderBy(filter.OrderByString, filter.IsDescending)
-                .ToSortedListAsync(filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
+                .ToSortedListAsync(filter.PageOptions.CurrentPage, filter.PageOptions.ItemsPerPage);
 
             return sortedT;
         }
