@@ -2,9 +2,9 @@
 {
     public partial class Constants
     {
-        public class RepositoryOptions
+        public class EntityParametersConsts
         {
-            public const string DEFAULT_SEARCH = "Id";
+            public const byte MAX_PAGE_SIZE = 50;
         }
     }
 }

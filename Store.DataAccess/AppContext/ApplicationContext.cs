@@ -30,7 +30,7 @@ namespace Store.DataAccess.AppContext
 
             builder.Entity<User>()
                 .Property(u => u.UserName)
-                .HasComputedColumnSql(DatabaseInitializationOptions.FULL_NAME);
+                .HasComputedColumnSql(DatabaseInitializationConsts.FULL_NAME);
 
             builder.Entity<AuthorInPrintingEdition>()
                 .HasKey(t => new { t.AuthorId, t.PrintingEditionId });

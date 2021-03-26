@@ -2,13 +2,8 @@
 {
     public partial class Constants
     {
-        public class EmailOptions
+        public class EmailConsts 
         {
-            public const string NAME = "Administration";
-            public const string ADDRESS = "testcsharpsmtp0@gmail.com";
-            public const string GMAIL_CONNECTION = "smtp.gmail.com";
-            public const string PASSWORD = "P!W`k~'NHd^y{4Zu";
-
             public const string CONFIRM_EMAIL = "ConfirmEmail";
             public const string ACCOUNT = "Account";
             public const string CONFIRM_ACOUNT = "Confirm your account";

@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class ExtentionOptions
+        public class ExtentionConsts
         {
             public const string X = "x";
             public const string DESCENDING = "OrderByDescending";

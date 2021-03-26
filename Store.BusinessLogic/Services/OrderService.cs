@@ -1,4 +1,5 @@
-﻿using Store.BusinessLogic.Mappers;
+﻿using Store.BusinessLogic.Exceptions;
+using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
@@ -6,8 +7,10 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
+using Store.Shared.Constants;
 using Stripe;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.BusinessLogic.Services
@@ -37,7 +40,6 @@ namespace Store.BusinessLogic.Services
 
         public async Task<bool> Pay(OrderPayModel model)
         {
-            var cvc = model.Cvc.ToString();
             var optionsToken = new TokenCreateOptions
             {
                 Card = new TokenCardOptions
@@ -45,7 +47,7 @@ namespace Store.BusinessLogic.Services
                     Number = model.Cardnumber,
                     ExpMonth = model.Month,
                     ExpYear = model.Year,
-                    Cvc = cvc,
+                    Cvc = model.Cvc.ToString(),
                 }
             };
 
@@ -77,24 +79,34 @@ namespace Store.BusinessLogic.Services
             return charge.Paid;
 
         }
-        public async Task<PageModel<OrderModel>> GetOrderModelsAsync(OrderFilter filter)
+        public async Task<PageModel<OrderModel>> GetOrderModelListAsync(OrderFilter filter)
         {
-            var sortedOrders = await _orderRepository.GetOrderListAsync(filter); ;
-            var orderModelList = _orderMapper.Map(sortedOrders.orderList);
-            var pagedList = new PagedList<OrderModel>(orderModelList, sortedOrders.count, filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);
-            var pageModel = new PageModel<OrderModel>(pagedList);
+            var sortedOrders = await _orderRepository.GetOrderListAsync(filter); 
+            var orderModelList = _orderMapper.Map(sortedOrders);
+            var pageModel = new PageModel<OrderModel>(orderModelList, filter.EntityParameters);
             return pageModel;
         }
 
         public async Task<OrderModel> GetOrderModelAsync(long id)
         {
             var order = _orderRepository.GetItemAsync(id);
-            return _orderMapper.Map(await order);
+            if (order is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.ORDER_NOT_FOUND);
+            }
+            var result = _orderMapper.Map(await order);
+            return result;
         }
 
-        public Task DeleteOrderAsync(long id)
+        public async Task DeleteOrderAsync(long id)
         {
-            return _orderRepository.DeleteAsync(id);
+            var order = await _orderRepository.GetItemAsync(id);
+
+            if (order is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.ORDER_NOT_FOUND);
+            }
+            await _orderRepository.DeleteAsync(id);
         }
 
     }

@@ -45,7 +45,7 @@ namespace Store.DataAccess.Repositories.Base
         {
             if (string.IsNullOrWhiteSpace(filter.OrderByString))
             {
-                filter.OrderByString = RepositoryOptions.DEFAULT_SEARCH;
+                filter.OrderByString = RepositoryConsts.DEFAULT_SEARCH;
             }
             var sortedT = query.OrderBy(filter.OrderByString, filter.IsDescending)
                 .ToSortedListAsync(filter.EntityParameters.CurrentPage, filter.EntityParameters.ItemsPerPage);

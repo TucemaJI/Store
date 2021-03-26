@@ -29,18 +29,18 @@ namespace Store.DataAccess.Initialization
                 await roleManager.CreateAsync(new IdentityRole(Enums.UserRole.Client.ToString()));
             }
 
-            if (await userManager.FindByEmailAsync(DatabaseInitializationOptions.ADMIN_EMAIL) == null)
+            if (await userManager.FindByEmailAsync(DatabaseInitializationConsts.ADMIN_EMAIL) == null)
             {
                 var admin = new User
                 {
-                    Email = DatabaseInitializationOptions.ADMIN_EMAIL,
-                    FirstName = DatabaseInitializationOptions.FIRST_NAME,
-                    LastName = DatabaseInitializationOptions.LAST_NAME,
-                    UserName = $"{DatabaseInitializationOptions.FIRST_NAME}{DatabaseInitializationOptions.LAST_NAME}",
+                    Email = DatabaseInitializationConsts.ADMIN_EMAIL,
+                    FirstName = DatabaseInitializationConsts.FIRST_NAME,
+                    LastName = DatabaseInitializationConsts.LAST_NAME,
+                    UserName = $"{DatabaseInitializationConsts.FIRST_NAME}{DatabaseInitializationConsts.LAST_NAME}",
                     EmailConfirmed = true,
                 };
                 var createResult = await userManager.CreateAsync(admin,
-                    DatabaseInitializationOptions.PASSWORD);
+                    DatabaseInitializationConsts.PASSWORD);
 
                 if (createResult.Succeeded)
                 {
@@ -51,7 +51,7 @@ namespace Store.DataAccess.Initialization
 
         public static void InitializeDB(this ModelBuilder builder)
         {
-            var author = new Author { Id = 1, Name = DatabaseInitializationOptions.AUTHOR_NAME, IsRemoved = false };
+            var author = new Author { Id = 1, Name = DatabaseInitializationConsts.AUTHOR_NAME, IsRemoved = false };
 
             var pe = new PrintingEdition
             {
@@ -59,8 +59,8 @@ namespace Store.DataAccess.Initialization
                 ReturnedCurrency = Enums.CurrencyType.USD,
                 Price = 150,
                 Type = Enums.PrintingEditionType.Book,
-                Title = DatabaseInitializationOptions.BOOK_NAME,
-                Description = DatabaseInitializationOptions.BOOK_DESCRIPTION,
+                Title = DatabaseInitializationConsts.BOOK_NAME,
+                Description = DatabaseInitializationConsts.BOOK_DESCRIPTION,
             };
 
             var pes = new PrintingEdition

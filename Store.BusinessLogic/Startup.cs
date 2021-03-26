@@ -17,14 +17,14 @@ namespace Store.BusinessLogic
 
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.SERVICE, StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupConsts.SERVICE, StringComparison.OrdinalIgnoreCase)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
                 );
 
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.MAPPER, StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupConsts.MAPPER, StringComparison.OrdinalIgnoreCase)))
                 .AsSelf()
                 .WithTransientLifetime()
                 );
@@ -38,7 +38,7 @@ namespace Store.BusinessLogic
             services.AddTransient<IMapper>(item => mapper);
 
             services.Scan(scan => scan.FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.PROVIDER, StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupConsts.PROVIDER, StringComparison.OrdinalIgnoreCase)))
                 .AsSelf()
                 .WithTransientLifetime()
                 );

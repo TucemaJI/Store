@@ -7,8 +7,9 @@ namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IPrintingEditionRepository : IBaseRepository<PrintingEdition>
     {
-        public Task<(List<PrintingEdition> printingEditionList, int count)> GetPrintingEditionListAsync(PrintingEditionFilter filter);
+        public Task<List<PrintingEdition>> GetPrintingEditionListAsync(PrintingEditionFilter filter);
         public Task<double> GetMaxPriceAsync();
         public Task<double> GetMinPriceAsync();
+        public void CleanRelations(PrintingEdition printingEdition);
     }
 }

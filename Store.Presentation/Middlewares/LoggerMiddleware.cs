@@ -21,8 +21,8 @@ namespace Store.Presentation.Middlewares
         public LoggerMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareOptions.FILE_NAME));
-            _logger = loggerFactory.CreateLogger(LoggerMiddlewareOptions.LOGGER);
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareConsts.FILE_NAME));
+            _logger = loggerFactory.CreateLogger(LoggerMiddlewareConsts.LOGGER);
         }
         public async Task Invoke(HttpContext context)
         {
@@ -38,7 +38,7 @@ namespace Store.Presentation.Middlewares
                     Errors = exception.Errors
                 };
                 var response = JsonSerializer.Serialize(model);
-                context.Response.ContentType = LoggerMiddlewareOptions.APP_JSON;
+                context.Response.ContentType = LoggerMiddlewareConsts.APP_JSON;
                 context.Response.StatusCode = (int)exception.Code;
                 await context.Response.WriteAsync(response);
             }
@@ -52,10 +52,10 @@ namespace Store.Presentation.Middlewares
                     context.Response?.StatusCode);
                 var model = new BaseModel
                 {
-                    Errors = new List<string> { LoggerMiddlewareOptions.UNHANDLED_EXCEPTION, }
+                    Errors = new List<string> { LoggerMiddlewareConsts.UNHANDLED_EXCEPTION, }
                 };
                 var response = JsonSerializer.Serialize(model);
-                context.Response.ContentType = LoggerMiddlewareOptions.APP_JSON;
+                context.Response.ContentType = LoggerMiddlewareConsts.APP_JSON;
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(response);
 

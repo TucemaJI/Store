@@ -9,7 +9,7 @@ namespace Store.BusinessLogic.Services.Interfaces
     {
         public Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id);
         public Task CreatePrintingEditionAsync(PrintingEditionModel model);
-        public Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelsAsync(PrintingEditionFilter filter);
+        public Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelListAsync(PrintingEditionFilter filter);
         public Task DeletePrintingEditionAsync(long id);
         public Task UpdatePrintingEdition(PrintingEditionModel printingEditionModel);
     }

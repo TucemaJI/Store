@@ -15,39 +15,40 @@ namespace Store.Presentation.Controllers
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService, ILogger<AccountController> logger) : base(logger)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
         }
         [AllowAnonymous]
         [HttpPost("RefreshToken")]
-        public Task<TokenModel> RefreshAsync([FromBody] TokenModel model)
+        public Task<TokenModel> RefreshAsync([FromBody] TokenModel model) // ALL RETURNS WITH VARIABLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         {
-            return _accountService.RefreshAsync(model);
+            var result = _accountService.RefreshAsync(model);
+            return result;
         }
 
         [AllowAnonymous]
         [HttpPost("SignIn")]
         public Task<TokenModel> SignInAsync([FromBody] SignInModel model)
         {
-            return _accountService.SignInAsync(model);
+            var result = _accountService.SignInAsync(model);
+            return result;
         }
 
         [AllowAnonymous]
         [HttpPost("Registration")]
-        public async Task<RegistrationModel> RegisterAsync([FromBody] RegistrationModel model)
+        public async Task<IdentityResult> RegisterAsync([FromBody] RegistrationModel model)
         {
-            await _accountService.RegistrationAsync(model);
-
-            return model;
+            var result = await _accountService.RegistrationAsync(model);
+            return result;
         }
 
         [HttpPost("CheckMail")]
         [AllowAnonymous]
         public Task<IdentityResult> ConfirmEmailAsync([FromBody] ConfirmModel model)
         {
-            var userModel = _accountService.ConfirmEmailAsync(model);
-            return userModel;
+            var result = _accountService.ConfirmEmailAsync(model);
+            return result;
 
         }
 
@@ -61,9 +62,9 @@ namespace Store.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpGet("ForgotPassword")]
-        public Task ForgotPasswordAsync(string email)
+        public async Task ForgotPasswordAsync(string email)
         {
-            return _accountService.RecoveryPasswordAsync(email);
+            await _accountService.RecoveryPasswordAsync(email);
         }
     }
 }

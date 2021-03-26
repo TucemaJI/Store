@@ -16,7 +16,7 @@ namespace Store.Presentation.Controllers
     public class AuthorController : BaseController
     {
         private readonly IAuthorService _authorService;
-        public AuthorController(IAuthorService authorService, ILogger<AuthorController> logger) : base(logger)
+        public AuthorController(IAuthorService authorService)
         {
             _authorService = authorService;
         }
@@ -24,20 +24,22 @@ namespace Store.Presentation.Controllers
         [HttpPost("GetAuthorsWithFilter")]
         public Task<PageModel<AuthorModel>> GetAuthorModelsAsync([FromBody] AuthorFilter filter)
         {
-            return _authorService.GetAuthorModelsAsync(filter);
+            var result = _authorService.GetAuthorModelListAsync(filter);
+            return result;
         }
 
         [HttpGet("{id:long}")]
-        public async Task<AuthorModel> GetAuthorModelAsync(long id)
+        public Task<AuthorModel> GetAuthorModelAsync(long id)
         {
-            return await _authorService.GetAuthorModelAsync(id);
+            var result = _authorService.GetAuthorModelAsync(id);
+            return result;
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("CreateAuthor")]
-        public Task CreateAuthorAsync([FromBody] AuthorModel authorModel)
+        public async Task CreateAuthorAsync([FromBody] AuthorModel authorModel)
         {
-            return _authorService.CreateAuthorAsync(authorModel);
+            await _authorService.CreateAuthorAsync(authorModel);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
@@ -50,9 +52,9 @@ namespace Store.Presentation.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("UpdateAuthor")]
-        public void UpdateAuthor([FromBody] AuthorModel authorModel)
+        public async Task UpdateAuthor([FromBody] AuthorModel authorModel)
         {
-            _authorService.UpdateAuthorAsync(authorModel);
+            await _authorService.UpdateAuthorAsync(authorModel);
         }
     }
 }

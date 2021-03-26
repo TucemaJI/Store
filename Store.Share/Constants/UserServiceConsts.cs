@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class UserServiceOptions
+        public class UserServiceConsts
         {
             public const string DEFAULT_SEARCH_STRING = "FirstName";
         }

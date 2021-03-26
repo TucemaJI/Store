@@ -15,7 +15,7 @@ namespace Store.DataAccess
         public static void InitializeDA(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString(StartupOptions.CONNECTION)), ServiceLifetime.Singleton);
+                options.UseSqlServer(configuration.GetConnectionString(StartupConsts.CONNECTION)), ServiceLifetime.Singleton);
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddSignInManager()
@@ -23,7 +23,7 @@ namespace Store.DataAccess
 
             services.Scan(scan => scan
                 .FromCallingAssembly()
-                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupOptions.REPOSITORY, StringComparison.OrdinalIgnoreCase)))
+                .AddClasses(classes => classes.Where(t => t.Name.EndsWith(StartupConsts.REPOSITORY, StringComparison.OrdinalIgnoreCase)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
                 );

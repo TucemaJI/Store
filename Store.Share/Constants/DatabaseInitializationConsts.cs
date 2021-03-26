@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class DatabaseInitializationOptions
+        public class DatabaseInitializationConsts
         {
             public const string ADMIN_EMAIL = "admin@gmail.com";
             public const string PASSWORD = "_Aa123456";

@@ -14,14 +14,14 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public async Task<(List<Author> authorList, int count)> GetAuthorListAsync(AuthorFilter filter)
+        public async Task<List<Author>> GetAuthorListAsync(AuthorFilter filter)
         {
             var query = _dbSet.Include(item => item.AuthorInPrintingEditions).ThenInclude(i => i.PrintingEdition)
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
                 .Where(a => a.Id.Equals(filter.Id));
             var authors = await GetSortedListAsync(filter, query);
-            var result = (authorList: authors,count: await query.CountAsync());
-            return result;
+            filter.EntityParameters.TotalItems = await query.CountAsync();
+            return authors;
         }
 
         public Task<bool> ExistAsync(List<long> ids)

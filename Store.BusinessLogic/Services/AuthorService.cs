@@ -10,6 +10,7 @@ using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Services
 {
@@ -32,19 +33,20 @@ namespace Store.BusinessLogic.Services
 
         public async Task<AuthorModel> GetAuthorModelAsync(long id)
         {
-            var author = _authorRepository.GetItemAsync(id);
-            var result = _mapper.Map<AuthorModel>(await author);
+            var author = await _authorRepository.GetItemAsync(id);
+            if (author is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
+            }
+            var result = _mapper.Map<AuthorModel>(author);
             return result;
         }
 
-        public async Task<PageModel<AuthorModel>> GetAuthorModelsAsync(AuthorFilter filter)
+        public async Task<PageModel<AuthorModel>> GetAuthorModelListAsync(AuthorFilter filter)
         {
             var sortedAuthors = await _authorRepository.GetAuthorListAsync(filter);
-            var authorModelList = _mapper.Map<List<Author>, List<AuthorModel>>(sortedAuthors.authorList);
-            var pagedList = new PagedList<AuthorModel>(authorModelList, sortedAuthors.count, pageNumber: filter.EntityParameters.CurrentPage,
-                pageSize: filter.EntityParameters.ItemsPerPage);
-
-            var pageModel = new PageModel<AuthorModel>(pagedList);
+            var authorModelList = _mapper.Map<List<AuthorModel>>(sortedAuthors);
+            var pageModel = new PageModel<AuthorModel>(authorModelList, filter.EntityParameters);
             return pageModel;
         }
 
@@ -58,7 +60,7 @@ namespace Store.BusinessLogic.Services
             var author = await _authorRepository.GetItemAsync(authorModel.Id);
             if (author is null)
             {
-                throw new BusinessLogicException(ExceptionOptions.AUTHOR_NOT_FOUND);
+                throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
             }
             var mappedEntity = _mapper.Map<Author>(authorModel);
             await _authorRepository.UpdateAsync(mappedEntity);

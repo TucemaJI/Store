@@ -1,6 +1,8 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Shared.Constants;
+using Store.Shared.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +15,13 @@ namespace Store.BusinessLogic.Providers
 {
     public class JwtProvider : IJwtProvider
     {
-        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.KEY));
+        private readonly IOptions<JwtOptions> _options;
+
+        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtConsts.KEY));
+        public JwtProvider(IOptions<JwtOptions> options)
+        {
+            _options = options;
+        }
 
         public string CreateToken(string email, string role, string id)
         {
@@ -27,10 +35,10 @@ namespace Store.BusinessLogic.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: JwtOptions.ISSUER,
-                    audience: JwtOptions.AUDIENCE,
+                    issuer: _options.Value.Issuer,
+                    audience: _options.Value.Audience,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(JwtOptions.LIFETIME)),
+                    expires: now.Add(TimeSpan.FromMinutes(_options.Value.Lifetime)),
                     signingCredentials: new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -39,8 +47,8 @@ namespace Store.BusinessLogic.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = JwtOptions.ISSUER,
-                ValidAudience = JwtOptions.AUDIENCE,
+                ValidIssuer = _options.Value.Issuer,
+                ValidAudience = _options.Value.Audience,
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
@@ -54,7 +62,7 @@ namespace Store.BusinessLogic.Providers
             JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new SecurityTokenException(ExceptionOptions.INVALID_TOKEN);
+                throw new SecurityTokenException(ExceptionConsts.INVALID_TOKEN);
             }
 
             return jwtSecurityToken;
@@ -62,7 +70,7 @@ namespace Store.BusinessLogic.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[JwtOptions.LENGTH];
+            var randomNumber = new byte[_options.Value.Length];
             using (var random = RandomNumberGenerator.Create())
             {
                 random.GetBytes(randomNumber);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,7 +11,7 @@ namespace Store.Presentation.Extentions
 {
     public static class AuthenticationExtentions
     {
-        public static void ConfigureAuthentication(this IServiceCollection services)
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddCookie(IdentityConstants.ApplicationScheme)
@@ -22,12 +23,12 @@ namespace Store.Presentation.Extentions
                         options.SaveToken = true;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidIssuer = JwtOptions.ISSUER,
-                            ValidAudience = JwtOptions.AUDIENCE,
+                            ValidIssuer = configuration[JwtConsts.ISSUER],
+                            ValidAudience = configuration[JwtConsts.AUDIENCE],
                             ValidateLifetime = true,
                             ClockSkew = TimeSpan.Zero,
 
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtOptions.KEY)),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration[JwtConsts.KEY])),
                             ValidateIssuerSigningKey = true,
                         };
                     });

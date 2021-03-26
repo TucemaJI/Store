@@ -19,65 +19,49 @@ namespace Store.Presentation.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService, ILogger<UserController> logger) : base(logger)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
         [HttpPost("CreateUser")]
-        public Task CreateUserAsync(UserModel model)
+        public async Task CreateUserAsync(UserModel model)
         {
-            return _userService.CreateUserAsync(model);
+            await _userService.CreateUserAsync(model);
         }
 
         [AllowAnonymous]
         [HttpGet("GetUser")]
         public Task<UserModel> GetUserAsync(string id)
         {
-            return _userService.GetUserAsync(id);
-        }
-
-        [HttpGet("GetRole")]
-        public Task<string> GetRoleAsync(string id)
-        {
-            return _userService.GetRoleAsync(id);
-        }
-
-        [HttpGet("CreateRole")]
-        public Task<IdentityResult> CreateRoleAsync(string roleName)
-        {
-            return _userService.CreateRoleAsync(roleName);
-        }
-
-        [HttpGet("GetAllRoles")]
-        public Task<List<IdentityRole>> GetAllRoles()
-        {
-            return _userService.GetAllRolesAsync();
+            var result = _userService.GetUserAsync(id);
+            return result;
         }
 
         [HttpPost("DeleteUser")]
         public Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
-            return _userService.DeleteUserAsync(userModel);
+            var result = _userService.DeleteUserAsync(userModel);
+            return result;
         }
 
         [HttpPut("UpdateUser")]
         public Task<IdentityResult> UpdateUserAsync(UserModel userModel)
         {
-            return _userService.UpdateUserAsync(userModel);
+            var result = _userService.UpdateUserAsync(userModel);
+            return result;
         }
 
         [HttpGet("BlockUser")]
-        public Task BlockUserAsync(string email)
+        public async Task BlockUserAsync(BlockModel model)
         {
-            return _userService.BlockUserAsync(email);
+            await _userService.BlockUserAsync(model);
         }
 
         [HttpPost("FilterUsers")]
         public Task<PageModel<UserModel>> FilterUsersAsync([FromBody] UserFilter filter)
         {
             var userModels = _userService.FilterUsersAsync(filter);
-
             return userModels;
         }
     }

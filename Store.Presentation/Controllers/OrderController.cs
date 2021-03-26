@@ -15,7 +15,7 @@ namespace Store.Presentation.Controllers
     public class OrderController : BaseController
     {
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService, ILogger<OrderController> logger) : base(logger)
+        public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
         }
@@ -24,35 +24,39 @@ namespace Store.Presentation.Controllers
         [HttpPost("CreateOrder")]
         public Task<long> CreateOrderAsync([FromBody] OrderModel model)
         {
-            return _orderService.CreateOrderAsync(model);
+            var result = _orderService.CreateOrderAsync(model);
+            return result;
         }
 
         [Authorize]
         [HttpPost("GetOrders")]
         public Task<PageModel<OrderModel>> GetOrderModelsAsync([FromBody] OrderFilter filter)
         {
-            return _orderService.GetOrderModelsAsync(filter);
+            var result = _orderService.GetOrderModelListAsync(filter);
+            return result;
         }
 
         [Authorize]
         [HttpGet("GetOrder")]
         public Task<OrderModel> GetOrderModelAsync(long id)
         {
-            return _orderService.GetOrderModelAsync(id);
+            var result = _orderService.GetOrderModelAsync(id);
+            return result;
         }
 
         [Authorize]
         [HttpPost("DeleteOrder")]
-        public Task DeleteOrderAsync(long id)
+        public async Task DeleteOrderAsync(long id)
         {
-            return _orderService.DeleteOrderAsync(id);
+            await _orderService.DeleteOrderAsync(id);
         }
 
         [Authorize]
         [HttpPost("Pay")]
         public Task<bool> Pay([FromBody] OrderPayModel model)
         {
-            return _orderService.Pay(model);
+            var result = _orderService.Pay(model);
+            return result;
         }
     }
 }

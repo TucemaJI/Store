@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Account;
@@ -7,6 +8,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
+using Store.Shared.Options;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -23,8 +25,11 @@ namespace Store.BusinessLogic.Services
         private readonly IJwtProvider _jwtProvider;
         private readonly EmailProvider _emailProvider;
         private readonly SignInManager<User> _signInManager;
+        private readonly IOptions<JwtOptions> _jwtOptions;
+        private readonly string _callbackUrl;
         public AccountService(UserManager<User> userManager, RegisterMapper registerMapper,
-            PasswordProvider passwordProvider, IJwtProvider jwtProvider, EmailProvider emailProvider, SignInManager<User> signInManager)
+            PasswordProvider passwordProvider, IJwtProvider jwtProvider, EmailProvider emailProvider,
+            SignInManager<User> signInManager, IOptions<JwtOptions> jwtOptions, IOptions<ServiceOptions> serviceOptions)
         {
             _userManager = userManager;
             _registerMapper = registerMapper;
@@ -32,38 +37,40 @@ namespace Store.BusinessLogic.Services
             _jwtProvider = jwtProvider;
             _emailProvider = emailProvider;
             _signInManager = signInManager;
+            _jwtOptions = jwtOptions;
+            _callbackUrl = serviceOptions.Value.AccountCallbackUrl;
         }
 
         public async Task<TokenModel> RefreshAsync(TokenModel model)
         {
             if (model.RefreshToken is null)
             {
-                throw new BusinessLogicException(ExceptionOptions.NO_REFRESH_TOKEN);
+                throw new BusinessLogicException(ExceptionConsts.NO_REFRESH_TOKEN);
             }
 
             var principal = _jwtProvider.GetPrincipalFromExpiredToken(model.AccessToken);
 
             var user = await FindUserByEmailAsync(principal.Subject);
 
-            var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceOptions.REFRESH_TOKEN);
+            var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
 
             if (authenticationToken == string.Empty)
             {
-                throw new BusinessLogicException(ExceptionOptions.NO_REFRESH_TOKEN);
+                throw new BusinessLogicException(ExceptionConsts.NO_REFRESH_TOKEN);
             }
 
             if (authenticationToken != model.RefreshToken)
             {
-                throw new BusinessLogicException(ExceptionOptions.INVALID_REFRESH_TOKEN);
+                throw new BusinessLogicException(ExceptionConsts.INVALID_REFRESH_TOKEN);
             }
 
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
 
-            var result = await _userManager.SetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceOptions.REFRESH_TOKEN, newRefreshToken);
+            var result = await _userManager.SetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN, newRefreshToken);
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
+                throw new BusinessLogicException(ExceptionConsts.SIGN_IN_FAILED);
             }
 
             await _signInManager.RefreshSignInAsync(user);
@@ -84,12 +91,12 @@ namespace Store.BusinessLogic.Services
             var user = await FindUserByEmailAsync(model.Email);
             if (user is null)
             {
-                throw new BusinessLogicException(ExceptionOptions.NOT_FOUND_USER);
+                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
             }
 
             if (user.IsBlocked)
             {
-                throw new BusinessLogicException(ExceptionOptions.USER_BLOCKED);
+                throw new BusinessLogicException(ExceptionConsts.USER_BLOCKED);
             }
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
@@ -98,14 +105,14 @@ namespace Store.BusinessLogic.Services
 
             if (!signIn.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.SIGN_IN_FAILED);
+                throw new BusinessLogicException(ExceptionConsts.SIGN_IN_FAILED);
             }
 
-            var result = await _userManager.SetAuthenticationTokenAsync(user, JwtOptions.ISSUER, AccountServiceOptions.REFRESH_TOKEN, refreshToken);
+            var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.REFRESH_TOKEN_NOT_WRITED);
+                throw new BusinessLogicException(ExceptionConsts.REFRESH_TOKEN_NOT_WRITED);
             }
 
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
@@ -123,39 +130,39 @@ namespace Store.BusinessLogic.Services
         {
             if (model.Password != model.ConfirmPassword)
             {
-                throw new BusinessLogicException(ExceptionOptions.PASSWORDS_DIFFERENT);
+                throw new BusinessLogicException(ExceptionConsts.PASSWORDS_DIFFERENT);
             }
 
             var isExist = await _userManager.FindByEmailAsync(model.Email);
             if (isExist is not null)
             {
-                throw new BusinessLogicException(ExceptionOptions.USER_EXIST);
+                throw new BusinessLogicException(ExceptionConsts.USER_EXIST);
             }
 
             if (string.IsNullOrWhiteSpace(model.FirstName))
             {
-                throw new BusinessLogicException(ExceptionOptions.FIRST_NAME_PROBLEM);
+                throw new BusinessLogicException(ExceptionConsts.FIRST_NAME_PROBLEM);
             }
 
             if (string.IsNullOrWhiteSpace(model.LastName))
             {
-                throw new BusinessLogicException(ExceptionOptions.LAST_NAME_PROBLEM);
+                throw new BusinessLogicException(ExceptionConsts.LAST_NAME_PROBLEM);
             }
 
             var user = _registerMapper.Map(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.USER_NOT_CREATED);
+                throw new BusinessLogicException(ExceptionConsts.USER_NOT_CREATED);
             }
             var role = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
             if (!role.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.NOT_ADD_TO_ROLE);
+                throw new BusinessLogicException(ExceptionConsts.NOT_ADD_TO_ROLE);
             }
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = string.Format(AccountServiceOptions.CALLBACK_URL, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
-            await _emailProvider.SendEmailAsync(user.Email, EmailOptions.CONFIRM_ACOUNT, string.Format(AccountServiceOptions.MESSAGE, callbackUrl));
+            var callbackUrl = string.Format(_callbackUrl, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
+            await _emailProvider.SendEmailAsync(user.Email, EmailConsts.CONFIRM_ACOUNT, string.Format(AccountServiceConsts.MESSAGE, callbackUrl));
             return role;
         }
 
@@ -165,7 +172,7 @@ namespace Store.BusinessLogic.Services
             var result = await _userManager.ConfirmEmailAsync(user, model.Token);
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionOptions.NOT_CONFIRMED);
+                throw new BusinessLogicException(ExceptionConsts.NOT_CONFIRMED);
             }
             return result;
         }
@@ -173,7 +180,7 @@ namespace Store.BusinessLogic.Services
         public async Task<IdentityResult> SignOutAsync(string email, string issuer)
         {
             var user = await FindUserByEmailAsync(email);
-            var result = await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceOptions.REFRESH_TOKEN);
+            var result = await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceConsts.REFRESH_TOKEN);
             return result;
         }
 
@@ -182,14 +189,14 @@ namespace Store.BusinessLogic.Services
             var user = await FindUserByEmailAsync(email);
             string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var password = _passwordProvider.GeneratePassword(AccountServiceOptions.PASSWORD_LENGTH);
+            var password = _passwordProvider.GeneratePassword(AccountServiceConsts.PASSWORD_LENGTH);
 
             var result = await _userManager.ResetPasswordAsync(user, resetToken, password);
 
             if (result.Succeeded)
             {
-                await _emailProvider.SendEmailAsync(email, EmailOptions.NEW_PASSWORD,
-                    string.Concat(EmailOptions.NEW_PASSWORD, password));
+                await _emailProvider.SendEmailAsync(email, EmailConsts.NEW_PASSWORD,
+                    string.Concat(EmailConsts.NEW_PASSWORD, password));
             }
         }
         private async Task<User> FindUserByEmailAsync(string email)
@@ -197,7 +204,7 @@ namespace Store.BusinessLogic.Services
             var user = await _userManager.FindByEmailAsync(email);
             if (user is null)
             {
-                throw new BusinessLogicException($"{ExceptionOptions.NOT_FOUND_USER}{email}");
+                throw new BusinessLogicException($"{ExceptionConsts.NOT_FOUND_USER}{email}");
             }
             return user;
         }

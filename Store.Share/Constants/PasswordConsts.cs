@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class PasswordOptions
+        public class PasswordConsts
         {
             public const string NUMBERS = "0123456789";
             public const string UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

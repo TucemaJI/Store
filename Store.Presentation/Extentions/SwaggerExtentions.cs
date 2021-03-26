@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -10,25 +11,25 @@ namespace Store.Presentation.Extentions
 {
     public static class SwaggerExtentions
     {
-        public static void ConfigureSwagger(this IServiceCollection services)
+        public static void ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(StartupOptions.VERSION, new OpenApiInfo
+                c.SwaggerDoc(configuration[StartupConsts.VERSION], new OpenApiInfo
                 {
-                    Version = StartupOptions.VERSION,
-                    Title = StartupOptions.TITLE_APPLICATION
+                    Version = configuration[StartupConsts.VERSION],
+                    Title = configuration[StartupConsts.TITLE_APPLICATION]
                 });
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, JwtBearerDefaults.AuthenticationScheme);
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-                c.AddSecurityDefinition(StartupOptions.BEARER,
+                c.AddSecurityDefinition(configuration[StartupConsts.BEARER],
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Description = StartupOptions.OPEN_API_DESCRIPTION,
-                        Name = StartupOptions.OPEN_API_AUTHORIZATION,
+                        Description = StartupConsts.OPEN_API_DESCRIPTION,
+                        Name = StartupConsts.OPEN_API_AUTHORIZATION,
                         Type = SecuritySchemeType.ApiKey,
-                        Scheme = StartupOptions.BEARER,
+                        Scheme = configuration[StartupConsts.BEARER],
                     });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
@@ -38,7 +39,7 @@ namespace Store.Presentation.Extentions
                              Reference = new OpenApiReference
                              {
                                  Type = ReferenceType.SecurityScheme,
-                                 Id = StartupOptions.BEARER
+                                 Id = configuration[StartupConsts.BEARER]
                              },
                         },
                         new List<string>()

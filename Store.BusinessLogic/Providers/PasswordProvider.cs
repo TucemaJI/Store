@@ -16,10 +16,10 @@ namespace Store.BusinessLogic.Providers
                 cryptRNG.GetBytes(tokenBuffer);
                 password = Convert.ToBase64String(tokenBuffer);
                 Random random = new Random();
-                password += PasswordOptions.LOWERCASE.ToCharArray()[random.Next(PasswordOptions.LOWERCASE.Length)];
-                password += PasswordOptions.UPPERCASE.ToCharArray()[random.Next(PasswordOptions.UPPERCASE.Length)];
-                password += PasswordOptions.NUMBERS.ToCharArray()[random.Next(PasswordOptions.NUMBERS.Length)];
-                password += PasswordOptions.SYMBOLS.ToCharArray()[random.Next(PasswordOptions.SYMBOLS.Length)];
+                password += PasswordConsts.LOWERCASE.ToCharArray()[random.Next(PasswordConsts.LOWERCASE.Length)];
+                password += PasswordConsts.UPPERCASE.ToCharArray()[random.Next(PasswordConsts.UPPERCASE.Length)];
+                password += PasswordConsts.NUMBERS.ToCharArray()[random.Next(PasswordConsts.NUMBERS.Length)];
+                password += PasswordConsts.SYMBOLS.ToCharArray()[random.Next(PasswordConsts.SYMBOLS.Length)];
             }
             return password;
         }

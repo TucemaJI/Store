@@ -13,9 +13,6 @@ namespace Store.BusinessLogic.Mappers
                 FirstName = element.FirstName,
                 LastName = element.LastName,
                 Email = element.Email,
-                UserName = element.UserName,
-                EmailConfirmed = element.Confirmed,
-                IsBlocked = (bool)element.IsBlocked,
             };
         }
 
@@ -27,9 +24,6 @@ namespace Store.BusinessLogic.Mappers
                 FirstName = element.FirstName,
                 LastName = element.LastName,
                 Email = element.Email,
-                UserName = element.UserName,
-                Confirmed = element.EmailConfirmed,
-                IsBlocked = element.IsBlocked,
             };
         }
     }
