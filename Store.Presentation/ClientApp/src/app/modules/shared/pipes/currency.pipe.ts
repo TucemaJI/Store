@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { Consts } from "../consts";
-import { CurrencyLabel } from "../models/currency-type.enum";
+import { CurrencyLabel } from "../enums/currency-type.enum";
 
 @Pipe({ name:  Consts.CURRENCY})
 

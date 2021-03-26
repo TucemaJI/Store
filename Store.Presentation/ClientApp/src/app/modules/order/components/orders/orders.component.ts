@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { PaymentComponent } from 'src/app/modules/cart/componensts/payment/payment.component';
-import { EStatusType } from 'src/app/modules/shared/models/status-type.enum';
+import { EStatusType } from 'src/app/modules/shared/enums/status-type.enum';
 import { IOrder } from 'src/app/modules/shared/models/IOrder.model';
 import { IOrderPage } from 'src/app/modules/shared/models/IOrderPage.model';
-import { IPageParameters } from 'src/app/modules/shared/models/IPageParameters.model';
+import { IPageOptions } from 'src/app/modules/shared/models/IPageOptions.model';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { IAppState } from 'src/app/store/state/app.state';
 import { getOrders } from '../../store/order.action';
@@ -21,7 +21,7 @@ export class OrdersComponent implements OnInit {
 
   displayedColumns: string[] = Consts.ORDERS_COLUMNS;
   pageModel: IOrderPage;
-  pageParameters: IPageParameters;
+  pageParameters: IPageOptions;
   ordersData: IOrder[];
   userId: string;
 
@@ -32,7 +32,7 @@ export class OrdersComponent implements OnInit {
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
     this.pageParameters = Consts.ORDERS_PAGE_PARAMETERS;
     this.pageModel = {
-      pageParameters: this.pageParameters,
+      pageOptions: this.pageParameters,
       isDescending: false,
       orderByString: '',
       userId: this.userId,
@@ -48,14 +48,14 @@ export class OrdersComponent implements OnInit {
       data => {
         if (data.orders != null && data.pageModel != null) {
           this.ordersData = data.orders;
-          this.pageParameters = data.pageModel.pageParameters;
+          this.pageParameters = data.pageModel.pageOptions;
         }
       }
     )
   }
 
   pageChanged(event: number): void {
-    this.pageModel.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
+    this.pageModel.pageOptions = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
     this.store.dispatch(getOrders({ pageModel: this.pageModel }));
   }
 

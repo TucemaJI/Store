@@ -7,10 +7,10 @@ import { SignUpComponent } from './modules/account/components/sign-up/sign-up.co
 import { ClientsComponent } from './modules/administrator/components/clients/clients.component';
 import { AdministratorComponent } from './modules/administrator/components/administrator/administrator.component';
 import { AdminGuard } from './modules/shared/guards/admin.guard';
-import { ProfileComponent } from './modules/user/profile/profile.component';
+import { ProfileComponent } from './modules/user/components/profile/profile.component';
 import { AuthorsComponent } from './modules/administrator/components/authors/authors.component';
 import { PrintingEditionComponent } from './modules/printing-edition/components/printing-edition/printing-edition.component';
-import { SelectPEComponent } from './modules/printing-edition/components/select-pe/select-pe.component';
+import { SelectPEComponent } from './modules/printing-edition/components/select-printing-edition/select-printing-edition.component';
 import { AuthorizeGuard } from './modules/shared/guards/authorize.guard';
 import { OrdersComponent } from './modules/order/components/orders/orders.component';
 import { Consts } from './modules/shared/consts';

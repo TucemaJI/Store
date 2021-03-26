@@ -27,7 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     return next.handle(request.clone({
                         headers: null,
                         setHeaders: {
-                            Authorization: Consts.BEARER + newAccessToken,
+                            Authorization: `${Consts.BEARER} ${newAccessToken}`,
                         }
                     }));
                 }

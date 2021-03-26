@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { IOrder } from "../../shared/models/IOrder.model";
 import { IOrderPage } from "../../shared/models/IOrderPage.model";
-import { IPageParameters } from "../../shared/models/IPageParameters.model";
+import { IPageOptions } from "../../shared/models/IPageOptions.model";
 
 export enum EOrderActions {
     GetOrders = '[Order] Get Orders',
@@ -10,4 +10,4 @@ export enum EOrderActions {
 }
 
 export const getOrders = createAction(EOrderActions.GetOrders, props<{ pageModel: IOrderPage }>());
-export const getOrdersSuccess = createAction(EOrderActions.GetOrdersSuccess, props<{ pageParameters: IPageParameters, orders: IOrder[] }>());
+export const getOrdersSuccess = createAction(EOrderActions.GetOrdersSuccess, props<{ pageParameters: IPageOptions, orders: IOrder[] }>());

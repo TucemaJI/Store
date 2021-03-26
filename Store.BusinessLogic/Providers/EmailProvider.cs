@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using Store.Shared.Options;
 using System.Threading.Tasks;
-using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Providers
 {

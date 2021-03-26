@@ -1,7 +1,7 @@
-import { IPageParameters } from "./IPageParameters.model";
+import { IPageOptions } from "./IPageOptions.model";
 
 export interface IClientsPage {
-    pageParameters: IPageParameters
+    pageOptions: IPageOptions
     isDescending: boolean;
     orderByString: string;
     name: string;

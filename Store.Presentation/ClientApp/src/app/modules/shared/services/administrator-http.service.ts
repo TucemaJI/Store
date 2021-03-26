@@ -1,7 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Consts } from "../consts";
+import { IAuthor } from "../models/IAuthor.model";
 import { IAuthorsPage } from "../models/IAuthorsPage.model";
+import { IClient } from "../models/IClient.model";
 import { IClientsPage } from "../models/IClientsPage.model";
 
 @Injectable()
@@ -10,67 +12,25 @@ export class AdministratorHttpService {
     constructor(private http: HttpClient) { }
 
     postClientsPage(pageModel: IClientsPage) {
-        const body = {
-            entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
-            isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
-            name: pageModel.name, email: pageModel.email, isBlocked: pageModel.isBlocked,
-        };
-        return this.http.post(Consts.FILTER_USERS, body);
+        return this.http.post(Consts.FILTER_USERS, pageModel);
     }
-    changeClient(client) {
-        const body = {
-            firstName: client.client.firstName,
-            lastName: client.client.lastName,
-            email: client.client.email,
-            isBlocked: client.client.isBlocked,
-            password: client.client.password,
-            confirmPassword: client.client.confirmPassword,
-            id: client.client.id,
-        }
-        return this.http.put(Consts.UPDATE_USER, body);
+    changeClient(client: IClient) {
+        return this.http.put(Consts.UPDATE_USER, client);
     }
-    deleteClient(client) {
-        console.log(client);
-        const body = {
-            firstName: client.client.firstName,
-            lastName: client.client.lastName,
-            email: client.client.email,
-            isBlocked: client.client.isBlocked
-        }
-        return this.http.post(Consts.DELETE_USER, body);
+    deleteClient(client: IClient) {
+        return this.http.post(Consts.DELETE_USER, client);
     }
-
     postAuthorPage(pageModel: IAuthorsPage) {
-        const body = {
-            entityParameters: { itemsPerPage: pageModel.pageParameters.itemsPerPage, currentPage: pageModel.pageParameters.currentPage },
-            isDescending: pageModel.isDescending, orderByString: pageModel.orderByString,
-            name: pageModel.name, id: pageModel.id,
-        };
-        return this.http.post(Consts.GET_AUTHORS, body);
+        return this.http.post(Consts.GET_AUTHORS, pageModel);
     }
-    addAuthor(author) {
-        const body = {
-            firstName: author.author.firstName,
-            lastName: author.author.lastName,
-        };
-        return this.http.post(Consts.CREATE_AUTHOR, body);
+    addAuthor(author: IAuthor) {
+        return this.http.post(Consts.CREATE_AUTHOR, author);
     }
-    changeAuthor(author) {
-        const body = {
-            id: author.author.id,
-            firstName: author.author.firstName,
-            lastName: author.author.lastName,
-            printingEditions: author.author.printingEditions,
-        }
-        return this.http.post(Consts.UPDATE_AUTHOR, body);
+    changeAuthor(author: IAuthor) {
+        return this.http.post(Consts.UPDATE_AUTHOR, author);
     }
-    deleteAuthor(author) {
-        const body = {
-            id: author.author.id,
-            firstName: author.author.firstName,
-            lastName: author.author.lastName,
-        };
-        return this.http.post(Consts.DELETE_AUTHOR, body);
+    deleteAuthor(author: IAuthor) {
+        return this.http.post(Consts.DELETE_AUTHOR, author);
     }
 
 }

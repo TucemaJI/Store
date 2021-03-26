@@ -1,5 +1,4 @@
-﻿using Store.DataAccess.Models;
-using Store.Shared.Options;
+﻿using Store.Shared.Options;
 using System.Collections.Generic;
 
 namespace Store.BusinessLogic.Models

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Store.BusinessLogic.Exceptions;
-using Store.Shared.Constants;
 using Store.Shared.Options;
 using System;
 using System.Net.Http;

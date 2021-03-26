@@ -1,6 +1,4 @@
-﻿using Store.Shared.Constants;
-using System;
-using static Store.Shared.Constants.Constants;
+﻿using static Store.Shared.Constants.Constants;
 
 namespace Store.Shared.Options
 {

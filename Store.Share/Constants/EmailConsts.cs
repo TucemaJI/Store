@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class EmailConsts 
+        public class EmailConsts
         {
             public const string CONFIRM_EMAIL = "ConfirmEmail";
             public const string ACCOUNT = "Account";

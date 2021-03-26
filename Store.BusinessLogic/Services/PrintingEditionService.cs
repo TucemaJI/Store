@@ -5,10 +5,8 @@ using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
-using Store.Shared.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -55,7 +53,7 @@ namespace Store.BusinessLogic.Services
         public async Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
         {
             var printingEdition = await _printingEditionRepository.GetItemAsync(id);
-            if(printingEdition is null)
+            if (printingEdition is null)
             {
                 throw new BusinessLogicException(ExceptionConsts.PRINTING_EDITION_NOT_FOUND);
             }

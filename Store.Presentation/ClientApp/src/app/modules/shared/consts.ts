@@ -70,6 +70,7 @@ export class Consts {
     public static VALID_MIN_LENGTH = 6;
     public static TO_SEPARATE_ENUM = 2;
     public static EXPIRE_DAYS = 60;
+    public static HIGH_VALUE = 1;
     public static SIGN_IN = `${environment.apiURL}${environment.accountC}/signin`;
     public static REGISTRATION = `${environment.apiURL}${environment.accountC}/registration`;
     public static FORGOT_PASSWORD = `${environment.apiURL}${environment.accountC}/ForgotPassword?email=`;

@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { catchError, exhaustMap, map } from "rxjs/operators";
 import { error } from "src/app/store/actions/error.action";
-import { IPageParameters } from "../../shared/models/IPageParameters.model";
+import { IPageOptions } from "../../shared/models/IPageOptions.model";
 import { IPrintingEdition } from "../../shared/models/IPrintingEdition.model";
-import { IPrintingEditionPage } from "../../shared/models/IPEPage.model";
+import { IPrintingEditionPage } from "../../shared/models/IPrintingEditionPage.model";
 import { PrintingEditionHttpService } from "../../shared/services/printing-edition-http.service";
 import { EPrintingEditionActions } from "./printing-edition.actions";
 
@@ -16,7 +16,7 @@ export class PrintingEditionEffects {
         exhaustMap((action: { pageModel: IPrintingEditionPage }) =>
             this.httpService.postPE(action.pageModel)
                 .pipe(
-                    map((responce: { elements: IPrintingEdition[], pageParameters: IPageParameters, maxPrice: number, minPrice: number }) => ({
+                    map((responce: { elements: IPrintingEdition[], pageParameters: IPageOptions, maxPrice: number, minPrice: number }) => ({
                         type: EPrintingEditionActions.GetPEsSuccess,
                         pageParameters: responce.pageParameters, printingEditions: responce.elements, maxPrice: responce.maxPrice, minPrice: responce.minPrice
                     })

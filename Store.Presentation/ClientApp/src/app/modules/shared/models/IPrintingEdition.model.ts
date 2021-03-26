@@ -1,5 +1,5 @@
-import { ECurrencyType } from "./currency-type.enum";
-import { EPrintingEditionType } from "./printing-edition-type.enum";
+import { ECurrencyType } from "../enums/currency-type.enum";
+import { EPrintingEditionType } from "../enums/printing-edition-type.enum";
 
 export interface IPrintingEdition {
     id: number;

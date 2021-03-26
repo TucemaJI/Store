@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { Consts } from "../consts";
-import { StatusLabel } from "../models/status-type.enum";
+import { StatusLabel } from "../enums/status-type.enum";
 
 @Pipe({ name: Consts.STATUS })
 

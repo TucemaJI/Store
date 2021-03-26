@@ -7,11 +7,8 @@ using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Extentions;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
-using Store.Shared.Constants;
 using Store.Shared.Enums;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -76,7 +73,7 @@ namespace Store.BusinessLogic.Services
             }
 
             user = _userMapper.Map(userModel);
-            
+
             var result = await _userManager.UpdateAsync(user);
             return result;
         }
@@ -96,17 +93,17 @@ namespace Store.BusinessLogic.Services
             }
             var users = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
-                .Where(u => filter.IsBlocked.Equals(null)||u.IsBlocked.Equals(filter.IsBlocked))
+                .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
                 .OrderBy(filter.OrderByString, filter.IsDescending)
                 .ToSortedListAsync(pageNumber: filter.EntityParameters.CurrentPage, pageSize: filter.EntityParameters.ItemsPerPage);
 
             var sortedUserModels = _userMapper.Map(users);
 
-            filter.EntityParameters.TotalItems  = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
+            filter.EntityParameters.TotalItems = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
                 .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
                 .CountAsync();
-            
+
             var pageModel = new PageModel<UserModel>(sortedUserModels, filter.EntityParameters);
 
             return pageModel;

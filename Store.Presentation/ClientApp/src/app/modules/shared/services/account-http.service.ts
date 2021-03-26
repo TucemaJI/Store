@@ -11,19 +11,17 @@ import { Consts } from '../consts';
 
 @Injectable()
 export class AccountHttpService {
-
+// delete all bodies
     constructor(private http: HttpClient, private auth: AuthService) { }
 
-    postLogin(user: ILogin, remember: boolean): Observable<IToken> {
-        const body = { email: user.email, password: user.password };
-        return this.http.post<IToken>(Consts.SIGN_IN, body).pipe(
+    postLogin(loginModel: ILogin, remember: boolean): Observable<IToken> {
+        return this.http.post<IToken>(Consts.SIGN_IN, loginModel).pipe(
             tap(token => { this.auth.saveToken(token, remember) })
         )
     }
 
     postRegistration(user: IUser) {
-        const body = { firstName: user.firstName, lastName: user.lastName, email: user.email, password: user.password, confirmPassword: user.confirmPassword };
-        return this.http.post(Consts.REGISTRATION, body);
+        return this.http.post(Consts.REGISTRATION, user);
     }
 
     sendEmail(email: string) {
@@ -31,8 +29,7 @@ export class AccountHttpService {
     }
 
     postConfirm(model: IConfirm) {
-        const body = { email: model.email, token: model.token};
-        return this.http.post(Consts.CHECKMAIL, body);
+        return this.http.post(Consts.CHECKMAIL, model);
     }
 
     postRefresh(token: IToken) {
@@ -46,7 +43,6 @@ export class AccountHttpService {
     }
 
     editUser(user: IUser) {
-        const body = { firstName: user.firstName, lastName: user.lastName, email: user.email, password: user.password, confirmPassword: user.confirmPassword, id: user.id };
-        return this.http.put(Consts.UPDATE_USER, body);
+        return this.http.put(Consts.UPDATE_USER, user);
     }
 }

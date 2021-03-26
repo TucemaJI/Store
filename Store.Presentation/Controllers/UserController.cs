@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
 using Store.Presentation.Controllers.Base;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
 

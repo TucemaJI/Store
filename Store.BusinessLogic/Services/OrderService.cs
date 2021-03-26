@@ -4,10 +4,8 @@ using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Orders;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
-using Store.Shared.Constants;
 using Stripe;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -81,7 +79,7 @@ namespace Store.BusinessLogic.Services
         }
         public async Task<PageModel<OrderModel>> GetOrderModelListAsync(OrderFilter filter)
         {
-            var sortedOrders = await _orderRepository.GetOrderListAsync(filter); 
+            var sortedOrders = await _orderRepository.GetOrderListAsync(filter);
             var orderModelList = _orderMapper.Map(sortedOrders);
             var pageModel = new PageModel<OrderModel>(orderModelList, filter.EntityParameters);
             return pageModel;

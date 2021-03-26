@@ -3,10 +3,10 @@ using Microsoft.Extensions.Options;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models.Account;
+using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.Shared.Constants;
 using Store.Shared.Enums;
 using Store.Shared.Options;
 using System.Linq;
@@ -20,19 +20,19 @@ namespace Store.BusinessLogic.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<User> _userManager;
-        private readonly RegisterMapper _registerMapper;
+        private readonly UserMapper _userMapper;
         private readonly PasswordProvider _passwordProvider;
         private readonly IJwtProvider _jwtProvider;
         private readonly EmailProvider _emailProvider;
         private readonly SignInManager<User> _signInManager;
         private readonly IOptions<JwtOptions> _jwtOptions;
         private readonly string _callbackUrl;
-        public AccountService(UserManager<User> userManager, RegisterMapper registerMapper,
+        public AccountService(UserManager<User> userManager, UserMapper userMapper,
             PasswordProvider passwordProvider, IJwtProvider jwtProvider, EmailProvider emailProvider,
             SignInManager<User> signInManager, IOptions<JwtOptions> jwtOptions, IOptions<ServiceOptions> serviceOptions)
         {
             _userManager = userManager;
-            _registerMapper = registerMapper;
+            _userMapper = userMapper;
             _passwordProvider = passwordProvider;
             _jwtProvider = jwtProvider;
             _emailProvider = emailProvider;
@@ -126,7 +126,7 @@ namespace Store.BusinessLogic.Services
             return token;
         }
 
-        public async Task<IdentityResult> RegistrationAsync(RegistrationModel model)
+        public async Task<IdentityResult> RegistrationAsync(UserModel model)
         {
             if (model.Password != model.ConfirmPassword)
             {
@@ -149,7 +149,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionConsts.LAST_NAME_PROBLEM);
             }
 
-            var user = _registerMapper.Map(model);
+            var user = _userMapper.Map(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {

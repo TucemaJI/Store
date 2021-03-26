@@ -3,16 +3,15 @@ import { CommonModule } from '@angular/common';
 import { OrdersComponent } from './components/orders/orders.component';
 import { MaterialModule } from '../shared/material.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { CurrencyPipe } from '../shared/services/currency.pipe';
-import { PrintiongEditionPipe } from '../shared/services/printing-edition.pipe';
-import { StatusPipe } from '../shared/services/status.pipe';
+import { PipesModule } from '../shared/pipes/pipes.module';
 
 @NgModule({
-  declarations: [OrdersComponent, CurrencyPipe, PrintiongEditionPipe, StatusPipe],
+  declarations: [OrdersComponent,],
   imports: [
     CommonModule,
     MaterialModule,
     NgxPaginationModule,
+    PipesModule.forRoot(),
   ]
 })
 

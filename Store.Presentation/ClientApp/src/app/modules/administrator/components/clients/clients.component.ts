@@ -6,7 +6,7 @@ import { IClientsPage } from 'src/app/modules/shared/models/IClientsPage.model';
 import { IAppState } from 'src/app/store/state/app.state';
 import { IChangeClient } from '../../../shared/models/IChangeClient.model';
 import { IClient as IClient } from '../../../shared/models/IClient.model';
-import { IPageParameters } from '../../../shared/models/IPageParameters.model';
+import { IPageOptions } from '../../../shared/models/IPageOptions.model';
 import { clientChange, deleteClient, getClients } from '../../store/administrator.actions';
 import { selectAdministrator } from '../../store/administrator.selector';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
@@ -21,7 +21,7 @@ export class ClientsComponent implements OnInit {
   searhText: string;
   statusFilter: boolean;
   pageModel: IClientsPage;
-  pageParameters: IPageParameters;
+  pageParameters: IPageOptions;
   displayedColumns: string[] = Consts.CLIENTS_COLUMNS;
 
   constructor(private store: Store<IAppState>, public dialog: MatDialog) {}
@@ -29,7 +29,7 @@ export class ClientsComponent implements OnInit {
   ngOnInit(): void {
     this.pageParameters = Consts.CLIENTS_PAGE_PARAMETERS;
     this.pageModel = {
-      pageParameters: this.pageParameters,
+      pageOptions: this.pageParameters,
       isDescending: false,
       isBlocked: null,
       orderByString: '',
@@ -46,13 +46,13 @@ export class ClientsComponent implements OnInit {
   }
 
   pageChanged(event: number): void {
-    this.pageModel.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
+    this.pageModel.pageOptions = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
     this.store.dispatch(getClients({ pageModel: this.pageModel }));
   }
 
   applyFilter(event: string, filterName: string): void {
     this.pageModel = {
-      pageParameters: this.pageParameters,
+      pageOptions: this.pageParameters,
       isDescending: false,
       orderByString: filterName,
       email: '',
@@ -86,7 +86,7 @@ export class ClientsComponent implements OnInit {
         if (data.clients != null && data.pageModel != null) {
           this.clientsData = data.clients;
 
-          this.pageParameters = data.pageModel.pageParameters;
+          this.pageParameters = data.pageModel.pageOptions;
         }
       }
     )

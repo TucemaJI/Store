@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogic.Services.Interfaces;
-using Store.Shared.Constants;
 using Store.Shared.Options;
 using System;
 using System.Collections.Generic;

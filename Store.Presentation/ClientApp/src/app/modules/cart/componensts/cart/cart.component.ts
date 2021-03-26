@@ -63,10 +63,11 @@ export class CartComponent implements OnInit {
     }
     let description: string = '';
     let orderItems: IOrderItem[] = [];
-    this.cartData.forEach(i => {// concatenate
-      description += i.name + " ", description += i.quantity + ', ', orderItems.push({
-        printingEditionId: i.id, count: i.quantity, amount: i.quantity * i.price,
-      })
+    this.cartData.forEach(i => {
+      description += `${i.name} count:${i.quantity} ,`,
+        orderItems.push({
+          printingEditionId: i.id, count: i.quantity, amount: i.quantity * i.price,
+        })
     });
     const order: IOrder = {
       id: null,

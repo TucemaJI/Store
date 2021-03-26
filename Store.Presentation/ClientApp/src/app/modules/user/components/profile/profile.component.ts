@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/state/app.state';
-import { editUser, getUser } from '../../account/store/account.actions';
-import { selectUser } from '../../printing-edition/store/printing-edition.selector';
-import { IUser } from '../../shared/models/IUser.model';
-import { AuthService } from '../../shared/services/auth.service';
-import { CheckerErrors } from '../../shared/validator';
+import { editUser, getUser } from '../../../account/store/account.actions';
+import { selectUser } from '../../../printing-edition/store/printing-edition.selector';
+import { IUser } from '../../../shared/models/IUser.model';
+import { AuthService } from '../../../shared/services/auth.service';
+import { CheckerErrors } from '../../../shared/validator';
 
 @Component({
   selector: 'app-profile',
@@ -64,15 +64,12 @@ export class ProfileComponent implements OnInit {
 
   public save(profileFormValue: IUser): void {
     const eUser: IUser = {
-      accessToken: this.user.accessToken,
       confirmPassword: profileFormValue.confirmPassword,
-      confirmed: this.user.confirmed,
       email: profileFormValue.email,
       firstName: profileFormValue.firstName,
       id: this.user.id,
       lastName: profileFormValue.lastName,
       password: profileFormValue.password,
-      refreshToken: this.user.refreshToken,
     }
     this.store.dispatch(editUser({ user: eUser }));
     location.reload();

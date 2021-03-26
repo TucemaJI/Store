@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectPEComponent } from './select-pe.component';
+import { SelectPEComponent } from './select-printing-edition.component';
 
 describe('SelectPEComponent', () => {
   let component: SelectPEComponent;

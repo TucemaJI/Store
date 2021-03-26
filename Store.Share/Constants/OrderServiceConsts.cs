@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class OrderServiceConsts 
+        public class OrderServiceConsts
         {
             public const string API_KEY = "SeriveceOptions:StripeKey";
         }

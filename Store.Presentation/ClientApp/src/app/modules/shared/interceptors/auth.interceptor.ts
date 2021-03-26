@@ -8,11 +8,11 @@ import { AuthService } from "../services/auth.service";
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const tok = localStorage.getItem(Consts.ACCESS_TOKEN);
+    const token = localStorage.getItem(Consts.ACCESS_TOKEN);
 
     request = request.clone({
       setHeaders: {
-        Authorization: Consts.BEARER + tok,
+        Authorization: `${Consts.BEARER} ${token}`,
       }
     });
     return next.handle(request);

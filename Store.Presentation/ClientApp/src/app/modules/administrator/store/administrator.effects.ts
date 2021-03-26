@@ -8,7 +8,7 @@ import { IAuthorsPage } from "../../shared/models/IAuthorsPage.model";
 import { IChangeClient } from "../../shared/models/IChangeClient.model";
 import { IClient } from "../../shared/models/IClient.model";
 import { IClientsPage } from "../../shared/models/IClientsPage.model";
-import { IPageParameters } from "../../shared/models/IPageParameters.model";
+import { IPageOptions } from "../../shared/models/IPageOptions.model";
 import { AdministratorHttpService } from "../../shared/services/administrator-http.service";
 import { EAdministratorActions } from "./administrator.actions";
 
@@ -18,7 +18,7 @@ export class AdministratorEffects {
         ofType(EAdministratorActions.GetClients),
         exhaustMap((action: { pageModel: IClientsPage }) => this.httpService.postClientsPage(action.pageModel)
             .pipe(
-                map((responce: { elements: IClient[], pageParameters: IPageParameters }) => ({
+                map((responce: { elements: IClient[], pageParameters: IPageOptions }) => ({
                     type: EAdministratorActions.GetClientsSuccess,
                     pageParameters: responce.pageParameters, clients: responce.elements
                 })),
@@ -50,7 +50,7 @@ export class AdministratorEffects {
         ofType(EAdministratorActions.GetAuthors),
         exhaustMap((action: { pageModel: IAuthorsPage }) => this.httpService.postAuthorPage(action.pageModel)
             .pipe(
-                map((responce: { elements: IAuthor[], pageParameters: IPageParameters }) => ({
+                map((responce: { elements: IAuthor[], pageParameters: IPageOptions }) => ({
                     type: EAdministratorActions.GetAuthorsSuccess,
                     pageParameters: responce.pageParameters, authors: responce.elements
                 })),

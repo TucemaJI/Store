@@ -1,5 +1,5 @@
 import { IPrintingEdition } from "../../shared/models/IPrintingEdition.model";
-import { IPrintingEditionPage } from "../../shared/models/IPEPage.model";
+import { IPrintingEditionPage } from "../../shared/models/IPrintingEditionPage.model";
 
 export interface IPrintingEditionState {
     printingEditions: IPrintingEdition[];

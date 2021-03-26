@@ -4,10 +4,8 @@ using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.DataAccess.Models;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
-using Store.Shared.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -26,7 +24,7 @@ namespace Store.BusinessLogic.Services
 
         public Task CreateAuthorAsync(AuthorModel model)
         {
-            var author = _mapper.Map<AuthorModel, Author>(model);
+            var author = _mapper.Map<Author>(model);
             var result = _authorRepository.CreateAsync(author);
             return result;
         }

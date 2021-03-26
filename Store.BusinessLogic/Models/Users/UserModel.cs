@@ -4,7 +4,6 @@ namespace Store.BusinessLogic.Models.Users
 {
     public class UserModel
     {
-        [Required]
         public string Id { get; set; }
         [Required]
         public string FirstName { get; set; }

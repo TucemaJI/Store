@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { Consts } from "../consts";
-import { PrintingEditionLabel } from "../models/printing-edition-type.enum";
+import { PrintingEditionLabel } from "../enums/printing-edition-type.enum";
 
 @Pipe({ name: Consts.PRINTING_EDITION_PIPE })
 

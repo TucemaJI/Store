@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Store.BusinessLogic.Models.Account;
+using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,7 +21,7 @@ namespace Store.Presentation.Controllers
         }
         [AllowAnonymous]
         [HttpPost("RefreshToken")]
-        public Task<TokenModel> RefreshAsync([FromBody] TokenModel model) // ALL RETURNS WITH VARIABLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public Task<TokenModel> RefreshAsync([FromBody] TokenModel model)
         {
             var result = _accountService.RefreshAsync(model);
             return result;
@@ -37,7 +37,7 @@ namespace Store.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost("Registration")]
-        public async Task<IdentityResult> RegisterAsync([FromBody] RegistrationModel model)
+        public async Task<IdentityResult> RegisterAsync([FromBody] UserModel model)
         {
             var result = await _accountService.RegistrationAsync(model);
             return result;

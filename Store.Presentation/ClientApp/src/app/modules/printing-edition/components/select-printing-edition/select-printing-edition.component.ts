@@ -11,9 +11,9 @@ import { getPE } from '../../store/printing-edition.actions';
 import { selectPrintingEditions } from '../../store/printing-edition.selector';
 
 @Component({
-  selector: 'app-select-pe',
-  templateUrl: './select-pe.component.html',
-  styleUrls: ['./select-pe.component.css']
+  selector: 'app-select-printing-edition',
+  templateUrl: './select-printing-edition.component.html',
+  styleUrls: ['./select-printing-edition.component.css']
 })
 export class SelectPEComponent implements OnInit {
 

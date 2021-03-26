@@ -1,8 +1,8 @@
-import { EStatusType } from "./status-type.enum";
-import { IPageParameters } from "./IPageParameters.model";
+import { EStatusType } from "../enums/status-type.enum";
+import { IPageOptions } from "./IPageOptions.model";
 
 export interface IOrderPage {
-    pageParameters: IPageParameters
+    pageOptions: IPageOptions
     isDescending: boolean;
     orderByString: string;
     userId: string,
