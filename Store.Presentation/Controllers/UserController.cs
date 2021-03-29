@@ -39,7 +39,7 @@ namespace Store.Presentation.Controllers
         [HttpPost("DeleteUser")]
         public Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
-            var result = _userService.DeleteUserAsync(userModel);
+            var result = _userService.DeleteUserAsync(userModel.Id);
             return result;
         }
 

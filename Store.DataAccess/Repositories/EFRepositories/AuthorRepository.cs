@@ -18,7 +18,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
         {
             var query = _dbSet.Include(item => item.AuthorInPrintingEditions).ThenInclude(i => i.PrintingEdition)
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
-                .Where(a => a.Id.Equals(filter.Id));
+                .Where(a => filter.Id == 0 || a.Id.ToString().Contains(filter.Id.ToString()));
             var authors = await GetSortedListAsync(filter, query);
             filter.PageOptions.TotalItems = await query.CountAsync();
             return authors;

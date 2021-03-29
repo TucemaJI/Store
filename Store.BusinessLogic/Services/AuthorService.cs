@@ -48,9 +48,14 @@ namespace Store.BusinessLogic.Services
             return pageModel;
         }
 
-        public Task DeleteAuthorAsync(AuthorModel authorModel)
+        public async Task DeleteAuthorAsync(long id)
         {
-            return _authorRepository.DeleteAsync(authorModel.Id);
+            var author = await _authorRepository.GetItemAsync(id);
+            if(author is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
+            }
+            await _authorRepository.DeleteAsync(author);
         }
 
         public async Task UpdateAuthorAsync(AuthorModel authorModel)

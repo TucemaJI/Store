@@ -1,0 +1,14 @@
+﻿@page
+@model Store.Presentation.Areas.Admin.Pages.EditAuthorModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+}
+<h2>@Model.Title Author</h2>
+<form method="post">
+    <input type="hidden" asp-for="AuthorModel.Id" />
+    <input type="text" asp-for="AuthorModel.FirstName" />
+    <input type="text" asp-for="AuthorModel.LastName" />
+
+    <input type="submit" value="Add" />
+    <input type="button" asp-page="AuthorsPage" asp-area="Admin" value="Cancel" />
+</form>

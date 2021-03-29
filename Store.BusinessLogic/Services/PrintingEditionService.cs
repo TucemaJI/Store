@@ -95,7 +95,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionConsts.PRINTING_EDITION_NOT_FOUND);
             }
 
-            await _printingEditionRepository.DeleteAsync(id);
+            await _printingEditionRepository.DeleteAsync(printingEditionEntity);
         }
 
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelListAsync(PrintingEditionFilter filter)

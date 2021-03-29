@@ -11,7 +11,7 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<TokenModel> SignInAsync(SignInModel model);
         public Task<IdentityResult> RegistrationAsync(UserModel model);
         public Task<IdentityResult> ConfirmEmailAsync(ConfirmModel model);
-        public Task<IdentityResult> SignOutAsync(string email, string issuer);
+        public Task<IdentityResult> SignOutAsync(string accessToken);
         public Task RecoveryPasswordAsync(string email);
     }
 }

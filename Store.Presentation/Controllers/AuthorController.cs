@@ -46,7 +46,7 @@ namespace Store.Presentation.Controllers
 
         public async Task DeleteAuthorAsync([FromBody] AuthorModel authorModel)
         {
-            await _authorService.DeleteAuthorAsync(authorModel);
+            await _authorService.DeleteAuthorAsync(authorModel.Id);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]

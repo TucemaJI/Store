@@ -53,11 +53,12 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpPost("SignOut")]
+        [HttpGet("SignOut")]
         public Task<IdentityResult> SignOutAsync()
         {
-            var user = User.FindFirst(JwtRegisteredClaimNames.Sub);
-            return _accountService.SignOutAsync(user.Value, user.Issuer);
+            var token = HttpContext.Request.Headers["accessToken"];
+            var result = _accountService.SignOutAsync(token);
+            return result;
         }
 
         [AllowAnonymous]

@@ -51,6 +51,10 @@ namespace Store.BusinessLogic.Services
             var principal = _jwtProvider.GetPrincipalFromExpiredToken(model.AccessToken);
 
             var user = await FindUserByEmailAsync(principal.Subject);
+            if(user is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
+            }
 
             var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
 
@@ -177,10 +181,24 @@ namespace Store.BusinessLogic.Services
             return result;
         }
 
-        public async Task<IdentityResult> SignOutAsync(string email, string issuer)
+        public async Task<IdentityResult> SignOutAsync(string accessToken)
         {
-            var user = await FindUserByEmailAsync(email);
-            var result = await _userManager.RemoveAuthenticationTokenAsync(user, issuer, AccountServiceConsts.REFRESH_TOKEN);
+            var principal = _jwtProvider.GetPrincipalFromExpiredToken(accessToken);
+            if (principal is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.INVALID_TOKEN);
+            }
+            var user = await FindUserByEmailAsync(principal.Subject);
+            if (user is null)
+            {
+                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
+            }
+            var result = await _userManager.RemoveAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
+            if (!result.Succeeded)
+            {
+                throw new BusinessLogicException(ExceptionConsts.INVALID_REFRESH_TOKEN);
+            }
+            await _signInManager.SignOutAsync();
             return result;
         }
 

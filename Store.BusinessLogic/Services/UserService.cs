@@ -48,9 +48,9 @@ namespace Store.BusinessLogic.Services
             return _userMapper.Map(user);
         }
 
-        public async Task<IdentityResult> DeleteUserAsync(UserModel userModel)
+        public async Task<IdentityResult> DeleteUserAsync(string id)
         {
-            var user = await FindUserByIdAsync(userModel.Id);
+            var user = await FindUserByIdAsync(id);
             var result = await _userManager.DeleteAsync(user);
             return result;
         }

@@ -1,5 +1,53 @@
 ﻿@page
 @model Store.Presentation.Areas.Admin.Pages.AuthorsPageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
 }
 <h2>Authors Page</h2>
+<button><a asp-page="EditAuthor" asp-area="Admin">Add new Author</a></button>
+<form method="post" name="filter">
+    <input type="hidden" asp-for="AuthorFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="AuthorFilter.PageOptions.ItemsPerPage" />
+    <input type="hidden" asp-for="AuthorFilter.PageOptions.TotalItems" />
+    <input type="text" asp-for="AuthorFilter.Id" placeholder="Id" onchange="filter.submit()" />
+    <input type="text" asp-for="AuthorFilter.Name" placeholder="Name" onchange="filter.submit()" />
+    <input type="checkbox" asp-for="AuthorFilter.IsDescending" onchange="filter.submit()" />
+    <label>Reverse</label>
+</form>
+<table class="table">
+    <thead>
+        <tr><th>ID</th><th>Name</th><th>Product</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var author in Model.AuthorList)
+        {
+            <tr>
+                <td>@author.Id</td>
+                <td>@author.FirstName @author.LastName</td>
+                <td>
+                    @foreach (var printingEdition in author.PrintingEditions)
+                    {<ul>
+                            <li>@printingEdition</li>
+                        </ul>}
+                </td>
+                <td>
+                    <button><a asp-page-handler="Edit" asp-route-id="@author.Id" asp-page="EditAuthor" asp-area="Admin">Edit</a></button>
+                    <form method="post"><input type="submit" asp-page-handler="Delete" asp-route-id="@author.Id" value="Delete" /></form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form method="post">
+    <input type="hidden" asp-for="AuthorFilter.Id" />
+    <input type="hidden" asp-for="AuthorFilter.Name" />
+    <input type="hidden" asp-for="AuthorFilter.IsDescending" />
+    <input type="hidden" asp-for="AuthorFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="AuthorFilter.PageOptions.ItemsPerPage" />
+    <div>
+        <input type="submit" asp-for="@Model.AuthorFilter.PageOptions.CurrentPage--" value="Previous" />
+    </div>
+    <div>
+        <input type="submit" asp-for="@Model.AuthorFilter.PageOptions.CurrentPage++" value="Next" />
+    </div>
+</form>

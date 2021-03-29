@@ -104,7 +104,7 @@ namespace Store.BusinessLogic.Services
             {
                 throw new BusinessLogicException(ExceptionConsts.ORDER_NOT_FOUND);
             }
-            await _orderRepository.DeleteAsync(id);
+            await _orderRepository.DeleteAsync(order);
         }
 
     }

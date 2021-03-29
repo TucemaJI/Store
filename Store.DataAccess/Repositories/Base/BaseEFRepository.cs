@@ -25,10 +25,9 @@ namespace Store.DataAccess.Repositories.Base
             await _dbSet.AddAsync(entity: entity);
             await _applicationContext.SaveChangesAsync();
         }
-        public async Task DeleteAsync(long item)
+        public async Task DeleteAsync(T item)
         {
-            var element = _dbSet.FindAsync(item);
-            _dbSet.Remove(await element);
+            _dbSet.Remove(item);
             await _applicationContext.SaveChangesAsync();
         }
         public async Task<T> GetItemAsync(long id)

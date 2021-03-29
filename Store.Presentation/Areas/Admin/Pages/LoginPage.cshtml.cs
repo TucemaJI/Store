@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Store.BusinessLogic.Models.Account;
 using Store.BusinessLogic.Services.Interfaces;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.Presentation.Areas.Admin.Pages
 {
@@ -19,8 +20,8 @@ namespace Store.Presentation.Areas.Admin.Pages
         public async Task<RedirectToPageResult> OnPostAsync()
         {
             var result = await _accountService.SignInAsync(SignInModel);
-            HttpContext.Response.Cookies.Append("accessKey", result.AccessToken);
-            HttpContext.Response.Cookies.Append("refreshKey", result.RefreshToken);
+            HttpContext.Response.Cookies.Append(AdminConsts.ACCESS_TOKEN, result.AccessToken);
+            HttpContext.Response.Cookies.Append(AdminConsts.REFRESH_TOKEN, result.RefreshToken);
             return RedirectToPage("MainPage");
         }
     }
