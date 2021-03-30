@@ -25,6 +25,11 @@ export class AccountEffects {
         )
     ))
 
+    signInS$ = createEffect(() => this.actions$.pipe(
+        ofType(EAccountActions.SignInSuccess),
+        map(() => this.router.navigateByUrl(""))
+    ), { dispatch: false })
+
     signUp$ = createEffect(() => this.actions$.pipe(
         ofType(EAccountActions.SignUp),
         exhaustMap((action: { user: IUser }) => this.httpService.postRegistration(action.user)

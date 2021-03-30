@@ -17,8 +17,8 @@ namespace Store.DataAccess.Repositories.EFRepositories
 
         public async Task<List<Order>> GetOrderListAsync(OrderFilter filter)
         {
-            var query = _dbSet.Include(item => item.OrderItems).ThenInclude(item => item.PrintingEdition)
-                .Where(o => o.UserId == filter.UserId)
+            var query = _dbSet.Include(item => item.OrderItems).ThenInclude(item => item.PrintingEdition).Include(item => item.User)
+                .Where(o => filter.UserId == null || o.UserId == filter.UserId)
                 .Where(o => filter.Status == StatusType.None || o.Status == filter.Status);
             var orders = await GetSortedListAsync(filter, query);
             filter.PageOptions.TotalItems = await query.CountAsync();

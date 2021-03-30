@@ -34,7 +34,7 @@ export class SignInComponent implements OnInit {
       password: userFormValue.password,
     }
     this.store.dispatch(signIn({ loginModel: model, remember: this.remember }));
-    this.router.navigateByUrl('');
+    //this.router.navigateByUrl('');
   }
 
 }

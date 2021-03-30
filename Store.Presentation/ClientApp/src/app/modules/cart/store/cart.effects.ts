@@ -7,12 +7,13 @@ import { IOrder } from "../../shared/models/IOrder.model";
 import { OrderHttpService } from "../../shared/services/order-http.service";
 import { ECartActions } from "./cart.actions";
 import { IPay } from "../../shared/models/IPay.model";
+import { ICreateOrder } from "../../shared/models/ICreateOrder.model";
 
 @Injectable()
 export class CartEffects {
     createOrder$ = createEffect(() => this.actions$.pipe(
         ofType(ECartActions.CreateOrder),
-        exhaustMap((orderAction: { type: string, order: IOrder }) =>
+        exhaustMap((orderAction: { type: string, order: ICreateOrder }) =>
             this.httpService.postCreateOrder(orderAction.order)
                 .pipe(
                     map((responce: Number) => ({

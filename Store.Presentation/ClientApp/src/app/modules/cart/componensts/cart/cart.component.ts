@@ -12,6 +12,7 @@ import { createOrder } from '../../store/cart.actions';
 import { selectOrderId } from '../../store/cart.selector';
 import { PaymentComponent } from '../payment/payment.component';
 import { Consts } from 'src/app/modules/shared/consts';
+import { ICreateOrder } from 'src/app/modules/shared/models/ICreateOrder.model';
 
 @Component({
   selector: 'app-cart',
@@ -69,15 +70,10 @@ export class CartComponent implements OnInit {
           printingEditionId: i.id, count: i.quantity, amount: i.quantity * i.price,
         })
     });
-    const order: IOrder = {
-      id: null,
-      isRemoved: false,
+    const order: ICreateOrder = {
       userId: this.userId,
-      status: null,
-      paymentId: null,
       description: description,
       orderItemModels: orderItems,
-      totalAmount: null,
     };
     this.store.dispatch(createOrder({ order }));
     let dialogref: MatDialogRef<PaymentComponent>;

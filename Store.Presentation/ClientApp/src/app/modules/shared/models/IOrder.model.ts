@@ -9,4 +9,6 @@ export interface IOrder {
     isRemoved: boolean;
     totalAmount: number;
     id: number;
+    userName: string;
+    userEmail: string;
 }

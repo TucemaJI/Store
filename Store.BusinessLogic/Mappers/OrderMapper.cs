@@ -27,6 +27,8 @@ namespace Store.BusinessLogic.Mappers
                 IsRemoved = element.IsRemoved,
                 PaymentId = element.PaymentId,
                 UserId = element.UserId,
+                UserName = $"{element.User.FirstName} {element.User.LastName}",
+                UserEmail = element.User.Email,
                 CreationDate = element.CreationData,
                 OrderItemModels = new OrderItemMapper().Map(element.OrderItems),
                 Status = element.Status,

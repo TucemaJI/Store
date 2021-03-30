@@ -1,5 +1,56 @@
 ﻿@page
 @model Store.Presentation.Areas.Admin.Pages.OrdersPageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
 }
-<h2>Orders Page</h2>
+<h2>Order Management</h2>
+<form method="post" name="filter">
+    <input type="hidden" asp-for="OrderFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.ItemsPerPage" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.TotalItems" />
+
+    <input type="submit" name="orderByString" value="Id" />
+    <input type="submit" name="orderbyString" value="CreationData" />
+
+    <input type="checkbox" asp-for="Paid" onchange="filter.submit()" /><label>Paid</label>
+    <input type="checkbox" asp-for="Unpaid" onchange="filter.submit()" /><label>Unpaid</label>
+    <input type="checkbox" asp-for="OrderFilter.IsDescending" onchange="filter.submit()" />
+    <label>Reverse</label>
+</form>
+<table class="table">
+    <thead>
+        <tr><th>Order</th><th>Date</th><th>User name</th><th>User Email</th><th>Product</th><th>Title</th><th>Qty</th><th>Order amount</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.OrderList)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.CreationDate</td>
+                <td>@order.UserName</td>
+                <td>@order.UserEmail</td>
+                <td>
+                    @foreach (var orderItem in order.OrderItemModels)
+                    {<ul>
+                            <li>@orderItem.Type @orderItem.Title @orderItem.Count</li>
+                        </ul>}
+                </td>
+                <td>@order.TotalAmount</td>
+                <td>@order.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form method="post">
+    <input type="hidden" asp-for="Paid" />
+    <input type="hidden" asp-for="Unpaid" />
+    <input type="hidden" asp-for="OrderFilter.IsDescending" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.ItemsPerPage" />
+    <div>
+        <input type="submit" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage -1)" value="Previous" />
+    </div>
+    <div>
+        <input type="submit" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage +1)" value="Next" />
+    </div>
+</form>
