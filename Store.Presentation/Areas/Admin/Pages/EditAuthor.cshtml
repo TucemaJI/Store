@@ -9,6 +9,6 @@
     <input type="text" asp-for="AuthorModel.FirstName" />
     <input type="text" asp-for="AuthorModel.LastName" />
 
-    <input type="submit" value="Add" />
+    <input type="submit" value="@Model.Title" />
     <input type="button" asp-page="AuthorsPage" asp-area="Admin" value="Cancel" />
 </form>

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +32,12 @@ namespace Store.Presentation.Areas.Admin.Pages
             AuthorList = authorList.Elements;
             AuthorFilter.PageOptions = authorList.PageOptions;
         }
-        public async Task<PageResult> OnPostAsync()
+        public async Task<PageResult> OnPostAsync(int? pageIndex)
         {
+            if(pageIndex is not null)
+            {
+                AuthorFilter.PageOptions.CurrentPage = (int)pageIndex;
+            }
             if(AuthorFilter.Id != 0)
             {
                 AuthorFilter.OrderByString = "Name";
@@ -43,7 +46,9 @@ namespace Store.Presentation.Areas.Admin.Pages
             {
                 AuthorFilter.OrderByString = "Id";
             }
-
+            var authorList = await _authorService.GetAuthorModelListAsync(AuthorFilter);
+            AuthorList = authorList.Elements;
+            AuthorFilter.PageOptions = authorList.PageOptions;
             return Page();
 
         }
