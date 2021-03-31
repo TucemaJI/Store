@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
+using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.Presentation.Areas.Admin.Pages
@@ -34,14 +35,15 @@ namespace Store.Presentation.Areas.Admin.Pages
             AuthorModel = await _authorService.GetAuthorModelAsync(id);
         }
 
-        public async Task OnPostAsync()
+        public async Task<RedirectToPageResult> OnPostAsync()
         {
             if(AuthorModel.Id == 0)
             {
                 await _authorService.CreateAuthorAsync(AuthorModel);
-                return;
+                return RedirectToPage(PathConsts.AUTHORS_PAGE);
             }
             await _authorService.UpdateAuthorAsync(AuthorModel);
+            return RedirectToPage(PathConsts.AUTHORS_PAGE);
         }
     }
 }

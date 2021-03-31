@@ -1,5 +1,6 @@
 ﻿using Store.BusinessLogic.Models.PrintingEditions;
 using Store.DataAccess.Entities;
+using System;
 using System.Linq;
 
 namespace Store.BusinessLogic.Mappers
@@ -32,7 +33,18 @@ namespace Store.BusinessLogic.Mappers
                 Type = element.Type,
                 CreationDate = element.CreationData,
                 Authors = element.AuthorsInPrintingEdition.Select(x => x.Author.Name).ToList(),
+                AuthorsIdList = element.AuthorsInPrintingEdition.Select(x => x.Author.Id).ToList(),
             };
+        }
+
+        public void MapExist(PrintingEditionModel element, PrintingEdition printingEdition)
+        {
+            printingEdition.ReturnedCurrency = element.Currency;
+            printingEdition.Description = element.Description;
+            printingEdition.IsRemoved = element.IsRemoved;
+            printingEdition.Price = element.Price;
+            printingEdition.Title = element.Title;
+            printingEdition.Type = element.Type;
         }
     }
 }

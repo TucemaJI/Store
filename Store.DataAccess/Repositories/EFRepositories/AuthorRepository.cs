@@ -23,6 +23,11 @@ namespace Store.DataAccess.Repositories.EFRepositories
             filter.PageOptions.TotalItems = await query.CountAsync();
             return authors;
         }
+        public async Task<List<Author>> GetAuthorListAsync()
+        {
+            var result = await _dbSet.Select(item=> item).ToListAsync();
+            return result;
+        }
 
         public Task<bool> ExistAsync(List<long> ids)
         {

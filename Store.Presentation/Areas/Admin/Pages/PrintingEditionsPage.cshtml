@@ -1,5 +1,60 @@
 ﻿@page
 @model Store.Presentation.Areas.Admin.Pages.PrintingEditionsPageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
 }
 <h2>Printing Editions Page</h2>
+<button><a asp-page="EditPrintingEdition" asp-area="Admin">Add new Author</a></button>
+<form method="post" name="filter">
+    @*<input type="hidden" asp-for="OrderFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.ItemsPerPage" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.TotalItems" />
+
+    <input type="submit" name="orderByString" value="Id" />
+    <input type="submit" name="orderbyString" value="CreationData" />
+
+    <input type="checkbox" asp-for="Paid" onchange="filter.submit()" /><label>Paid</label>
+    <input type="checkbox" asp-for="Unpaid" onchange="filter.submit()" /><label>Unpaid</label>
+    <input type="checkbox" asp-for="OrderFilter.IsDescending" onchange="filter.submit()" />
+    <label>Reverse</label>*@
+</form>
+<table class="table">
+    <thead>
+        <tr><th>ID</th><th>Name</th><th>Description</th><th>Category</th><th>Author</th><th>Price</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var printingEdition in Model.PrintingEditionList)
+        {
+        <tr>
+            <td>@printingEdition.Id</td>
+            <td>@printingEdition.Title</td>
+            <td>@printingEdition.Description</td>
+            <td>@printingEdition.Type</td>
+            <td>
+                @foreach (var author in printingEdition.Authors)
+                {<ul>
+                        <li>@author</li>
+                    </ul>}
+            </td>
+            <td>@printingEdition.Price</td>
+            <td>
+                <button><a asp-page-handler="Edit" asp-route-id="@printingEdition.Id" asp-page="EditPrintingEdition" asp-area="Admin">Edit</a></button>
+                <form method="post"><input type="submit" asp-page-handler="Delete" asp-route-id="@printingEdition.Id" value="Delete" /></form>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<form method="post">
+    @*<input type="hidden" asp-for="Paid" />
+    <input type="hidden" asp-for="Unpaid" />
+    <input type="hidden" asp-for="OrderFilter.IsDescending" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="OrderFilter.PageOptions.ItemsPerPage" />
+    <div>
+        <input type="submit" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage -1)" value="Previous" />
+    </div>
+    <div>
+        <input type="submit" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage +1)" value="Next" />
+    </div>*@
+</form>

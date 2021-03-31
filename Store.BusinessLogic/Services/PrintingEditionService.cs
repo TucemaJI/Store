@@ -1,6 +1,7 @@
 ﻿using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models;
+using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;
@@ -77,13 +78,13 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
             }
 
-            var printingEdition = _printingEditionMapper.Map(printingEditionModel);
+            _printingEditionMapper.MapExist(printingEditionModel, printingEditionEntity);
 
-            _printingEditionRepository.CleanRelations(printingEdition);
+            _printingEditionRepository.CleanRelations(printingEditionEntity);
 
-            printingEditionModel.AuthorsIdList.ForEach(authorId => printingEdition.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = printingEdition.Id }));
+            printingEditionModel.AuthorsIdList.ForEach(authorId => printingEditionEntity.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = printingEditionEntity.Id }));
 
-            await _printingEditionRepository.UpdateAsync(printingEdition);
+            await _printingEditionRepository.UpdateAsync(printingEditionEntity);
         }
 
         public async Task DeletePrintingEditionAsync(long id)
@@ -119,5 +120,6 @@ namespace Store.BusinessLogic.Services
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();
             return pageModel;
         }
+
     }
 }

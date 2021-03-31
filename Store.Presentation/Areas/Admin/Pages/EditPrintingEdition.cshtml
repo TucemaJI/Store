@@ -1,0 +1,24 @@
+﻿@page
+@model Store.Presentation.Areas.Admin.Pages.EditPrintingEditionModel
+@using static Store.Shared.Enums.Enums;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+}
+<h2>@Model.Title Printing Edition</h2>
+<form method="post">
+    <input type="hidden" asp-for="PrintingEditionModel.Id" />
+    <textarea asp-for="PrintingEditionModel.Title" data-val-maxlength-max="100"></textarea>
+    <textarea asp-for="PrintingEditionModel.Description" data-val-maxlength-max="1000"></textarea>
+    <select asp-for="PrintingEditionModel.Type" asp-items="Html.GetEnumSelectList<PrintingEditionType>()"></select>
+    <select name="PrintingEditionModel.AuthorsIdList" multiple>
+        @foreach (var author in Model.Authors)
+        {
+            <option value="@(author.Id)" selected="@(Model.PrintingEditionModel.AuthorsIdList.Contains(author.Id))">@author.FirstName @author.LastName</option>
+}
+    </select>
+    <input type="number" asp-for="PrintingEditionModel.Price" />
+    <select asp-for="PrintingEditionModel.Currency" asp-items="Html.GetEnumSelectList<CurrencyType>()"></select>
+
+    <input type="submit" value="@Model.Title" />
+    <input type="button" asp-page="PrintingEditionPage" asp-area="Admin" value="Cancel" />
+</form>

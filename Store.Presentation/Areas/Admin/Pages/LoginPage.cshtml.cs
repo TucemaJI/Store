@@ -22,7 +22,7 @@ namespace Store.Presentation.Areas.Admin.Pages
             var result = await _accountService.SignInAsync(SignInModel);
             HttpContext.Response.Cookies.Append(AdminConsts.ACCESS_TOKEN, result.AccessToken);
             HttpContext.Response.Cookies.Append(AdminConsts.REFRESH_TOKEN, result.RefreshToken);
-            return RedirectToPage("MainPage");
+            return RedirectToPage(PathConsts.MAIN_PAGE);
         }
     }
 }

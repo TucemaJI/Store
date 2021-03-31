@@ -65,8 +65,15 @@ namespace Store.BusinessLogic.Services
             {
                 throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
             }
-            var mappedEntity = _mapper.Map<Author>(authorModel);
-            await _authorRepository.UpdateAsync(mappedEntity);
+            author.Name = $"{authorModel.FirstName} {authorModel.LastName}";
+            await _authorRepository.UpdateAsync(author);
+        }
+
+        public async Task<List<AuthorModel>> GetAllAuthorModelListAsync()
+        {
+            var authorList = await _authorRepository.GetAuthorListAsync();
+            var authorModelList = _mapper.Map<List<AuthorModel>>(authorList);
+            return authorModelList;
         }
     }
 }
