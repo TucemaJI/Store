@@ -36,6 +36,25 @@ namespace Store.Presentation.Areas.Admin.Pages
             PrintingEditionFilter.PageOptions = printingEditionList.PageOptions;
         }
 
+        public async Task<PageResult> OnPostAsync(string orderByString, int? pageIndex)
+        {
+            if (pageIndex is not null)
+            {
+                PrintingEditionFilter.PageOptions.CurrentPage = (int)pageIndex;
+            }
+            if (!string.IsNullOrWhiteSpace(orderByString))
+            {
+                PrintingEditionFilter.OrderByString = orderByString;
+            }
+            PrintingEditionFilter.MinPrice = 0;
+            PrintingEditionFilter.MaxPrice = int.MaxValue;
+            var printingEditionList = await _printingEditionService.GetPrintingEditionModelListAsync(PrintingEditionFilter);
+            PrintingEditionList = printingEditionList.Elements;
+            PrintingEditionFilter.PageOptions = printingEditionList.PageOptions;
+            return Page();
+
+        }
+
         public async Task OnPostDeleteAsync(long id)
         {
             await _printingEditionService.DeletePrintingEditionAsync(id);
