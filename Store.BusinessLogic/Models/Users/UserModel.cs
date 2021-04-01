@@ -13,5 +13,6 @@ namespace Store.BusinessLogic.Models.Users
         public string Email { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }

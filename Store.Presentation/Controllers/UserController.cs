@@ -53,7 +53,7 @@ namespace Store.Presentation.Controllers
         [HttpGet("BlockUser")]
         public async Task BlockUserAsync(BlockModel model)
         {
-            await _userService.BlockUserAsync(model);
+            await _userService.BlockUserAsync(model.Id);
         }
 
         [HttpPost("FilterUsers")]

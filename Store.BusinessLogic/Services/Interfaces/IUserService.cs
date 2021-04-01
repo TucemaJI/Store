@@ -12,7 +12,7 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task CreateUserAsync(UserModel model);
         public Task<IdentityResult> DeleteUserAsync(string id);
         public Task<IdentityResult> UpdateUserAsync(UserModel userModel);
-        public Task BlockUserAsync(BlockModel model);
+        public Task BlockUserAsync(string id);
         public Task<PageModel<UserModel>> FilterUsersAsync(UserFilter filter);
     }
 }

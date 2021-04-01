@@ -1,5 +1,56 @@
 ﻿@page
 @model Store.Presentation.Areas.Admin.Pages.UsersPageModel
+@using static Store.Shared.Enums.Enums;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
 }
-<h2>Users Page</h2>
+<h2>Users Management</h2>
+<form method="post" name="filter">
+    <input type="hidden" asp-for="UserFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="UserFilter.PageOptions.ItemsPerPage" />
+    <input type="hidden" asp-for="UserFilter.PageOptions.TotalItems" />
+    <input asp-for="UserFilter.Name" onchange="filter.submit()" />
+    <select asp-for="UserFilter.IsBlocked" onchange="filter.submit()">
+        <option value=null>None</option>
+        <option value=true>Blocked</option>
+        <option value=false>Active</option>
+    </select>
+    <input type="checkbox" asp-for="UserFilter.IsDescending" onchange="filter.submit()" /><label>Reverse</label>
+</form>
+<table class="table">
+    <thead>
+        <tr><th>User name</th><th>User Email</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.UserList)
+        {
+            <tr>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>
+                    <form method="post" name="block" asp-page-handler="Block">
+                        <input type="hidden" value="@user.Id" name="id" />
+                        <input type="submit" value="@(user.IsBlocked?"Unblock":"Block")" />
+                    </form>
+                </td>
+                <td>
+                    <button><a asp-route-id="@user.Id" asp-page="EditUserByAdmin" asp-area="Admin">Edit</a></button>
+                    <form method="post"><input type="submit" asp-page-handler="Delete" asp-route-id="@user.Id" value="Delete" /></form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form method="post">
+    <input type="hidden" asp-for="UserFilter.Name" />
+    <input type="hidden" asp-for="UserFilter.IsBlocked" />
+    <input type="hidden" asp-for="UserFilter.IsDescending" />
+    <input type="hidden" asp-for="UserFilter.PageOptions.CurrentPage" />
+    <input type="hidden" asp-for="UserFilter.PageOptions.ItemsPerPage" />
+    <div>
+        <input type="submit" asp-route-pageIndex="@(Model.UserFilter.PageOptions.CurrentPage -1)" value="Previous" />
+    </div>
+    <div>
+        <input type="submit" asp-route-pageIndex="@(Model.UserFilter.PageOptions.CurrentPage +1)" value="Next" />
+    </div>
+</form>

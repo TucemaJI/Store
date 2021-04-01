@@ -1,0 +1,22 @@
+﻿@page
+@model Store.Presentation.Areas.Admin.Pages.EditUserByAdminModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+}
+<h2>Edit User @Model.UserModel.FirstName @Model.UserModel.LastName</h2>
+<form method="post">
+    <input type="hidden" asp-for="UserModel.Id" />
+    <label>First name</label>
+    <input type="text" asp-for="UserModel.FirstName" /><br />
+    <label>Last name</label>
+    <input type="text" asp-for="UserModel.LastName" /><br />
+    <label>E-mail</label>
+    <input type="email" asp-for="UserModel.Email" /><br />
+    <label>Password</label>
+    <input type="password" asp-for="UserModel.Password" /><br />
+    <label>Confirm Password</label>
+    <input type="password" asp-for="UserModel.ConfirmPassword" /><br />
+
+    <input type="submit" value="Save" />
+    <input type="button" asp-page="UsersPage" asp-area="Admin" value="Cancel" />
+</form>

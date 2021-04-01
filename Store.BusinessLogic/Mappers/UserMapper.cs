@@ -16,6 +16,14 @@ namespace Store.BusinessLogic.Mappers
             };
         }
 
+        public void MapExist(UserModel model, User entity)
+        {
+            entity.Id = model.Id;
+            entity.FirstName = model.FirstName;
+            entity.LastName = model.LastName;
+            entity.Email = model.Email;
+        }
+
         public override UserModel Map(User element)
         {
             return new UserModel
@@ -24,6 +32,7 @@ namespace Store.BusinessLogic.Mappers
                 FirstName = element.FirstName,
                 LastName = element.LastName,
                 Email = element.Email,
+                IsBlocked = element.IsBlocked,
             };
         }
     }

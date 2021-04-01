@@ -71,17 +71,16 @@ namespace Store.BusinessLogic.Services
                     throw new BusinessLogicException(ExceptionConsts.INCORRECT_PASSWORD);
                 }
             }
-
-            user = _userMapper.Map(userModel);
+            _userMapper.MapExist(userModel, user);
 
             var result = await _userManager.UpdateAsync(user);
             return result;
         }
 
-        public async Task BlockUserAsync(BlockModel model)
+        public async Task BlockUserAsync(string id)
         {
-            var user = await FindUserByIdAsync(model.Id);
-            user.IsBlocked = model.Block;
+            var user = await FindUserByIdAsync(id);
+            user.IsBlocked = !user.IsBlocked;
             await _userManager.UpdateAsync(user);
         }
 
@@ -108,7 +107,6 @@ namespace Store.BusinessLogic.Services
 
             return pageModel;
 
-            throw new BusinessLogicException(ExceptionConsts.FILTRATION_PROBLEM);
         }
         private async Task<User> FindUserByIdAsync(string id)
         {
