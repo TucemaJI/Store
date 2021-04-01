@@ -9,6 +9,7 @@ using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
 using Store.Shared.Options;
+using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.Presentation.Areas.Admin.Pages
@@ -28,12 +29,8 @@ namespace Store.Presentation.Areas.Admin.Pages
         {
             PrintingEditionFilter = new PrintingEditionFilter();
             PrintingEditionFilter.PageOptions = new PageOptions();
-            PrintingEditionFilter.MinPrice = 0;
-            PrintingEditionFilter.MaxPrice = int.MaxValue;
             PrintingEditionFilter.PrintingEditionTypeList = new List<PrintingEditionType> { PrintingEditionType.None };
-            var printingEditionList = await _printingEditionService.GetPrintingEditionModelListAsync(PrintingEditionFilter);
-            PrintingEditionList = printingEditionList.Elements;
-            PrintingEditionFilter.PageOptions = printingEditionList.PageOptions;
+            await GetPageAsync();
         }
 
         public async Task<PageResult> OnPostAsync(string orderByString, int? pageIndex)
@@ -46,18 +43,24 @@ namespace Store.Presentation.Areas.Admin.Pages
             {
                 PrintingEditionFilter.OrderByString = orderByString;
             }
+            await GetPageAsync();
+            return Page();
+
+        }
+
+        public async Task<RedirectToPageResult> OnPostDeleteAsync(long id)
+        {
+            await _printingEditionService.DeletePrintingEditionAsync(id);
+            return RedirectToPage(PathConsts.PRINTING_EDITIONS_PAGE);
+        }
+
+        private async Task GetPageAsync()
+        {
             PrintingEditionFilter.MinPrice = 0;
             PrintingEditionFilter.MaxPrice = int.MaxValue;
             var printingEditionList = await _printingEditionService.GetPrintingEditionModelListAsync(PrintingEditionFilter);
             PrintingEditionList = printingEditionList.Elements;
             PrintingEditionFilter.PageOptions = printingEditionList.PageOptions;
-            return Page();
-
-        }
-
-        public async Task OnPostDeleteAsync(long id)
-        {
-            await _printingEditionService.DeletePrintingEditionAsync(id);
         }
     }
 }

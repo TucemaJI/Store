@@ -81,7 +81,7 @@ export class AuthorsComponent implements OnInit {
   }
 
   reverse(orderBy: string): void {
-    this.isDescending = this.isDescending === true ? this.isDescending = false : this.isDescending = true;
+    this.isDescending = this.isDescending? this.isDescending = false : this.isDescending = true;
     this.pageModel.isDescending = this.isDescending;
     this.pageModel.orderByString = orderBy;
     this.store.dispatch(getAuthors({ pageModel: this.pageModel }));

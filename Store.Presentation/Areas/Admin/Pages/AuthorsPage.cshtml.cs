@@ -8,6 +8,7 @@ using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
 using Store.Shared.Options;
+using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
 namespace Store.Presentation.Areas.Admin.Pages
@@ -28,9 +29,7 @@ namespace Store.Presentation.Areas.Admin.Pages
             AuthorFilter = new AuthorFilter();
             AuthorFilter.Name = String.Empty;
             AuthorFilter.PageOptions = new PageOptions();
-            var authorList = await _authorService.GetAuthorModelListAsync(AuthorFilter);
-            AuthorList = authorList.Elements;
-            AuthorFilter.PageOptions = authorList.PageOptions;
+            await GetPageAsync();
         }
         public async Task<PageResult> OnPostAsync(int? pageIndex)
         {
@@ -46,15 +45,20 @@ namespace Store.Presentation.Areas.Admin.Pages
             {
                 AuthorFilter.OrderByString = "Id";
             }
-            var authorList = await _authorService.GetAuthorModelListAsync(AuthorFilter);
-            AuthorList = authorList.Elements;
-            AuthorFilter.PageOptions = authorList.PageOptions;
+            await GetPageAsync();
             return Page();
 
         }
-        public async Task OnPostDeleteAsync(long id)
+        public async Task<RedirectToPageResult> OnPostDeleteAsync(long id)
         {
             await _authorService.DeleteAuthorAsync(id);
+            return RedirectToPage(PathConsts.AUTHORS_PAGE);
+        }
+        private async Task GetPageAsync()
+        {
+            var authorList = await _authorService.GetAuthorModelListAsync(AuthorFilter);
+            AuthorList = authorList.Elements;
+            AuthorFilter.PageOptions = authorList.PageOptions;
         }
     }
 }

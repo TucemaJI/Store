@@ -36,7 +36,7 @@ export class CartComponent implements OnInit {
     this.cartData.forEach(val => this.total += val.price * val.quantity);
     this.userId = this.auth.getId();
     this.dialogRef.afterClosed().subscribe(result => {
-      if (this.orderCreated === true) {
+      if (this.orderCreated) {
         location.reload();
       };
     });

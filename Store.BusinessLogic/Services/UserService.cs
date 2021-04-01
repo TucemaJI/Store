@@ -54,22 +54,14 @@ namespace Store.BusinessLogic.Services
             var result = await _userManager.DeleteAsync(user);
             return result;
         }
-        public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)//add validation change user in front
+        public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
         {
             var user = await FindUserByIdAsync(userModel.Id);
 
-            if (!string.IsNullOrWhiteSpace(userModel.Password) || userModel.ConfirmPassword == userModel.Password)//in if throw...
+            if (!string.IsNullOrWhiteSpace(userModel.Password) || userModel.ConfirmPassword == userModel.Password)
             {
-                var removed = await _userManager.RemovePasswordAsync(user);
-                if (!removed.Succeeded)
-                {
-                    throw new BusinessLogicException(ExceptionConsts.PASSWORD_NOT_REMOVED);
-                }
-                var addPassword = await _userManager.AddPasswordAsync(user, userModel.Password);
-                if (!addPassword.Succeeded)
-                {
-                    throw new BusinessLogicException(ExceptionConsts.INCORRECT_PASSWORD);
-                }
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, userModel.Password);
             }
             _userMapper.MapExist(userModel, user);
 

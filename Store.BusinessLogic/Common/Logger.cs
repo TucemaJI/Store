@@ -25,7 +25,7 @@ namespace Store.BusinessLogic.Common
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            if (formatter != null)
+            if (formatter is not null)
             {
                 lock (_lock)
                 {
