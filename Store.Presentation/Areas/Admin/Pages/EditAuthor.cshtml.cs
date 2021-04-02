@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
+using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
@@ -37,7 +34,7 @@ namespace Store.Presentation.Areas.Admin.Pages
 
         public async Task<RedirectToPageResult> OnPostAsync()
         {
-            if(AuthorModel.Id == 0)
+            if (AuthorModel.Id == 0)
             {
                 await _authorService.CreateAuthorAsync(AuthorModel);
                 return RedirectToPage(PathConsts.AUTHORS_PAGE);

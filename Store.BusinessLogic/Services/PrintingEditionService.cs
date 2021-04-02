@@ -1,7 +1,6 @@
 ﻿using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models;
-using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Providers;
 using Store.BusinessLogic.Services.Interfaces;

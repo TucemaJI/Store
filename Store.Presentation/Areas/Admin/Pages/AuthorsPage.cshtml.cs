@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +5,9 @@ using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
 using Store.Shared.Options;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
 
@@ -33,11 +33,11 @@ namespace Store.Presentation.Areas.Admin.Pages
         }
         public async Task<PageResult> OnPostAsync(int? pageIndex)
         {
-            if(pageIndex is not null)
+            if (pageIndex is not null)
             {
                 AuthorFilter.PageOptions.CurrentPage = (int)pageIndex;
             }
-            if(AuthorFilter.Id != 0)
+            if (AuthorFilter.Id != 0)
             {
                 AuthorFilter.OrderByString = "Name";
             }

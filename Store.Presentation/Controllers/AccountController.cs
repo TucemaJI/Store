@@ -5,7 +5,6 @@ using Store.BusinessLogic.Models.Account;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 

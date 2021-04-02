@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { IPay } from 'src/app/modules/shared/models/IPay.model';
 import { IAppState } from 'src/app/store/state/app.state';
 import { pay } from '../../store/cart.actions';
-import { selectCartState } from '../../store/cart.selector';
 
 @Component({
   selector: 'app-payment',

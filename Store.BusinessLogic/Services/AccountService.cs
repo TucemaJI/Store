@@ -171,7 +171,8 @@ namespace Store.BusinessLogic.Services
             }
             var role = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
             if (!role.Succeeded)
-            {model.Errors.Add(ExceptionConsts.NOT_ADD_TO_ROLE);
+            {
+                model.Errors.Add(ExceptionConsts.NOT_ADD_TO_ROLE);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -185,7 +186,8 @@ namespace Store.BusinessLogic.Services
             var user = await FindUserByEmailAsync(model.Email);
             var result = await _userManager.ConfirmEmailAsync(user, model.Token);
             if (!result.Succeeded)
-            {model.Errors.Add(ExceptionConsts.NOT_CONFIRMED);
+            {
+                model.Errors.Add(ExceptionConsts.NOT_CONFIRMED);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
             return result;

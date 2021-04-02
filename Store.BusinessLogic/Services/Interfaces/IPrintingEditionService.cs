@@ -1,8 +1,6 @@
 ﻿using Store.BusinessLogic.Models;
-using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.DataAccess.Models.Filters;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogic.Services.Interfaces

@@ -25,7 +25,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
         }
         public async Task<List<Author>> GetAuthorListAsync()
         {
-            var result = await _dbSet.Select(item=> item).ToListAsync();
+            var result = await _dbSet.Select(item => item).ToListAsync();
             return result;
         }
 

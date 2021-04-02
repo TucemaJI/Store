@@ -70,7 +70,7 @@ namespace Store.BusinessLogic.Services
 
             var result = await _userManager.UpdateAsync(user);
             userModel = _userMapper.Map(user);
-            if(!result.Succeeded)
+            if (!result.Succeeded)
             {
                 userModel.Errors.Add(ExceptionConsts.USER_NOT_UPDATE);
                 throw new BusinessLogicException(userModel.Errors.ToList());

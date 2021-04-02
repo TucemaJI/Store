@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BaseCartItem } from 'ng-shopping-cart';
 import { IOrderItem } from 'src/app/modules/shared/models/IOrderItem.model';
-import { IOrder } from 'src/app/modules/shared/models/IOrder.model';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
 import { IAppState } from 'src/app/store/state/app.state';

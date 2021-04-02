@@ -1,6 +1,5 @@
 import { createAction, props } from "@ngrx/store";
 import { ICreateOrder } from "../../shared/models/ICreateOrder.model";
-import { IOrder } from "../../shared/models/IOrder.model";
 import { IPay } from "../../shared/models/IPay.model";
 
 export enum ECartActions {

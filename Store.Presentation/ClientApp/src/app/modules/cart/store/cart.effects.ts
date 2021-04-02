@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { error } from "../../../store/actions/error.action";
 import { of } from "rxjs";
 import { catchError, exhaustMap, map } from "rxjs/operators";
-import { IOrder } from "../../shared/models/IOrder.model";
 import { OrderHttpService } from "../../shared/services/order-http.service";
 import { ECartActions } from "./cart.actions";
 import { IPay } from "../../shared/models/IPay.model";

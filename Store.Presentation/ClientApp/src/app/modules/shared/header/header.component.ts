@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
   }
 
   cart(): void {
-    const dialog = this.dialog.open(CartComponent).updateSize(Consts.CART_DIALOG_SIZE);
+    this.dialog.open(CartComponent).updateSize(Consts.CART_DIALOG_SIZE);
   }
 
   check(): void {

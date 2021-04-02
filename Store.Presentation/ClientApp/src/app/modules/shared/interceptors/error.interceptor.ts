@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/c
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable, throwError } from "rxjs";
-import { catchError, retry } from "rxjs/operators";
+import { catchError } from "rxjs/operators";
 import { IToken } from "../models/IToken.model";
 import { IAppState } from "../../../store/state/app.state";
 import { refreshToken } from '../../account/store/account.actions'
