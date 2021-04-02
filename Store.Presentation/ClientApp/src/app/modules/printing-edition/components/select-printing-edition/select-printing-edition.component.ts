@@ -27,10 +27,9 @@ export class SelectPEComponent implements OnInit {
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
     const idStr = this.route.snapshot.paramMap.get(Consts.ID);
     const id = Number.parseInt(idStr);
+
+    this.store.dispatch(getPE({ id }));
     this.selectPE(id);
-    if (this.printingEdition === undefined) {
-      this.store.dispatch(getPE({ id }));
-    }
   }
 
   add(): void {

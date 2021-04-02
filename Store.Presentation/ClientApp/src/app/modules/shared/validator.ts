@@ -13,6 +13,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 export class CheckerErrors {
 
+  public static checkFirstSpace(formControl: FormControl) {
+    if(formControl.value.length !== formControl.value.trim().length){
+      return { firstSpace: true };
+    }
+    return null;
+  }
+
   public static checkUpperCase(formControl: FormControl) {
     let result = formControl.value.match(Consts.VALID_LETTERS);
     if (result == null && formControl.value != "") {

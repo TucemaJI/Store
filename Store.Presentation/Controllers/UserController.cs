@@ -13,7 +13,6 @@ using static Store.Shared.Enums.Enums;
 
 namespace Store.Presentation.Controllers
 {
-    [Authorize(Roles = nameof(UserRole.Admin))]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
@@ -22,13 +21,14 @@ namespace Store.Presentation.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("CreateUser")]
         public async Task CreateUserAsync(UserModel model)
         {
             await _userService.CreateUserAsync(model);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("GetUser")]
         public Task<UserModel> GetUserAsync(string id)
         {
@@ -36,6 +36,7 @@ namespace Store.Presentation.Controllers
             return result;
         }
 
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("DeleteUser")]
         public Task<IdentityResult> DeleteUserAsync(UserModel userModel)
         {
@@ -43,19 +44,22 @@ namespace Store.Presentation.Controllers
             return result;
         }
 
+        [Authorize]
         [HttpPut("UpdateUser")]
-        public Task<IdentityResult> UpdateUserAsync(UserModel userModel)
+        public Task<UserModel> UpdateUserAsync(UserModel userModel)
         {
             var result = _userService.UpdateUserAsync(userModel);
             return result;
         }
 
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet("BlockUser")]
         public async Task BlockUserAsync(BlockModel model)
         {
             await _userService.BlockUserAsync(model.Id);
         }
 
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("FilterUsers")]
         public Task<PageModel<UserModel>> FilterUsersAsync([FromBody] UserFilter filter)
         {

@@ -1,8 +1,8 @@
 <mat-card> Catalog
     <mat-card-title>My Orders</mat-card-title>
     <mat-card-content class="content">
-        <table mat-table [dataSource]="ordersData | paginate: { id:'idPaginator', itemsPerPage:pageParameters.itemsPerPage,
-         currentPage:pageParameters.currentPage, totalItems:pageParameters.totalItems}" class="mat-elevation-z8"
+        <table mat-table [dataSource]="ordersData | paginate: { id:'idPaginator', itemsPerPage:pageOptions.itemsPerPage,
+         currentPage:pageOptions.currentPage, totalItems:pageOptions.totalItems}" class="mat-elevation-z8"
             class="content">
             <ng-container matColumnDef="Order ID">
                 <th mat-header-cell *matHeaderCellDef> Id </th>

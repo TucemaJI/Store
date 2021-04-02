@@ -11,7 +11,7 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<UserModel> GetUserAsync(string email);
         public Task CreateUserAsync(UserModel model);
         public Task<IdentityResult> DeleteUserAsync(string id);
-        public Task<IdentityResult> UpdateUserAsync(UserModel userModel);
+        public Task<UserModel> UpdateUserAsync(UserModel userModel);
         public Task BlockUserAsync(string id);
         public Task<PageModel<UserModel>> FilterUsersAsync(UserFilter filter);
     }

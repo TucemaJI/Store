@@ -9,6 +9,7 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Extentions;
 using Store.DataAccess.Models.Filters;
 using Store.Shared.Enums;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -33,12 +34,14 @@ namespace Store.BusinessLogic.Services
 
             if (!createResult.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.USER_NOT_CREATED);
+                model.Errors.Add(ExceptionConsts.USER_NOT_CREATED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
             var roleResult = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
             if (!roleResult.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.NOT_ADD_TO_ROLE);
+                model.Errors.Add(ExceptionConsts.NOT_ADD_TO_ROLE);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
         }
 
@@ -54,11 +57,11 @@ namespace Store.BusinessLogic.Services
             var result = await _userManager.DeleteAsync(user);
             return result;
         }
-        public async Task<IdentityResult> UpdateUserAsync(UserModel userModel)
+        public async Task<UserModel> UpdateUserAsync(UserModel userModel)
         {
             var user = await FindUserByIdAsync(userModel.Id);
 
-            if (!string.IsNullOrWhiteSpace(userModel.Password) || userModel.ConfirmPassword == userModel.Password)
+            if (!string.IsNullOrWhiteSpace(userModel.Password) && userModel.ConfirmPassword == userModel.Password)
             {
                 await _userManager.RemovePasswordAsync(user);
                 await _userManager.AddPasswordAsync(user, userModel.Password);
@@ -66,7 +69,13 @@ namespace Store.BusinessLogic.Services
             _userMapper.MapExist(userModel, user);
 
             var result = await _userManager.UpdateAsync(user);
-            return result;
+            userModel = _userMapper.Map(user);
+            if(!result.Succeeded)
+            {
+                userModel.Errors.Add(ExceptionConsts.USER_NOT_UPDATE);
+                throw new BusinessLogicException(userModel.Errors.ToList());
+            }
+            return userModel;
         }
 
         public async Task BlockUserAsync(string id)
@@ -105,7 +114,7 @@ namespace Store.BusinessLogic.Services
             var user = await _userManager.FindByIdAsync(id);
             if (user is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.NOT_FOUND_USER });
             }
             return user;
         }

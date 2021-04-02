@@ -11,7 +11,6 @@ import { Consts } from '../consts';
 
 @Injectable()
 export class AccountHttpService {
-// delete all bodies
     constructor(private http: HttpClient, private auth: AuthService) { }
 
     postLogin(loginModel: ILogin, remember: boolean): Observable<IToken> {

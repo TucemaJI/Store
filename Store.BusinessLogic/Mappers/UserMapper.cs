@@ -9,10 +9,10 @@ namespace Store.BusinessLogic.Mappers
         {
             return new User
             {
-                Id = element.Id,
                 FirstName = element.FirstName,
                 LastName = element.LastName,
                 Email = element.Email,
+                UserName = $"{element.FirstName}{element.LastName}",
             };
         }
 

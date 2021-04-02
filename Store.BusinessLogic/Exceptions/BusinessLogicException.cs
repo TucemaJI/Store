@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.BusinessLogic.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -8,6 +9,10 @@ namespace Store.BusinessLogic.Exceptions
     {
         public List<string> Errors { get; set; }
         public HttpStatusCode Code { get; set; }
-        public BusinessLogicException(string message) : base(message) { }
+        public BusinessLogicException(List<string> errors, HttpStatusCode code = HttpStatusCode.BadRequest)
+        {
+            Code = code;
+            Errors = errors;
+        }
     }
 }

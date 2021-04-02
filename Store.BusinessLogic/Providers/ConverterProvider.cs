@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Store.BusinessLogic.Exceptions;
 using Store.Shared.Options;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -27,10 +28,10 @@ namespace Store.BusinessLogic.Providers
             }
             if (!requestResult.IsSuccessStatusCode)
             {
-                throw new BusinessLogicException(ExceptionConsts.CURRENCY_CONVERT_PROBLEM);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.CURRENCY_CONVERT_PROBLEM });
             }
             var jObject = JObject.Parse(await requestResult.Content.ReadAsStringAsync());
-            var rate = jObject[ConverterProviderConsts.ROOT][type.ToString()].Value<double>();
+            var rate = jObject[ConverterProviderConsts.ROOT].Value<double>();
             var result = Math.Round(rate * price, ConverterProviderConsts.SYMBOLS_AFTER_COMMA);
             return result;
         }

@@ -5,7 +5,7 @@ import * as CartActions from "./cart.actions";
 const createCartReducer = createReducer(
     initialCartState,
     on(CartActions.createOrderSuccess, (state, { orderId }) => ({ ...state, orderId: orderId })),
-
+    on(CartActions.paySuccess, (state, { result }) => ({ ...state, orderStatus: result })),
 )
 
 export const cartReducer = (state = initialCartState, action: Action): ICartState => {

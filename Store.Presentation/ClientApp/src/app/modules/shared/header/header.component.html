@@ -17,7 +17,7 @@
       </mat-menu>
 
       <button mat-icon-button *ngIf="userId!==undefined" (click)="cart()">
-        <mat-icon>
+        <mat-icon [matBadge]=count>
           shopping_cart
         </mat-icon>
       </button>

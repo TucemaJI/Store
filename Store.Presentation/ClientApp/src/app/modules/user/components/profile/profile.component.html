@@ -20,6 +20,9 @@
                     <mat-error align="end" *ngIf="hasError('firstName', 'required')">
                         Please enter Your First name
                     </mat-error>
+                    <mat-error align="end" *ngIf="hasError('firstName', 'firstSpace')">
+                        First and last symbol cannot be space 
+                    </mat-error>
                 </mat-form-field>
                 <br>
                 <p>Your Last name</p>
@@ -29,6 +32,9 @@
                     </label>
                     <mat-error align="end" *ngIf="hasError('lastName', 'required')">
                         Please enter Your Last name
+                    </mat-error>
+                    <mat-error align="end" *ngIf="hasError('lastName', 'firstSpace')">
+                        First and last symbol cannot be space 
                     </mat-error>
                 </mat-form-field>
                 <br>

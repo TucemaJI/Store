@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Store.BusinessLogic.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Store.BusinessLogic.Models
 {
-    public class OrderPayModel
+    public class OrderPayModel : BaseModel
     {
         [Required, StringLength(16)]
         public string Cardnumber { get; set; }

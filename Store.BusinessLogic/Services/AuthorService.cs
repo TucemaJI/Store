@@ -31,11 +31,7 @@ namespace Store.BusinessLogic.Services
 
         public async Task<AuthorModel> GetAuthorModelAsync(long id)
         {
-            var author = await _authorRepository.GetItemAsync(id);
-            if (author is null)
-            {
-                throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
-            }
+            var author = await GetAuthorAsync(id);
             var result = _mapper.Map<AuthorModel>(author);
             return result;
         }
@@ -50,21 +46,13 @@ namespace Store.BusinessLogic.Services
 
         public async Task DeleteAuthorAsync(long id)
         {
-            var author = await _authorRepository.GetItemAsync(id);
-            if(author is null)
-            {
-                throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
-            }
+            var author = await GetAuthorAsync(id);
             await _authorRepository.DeleteAsync(author);
         }
 
         public async Task UpdateAuthorAsync(AuthorModel authorModel)
         {
-            var author = await _authorRepository.GetItemAsync(authorModel.Id);
-            if (author is null)
-            {
-                throw new BusinessLogicException(ExceptionConsts.AUTHOR_NOT_FOUND);
-            }
+            var author = await GetAuthorAsync(authorModel.Id);
             author.Name = $"{authorModel.FirstName} {authorModel.LastName}";
             await _authorRepository.UpdateAsync(author);
         }
@@ -74,6 +62,16 @@ namespace Store.BusinessLogic.Services
             var authorList = await _authorRepository.GetAuthorListAsync();
             var authorModelList = _mapper.Map<List<AuthorModel>>(authorList);
             return authorModelList;
+        }
+
+        private async Task<Author> GetAuthorAsync(long id)
+        {
+            var author = await _authorRepository.GetItemAsync(id);
+            if (author is null)
+            {
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.AUTHOR_NOT_FOUND });
+            }
+            return author;
         }
     }
 }

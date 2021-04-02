@@ -80,7 +80,8 @@ export class PrintingEditionComponent implements OnInit {
   }
 
   pageChanged(event: number): void {
-    this.pageModel.pageOptions = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
+    this.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
+    this.pageModel = { ...this.pageModel, pageOptions: this.pageParameters };
     this.store.dispatch(getPEs({ pageModel: this.pageModel }));
   }
 

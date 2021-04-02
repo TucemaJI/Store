@@ -10,6 +10,7 @@ const createAccountReducer = createReducer(
     on(AccountActions.passwordRecoverySuccess, state => ({ ...state })),
     on(AccountActions.refreshTokenSuccess, (state, {accessToken, refreshToken})=>({...state, user:{...state.user, accessToken, refreshToken}})),
     on(AccountActions.getUserSuccess, (state, { user }) => ({ ...state, user: user })), 
+    on(AccountActions.editUserSuccess, (state, { user }) => ({ ...state, user: user })),
 )
 
 export const accountReducer = (state = initialUserState, action: Action): IAccountState => {

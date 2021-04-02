@@ -15,7 +15,7 @@ export class SignInComponent implements OnInit {
   userForm: FormGroup;
   remember: boolean = false;
 
-  constructor(private store: Store<IAppState>, private router: Router) { }
+  constructor(private store: Store<IAppState>) { }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
@@ -34,7 +34,6 @@ export class SignInComponent implements OnInit {
       password: userFormValue.password,
     }
     this.store.dispatch(signIn({ loginModel: model, remember: this.remember }));
-    //this.router.navigateByUrl('');
   }
 
 }

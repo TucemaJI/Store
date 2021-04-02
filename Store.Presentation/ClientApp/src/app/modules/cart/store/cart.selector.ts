@@ -4,7 +4,7 @@ import { ICartState } from "./cart.state";
 
 const getState = (state: IAppState) => state.cart;
 
-export const selectOrderId = createSelector(
+export const selectCartState = createSelector(
     getState,
-    (state: ICartState) => state.orderId,
+    (state: ICartState) => state,
 )

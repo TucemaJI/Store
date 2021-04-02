@@ -31,6 +31,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                         }
                     }));
                 }
+                if (err.status === 400) {
+                    alert(err.error.Errors);
+                }
+                if (err.status === 403) {
+                    alert(Consts.FORBIDDEN);
+                }
                 return throwError(err);
             }),
         );

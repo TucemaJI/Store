@@ -16,7 +16,7 @@
             public const string FIRST_NAME_PROBLEM = "First name is null or white space";
             public const string LAST_NAME_PROBLEM = "Last name is null of white space";
             public const string NOT_ADD_TO_ROLE = "Not added to role";
-            public const string NO_REFRESH_TOKEN = "No refresh token";
+            public const string NO_REFRESH_TOKEN = "No refresh token, login please";
 
             public const string PASSWORD_NOT_REMOVED = "Password not removed";
             public const string CURRENCY_CONVERT_PROBLEM = "Problem with convert currency API";
@@ -29,6 +29,7 @@
             public const string USER_EXIST = "User with this email already exist";
             public const string REFRESH_TOKEN_NOT_WRITED = "Refresh token not writed to database";
             public const string ORDER_NOT_FOUND = "Order not found";
+            public const string USER_NOT_UPDATE = "User not changed";
         }
     }
 }

@@ -15,7 +15,6 @@ export class OrderHttpService {
         return this.http.post<Number>(Consts.CREATE_ORDER, order);
     }
     postPay(payment: IPay) {
-        debugger;
         return this.http.post(Consts.PAY, payment);
     }
     postGetOrders(pageModel: IOrderPage) {

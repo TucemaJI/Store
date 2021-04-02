@@ -7,6 +7,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.Presentation.Controllers.Base;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -56,7 +57,7 @@ namespace Store.Presentation.Controllers
         [HttpGet("SignOut")]
         public Task<IdentityResult> SignOutAsync()
         {
-            var token = HttpContext.Request.Headers["accessToken"];
+            var token = HttpContext.Request.Headers[AccountServiceConsts.ACCESS_TOKEN];
             var result = _accountService.SignOutAsync(token);
             return result;
         }

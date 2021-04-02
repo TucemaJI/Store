@@ -1,5 +1,6 @@
 import {NgModule } from "@angular/core";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatBadgeModule} from '@angular/material/badge';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -35,6 +36,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 @NgModule({
     exports: [
         MatCheckboxModule,
+        MatBadgeModule,
         MatButtonModule,
         MatInputModule,
         MatAutocompleteModule,

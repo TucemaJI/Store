@@ -9,6 +9,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.Shared.Enums;
 using Store.Shared.Options;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -45,27 +46,31 @@ namespace Store.BusinessLogic.Services
         {
             if (model.RefreshToken is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.NO_REFRESH_TOKEN);
+                model.Errors.Add(ExceptionConsts.NO_REFRESH_TOKEN);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var principal = _jwtProvider.GetPrincipalFromExpiredToken(model.AccessToken);
 
             var user = await FindUserByEmailAsync(principal.Subject);
-            if(user is null)
+            if (user is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
+                model.Errors.Add(ExceptionConsts.NOT_FOUND_USER);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
 
             if (authenticationToken == string.Empty)
             {
-                throw new BusinessLogicException(ExceptionConsts.NO_REFRESH_TOKEN);
+                model.Errors.Add(ExceptionConsts.NO_REFRESH_TOKEN);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             if (authenticationToken != model.RefreshToken)
             {
-                throw new BusinessLogicException(ExceptionConsts.INVALID_REFRESH_TOKEN);
+                model.Errors.Add(ExceptionConsts.INVALID_REFRESH_TOKEN);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var newRefreshToken = _jwtProvider.GenerateRefreshToken();
@@ -74,7 +79,8 @@ namespace Store.BusinessLogic.Services
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.SIGN_IN_FAILED);
+                model.Errors.Add(ExceptionConsts.SIGN_IN_FAILED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             await _signInManager.RefreshSignInAsync(user);
@@ -93,14 +99,11 @@ namespace Store.BusinessLogic.Services
         public async Task<TokenModel> SignInAsync(SignInModel model)
         {
             var user = await FindUserByEmailAsync(model.Email);
-            if (user is null)
-            {
-                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
-            }
 
             if (user.IsBlocked)
             {
-                throw new BusinessLogicException(ExceptionConsts.USER_BLOCKED);
+                model.Errors.Add(ExceptionConsts.USER_BLOCKED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var refreshToken = _jwtProvider.GenerateRefreshToken();
@@ -109,14 +112,16 @@ namespace Store.BusinessLogic.Services
 
             if (!signIn.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.SIGN_IN_FAILED);
+                model.Errors.Add(ExceptionConsts.SIGN_IN_FAILED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
 
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.REFRESH_TOKEN_NOT_WRITED);
+                model.Errors.Add(ExceptionConsts.REFRESH_TOKEN_NOT_WRITED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
@@ -134,35 +139,40 @@ namespace Store.BusinessLogic.Services
         {
             if (model.Password != model.ConfirmPassword)
             {
-                throw new BusinessLogicException(ExceptionConsts.PASSWORDS_DIFFERENT);
+                model.Errors.Add(ExceptionConsts.PASSWORDS_DIFFERENT);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var isExist = await _userManager.FindByEmailAsync(model.Email);
             if (isExist is not null)
             {
-                throw new BusinessLogicException(ExceptionConsts.USER_EXIST);
+                model.Errors.Add(ExceptionConsts.USER_EXIST);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             if (string.IsNullOrWhiteSpace(model.FirstName))
             {
-                throw new BusinessLogicException(ExceptionConsts.FIRST_NAME_PROBLEM);
+                model.Errors.Add(ExceptionConsts.FIRST_NAME_PROBLEM);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             if (string.IsNullOrWhiteSpace(model.LastName))
             {
-                throw new BusinessLogicException(ExceptionConsts.LAST_NAME_PROBLEM);
+                model.Errors.Add(ExceptionConsts.LAST_NAME_PROBLEM);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
 
             var user = _userMapper.Map(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.USER_NOT_CREATED);
+                model.Errors.Add(ExceptionConsts.USER_NOT_CREATED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
             var role = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
             if (!role.Succeeded)
-            {
-                throw new BusinessLogicException(ExceptionConsts.NOT_ADD_TO_ROLE);
+            {model.Errors.Add(ExceptionConsts.NOT_ADD_TO_ROLE);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = string.Format(_callbackUrl, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
@@ -175,8 +185,8 @@ namespace Store.BusinessLogic.Services
             var user = await FindUserByEmailAsync(model.Email);
             var result = await _userManager.ConfirmEmailAsync(user, model.Token);
             if (!result.Succeeded)
-            {
-                throw new BusinessLogicException(ExceptionConsts.NOT_CONFIRMED);
+            {model.Errors.Add(ExceptionConsts.NOT_CONFIRMED);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
             return result;
         }
@@ -186,17 +196,17 @@ namespace Store.BusinessLogic.Services
             var principal = _jwtProvider.GetPrincipalFromExpiredToken(accessToken);
             if (principal is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.INVALID_TOKEN);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.INVALID_TOKEN });
             }
             var user = await FindUserByEmailAsync(principal.Subject);
             if (user is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.NOT_FOUND_USER);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.NOT_FOUND_USER });
             }
             var result = await _userManager.RemoveAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
             if (!result.Succeeded)
             {
-                throw new BusinessLogicException(ExceptionConsts.INVALID_REFRESH_TOKEN);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.INVALID_REFRESH_TOKEN });
             }
             await _signInManager.SignOutAsync();
             return result;
@@ -222,7 +232,7 @@ namespace Store.BusinessLogic.Services
             var user = await _userManager.FindByEmailAsync(email);
             if (user is null)
             {
-                throw new BusinessLogicException($"{ExceptionConsts.NOT_FOUND_USER}{email}");
+                throw new BusinessLogicException(new List<string> { $"{ExceptionConsts.NOT_FOUND_USER}{email}" });
             }
             return user;
         }

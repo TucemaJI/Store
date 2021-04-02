@@ -13,7 +13,7 @@
     <select name="PrintingEditionModel.AuthorsIdList" multiple>
         @foreach (var author in Model.Authors)
         {
-            <option value="@(author.Id)" selected="@(Model.PrintingEditionModel.AuthorsIdList.Contains(author.Id))">@author.FirstName @author.LastName</option>
+            <option value="@(author.Id)" selected="@(Model.PrintingEditionModel!=null?Model.PrintingEditionModel.AuthorsIdList.Contains(author.Id):null)">@author.FirstName @author.LastName</option>
 }
     </select>
     <input type="number" asp-for="PrintingEditionModel.Price" />

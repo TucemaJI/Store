@@ -36,4 +36,4 @@ export const refreshTokenSuccess = createAction(EAccountActions.RefreshTokenSucc
 export const getUser = createAction(EAccountActions.GetUser, props<{ userId: string }>());
 export const getUserSuccess = createAction(EAccountActions.GetUserSuccess, props<{ user: IUser }>());
 export const editUser = createAction(EAccountActions.EditUser, props<{ user: IUser }>());
-export const editUserSuccess = createAction(EAccountActions.EditUserSucces, props<{ result: boolean }>());
+export const editUserSuccess = createAction(EAccountActions.EditUserSucces, props<{ user: IUser }>());

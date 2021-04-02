@@ -29,8 +29,8 @@ export class ProfileComponent implements OnInit {
     this.store.dispatch(getUser({ userId: this.userId }));
     this.getUserForm();
     this.profileForm = new FormGroup({
-      firstName: new FormControl({ value: "", disabled: !this.editbool }, [Validators.required]),
-      lastName: new FormControl({ value: "", disabled: !this.editbool }, [Validators.required]),
+      firstName: new FormControl({ value: "", disabled: !this.editbool }, [Validators.required, CheckerErrors.checkFirstSpace]),
+      lastName: new FormControl({ value: "", disabled: !this.editbool }, [Validators.required, CheckerErrors.checkFirstSpace]),
       email: new FormControl({ value: "", disabled: !this.editbool }, [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, CheckerErrors.checkUpperCase, CheckerErrors.checkSpecialSymbol,
       CheckerErrors.checkLength, CheckerErrors.checkNum]),
@@ -63,16 +63,16 @@ export class ProfileComponent implements OnInit {
   }
 
   public save(profileFormValue: IUser): void {
-    const eUser: IUser = {
+    const user: IUser = {
       confirmPassword: profileFormValue.confirmPassword,
       email: profileFormValue.email,
-      firstName: profileFormValue.firstName,
+      firstName: profileFormValue.firstName.trim(),
       id: this.user.id,
-      lastName: profileFormValue.lastName,
+      lastName: profileFormValue.lastName.trim(),
       password: profileFormValue.password,
     }
-    this.store.dispatch(editUser({ user: eUser }));
-    location.reload();
+    this.store.dispatch(editUser({ user }));
+    this.editbool = false;
   }
 
 }

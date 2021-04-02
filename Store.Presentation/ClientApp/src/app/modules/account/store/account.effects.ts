@@ -83,7 +83,7 @@ export class AccountEffects {
         ofType(EAccountActions.EditUser),
         exhaustMap((action: { user: IUser }) => this.httpService.editUser(action.user)
             .pipe(
-                map((result: boolean) => ({ type: EAccountActions.GetUserSuccess, result: result })),
+                map((result: IUser) => ({ type: EAccountActions.GetUserSuccess, user: result })),
                 catchError(err => of(error({ err })))
             )
         )

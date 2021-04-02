@@ -45,6 +45,7 @@ export class Consts {
     public static ROUTE_PRINTING_EDITION = "pe/:id";
     public static ROUTE_ORDERS = "orders";
     
+    public static FORBIDDEN = "You have not pass";
     public static SORT_BY = 'Price';
     public static QUANTITY_MINIMUM = "Quantity cannot be less 1";
     public static QUANTITY_MINIMUM_VALUE = 1;

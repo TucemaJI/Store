@@ -11,6 +11,7 @@ import { IAppState } from 'src/app/store/state/app.state';
 import { getOrders } from '../../store/order.action';
 import { selectOrders } from '../../store/order.selector';
 import { Consts } from 'src/app/modules/shared/consts';
+import { selectCartState } from 'src/app/modules/cart/store/cart.selector';
 
 @Component({
   selector: 'app-orders',
@@ -20,8 +21,8 @@ import { Consts } from 'src/app/modules/shared/consts';
 export class OrdersComponent implements OnInit {
 
   displayedColumns: string[] = Consts.ORDERS_COLUMNS;
-  pageModel: IOrderPage;
-  pageParameters: IPageOptions;
+  pageModel: IOrderPage = null;
+  pageOptions: IPageOptions;
   ordersData: IOrder[];
   userId: string;
 
@@ -30,9 +31,9 @@ export class OrdersComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.auth.getId();
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
-    this.pageParameters = Consts.ORDERS_PAGE_PARAMETERS;
+    this.pageOptions = Consts.ORDERS_PAGE_PARAMETERS;
     this.pageModel = {
-      pageOptions: this.pageParameters,
+      pageOptions: this.pageOptions,
       isDescending: false,
       orderByString: '',
       userId: this.userId,
@@ -48,18 +49,26 @@ export class OrdersComponent implements OnInit {
       data => {
         if (data.orders != null && data.pageModel != null) {
           this.ordersData = data.orders;
-          this.pageParameters = data.pageModel.pageOptions;
+          this.pageOptions = data.pageModel.pageOptions;
         }
       }
     )
   }
 
   pageChanged(event: number): void {
-    this.pageModel.pageOptions = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
-    this.store.dispatch(getOrders({ pageModel: this.pageModel }));
+    this.pageOptions = { currentPage: event, itemsPerPage: this.pageOptions.itemsPerPage, totalItems: this.pageOptions.totalItems, };
+    const pageModel: IOrderPage = { ...this.pageModel, pageOptions: this.pageOptions };
+    this.store.dispatch(getOrders({ pageModel }));
   }
 
   pay(element: IOrder): void {
     this.dialog.open(PaymentComponent, { data: { total: element.totalAmount, orderId: element.id } });
+    this.store.pipe(select(selectCartState)).subscribe(
+      data => {
+        if (data.orderStatus != null) {
+          element.status = data.orderStatus;
+        }
+      }
+    )
   }
 }

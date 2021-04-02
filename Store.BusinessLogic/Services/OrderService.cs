@@ -7,6 +7,7 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Stripe;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
@@ -90,7 +91,7 @@ namespace Store.BusinessLogic.Services
             var order = _orderRepository.GetItemAsync(id);
             if (order is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.ORDER_NOT_FOUND);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.ORDER_NOT_FOUND });
             }
             var result = _orderMapper.Map(await order);
             return result;
@@ -102,7 +103,7 @@ namespace Store.BusinessLogic.Services
 
             if (order is null)
             {
-                throw new BusinessLogicException(ExceptionConsts.ORDER_NOT_FOUND);
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.ORDER_NOT_FOUND });
             }
             await _orderRepository.DeleteAsync(order);
         }
