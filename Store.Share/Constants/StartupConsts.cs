@@ -5,6 +5,7 @@
         public class StartupConsts
         {
             public const string CONNECTION = "DefaultConnection";
+            public const string CONNECTION_STRINGS = "ConnectionStrings";
             public const string VERSION = "StartupOptions:VersionDocument";
             public const string TITLE_APPLICATION = "StartupOptions:TitleApplication";
             public const string BEARER = "StartupOptions:Bearer";

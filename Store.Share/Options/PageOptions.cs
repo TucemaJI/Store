@@ -15,6 +15,9 @@ namespace Store.Shared.Options
             set => _itemsPerPage = (value > EntityParametersConsts.MAX_PAGE_SIZE) ? EntityParametersConsts.MAX_PAGE_SIZE : value;
 
         }
+
+        public bool HasPrevious => CurrentPage > PagedListConsts.FIRST_PAGE;
+        public bool HasNext => CurrentPage < TotalItems/_itemsPerPage;
         public PageOptions()
         {
             CurrentPage = PagedListConsts.FIRST_PAGE;

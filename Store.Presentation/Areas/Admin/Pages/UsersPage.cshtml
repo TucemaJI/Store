@@ -5,13 +5,16 @@
 @{
 }
 <h2>Users Management</h2>
+<button><a asp-page="MainPage" asp-area="Admin">Main Page</a></button>
 <form method="post" name="filter">
     <input type="hidden" asp-for="UserFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="UserFilter.PageOptions.ItemsPerPage" />
     <input type="hidden" asp-for="UserFilter.PageOptions.TotalItems" />
+    <label>Filter by name</label>
     <input asp-for="UserFilter.Name" onchange="filter.submit()" />
+    <label>Filter by status</label>
     <select asp-for="UserFilter.IsBlocked" onchange="filter.submit()">
-        <option value=null>None</option>
+        <option value=null>All</option>
         <option value=true>Blocked</option>
         <option value=false>Active</option>
     </select>
@@ -48,9 +51,9 @@
     <input type="hidden" asp-for="UserFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="UserFilter.PageOptions.ItemsPerPage" />
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.UserFilter.PageOptions.CurrentPage -1)" value="Previous" />
+        <input type="submit" disabled="@(!Model.UserFilter.PageOptions.HasPrevious)" asp-route-pageIndex="@(Model.UserFilter.PageOptions.CurrentPage -1)" value="Previous" />
     </div>
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.UserFilter.PageOptions.CurrentPage +1)" value="Next" />
+        <input type="submit" disabled="@(!Model.UserFilter.PageOptions.HasNext)" asp-route-pageIndex="@(Model.UserFilter.PageOptions.CurrentPage +1)" value="Next" />
     </div>
 </form>

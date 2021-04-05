@@ -5,15 +5,17 @@
 @{
 }
 <h2>Printing Editions Management</h2>
+<button><a asp-page="MainPage" asp-area="Admin">Main Page</a></button>
 <button><a asp-page="EditPrintingEdition" asp-area="Admin">Add new Printing Edition</a></button>
 <form method="post" name="filter">
     <input type="hidden" asp-for="PrintingEditionFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="PrintingEditionFilter.PageOptions.ItemsPerPage" />
     <input type="hidden" asp-for="PrintingEditionFilter.PageOptions.TotalItems" />
-
+    <label>Order by:</label>
     <input type="submit" name="orderByString" value="Id" />
     <input type="submit" name="orderbyString" value="Price" />
 
+    <label>Filter by</label>
     <select asp-for="PrintingEditionFilter.PrintingEditionTypeList" asp-items="Html.GetEnumSelectList<PrintingEditionType>()" onclick="filter.submit()"></select>
     <input type="checkbox" asp-for="PrintingEditionFilter.IsDescending" onchange="filter.submit()" /><label>Reverse</label>
 </form>
@@ -50,9 +52,9 @@
     <input type="hidden" asp-for="PrintingEditionFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="PrintingEditionFilter.PageOptions.ItemsPerPage" />
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.PrintingEditionFilter.PageOptions.CurrentPage -1)" value="Previous" />
+        <input type="submit" disabled="@(!Model.PrintingEditionFilter.PageOptions.HasPrevious)" asp-route-pageIndex="@(Model.PrintingEditionFilter.PageOptions.CurrentPage -1)" value="Previous" />
     </div>
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.PrintingEditionFilter.PageOptions.CurrentPage +1)" value="Next" />
+        <input type="submit" disabled="@(!Model.PrintingEditionFilter.PageOptions.HasNext)" asp-route-pageIndex="@(Model.PrintingEditionFilter.PageOptions.CurrentPage +1)" value="Next" />
     </div>
 </form>

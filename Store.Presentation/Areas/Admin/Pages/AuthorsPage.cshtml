@@ -4,11 +4,13 @@
 @{
 }
 <h2>Authors Page</h2>
+<button><a asp-page="MainPage" asp-area="Admin">Main Page</a></button>
 <button><a asp-page="EditAuthor" asp-area="Admin">Add new Author</a></button>
 <form method="post" name="filter">
     <input type="hidden" asp-for="AuthorFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="AuthorFilter.PageOptions.ItemsPerPage" />
     <input type="hidden" asp-for="AuthorFilter.PageOptions.TotalItems" />
+    <label>Filter by</label>
     <input type="text" asp-for="AuthorFilter.Id" placeholder="Id" onchange="filter.submit()" />
     <input type="text" asp-for="AuthorFilter.Name" placeholder="Name" onchange="filter.submit()" />
     <input type="checkbox" asp-for="AuthorFilter.IsDescending" onchange="filter.submit()" />
@@ -42,12 +44,12 @@
     <input type="hidden" asp-for="AuthorFilter.Id" />
     <input type="hidden" asp-for="AuthorFilter.Name" />
     <input type="hidden" asp-for="AuthorFilter.IsDescending" />
-    <input type="hidden" asp-for="AuthorFilter.PageOptions.CurrentPage"/>
+    <input type="hidden" asp-for="AuthorFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="AuthorFilter.PageOptions.ItemsPerPage" />
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.AuthorFilter.PageOptions.CurrentPage -1)" value="Previous" />
+        <input type="submit" disabled="@(!Model.AuthorFilter.PageOptions.HasPrevious)" asp-route-pageIndex="@(Model.AuthorFilter.PageOptions.CurrentPage -1)" value="Previous" />
     </div>
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.AuthorFilter.PageOptions.CurrentPage +1)" value="Next" />
+        <input type="submit" disabled="@(!Model.AuthorFilter.PageOptions.HasNext)" asp-route-pageIndex="@(Model.AuthorFilter.PageOptions.CurrentPage +1)" value="Next" />
     </div>
 </form>

@@ -4,14 +4,15 @@
 @{
 }
 <h2>Order Management</h2>
+<button><a asp-page="MainPage" asp-area="Admin">Main Page</a></button>
 <form method="post" name="filter">
     <input type="hidden" asp-for="OrderFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="OrderFilter.PageOptions.ItemsPerPage" />
     <input type="hidden" asp-for="OrderFilter.PageOptions.TotalItems" />
-
+    <label>Order By:</label>
     <input type="submit" name="orderByString" value="Id" />
     <input type="submit" name="orderbyString" value="CreationData" />
-
+    <label>Filter by status:</label>
     <input type="checkbox" asp-for="Paid" onchange="filter.submit()" /><label>Paid</label>
     <input type="checkbox" asp-for="Unpaid" onchange="filter.submit()" /><label>Unpaid</label>
     <input type="checkbox" asp-for="OrderFilter.IsDescending" onchange="filter.submit()" />
@@ -19,25 +20,25 @@
 </form>
 <table class="table">
     <thead>
-        <tr><th>Order</th><th>Date</th><th>User name</th><th>User Email</th><th>Product</th><th>Title</th><th>Qty</th><th>Order amount</th><th>Status</th></tr>
+        <tr><th>Order</th><th>Date</th><th>User name</th><th>User Email</th><th>Product &ensp; Title &ensp; Qty</th><th>Order amount</th><th>Status</th></tr>
     </thead>
     <tbody>
         @foreach (var order in Model.OrderList)
         {
-            <tr>
-                <td>@order.Id</td>
-                <td>@order.CreationDate</td>
-                <td>@order.UserName</td>
-                <td>@order.UserEmail</td>
-                <td>
-                    @foreach (var orderItem in order.OrderItemModels)
-                    {<ul>
-                            <li>@orderItem.Type @orderItem.Title @orderItem.Count</li>
-                        </ul>}
-                </td>
-                <td>@order.TotalAmount</td>
-                <td>@order.Status</td>
-            </tr>
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.CreationDate</td>
+            <td>@order.UserName</td>
+            <td>@order.UserEmail</td>
+            <td>
+                @foreach (var orderItem in order.OrderItemModels)
+                {<ul>
+                     <li>@orderItem.Type &nbsp; @orderItem.Title &nbsp; @orderItem.Count</li>
+                    </ul>}
+            </td>
+            <td> &emsp; @order.TotalAmount</td>
+            <td>@order.Status</td>
+        </tr>
         }
     </tbody>
 </table>
@@ -48,9 +49,9 @@
     <input type="hidden" asp-for="OrderFilter.PageOptions.CurrentPage" />
     <input type="hidden" asp-for="OrderFilter.PageOptions.ItemsPerPage" />
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage -1)" value="Previous" />
+        <input type="submit" disabled="@(!Model.OrderFilter.PageOptions.HasPrevious)" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage -1)" value="Previous" />
     </div>
     <div>
-        <input type="submit" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage +1)" value="Next" />
+        <input type="submit" disabled="@(!Model.OrderFilter.PageOptions.HasNext)" asp-route-pageIndex="@(Model.OrderFilter.PageOptions.CurrentPage +1)" value="Next" />
     </div>
 </form>

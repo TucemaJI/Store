@@ -10,7 +10,7 @@ using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Repositories.Base
 {
-    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : class
+    public abstract class BaseEFRepository<T> : IEFRepository<T> where T : class
     {
         protected readonly DbSet<T> _dbSet;
         private readonly ApplicationContext _applicationContext;

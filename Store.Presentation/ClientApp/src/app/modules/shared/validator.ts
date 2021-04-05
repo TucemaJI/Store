@@ -14,7 +14,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class CheckerErrors {
 
   public static checkFirstSpace(formControl: FormControl) {
-    if(formControl.value.length !== formControl.value.trim().length){
+    if(0 === formControl.value.trim().length){
       return { firstSpace: true };
     }
     return null;

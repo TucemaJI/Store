@@ -30,6 +30,7 @@
             public const string REFRESH_TOKEN_NOT_WRITED = "Refresh token not writed to database";
             public const string ORDER_NOT_FOUND = "Order not found";
             public const string USER_NOT_UPDATE = "User not changed";
+            public const string COUNT_PROBLEM = "Count cannot be less that 1";
         }
     }
 }

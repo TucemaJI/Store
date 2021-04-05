@@ -8,6 +8,7 @@ using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Stripe;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 using static Store.Shared.Enums.Enums;
@@ -30,6 +31,14 @@ namespace Store.BusinessLogic.Services
         }
         public async Task<long> CreateOrderAsync(OrderModel model)
         {
+            foreach (var item in model.OrderItemModels)
+            {
+                if (item.Count < OrderServiceConsts.COUNT_MIN)
+                {
+                    model.Errors.Add(ExceptionConsts.COUNT_PROBLEM);
+                    throw new BusinessLogicException(model.Errors.ToList());
+                }
+            }
             var orderEntity = _orderMapper.Map(model);
             orderEntity.Payment = new Payment();
             orderEntity.Status = StatusType.Unpaid;

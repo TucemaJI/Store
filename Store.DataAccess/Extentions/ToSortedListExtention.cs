@@ -14,5 +14,11 @@ namespace Store.DataAccess.Extentions
 
             return items;
         }
+        public static List<TSource> ToSortedList<TSource>(this IEnumerable<TSource> source, int pageNumber, int pageSize)
+        {
+            var items = source.Skip((pageNumber - PagedListConsts.CORRECTING_PAGE_NUMBER) * pageSize).Take(pageSize).ToList();
+
+            return items;
+        }
     }
 }

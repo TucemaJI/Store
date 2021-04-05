@@ -33,6 +33,7 @@ namespace Store.Presentation
             services.Configure<JwtOptions>(Configuration.GetSection(StartupConsts.JWT_OPTIONS));
             services.Configure<EmailOptions>(Configuration.GetSection(StartupConsts.EMAIL_OPTIONS));
             services.Configure<ServiceOptions>(Configuration.GetSection(StartupConsts.SERVICE_OPTIONS));
+            services.Configure<ConnectionStringsOptions>(Configuration.GetSection(StartupConsts.CONNECTION_STRINGS));
             StripeConfiguration.ApiKey = Configuration[OrderServiceConsts.API_KEY];
 
             services.InitializeBL(Configuration);

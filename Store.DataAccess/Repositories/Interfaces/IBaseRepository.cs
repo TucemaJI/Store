@@ -11,6 +11,5 @@ namespace Store.DataAccess.Repositories.Interfaces
         Task CreateAsync(T item);
         Task DeleteAsync(T item);
         Task UpdateAsync(T item);
-        Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> query);
     }
 }
