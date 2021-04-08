@@ -31,7 +31,8 @@ export class HeaderComponent implements OnInit {
 
   logOut(): void {
     localStorage.clear();
-    location.reload();
+    this.userId = undefined;
+    this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
   }
 
   cart(): void {

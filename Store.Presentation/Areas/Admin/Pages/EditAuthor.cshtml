@@ -6,9 +6,11 @@
 <h2>@Model.Title Author</h2>
 <form method="post">
     <input type="hidden" asp-for="AuthorModel.Id" />
+    <label>First Name</label>
     <input type="text" asp-for="AuthorModel.FirstName" />
+    <label>Last Name</label>
     <input type="text" asp-for="AuthorModel.LastName" />
 
     <input type="submit" value="@Model.Title" />
-    <input type="button" asp-page="AuthorsPage" asp-area="Admin" value="Cancel" />
+    <button><a asp-page="AuthorsPage" asp-area="Admin">Cancel</a></button>
 </form>

@@ -39,7 +39,7 @@ namespace Store.Presentation.Areas.Admin.Pages
             }
             if (!string.IsNullOrWhiteSpace(orderByString))
             {
-                PrintingEditionFilter.OrderByString = orderByString;
+                PrintingEditionFilter.OrderByField = orderByString;
             }
             await GetPageAsync();
             return Page();
@@ -54,7 +54,7 @@ namespace Store.Presentation.Areas.Admin.Pages
 
         private async Task GetPageAsync()
         {
-            PrintingEditionFilter.MinPrice = 0;
+            PrintingEditionFilter.MinPrice = default;
             PrintingEditionFilter.MaxPrice = int.MaxValue;
             var printingEditionList = await _printingEditionService.GetPrintingEditionModelListAsync(PrintingEditionFilter);
             PrintingEditionList = printingEditionList.Elements;

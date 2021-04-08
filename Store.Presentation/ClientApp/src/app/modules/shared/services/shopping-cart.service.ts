@@ -11,7 +11,7 @@ export class ShoppingCartService<T extends BaseCartItem> {
 
     constructor(private cookie: CookieService) { }
 
-    getItem(id: any): T {
+    getItem(id: string): T {
         const t: T = JSON.parse(this.cookie.get(id));
         return t;
     }
@@ -28,7 +28,7 @@ export class ShoppingCartService<T extends BaseCartItem> {
         this.cookie.set(item.id, str, Consts.EXPIRE_DAYS, '/');
         this.cartChanged.next(this.getItems().length);
     }
-    removeItem(id: any): void {
+    removeItem(id: string): void {
         if (this.cookie.check(id)) {
             this.cookie.delete(id,'/');
             this.cartChanged.next(this.getItems().length);
@@ -40,8 +40,8 @@ export class ShoppingCartService<T extends BaseCartItem> {
     }
     isExist(id: string): boolean {
         const t = this.cookie.get(id);
-        let val: boolean;
-        t === "" ? val = false : val = true;
-        return val;
+        let value: boolean;
+        value = t !== "";
+        return value;
     }
 }

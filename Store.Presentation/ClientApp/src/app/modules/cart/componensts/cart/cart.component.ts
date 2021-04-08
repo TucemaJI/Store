@@ -63,9 +63,10 @@ export class CartComponent implements OnInit {
     }
     let description: string = '';
     let orderItems: IOrderItem[] = [];
+    let isQuantityRight: boolean;
     this.cartData.forEach(i => {
-      if (i.quantity < Consts.QUANTITY_MINIMUM_VALUE) {
-        alert(Consts.QUANTITY_MINIMUM)
+      isQuantityRight = i.quantity < Consts.QUANTITY_MINIMUM_VALUE;
+      if (isQuantityRight) {
         return;
       }
       description += `${i.name} count:${i.quantity} ,`,
@@ -73,6 +74,10 @@ export class CartComponent implements OnInit {
           printingEditionId: i.id, count: i.quantity, amount: i.quantity * i.price,
         })
     });
+    if (isQuantityRight) {
+      alert(Consts.QUANTITY_MINIMUM);
+      return;
+    }
     const order: ICreateOrder = {
       userId: this.userId,
       description: description,

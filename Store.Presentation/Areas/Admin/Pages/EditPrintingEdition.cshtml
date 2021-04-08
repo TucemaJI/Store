@@ -7,18 +7,25 @@
 <h2>@Model.Title Printing Edition</h2>
 <form method="post">
     <input type="hidden" asp-for="PrintingEditionModel.Id" />
+    <label>Title</label>
     <textarea asp-for="PrintingEditionModel.Title" data-val-maxlength-max="100"></textarea>
+    <label>Description</label>
     <textarea asp-for="PrintingEditionModel.Description" data-val-maxlength-max="1000"></textarea>
-    <select asp-for="PrintingEditionModel.Type" asp-items="Html.GetEnumSelectList<PrintingEditionType>()"></select>
+    <label>Type</label>
+    <select asp-for="PrintingEditionModel.Type">
+        <option value="@PrintingEditionType.Book">Book</option>
+        <option value="@PrintingEditionType.Journal">Journal</option>
+        <option value="@PrintingEditionType.Newspaper">Newspaper</option>
+    </select>
     <select name="PrintingEditionModel.AuthorsIdList" multiple>
         @foreach (var author in Model.Authors)
         {
             <option value="@(author.Id)" selected="@(Model.PrintingEditionModel!=null?Model.PrintingEditionModel.AuthorsIdList.Contains(author.Id):null)">@author.FirstName @author.LastName</option>
-}
+        }
     </select>
     <input type="number" asp-for="PrintingEditionModel.Price" />
     <select asp-for="PrintingEditionModel.Currency" asp-items="Html.GetEnumSelectList<CurrencyType>()"></select>
 
     <input type="submit" value="@Model.Title" />
-    <input type="button" asp-page="PrintingEditionPage" asp-area="Admin" value="Cancel" />
+    <button><a asp-page="PrintingEditionsPage" asp-area="Admin">Cancel</a></button>
 </form>

@@ -14,6 +14,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
         public async Task CreateOrderItemsAsync(IEnumerable<OrderItem> list)
         {
             await _dbSet.AddRangeAsync(list);
+            await SaveChangesAsync();
         }
     }
 }

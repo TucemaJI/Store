@@ -1,5 +1,5 @@
-﻿using Store.BusinessLogic.Exceptions;
-using Store.BusinessLogic.Mappers;
+﻿using AutoMapper;
+using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.PrintingEditions;
 using Store.BusinessLogic.Providers;
@@ -20,13 +20,13 @@ namespace Store.BusinessLogic.Services
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IAuthorInPrintingEditionRepository _authorInPrintingEditionRepository;
         private readonly IAuthorRepository _authorRepository;
-        private readonly PrintingEditionMapper _printingEditionMapper;
+        private readonly IMapper _Mapper;
         private readonly ConverterProvider _converterProvider;
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, PrintingEditionMapper printingEditionMapper,
+        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IMapper mapper,
             ConverterProvider converterProvider, IAuthorInPrintingEditionRepository authorInPrintingEditionRepository, IAuthorRepository authorRepository)
         {
             _printingEditionRepository = printingEditionRepository;
-            _printingEditionMapper = printingEditionMapper;
+            _Mapper = mapper;
             _converterProvider = converterProvider;
             _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
             _authorRepository = authorRepository;
@@ -35,13 +35,13 @@ namespace Store.BusinessLogic.Services
         {
             var exist = await _authorRepository.ExistAsync(model.AuthorsIdList);
 
-            if (exist is false)
+            if (!exist)
             {
                 model.Errors.Add(ExceptionConsts.AUTHOR_NOT_FOUND);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            var printingEdition = _printingEditionMapper.Map(model);
+            var printingEdition = _Mapper.Map<PrintingEdition>(model);
 
             await _printingEditionRepository.CreateAsync(printingEdition);
 
@@ -55,7 +55,7 @@ namespace Store.BusinessLogic.Services
         public async Task<PrintingEditionModel> GetPrintingEditionModelAsync(long id)
         {
             var printingEdition = await GetPrintingEditionAsync(id);
-            var result = _printingEditionMapper.Map(printingEdition);
+            var result = _Mapper.Map<PrintingEditionModel>(printingEdition);
             return result;
         }
 
@@ -64,17 +64,17 @@ namespace Store.BusinessLogic.Services
             var printingEditionEntity = await GetPrintingEditionAsync(printingEditionModel.Id);
             var exist = await _authorRepository.ExistAsync(printingEditionModel.AuthorsIdList);
 
-            if (exist is false)
+            if (!exist)
             {
                 printingEditionModel.Errors.Add(ExceptionConsts.AUTHOR_NOT_FOUND);
                 throw new BusinessLogicException(printingEditionModel.Errors.ToList());
             }
 
-            _printingEditionMapper.MapExist(printingEditionModel, printingEditionEntity);
-            _printingEditionRepository.CleanRelations(printingEditionEntity);
-            printingEditionModel.AuthorsIdList.ForEach(authorId => printingEditionEntity.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = printingEditionEntity.Id }));
+            var test = _Mapper.Map<PrintingEdition>(printingEditionModel);
+            printingEditionEntity = test;
 
-            await _printingEditionRepository.UpdateAsync(printingEditionEntity);
+            printingEditionEntity.SubtitleReturned = string.Empty;
+            await _printingEditionRepository.UpdateAsync(printingEditionEntity, printingEditionModel.AuthorsIdList);
         }
 
         public async Task DeletePrintingEditionAsync(long id)
@@ -86,7 +86,7 @@ namespace Store.BusinessLogic.Services
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelListAsync(PrintingEditionFilter filter)
         {
             var sortedPrintingEditions = await _printingEditionRepository.GetPrintingEditionListAsync(filter);
-            var printingEditionModels = _printingEditionMapper.Map(sortedPrintingEditions);
+            var printingEditionModels = _Mapper.Map<List<PrintingEditionModel>>(sortedPrintingEditions);
             if (filter.Currency == CurrencyType.None)
             {
                 filter.Currency = CurrencyType.USD;
@@ -99,7 +99,7 @@ namespace Store.BusinessLogic.Services
                     element.Currency = filter.Currency;
                 }
             }
-            var pageModel = new PageModel<PrintingEditionModel>(printingEditionModels, filter.PageOptions);
+            var pageModel = new PrintingEditionPageModel(printingEditionModels, filter.PageOptions);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();
             return pageModel;

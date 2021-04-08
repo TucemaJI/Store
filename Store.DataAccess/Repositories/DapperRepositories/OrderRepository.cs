@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
@@ -22,7 +20,7 @@ namespace Store.DataAccess.Repositories.DapperRepositories
             using (var connection = CreateConnection())
             {
                 var sql = new StringBuilder();
-                sql.Append("SELECT O.*, U.*, PE.*, OI.* FROM Orders AS O ");
+                sql.Append("SELECT O.*, U.Id, U.FirstName, U.LastName, U.Email, PE.Id, PE.Type, PE.Title, OI.* FROM Orders AS O ");
                 sql.Append("JOIN OrderItems OI on OI.OrderId = O.Id JOIN AspNetUsers U on U.Id = O.UserId JOIN PrintingEditions PE on OI.PrintingEditionId = PE.Id ");
                 sql.Append("WHERE (O.Status Like @status OR @status='0') AND (O.UserId = @id OR @id='')");
                 var query = await connection.QueryAsync<Order, User, PrintingEdition, OrderItem, Order>(sql.ToString(),
@@ -34,7 +32,7 @@ namespace Store.DataAccess.Repositories.DapperRepositories
 
                         return order;
                     },
-                    new { status = (int)filter.Status, id = filter.UserId is null ? "" : filter.UserId },
+                    new { status = (int)filter.Status, id = filter.UserId is null ? string.Empty : filter.UserId },
                     splitOn: "Id");
 
                 var groupedOrders = query.GroupBy(order => order.Id).Select(groupOrder =>
@@ -51,12 +49,12 @@ namespace Store.DataAccess.Repositories.DapperRepositories
                 return orders;
             }
         }
-        public new async Task<Order> GetItemAsync(long id)
+        public override async Task<Order> GetItemAsync(long id)
         {
             using (var connection = CreateConnection())
             {
                 var sql = new StringBuilder();
-                sql.Append("SELECT O.*, U.*, PE.*, OI.* FROM Orders AS O ");
+                sql.Append("SELECT O.*, U.Id, U.FirstName, U.LastName, U.Email, PE.Id, PE.Type, PE.Title, OI.* FROM Orders AS O ");
                 sql.Append("JOIN OrderItems AS OI on OI.OrderId = O.Id JOIN AspNetUsers AS U on U.Id = O.UserId JOIN PrintingEditions AS PE on OI.PrintingEditionId = PE.Id ");
                 sql.Append("WHERE O.Id = @orderId");
 
@@ -84,5 +82,6 @@ namespace Store.DataAccess.Repositories.DapperRepositories
                 return order;
             }
         }
+
     }
 }

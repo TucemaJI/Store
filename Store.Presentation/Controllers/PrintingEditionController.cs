@@ -8,8 +8,6 @@ using Store.Presentation.Controllers.Base;
 using System.Threading.Tasks;
 using static Store.Shared.Enums.Enums;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Store.Presentation.Controllers
 {
     public class PrintingEditionController : BaseController

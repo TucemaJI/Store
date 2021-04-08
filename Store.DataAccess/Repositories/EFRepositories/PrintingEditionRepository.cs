@@ -20,7 +20,8 @@ namespace Store.DataAccess.Repositories.EFRepositories
             var query = _dbSet.Include(item => item.AuthorsInPrintingEdition).ThenInclude(item => item.Author)
                 .Where(printingEdition => filter.PrintingEditionTypeList.Contains(PrintingEditionType.None) || filter.PrintingEditionTypeList.Contains(printingEdition.Type))
                 .Where(printingEdition => filter.MaxPrice >= printingEdition.Price && printingEdition.Price >= filter.MinPrice)
-                .Where(printingEdition => EF.Functions.Like(printingEdition.Title, $"%{filter.Title}%") || printingEdition.AuthorsInPrintingEdition.Any(item => EF.Functions.Like(item.Author.Name, $"%{filter.Name}%")));
+                .Where(printingEdition => EF.Functions.Like(printingEdition.Title, $"%{filter.Title}%") || printingEdition.AuthorsInPrintingEdition.Any(item => EF.Functions.Like(item.Author.Name, $"%{filter.Name}%")))
+                .AsNoTracking();
             var printingEditions = await GetSortedListAsync(filter, query);
             filter.PageOptions.TotalItems = await query.CountAsync();
             return printingEditions;
@@ -35,10 +36,18 @@ namespace Store.DataAccess.Repositories.EFRepositories
             var minPrice = _dbSet.MinAsync(printingEdition => printingEdition.Price);
             return minPrice;
         }
-        public void CleanRelations(PrintingEdition printingEdition)
+        public async Task UpdateAsync(PrintingEdition item, List<long> authorIds)
         {
-            printingEdition.AuthorsInPrintingEdition.Clear();
 
+            //item.AuthorsInPrintingEdition.Clear();
+            //authorIds.ForEach(authorId => item.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = item.Id }));
+            _dbSet.Update(item);
+            //var test =await _dbSet.Include(a => a.AuthorsInPrintingEdition).ThenInclude(a => a.Author).AsNoTracking().FirstOrDefaultAsync(x => x.Id == item.Id);
+            await SaveChangesAsync();
+        }
+        public override async Task<PrintingEdition> GetItemAsync(long id)
+        {
+            return await _dbSet.Include(a => a.AuthorsInPrintingEdition).ThenInclude(a => a.Author).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

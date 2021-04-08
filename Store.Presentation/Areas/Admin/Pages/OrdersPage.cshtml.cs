@@ -55,7 +55,7 @@ namespace Store.Presentation.Areas.Admin.Pages
             }
             if (!string.IsNullOrWhiteSpace(orderByString))
             {
-                OrderFilter.OrderByString = orderByString;
+                OrderFilter.OrderByField = orderByString;
             }
             var orderList = await _orderService.GetOrderModelListAsync(OrderFilter);
             OrderList = orderList.Elements;

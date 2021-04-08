@@ -31,7 +31,7 @@ namespace Store.BusinessLogic
 
             var mapperConfig = new MapperConfiguration(config =>
             {
-                config.AddProfile(new AuthorProfile());
+                config.AddMaps(typeof(AuthorProfile).Assembly);
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

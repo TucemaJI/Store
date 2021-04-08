@@ -12,7 +12,7 @@ namespace Store.DataAccess.Entities
         public double Price { get; set; }
         [Required]
         public string SubtitleReturned { get; set; }
-        public CurrencyType ReturnedCurrency { get; set; }
+        public CurrencyType Currency { get; set; }
         public PrintingEditionType Type { get; set; }
         public List<AuthorInPrintingEdition> AuthorsInPrintingEdition { get; set; }
 

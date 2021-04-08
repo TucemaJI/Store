@@ -34,7 +34,7 @@ namespace Store.Presentation.Areas.Admin.Pages
 
         public async Task<RedirectToPageResult> OnPostAsync()
         {
-            if (AuthorModel.Id == 0)
+            if (AuthorModel.Id == default)
             {
                 await _authorService.CreateAuthorAsync(AuthorModel);
                 return RedirectToPage(PathConsts.AUTHORS_PAGE);

@@ -63,9 +63,12 @@ export class OrdersComponent implements OnInit {
 
   pay(element: IOrder): void {
     this.dialog.open(PaymentComponent, { data: { total: element.totalAmount, orderId: element.id } });
+    
     this.store.pipe(select(selectCartState)).subscribe(
       data => {
         if (data.orderStatus != null) {
+          const pageModel: IOrderPage = { ...this.pageModel, pageOptions: this.pageOptions };
+          this.store.dispatch(getOrders({ pageModel }));
           element.status = data.orderStatus;
         }
       }

@@ -18,14 +18,15 @@ namespace Store.DataAccess.Repositories.EFRepositories
         {
             var query = _dbSet.Include(item => item.AuthorInPrintingEditions).ThenInclude(i => i.PrintingEdition)
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
-                .Where(a => filter.Id == 0 || a.Id.ToString().Contains(filter.Id.ToString()));
+                .Where(a => filter.Id == 0 || a.Id.ToString().Contains(filter.Id.ToString()))
+                .AsNoTracking();
             var authors = await GetSortedListAsync(filter, query);
             filter.PageOptions.TotalItems = await query.CountAsync();
             return authors;
         }
         public async Task<List<Author>> GetAuthorListAsync()
         {
-            var result = await _dbSet.Select(item => item).ToListAsync();
+            var result = await _dbSet.Select(item => item).AsNoTracking().ToListAsync();
             return result;
         }
 
@@ -33,6 +34,11 @@ namespace Store.DataAccess.Repositories.EFRepositories
         {
             var result = _dbSet.AnyAsync(author => ids.Contains(author.Id));
             return result;
+        }
+
+        public override Task<Author> GetItemAsync(long id)
+        {
+            return _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

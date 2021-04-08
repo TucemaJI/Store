@@ -44,8 +44,8 @@ export class SelectPEComponent implements OnInit {
     const item = new BaseCartItem({ id: this.printingEdition.id, name: this.printingEdition.title, price: this.printingEdition.price, quantity: this.count, data: this.printingEdition.currencyType });
 
     if (this.cartService.isExist(this.printingEdition.id.toString())) {
-      let itemFromCookie = this.cartService.getItem(this.printingEdition.id);
-      itemFromCookie.quantity = itemFromCookie.quantity + this.count;
+      let itemFromCookie = this.cartService.getItem(this.printingEdition.id.toString());
+      itemFromCookie.quantity += this.count; 
       this.cartService.addItem(itemFromCookie);
       return;
     }

@@ -53,7 +53,7 @@ namespace Store.BusinessLogic.Services
         public async Task UpdateAuthorAsync(AuthorModel authorModel)
         {
             var author = await GetAuthorAsync(authorModel.Id);
-            author.Name = $"{authorModel.FirstName} {authorModel.LastName}";
+            author = _mapper.Map<Author>(authorModel);
             await _authorRepository.UpdateAsync(author);
         }
 

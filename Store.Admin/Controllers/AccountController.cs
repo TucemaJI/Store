@@ -42,8 +42,8 @@ namespace Store.Admin.Controllers
         public async Task<ActionResult> SignOutAsync()
         {
             var user = User.FindFirst(JwtRegisteredClaimNames.Sub);
-            var result = await _accountService.SignOutAsync(user.Value, user.Issuer);
-            return View(result);
+            //var result = await _accountService.SignOutAsync(user.Value, user.Issuer);
+            return View();
         }
 
     }

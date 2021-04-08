@@ -5,7 +5,6 @@ using Store.BusinessLogic.Models.Authors;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Models.Filters;
 using Store.Shared.Options;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
@@ -27,7 +26,7 @@ namespace Store.Presentation.Areas.Admin.Pages
         public async Task OnGetAsync()
         {
             AuthorFilter = new AuthorFilter();
-            AuthorFilter.Name = String.Empty;
+            AuthorFilter.Name = string.Empty;
             AuthorFilter.PageOptions = new PageOptions();
             await GetPageAsync();
         }
@@ -37,13 +36,13 @@ namespace Store.Presentation.Areas.Admin.Pages
             {
                 AuthorFilter.PageOptions.CurrentPage = (int)pageIndex;
             }
-            if (AuthorFilter.Id != 0)
+            if (AuthorFilter.Id != default)
             {
-                AuthorFilter.OrderByString = "Name";
+                AuthorFilter.OrderByField = "Name";
             }
             if (!string.IsNullOrWhiteSpace(AuthorFilter.Name))
             {
-                AuthorFilter.OrderByString = "Id";
+                AuthorFilter.OrderByField = "Id";
             }
             await GetPageAsync();
             return Page();

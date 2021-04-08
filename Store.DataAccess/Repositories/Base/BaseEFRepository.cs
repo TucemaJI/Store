@@ -20,6 +20,11 @@ namespace Store.DataAccess.Repositories.Base
             _applicationContext = applicationContext;
         }
 
+        protected async Task SaveChangesAsync()
+        {
+            await _applicationContext.SaveChangesAsync();
+        }
+
         public async Task CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity: entity);
@@ -30,23 +35,23 @@ namespace Store.DataAccess.Repositories.Base
             _dbSet.Remove(item);
             await _applicationContext.SaveChangesAsync();
         }
-        public async Task<T> GetItemAsync(long id)
+        public async virtual Task<T> GetItemAsync(long id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task UpdateAsync(T item)
+        public virtual async Task UpdateAsync(T item)
         {
-            _dbSet.Update(item).State = EntityState.Modified;
+            _applicationContext.Update(item).State = EntityState.Modified;
             await _applicationContext.SaveChangesAsync();
         }
         public Task<List<T>> GetSortedListAsync(BaseFilter filter, IQueryable<T> query)
         {
-            if (string.IsNullOrWhiteSpace(filter.OrderByString))
+            if (string.IsNullOrWhiteSpace(filter.OrderByField))
             {
-                filter.OrderByString = RepositoryConsts.DEFAULT_SEARCH;
+                filter.OrderByField = RepositoryConsts.DEFAULT_SEARCH;
             }
-            var sortedT = query.OrderBy(filter.OrderByString, filter.IsDescending)
+            var sortedT = query.OrderBy(filter.OrderByField, filter.IsDescending)
                 .ToSortedListAsync(filter.PageOptions.CurrentPage, filter.PageOptions.ItemsPerPage);
 
             return sortedT;

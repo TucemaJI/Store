@@ -17,7 +17,7 @@ namespace Store.Shared.Options
         }
 
         public bool HasPrevious => CurrentPage > PagedListConsts.FIRST_PAGE;
-        public bool HasNext => CurrentPage < TotalItems/_itemsPerPage;
+        public bool HasNext => CurrentPage < TotalItems / _itemsPerPage;
         public PageOptions()
         {
             CurrentPage = PagedListConsts.FIRST_PAGE;

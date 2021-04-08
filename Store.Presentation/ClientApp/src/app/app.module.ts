@@ -10,7 +10,6 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { AccountModule } from './modules/account/account.module';
-import { AdministratorModule } from './modules/administrator/administrator.module';
 import { CartModule } from './modules/cart/cart.module';
 import { OrderModule } from './modules/order/order.module';
 import { PrintingEditionModule } from './modules/printing-edition/printing-edition.module';
@@ -24,8 +23,6 @@ import { AccountEffects } from './modules/account/store/account.effects';
 import { appReducers } from './store/reducers/app.reducers';
 import { TokenInterceptor } from './modules/shared/interceptors/auth.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
-import { AdministratorHttpService } from './modules/shared/services/administrator-http.service';
-import { AdministratorEffects } from './modules/administrator/store/administrator.effects';
 import { AuthService } from './modules/shared/services/auth.service';
 import { ErrorInterceptor } from './modules/shared/interceptors/error.interceptor';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -50,14 +47,13 @@ import { Consts } from './modules/shared/consts';
     NgbModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AccountEffects, AdministratorEffects, PrintingEditionEffects, CartEffects, OrderEffects]),
+    EffectsModule.forRoot([AccountEffects, PrintingEditionEffects, CartEffects, OrderEffects]),
     StoreRouterConnectingModule.forRoot(),
     ToastNoAnimationModule.forRoot(),
     NgxPaginationModule,
     ShoppingCartModule.forRoot(),
     MaterialModule,
     AccountModule,
-    AdministratorModule,
     CartModule,
     OrderModule,
     PrintingEditionModule,
@@ -73,7 +69,6 @@ import { Consts } from './modules/shared/consts';
     }),
   ],
   providers: [AccountHttpService,
-    AdministratorHttpService,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

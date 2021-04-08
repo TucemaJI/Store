@@ -87,14 +87,14 @@ namespace Store.BusinessLogic.Services
 
         public async Task<PageModel<UserModel>> FilterUsersAsync(UserFilter filter)
         {
-            if (string.IsNullOrWhiteSpace(filter.OrderByString))
+            if (string.IsNullOrWhiteSpace(filter.OrderByField))
             {
-                filter.OrderByString = UserServiceConsts.DEFAULT_SEARCH_STRING;
+                filter.OrderByField = UserServiceConsts.DEFAULT_SEARCH_STRING;
             }
             var users = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
                 .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
                 .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
-                .OrderBy(filter.OrderByString, filter.IsDescending)
+                .OrderBy(filter.OrderByField, filter.IsDescending)
                 .ToSortedListAsync(pageNumber: filter.PageOptions.CurrentPage, pageSize: filter.PageOptions.ItemsPerPage);
 
             var sortedUserModels = _userMapper.Map(users);

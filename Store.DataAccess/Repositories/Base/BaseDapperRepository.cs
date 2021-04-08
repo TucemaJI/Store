@@ -1,6 +1,7 @@
 ﻿using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
+using Store.DataAccess.Extentions;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Options;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Store.DataAccess.Extentions;
 using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Repositories.Base
@@ -33,7 +33,7 @@ namespace Store.DataAccess.Repositories.Base
             connection.Open();
             return connection;
         }
-        public async Task CreateAsync(T item)
+        public virtual async Task CreateAsync(T item)
         {
             using (var connection = CreateConnection())
             {
@@ -49,7 +49,7 @@ namespace Store.DataAccess.Repositories.Base
             }
         }
 
-        public async Task<T> GetItemAsync(long id)
+        public virtual async Task<T> GetItemAsync(long id)
         {
             using (var connection = CreateConnection())
             {
@@ -60,11 +60,11 @@ namespace Store.DataAccess.Repositories.Base
 
         public List<T> GetSortedList(BaseFilter filter, IEnumerable<T> query)
         {
-            if (string.IsNullOrWhiteSpace(filter.OrderByString))
+            if (string.IsNullOrWhiteSpace(filter.OrderByField))
             {
-                filter.OrderByString = RepositoryConsts.DEFAULT_SEARCH;
+                filter.OrderByField = RepositoryConsts.DEFAULT_SEARCH;
             }
-            var sortedT = query.AsQueryable().OrderBy(filter.OrderByString, filter.IsDescending)
+            var sortedT = query.AsQueryable().OrderBy(filter.OrderByField, filter.IsDescending)
                 .ToSortedList(filter.PageOptions.CurrentPage, filter.PageOptions.ItemsPerPage);
 
             return sortedT;

@@ -35,7 +35,7 @@ namespace Store.Presentation.Areas.Admin.Pages
         }
         public async Task<RedirectToPageResult> OnPostAsync()
         {
-            if (PrintingEditionModel.Id == 0)
+            if (PrintingEditionModel.Id == default)
             {
                 await _printingEditionService.CreatePrintingEditionAsync(PrintingEditionModel);
                 return RedirectToPage(PathConsts.PRINTING_EDITIONS_PAGE);

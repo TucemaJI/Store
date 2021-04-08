@@ -61,7 +61,7 @@ namespace Store.BusinessLogic.Services
 
             var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
 
-            if (authenticationToken == string.Empty)
+            if (string.IsNullOrWhiteSpace(authenticationToken))
             {
                 model.Errors.Add(ExceptionConsts.NO_REFRESH_TOKEN);
                 throw new BusinessLogicException(model.Errors.ToList());
@@ -79,7 +79,7 @@ namespace Store.BusinessLogic.Services
 
             if (!result.Succeeded)
             {
-                model.Errors.Add(ExceptionConsts.SIGN_IN_FAILED);
+                model.Errors.Add(ExceptionConsts.INVALID_TOKEN);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
@@ -106,8 +106,6 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            var refreshToken = _jwtProvider.GenerateRefreshToken();
-
             var signIn = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
             if (!signIn.Succeeded)
@@ -115,6 +113,8 @@ namespace Store.BusinessLogic.Services
                 model.Errors.Add(ExceptionConsts.SIGN_IN_FAILED);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
+
+            var refreshToken = _jwtProvider.GenerateRefreshToken();
 
             var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
 
@@ -137,7 +137,7 @@ namespace Store.BusinessLogic.Services
 
         public async Task<IdentityResult> RegistrationAsync(UserModel model)
         {
-            if (model.Password != model.ConfirmPassword)
+            if (string.IsNullOrWhiteSpace(model.Password) || model.Password != model.ConfirmPassword)
             {
                 model.Errors.Add(ExceptionConsts.PASSWORDS_DIFFERENT);
                 throw new BusinessLogicException(model.Errors.ToList());
@@ -150,18 +150,6 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            if (string.IsNullOrWhiteSpace(model.FirstName))
-            {
-                model.Errors.Add(ExceptionConsts.FIRST_NAME_PROBLEM);
-                throw new BusinessLogicException(model.Errors.ToList());
-            }
-
-            if (string.IsNullOrWhiteSpace(model.LastName))
-            {
-                model.Errors.Add(ExceptionConsts.LAST_NAME_PROBLEM);
-                throw new BusinessLogicException(model.Errors.ToList());
-            }
-
             var user = _userMapper.Map(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -169,8 +157,8 @@ namespace Store.BusinessLogic.Services
                 model.Errors.Add(ExceptionConsts.USER_NOT_CREATED);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
-            var role = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
-            if (!role.Succeeded)
+            var identityResult = await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
+            if (!identityResult.Succeeded)
             {
                 model.Errors.Add(ExceptionConsts.NOT_ADD_TO_ROLE);
                 throw new BusinessLogicException(model.Errors.ToList());
@@ -178,7 +166,7 @@ namespace Store.BusinessLogic.Services
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = string.Format(_callbackUrl, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
             await _emailProvider.SendEmailAsync(user.Email, EmailConsts.CONFIRM_ACOUNT, string.Format(AccountServiceConsts.MESSAGE, callbackUrl));
-            return role;
+            return identityResult;
         }
 
         public async Task<IdentityResult> ConfirmEmailAsync(ConfirmModel model)

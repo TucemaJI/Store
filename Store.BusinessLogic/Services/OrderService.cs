@@ -19,30 +19,36 @@ namespace Store.BusinessLogic.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IPaymentRepository _paymentRepository;
-
+        private readonly IOrderItemRepository _orderItemRepository;
         private readonly OrderMapper _orderMapper;
 
-        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, OrderMapper orderMapper)
+        public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, OrderMapper orderMapper, IOrderItemRepository orderItemRepository)
         {
             _orderRepository = orderRepository;
             _paymentRepository = paymentRepository;
-
+            _orderItemRepository = orderItemRepository;
             _orderMapper = orderMapper;
         }
         public async Task<long> CreateOrderAsync(OrderModel model)
         {
-            foreach (var item in model.OrderItemModels)
+            if (model.OrderItemModels.Any(x => x.Count < OrderServiceConsts.COUNT_MIN))
             {
-                if (item.Count < OrderServiceConsts.COUNT_MIN)
-                {
-                    model.Errors.Add(ExceptionConsts.COUNT_PROBLEM);
-                    throw new BusinessLogicException(model.Errors.ToList());
-                }
+                model.Errors.Add(ExceptionConsts.COUNT_PROBLEM);
+                throw new BusinessLogicException(model.Errors.ToList());
             }
+
             var orderEntity = _orderMapper.Map(model);
             orderEntity.Payment = new Payment();
+
+            await _paymentRepository.CreateAsync(orderEntity.Payment);
+            orderEntity.PaymentId = orderEntity.Payment.Id;
+
             orderEntity.Status = StatusType.Unpaid;
             await _orderRepository.CreateAsync(orderEntity);
+
+            orderEntity.OrderItems.ForEach(x => x.OrderId = orderEntity.Id);
+            await _orderItemRepository.CreateOrderItemsAsync(orderEntity.OrderItems);
+
             return orderEntity.Id;
         }
 
@@ -97,12 +103,12 @@ namespace Store.BusinessLogic.Services
 
         public async Task<OrderModel> GetOrderModelAsync(long id)
         {
-            var order = _orderRepository.GetItemAsync(id);
+            var order = await _orderRepository.GetItemAsync(id);
             if (order is null)
             {
                 throw new BusinessLogicException(new List<string> { ExceptionConsts.ORDER_NOT_FOUND });
             }
-            var result = _orderMapper.Map(await order);
+            var result = _orderMapper.Map(order);
             return result;
         }
 

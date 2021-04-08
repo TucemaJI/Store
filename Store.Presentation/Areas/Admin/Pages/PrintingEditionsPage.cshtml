@@ -16,7 +16,12 @@
     <input type="submit" name="orderbyString" value="Price" />
 
     <label>Filter by</label>
-    <select asp-for="PrintingEditionFilter.PrintingEditionTypeList" asp-items="Html.GetEnumSelectList<PrintingEditionType>()" onclick="filter.submit()"></select>
+    <select asp-for="PrintingEditionFilter.PrintingEditionTypeList" asp-items="Html.GetEnumSelectList<PrintingEditionType>()" onclick="filter.submit()">
+        <option value="@PrintingEditionType.None">All</option>
+        <option value="@PrintingEditionType.Book">Book</option>
+        <option value="@PrintingEditionType.Journal">Journal</option>
+        <option value="@PrintingEditionType.Newspaper">Newspaper</option>
+    </select>
     <input type="checkbox" asp-for="PrintingEditionFilter.IsDescending" onchange="filter.submit()" /><label>Reverse</label>
 </form>
 <table class="table">

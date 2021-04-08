@@ -12,7 +12,7 @@
             public const string USER_BLOCKED = "User blocked";
             public const string INCORRECT_PASSWORD = "Incorrect password";
             public const string USER_NOT_CREATED = "User not created";
-            public const string SIGN_IN_FAILED = "Sign in failed";
+            public const string SIGN_IN_FAILED = "Sign in failed, confirm your email, please";
             public const string FIRST_NAME_PROBLEM = "First name is null or white space";
             public const string LAST_NAME_PROBLEM = "Last name is null of white space";
             public const string NOT_ADD_TO_ROLE = "Not added to role";
