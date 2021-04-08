@@ -15,8 +15,7 @@ namespace Store.DataAccess
         public static void InitializeDA(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString(StartupConsts.CONNECTION)),
-                ServiceLifetime.Singleton);
+                options.UseSqlServer(configuration.GetConnectionString(StartupConsts.CONNECTION)));
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedEmail = true)
                 .AddRoles<IdentityRole>()
                 .AddSignInManager()

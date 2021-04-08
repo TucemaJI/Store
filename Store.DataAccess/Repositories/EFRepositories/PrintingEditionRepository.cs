@@ -36,13 +36,12 @@ namespace Store.DataAccess.Repositories.EFRepositories
             var minPrice = _dbSet.MinAsync(printingEdition => printingEdition.Price);
             return minPrice;
         }
-        public async Task UpdateAsync(PrintingEdition item, List<long> authorIds)
+        public async Task UpdateAsync(PrintingEdition item, List<long> authorIdList)
         {
-
-            //item.AuthorsInPrintingEdition.Clear();
-            //authorIds.ForEach(authorId => item.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = item.Id }));
             _dbSet.Update(item);
-            //var test =await _dbSet.Include(a => a.AuthorsInPrintingEdition).ThenInclude(a => a.Author).AsNoTracking().FirstOrDefaultAsync(x => x.Id == item.Id);
+            var printingEdition = await _dbSet.Include(x => x.AuthorsInPrintingEdition).FirstOrDefaultAsync(z => z.Id == item.Id);
+            printingEdition.AuthorsInPrintingEdition.Clear();
+            authorIdList.ForEach(authorId => printingEdition.AuthorsInPrintingEdition.Add(new AuthorInPrintingEdition { AuthorId = authorId, PrintingEditionId = item.Id }));
             await SaveChangesAsync();
         }
         public override async Task<PrintingEdition> GetItemAsync(long id)

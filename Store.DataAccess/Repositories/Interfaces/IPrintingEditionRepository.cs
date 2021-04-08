@@ -10,6 +10,6 @@ namespace Store.DataAccess.Repositories.Interfaces
         public Task<List<PrintingEdition>> GetPrintingEditionListAsync(PrintingEditionFilter filter);
         public Task<double> GetMaxPriceAsync();
         public Task<double> GetMinPriceAsync();
-        public Task UpdateAsync(PrintingEdition item, List<long> authorIds);
+        public Task UpdateAsync(PrintingEdition item, List<long> authorIdList);
     }
 }
