@@ -90,7 +90,6 @@ namespace Store.DataAccess.Migrations
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
-                    Currency = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -297,13 +296,23 @@ namespace Store.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "PrintingEditions",
-                columns: new[] { "Id", "CreationData", "Currency", "Description", "IsRemoved", "Price", "Title", "Type" },
-                values: new object[] { 1L, new DateTime(2020, 10, 22, 8, 30, 34, 797, DateTimeKind.Utc).AddTicks(458), 1, "The new best book for learning programming", false, 50.0, "C# 8.0", 1 });
+                columns: new[] { "Id", "CreationData", "Description", "IsRemoved", "Price", "Title", "Type" },
+                values: new object[] { 1L, new DateTime(2020, 10, 22, 8, 30, 34, 797, DateTimeKind.Utc).AddTicks(458), "The new best book for learning programming", false, 150.0, "C# 8.0", 1 });
+
+            migrationBuilder.InsertData(
+                table: "PrintingEditions",
+                columns: new[] { "Id", "CreationData", "Description", "IsRemoved", "Price", "Title", "Type" },
+                values: new object[] { 2L, new DateTime(2020, 10, 22, 8, 30, 34, 797, DateTimeKind.Utc).AddTicks(458), "The old good book for learning programming", false, 50.0, "C# 5.0", 1 });
 
             migrationBuilder.InsertData(
                 table: "AuthorsInPrintingEditions",
                 columns: new[] { "AuthorId", "PrintingEditionId" },
                 values: new object[] { 1L, 1L });
+
+            migrationBuilder.InsertData(
+                table: "AuthorsInPrintingEditions",
+                columns: new[] { "AuthorId", "PrintingEditionId" },
+                values: new object[] { 1L, 2L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
