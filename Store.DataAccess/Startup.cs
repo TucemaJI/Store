@@ -28,6 +28,15 @@ namespace Store.DataAccess
                 .WithTransientLifetime()
                 );
 
+
+            //services.Scan(scan => scan
+            //    .FromCallingAssembly()
+            //    .AddClasses(classes => classes.InExactNamespaceOf<AuthorRepository>())
+            //    .AsImplementedInterfaces()
+            //    .WithTransientLifetime()
+            //    );
+
+
             services.Initialize(configuration);
         }
     }

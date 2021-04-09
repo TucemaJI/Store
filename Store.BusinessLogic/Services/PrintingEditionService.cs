@@ -45,8 +45,6 @@ namespace Store.BusinessLogic.Services
 
             await _printingEditionRepository.CreateAsync(printingEdition);
 
-            var authorInPrintingEditionList = new List<AuthorInPrintingEdition>();
-
             await _authorInPrintingEditionRepository.CreateRangeAsync(model.AuthorsIdList, printingEdition.Id);
         }
 
@@ -69,7 +67,6 @@ namespace Store.BusinessLogic.Services
             }
             printingEditionEntity = _mapper.Map<PrintingEdition>(printingEditionModel);
 
-            printingEditionEntity.SubtitleReturned = string.Empty;
             await _printingEditionRepository.UpdateAsync(printingEditionEntity, printingEditionModel.AuthorsIdList);
         }
 

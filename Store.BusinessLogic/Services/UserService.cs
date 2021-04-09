@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.Users;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
-using Store.DataAccess.Extentions;
 using Store.DataAccess.Models.Filters;
+using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Enums;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +19,13 @@ namespace Store.BusinessLogic.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly UserMapper _userMapper;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(UserManager<User> userManager, UserMapper userMapper)
+        public UserService(UserManager<User> userManager, UserMapper userMapper, IUserRepository userRepository)
         {
             _userManager = userManager;
             _userMapper = userMapper;
+            _userRepository = userRepository;
         }
 
         public async Task CreateUserAsync(UserModel model)
@@ -91,18 +92,11 @@ namespace Store.BusinessLogic.Services
             {
                 filter.OrderByField = UserServiceConsts.DEFAULT_SEARCH_STRING;
             }
-            var users = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
-                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
-                .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
-                .OrderBy(filter.OrderByField, filter.IsDescending)
-                .ToSortedListAsync(pageNumber: filter.PageOptions.CurrentPage, pageSize: filter.PageOptions.ItemsPerPage);
+            var users = await _userRepository.FilterUsersAsync(filter);
 
             var sortedUserModels = _userMapper.Map(users);
 
-            filter.PageOptions.TotalItems = await _userManager.Users.Where(u => EF.Functions.Like(u.Email, $"%{filter.Email}%"))
-                .Where(u => EF.Functions.Like(u.UserName, $"%{filter.Name}%"))
-                .Where(u => filter.IsBlocked.Equals(null) || u.IsBlocked.Equals(filter.IsBlocked))
-                .CountAsync();
+            await _userRepository.CountAsync(filter);
 
             var pageModel = new PageModel<UserModel>(sortedUserModels, filter.PageOptions);
 
