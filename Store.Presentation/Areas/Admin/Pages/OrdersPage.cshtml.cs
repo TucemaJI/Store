@@ -41,18 +41,11 @@ namespace Store.Presentation.Areas.Admin.Pages
             {
                 OrderFilter.PageOptions.CurrentPage = (int)pageIndex;
             }
-            if (Paid)
-            {
-                OrderFilter.Status = StatusType.Paid;
-            }
-            if (Unpaid)
-            {
-                OrderFilter.Status = StatusType.Unpaid;
-            }
-            if (Paid && Unpaid)
-            {
-                OrderFilter.Status = StatusType.None;
-            }
+
+            OrderFilter.Status = Paid ? StatusType.Paid : StatusType.None;
+            OrderFilter.Status = Unpaid ? StatusType.Unpaid : OrderFilter.Status;
+            OrderFilter.Status = Paid && Unpaid ? StatusType.None : OrderFilter.Status;
+
             if (!string.IsNullOrWhiteSpace(orderByString))
             {
                 OrderFilter.OrderByField = orderByString;
