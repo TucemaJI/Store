@@ -20,7 +20,7 @@ namespace Store.BusinessLogic.Mappers
             foreach (TSecond element in elements)
             {
                 TFirst newObject = Map(element);
-                if (newObject != null)
+                if (newObject is not null)
                 {
                     callback?.Invoke(newObject);
                     objectCollection.Add(newObject);
@@ -40,7 +40,7 @@ namespace Store.BusinessLogic.Mappers
             foreach (TFirst element in elements)
             {
                 TSecond newObject = Map(element);
-                if (newObject != null)
+                if (newObject is not null)
                 {
                     callback?.Invoke(newObject);
                     objectCollection.Add(newObject);

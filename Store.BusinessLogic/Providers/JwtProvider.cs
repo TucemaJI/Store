@@ -58,7 +58,7 @@ namespace Store.BusinessLogic.Providers
             var tokenHandler = new JwtSecurityTokenHandler();
             tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
             JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (jwtSecurityToken is null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException(ExceptionConsts.INVALID_TOKEN);
             }
@@ -68,7 +68,7 @@ namespace Store.BusinessLogic.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[_options.Value.RefreshTokenLength];
+            byte[] randomNumber = new byte[_options.Value.RefreshTokenLength];
             using (var random = RandomNumberGenerator.Create())
             {
                 random.GetBytes(randomNumber);

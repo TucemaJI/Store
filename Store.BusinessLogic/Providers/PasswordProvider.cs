@@ -9,7 +9,7 @@ namespace Store.BusinessLogic.Providers
 
         public string GeneratePassword(byte length)
         {
-            var password = string.Empty;
+            string password = string.Empty;
             using (RNGCryptoServiceProvider cryptRNG = new RNGCryptoServiceProvider())
             {
                 byte[] tokenBuffer = new byte[length];

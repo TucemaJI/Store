@@ -59,7 +59,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            var authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
+            string authenticationToken = await _userManager.GetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN);
 
             if (string.IsNullOrWhiteSpace(authenticationToken))
             {
@@ -73,7 +73,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            var newRefreshToken = _jwtProvider.GenerateRefreshToken();
+            string newRefreshToken = _jwtProvider.GenerateRefreshToken();
 
             var result = await _userManager.SetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN, newRefreshToken);
 
@@ -85,8 +85,8 @@ namespace Store.BusinessLogic.Services
 
             await _signInManager.RefreshSignInAsync(user);
 
-            var role = principal.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
-            var id = principal.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+            string role = principal.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
+            string id = principal.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
             var returnToken = new TokenModel
             {
@@ -114,7 +114,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            var refreshToken = _jwtProvider.GenerateRefreshToken();
+            string refreshToken = _jwtProvider.GenerateRefreshToken();
 
             var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
 
@@ -124,7 +124,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
             var token = new TokenModel
             {
@@ -163,8 +163,8 @@ namespace Store.BusinessLogic.Services
                 model.Errors.Add(ExceptionConsts.NOT_ADD_TO_ROLE);
                 throw new BusinessLogicException(model.Errors.ToList());
             }
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = string.Format(_callbackUrl, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            string callbackUrl = string.Format(_callbackUrl, user.Email, user.FirstName, user.LastName, WebUtility.UrlEncode(token));
             await _emailProvider.SendEmailAsync(user.Email, EmailConsts.CONFIRM_ACOUNT, string.Format(AccountServiceConsts.MESSAGE, callbackUrl));
             return identityResult;
         }
@@ -207,7 +207,7 @@ namespace Store.BusinessLogic.Services
             var user = await FindUserByEmailAsync(email);
             string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var password = _passwordProvider.GeneratePassword(AccountServiceConsts.PASSWORD_LENGTH);
+            string password = _passwordProvider.GeneratePassword(AccountServiceConsts.PASSWORD_LENGTH);
 
             var result = await _userManager.ResetPasswordAsync(user, resetToken, password);
 

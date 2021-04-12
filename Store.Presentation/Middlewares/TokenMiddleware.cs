@@ -16,7 +16,7 @@ namespace Store.Presentation.Middlewares
             var token = context.Request.Cookies[AdminConsts.ACCESS_TOKEN];
             if (!string.IsNullOrWhiteSpace(token))
             {
-                context.Request.Headers.Add("Authorization", $"Bearer {token}");
+                context.Request.Headers.Add(StartupConsts.OPEN_API_AUTHORIZATION, $"Bearer {token}");
             }
             await _next.Invoke(context);
         }

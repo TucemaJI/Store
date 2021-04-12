@@ -38,7 +38,7 @@ namespace Store.BusinessLogic.Services
         }
         public async Task CreatePrintingEditionAsync(PrintingEditionModel model)
         {
-            var exist = await _authorRepository.ExistAsync(model.AuthorsIdList);
+            bool exist = await _authorRepository.ExistAsync(model.AuthorsIdList);
 
             if (!exist)
             {
@@ -62,7 +62,7 @@ namespace Store.BusinessLogic.Services
 
         public async Task UpdatePrintingEditionAsync(PrintingEditionModel printingEditionModel)
         {
-            var printingEditionEntity = await GetPrintingEditionAsync(printingEditionModel.Id);
+            await GetPrintingEditionAsync(printingEditionModel.Id);
             var exist = await _authorRepository.ExistAsync(printingEditionModel.AuthorsIdList);
 
             if (!exist)
@@ -70,7 +70,7 @@ namespace Store.BusinessLogic.Services
                 printingEditionModel.Errors.Add(ExceptionConsts.AUTHOR_NOT_FOUND);
                 throw new BusinessLogicException(printingEditionModel.Errors.ToList());
             }
-            printingEditionEntity = _mapper.Map<PrintingEdition>(printingEditionModel);
+            var printingEditionEntity = _mapper.Map<PrintingEdition>(printingEditionModel);
 
             await _printingEditionRepository.UpdateAsync(printingEditionEntity, printingEditionModel.AuthorsIdList);
         }
@@ -85,11 +85,11 @@ namespace Store.BusinessLogic.Services
         {
             var sortedPrintingEditions = await _printingEditionRepository.GetPrintingEditionListAsync(filter);
             var printingEditionModels = _mapper.Map<List<PrintingEditionModel>>(sortedPrintingEditions.printingEditionList);
-            if (filter.Currency == CurrencyType.None)
+            if (filter.Currency is CurrencyType.None)
             {
                 filter.Currency = _defaultCurrency;
             }
-            if (filter.Currency != CurrencyType.USD)
+            if (filter.Currency is not CurrencyType.USD)
             {
                 foreach (var element in printingEditionModels)
                 {
