@@ -19,28 +19,28 @@ import { Consts } from 'src/app/modules/shared/consts';
 
 export class PrintingEditionComponent implements OnInit {
 
-  lowValue: number = 0;
-  highValue: number = 0;
-  option: Options = Consts.PE_OPTIONS;
-  isDescending: boolean = false;
-  searchText: string = '';
+  public lowValue: number = 0;
+  public highValue: number = 0;
+  public option: Options = Consts.PE_OPTIONS;
+  public isDescending: boolean = false;
+  public searchText: string = '';
 
-  selectedCurrency: string = ECurrencyType[1];
-  selectedSort: string;
+  public selectedCurrency: string = ECurrencyType[1];
+  public selectedSort: string;
 
-  bookBox: boolean = false;
-  journalBox: boolean = false;
-  newspaperBox: boolean = false;
+  public bookBox: boolean = false;
+  public journalBox: boolean = false;
+  public newspaperBox: boolean = false;
 
-  printingEditionsData: IPrintingEdition[];
-  currencies = ECurrencyType;
-  sortBy: string[] = [
+  public printingEditionsData: IPrintingEdition[];
+  public currencies = ECurrencyType;
+  public sortBy: string[] = [
     Consts.SORT_LOW_TO_HIGH,
     Consts.SORT_HIGH_TO_LOW,
   ]
 
-  pageModel: IPrintingEditionPage;
-  pageParameters: IPageOptions;
+  public pageModel: IPrintingEditionPage;
+  public pageParameters: IPageOptions;
 
   constructor(private store: Store<IAppState>) { }
 

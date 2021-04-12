@@ -15,7 +15,7 @@ namespace Store.DataAccess.Repositories.DapperRepositories
     public class OrderRepository : BaseDapperRepository<Order>, IOrderRepository
     {
         public OrderRepository(IOptions<ConnectionStringsOptions> options) : base(options) { }
-        public async Task<List<Order>> GetOrderListAsync(OrderFilter filter)
+        public async Task<(List<Order> orderList, long count)> GetOrderListAsync(OrderFilter filter)
         {
             using (var connection = CreateConnection())
             {
@@ -42,11 +42,9 @@ namespace Store.DataAccess.Repositories.DapperRepositories
                     return groupedOrder;
                 });
 
-                filter.PageOptions.TotalItems = query.Count();
-
                 var orders = GetSortedList(filter, groupedOrders);
-
-                return orders;
+                var result = (orderList: orders, count: query.Count());
+                return result;
             }
         }
         public override async Task<Order> GetItemAsync(long id)

@@ -10,8 +10,8 @@ import { passwordRecovery } from '../../store/account.actions';
   styleUrls: ['./password-recovery.component.css']
 })
 export class PasswordRecoveryComponent implements OnInit {
-  emailForm: FormGroup;
-  passwordSent: boolean;
+  public emailForm: FormGroup;
+  public passwordSent: boolean;
 
   constructor(private store: Store<IAppState>) { }
 

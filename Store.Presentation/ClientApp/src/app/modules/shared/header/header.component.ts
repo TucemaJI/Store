@@ -17,8 +17,8 @@ import { ShoppingCartService } from '../services/shopping-cart.service';
 })
 export class HeaderComponent implements OnInit {
 
-  userId: string;
-  count: number;
+  public userId: string;
+  public count: number;
 
   constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>) { }
 

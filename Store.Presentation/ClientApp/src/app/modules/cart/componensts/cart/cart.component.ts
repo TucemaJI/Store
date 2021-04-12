@@ -20,12 +20,12 @@ import { ICreateOrder } from 'src/app/modules/shared/models/ICreateOrder.model';
 })
 export class CartComponent implements OnInit {
 
-  cartData: BaseCartItem[];
-  displayedColumns: string[] = Consts.CART_COLUMNS;
-  total: number = 0;
-  userId: string;
-  orderCreated: boolean;
-  orderId: number;
+  public cartData: BaseCartItem[];
+  public displayedColumns: string[] = Consts.CART_COLUMNS;
+  public total: number = 0;
+  public userId: string;
+  public orderCreated: boolean;
+  public orderId: number;
 
   constructor(public dialogRef: MatDialogRef<CartComponent>, private cartService: ShoppingCartService<BaseCartItem>, private dialog: MatDialog, private store: Store<IAppState>,
     private router: Router, private auth: AuthService) { }

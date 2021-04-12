@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
@@ -15,11 +16,7 @@ namespace Store.BusinessLogic.Common
         }
         public IDisposable BeginScope<TState>(TState state)
         {
-            if (state == null)
-            {
-                throw new ArgumentNullException(nameof(state));
-            }
-            return (IDisposable)state;
+            return NullScope.Instance;
         }
 
         public bool IsEnabled(LogLevel logLevel)
@@ -36,6 +33,14 @@ namespace Store.BusinessLogic.Common
                     File.AppendAllText(_filePath, formatter(state, exception) + Environment.NewLine);
                 }
             }
+        }
+        private sealed class NullScope : IDisposable
+        {
+            public static NullScope Instance { get; } = new NullScope();
+
+            private NullScope() { }
+
+            public void Dispose() { }
         }
     }
 }

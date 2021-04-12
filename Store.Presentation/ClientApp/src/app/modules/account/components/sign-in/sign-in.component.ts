@@ -11,8 +11,8 @@ import { signIn } from '../../store/account.actions';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  userForm: FormGroup;
-  remember: boolean = false;
+  public userForm: FormGroup;
+  public remember: boolean = false;
 
   constructor(private store: Store<IAppState>) { }
 

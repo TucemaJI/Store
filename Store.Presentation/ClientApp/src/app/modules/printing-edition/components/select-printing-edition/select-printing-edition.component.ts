@@ -17,9 +17,9 @@ import { selectPrintingEditions } from '../../store/printing-edition.selector';
 })
 export class SelectPEComponent implements OnInit {
 
-  count: number = Consts.QUANTITY_MINIMUM_VALUE;
-  printingEdition: IPrintingEdition;
-  userId: string;
+  public count: number = Consts.QUANTITY_MINIMUM_VALUE;
+  public printingEdition: IPrintingEdition;
+  public userId: string;
 
   constructor(private route: ActivatedRoute, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>, private router: Router, private auth: AuthService) { }
   ngOnInit() {

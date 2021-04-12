@@ -10,13 +10,13 @@ import { confirmEmail as confirmEmail } from '../../store/account.actions';
   styleUrls: ['./confirm-email.component.css']
 })
 export class ConfirmEmailComponent implements OnInit {
-  fromLink: boolean;
-  mail: string;
-  token: string;
-  name: string;
-  lName: string;
-  confirmModel: IConfirm;
-  password: string;
+  public fromLink: boolean;
+  public mail: string;
+  public token: string;
+  public name: string;
+  public lName: string;
+  public confirmModel: IConfirm;
+  public password: string;
   constructor(private store: Store, private activateRoute: ActivatedRoute) { }
 
   ngOnInit(): void {

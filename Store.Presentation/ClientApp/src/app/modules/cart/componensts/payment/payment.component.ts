@@ -13,7 +13,7 @@ import { pay } from '../../store/cart.actions';
 })
 export class PaymentComponent implements OnInit {
 
-  paymentForm: FormGroup;
+  public paymentForm: FormGroup;
 
   constructor(private store: Store<IAppState>, public dialogRef: MatDialogRef<PaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: { total: number, orderId: number }) { }
 

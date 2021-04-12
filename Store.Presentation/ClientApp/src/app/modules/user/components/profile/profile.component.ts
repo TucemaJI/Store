@@ -14,11 +14,11 @@ import { CheckerErrors } from '../../../shared/validator';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  profileForm: FormGroup;
+  public profileForm: FormGroup;
 
-  user: IUser;
-  editbool: Boolean;
-  userId: string;
+  public user: IUser;
+  public editbool: Boolean;
+  public userId: string;
 
   constructor(private auth: AuthService, private store: Store<IAppState>) { }
 

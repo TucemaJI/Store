@@ -14,9 +14,9 @@ import { signUp } from '../../store/account.actions';
 
 export class SignUpComponent implements OnInit {
 
-  signUpForm: FormGroup;
+  public signUpForm: FormGroup;
 
-  matcher = new ErrorStateMatcher();
+  public matcher = new ErrorStateMatcher();
 
   constructor(private store: Store<IAppState>) { }
 

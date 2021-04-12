@@ -20,11 +20,11 @@ import { selectCartState } from 'src/app/modules/cart/store/cart.selector';
 })
 export class OrdersComponent implements OnInit {
 
-  displayedColumns: string[] = Consts.ORDERS_COLUMNS;
-  pageModel: IOrderPage = null;
-  pageOptions: IPageOptions;
-  ordersData: IOrder[];
-  userId: string;
+  public displayedColumns: string[] = Consts.ORDERS_COLUMNS;
+  public pageModel: IOrderPage = null;
+  public pageOptions: IPageOptions;
+  public ordersData: IOrder[];
+  public userId: string;
 
   constructor(private store: Store<IAppState>, public dialog: MatDialog, private auth: AuthService) { }
 
