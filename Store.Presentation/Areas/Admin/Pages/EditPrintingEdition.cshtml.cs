@@ -40,7 +40,7 @@ namespace Store.Presentation.Areas.Admin.Pages
                 await _printingEditionService.CreatePrintingEditionAsync(PrintingEditionModel);
                 return RedirectToPage(PathConsts.PRINTING_EDITIONS_PAGE);
             }
-            await _printingEditionService.UpdatePrintingEdition(PrintingEditionModel);
+            await _printingEditionService.UpdatePrintingEditionAsync(PrintingEditionModel);
             return RedirectToPage(PathConsts.PRINTING_EDITIONS_PAGE);
         }
     }

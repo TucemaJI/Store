@@ -5,7 +5,7 @@ namespace Store.Shared.Options
     public class PageOptions
     {
         public int CurrentPage { get; set; }
-        public int TotalItems { get; set; }
+        public long TotalItems { get; set; }
 
         private int _itemsPerPage;
         public int ItemsPerPage

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Options;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Models;
 using Store.BusinessLogic.Models.PrintingEditions;
@@ -7,6 +8,7 @@ using Store.BusinessLogic.Services.Interfaces;
 using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
+using Store.Shared.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,14 +24,17 @@ namespace Store.BusinessLogic.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
         private readonly ConverterProvider _converterProvider;
+        private readonly CurrencyType _defaultCurrency;
         public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IMapper mapper,
-            ConverterProvider converterProvider, IAuthorInPrintingEditionRepository authorInPrintingEditionRepository, IAuthorRepository authorRepository)
+            ConverterProvider converterProvider, IAuthorInPrintingEditionRepository authorInPrintingEditionRepository,
+            IAuthorRepository authorRepository, IOptions<CurrencyOptions> currencyOptions)
         {
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
             _converterProvider = converterProvider;
             _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
             _authorRepository = authorRepository;
+            _defaultCurrency = currencyOptions.Value.DefaultCurrency;
         }
         public async Task CreatePrintingEditionAsync(PrintingEditionModel model)
         {
@@ -55,7 +60,7 @@ namespace Store.BusinessLogic.Services
             return result;
         }
 
-        public async Task UpdatePrintingEdition(PrintingEditionModel printingEditionModel)
+        public async Task UpdatePrintingEditionAsync(PrintingEditionModel printingEditionModel)
         {
             var printingEditionEntity = await GetPrintingEditionAsync(printingEditionModel.Id);
             var exist = await _authorRepository.ExistAsync(printingEditionModel.AuthorsIdList);
@@ -79,10 +84,10 @@ namespace Store.BusinessLogic.Services
         public async Task<PageModel<PrintingEditionModel>> GetPrintingEditionModelListAsync(PrintingEditionFilter filter)
         {
             var sortedPrintingEditions = await _printingEditionRepository.GetPrintingEditionListAsync(filter);
-            var printingEditionModels = _mapper.Map<List<PrintingEditionModel>>(sortedPrintingEditions);
+            var printingEditionModels = _mapper.Map<List<PrintingEditionModel>>(sortedPrintingEditions.printingEditionList);
             if (filter.Currency == CurrencyType.None)
             {
-                filter.Currency = CurrencyType.USD;
+                filter.Currency = _defaultCurrency;
             }
             if (filter.Currency != CurrencyType.USD)
             {
@@ -92,6 +97,7 @@ namespace Store.BusinessLogic.Services
                     element.Currency = filter.Currency;
                 }
             }
+            filter.PageOptions.TotalItems = sortedPrintingEditions.count;
             var pageModel = new PrintingEditionPageModel(printingEditionModels, filter.PageOptions);
             pageModel.MaxPrice = await _printingEditionRepository.GetMaxPriceAsync();
             pageModel.MinPrice = await _printingEditionRepository.GetMinPriceAsync();

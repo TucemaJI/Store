@@ -41,9 +41,9 @@ namespace Store.Presentation.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("UpdatePrintingEdition")]
-        public async Task UpdatePrintingEdition(PrintingEditionModel printingEditionModel)
+        public async Task UpdatePrintingEditionAsync(PrintingEditionModel printingEditionModel)
         {
-            await _printingEditionService.UpdatePrintingEdition(printingEditionModel);
+            await _printingEditionService.UpdatePrintingEditionAsync(printingEditionModel);
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]

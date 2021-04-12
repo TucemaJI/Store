@@ -34,6 +34,7 @@ namespace Store.Presentation
             services.Configure<EmailOptions>(Configuration.GetSection(StartupConsts.EMAIL_OPTIONS));
             services.Configure<ServiceOptions>(Configuration.GetSection(StartupConsts.SERVICE_OPTIONS));
             services.Configure<ConnectionStringsOptions>(Configuration.GetSection(StartupConsts.CONNECTION_STRINGS));
+            services.Configure<CurrencyOptions>(Configuration.GetSection(StartupConsts.CURRENCY_OPTIONS));
             StripeConfiguration.ApiKey = Configuration[OrderServiceConsts.API_KEY];
 
             services.InitializeBL(Configuration);

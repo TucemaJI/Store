@@ -4,9 +4,11 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Base;
 using Store.DataAccess.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.DataAccess.Repositories.EFRepositories
 {
@@ -14,15 +16,15 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public AuthorRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public async Task<List<Author>> GetAuthorListAsync(AuthorFilter filter)
+        public async Task<(List<Author> authorList, long count)> GetAuthorListAsync(AuthorFilter filter)
         {
             var query = _dbSet.Include(item => item.AuthorInPrintingEditions).ThenInclude(i => i.PrintingEdition)
                 .Where(a => EF.Functions.Like(a.Name, $"%{filter.Name}%"))
-                .Where(a => filter.Id == 0 || a.Id.ToString().Contains(filter.Id.ToString()))
+                .Where(a => filter.Id == RepositoryConsts.NULL_ID || a.Id.ToString().Contains(filter.Id.ToString()))
                 .AsNoTracking();
             var authors = await GetSortedListAsync(filter, query);
-            filter.PageOptions.TotalItems = await query.CountAsync();
-            return authors;
+            var result = (authorList: authors, count: await query.CountAsync());
+            return result;
         }
         public async Task<List<Author>> GetAuthorListAsync()
         {

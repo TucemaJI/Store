@@ -6,16 +6,20 @@ namespace Store.BusinessLogic.Common
 {
     public class Logger : ILogger
     {
-        private readonly string filePath;
+        private readonly string _filePath;
         private static readonly object _lock = new object();
 
         public Logger(string path)
         {
-            filePath = path;
+            _filePath = path;
         }
         public IDisposable BeginScope<TState>(TState state)
         {
-            return null;
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
+            return (IDisposable)state;
         }
 
         public bool IsEnabled(LogLevel logLevel)
@@ -29,7 +33,7 @@ namespace Store.BusinessLogic.Common
             {
                 lock (_lock)
                 {
-                    File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
+                    File.AppendAllText(_filePath, formatter(state, exception) + Environment.NewLine);
                 }
             }
         }

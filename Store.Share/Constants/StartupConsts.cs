@@ -16,6 +16,7 @@
             public const string JWT_OPTIONS = "JwtOptions";
             public const string EMAIL_OPTIONS = "EmailOptions";
             public const string SERVICE_OPTIONS = "ServiceOptions";
+            public const string CURRENCY_OPTIONS = "CurrencyOptions";
 
             public const string OPEN_API_DESCRIPTION = "Please enter into field the word 'Bearer' following by space and JWT";
             public const string OPEN_API_AUTHORIZATION = "Authorization";

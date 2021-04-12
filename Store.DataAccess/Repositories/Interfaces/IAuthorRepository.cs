@@ -7,7 +7,7 @@ namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IAuthorRepository : IBaseRepository<Author>
     {
-        public Task<List<Author>> GetAuthorListAsync(AuthorFilter filter);
+        public Task<(List<Author> authorList, long count)> GetAuthorListAsync(AuthorFilter filter);
         public Task<List<Author>> GetAuthorListAsync();
         public Task<bool> ExistAsync(List<long> ids);
     }

@@ -49,7 +49,7 @@ namespace Store.Presentation.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("UpdateAuthor")]
-        public async Task UpdateAuthor([FromBody] AuthorModel authorModel)
+        public async Task UpdateAuthorAsync([FromBody] AuthorModel authorModel)
         {
             await _authorService.UpdateAuthorAsync(authorModel);
         }

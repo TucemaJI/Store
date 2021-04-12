@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Store.BusinessLogic.Exceptions;
+using System;
 using System.Collections.Generic;
+using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Mappers
 {
@@ -11,16 +13,17 @@ namespace Store.BusinessLogic.Mappers
         public List<TFirst> Map(List<TSecond> elements, Action<TFirst> callback = null)
         {
             var objectCollection = new List<TFirst>();
-            if (elements != null)
+            if (elements is null)
             {
-                foreach (TSecond element in elements)
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.EMPTY_COLLECTION });
+            };
+            foreach (TSecond element in elements)
+            {
+                TFirst newObject = Map(element);
+                if (newObject != null)
                 {
-                    TFirst newObject = Map(element);
-                    if (newObject != null)
-                    {
-                        callback?.Invoke(newObject);
-                        objectCollection.Add(newObject);
-                    }
+                    callback?.Invoke(newObject);
+                    objectCollection.Add(newObject);
                 }
             }
             return objectCollection;
@@ -30,16 +33,17 @@ namespace Store.BusinessLogic.Mappers
         {
             var objectCollection = new List<TSecond>();
 
-            if (elements != null)
+            if (elements is null)
             {
-                foreach (TFirst element in elements)
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.EMPTY_COLLECTION });
+            };
+            foreach (TFirst element in elements)
+            {
+                TSecond newObject = Map(element);
+                if (newObject != null)
                 {
-                    TSecond newObject = Map(element);
-                    if (newObject != null)
-                    {
-                        callback?.Invoke(newObject);
-                        objectCollection.Add(newObject);
-                    }
+                    callback?.Invoke(newObject);
+                    objectCollection.Add(newObject);
                 }
             }
             return objectCollection;

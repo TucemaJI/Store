@@ -31,6 +31,7 @@
             public const string ORDER_NOT_FOUND = "Order not found";
             public const string USER_NOT_UPDATE = "User not changed";
             public const string COUNT_PROBLEM = "Count cannot be less that 1";
+            public const string EMPTY_COLLECTION = "Collection cannot be empty";
         }
     }
 }

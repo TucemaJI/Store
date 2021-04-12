@@ -52,7 +52,7 @@ namespace Store.BusinessLogic.Services
             return orderEntity.Id;
         }
 
-        public async Task<bool> Pay(OrderPayModel model)
+        public async Task<bool> PayAsync(OrderPayModel model)
         {
             var optionsToken = new TokenCreateOptions
             {
@@ -96,7 +96,8 @@ namespace Store.BusinessLogic.Services
         public async Task<PageModel<OrderModel>> GetOrderModelListAsync(OrderFilter filter)
         {
             var sortedOrders = await _orderRepository.GetOrderListAsync(filter);
-            var orderModelList = _orderMapper.Map(sortedOrders);
+            var orderModelList = _orderMapper.Map(sortedOrders.orderList);
+            filter.PageOptions.TotalItems = sortedOrders.count;
             var pageModel = new PageModel<OrderModel>(orderModelList, filter.PageOptions);
             return pageModel;
         }

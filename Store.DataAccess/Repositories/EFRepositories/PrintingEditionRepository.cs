@@ -15,7 +15,7 @@ namespace Store.DataAccess.Repositories.EFRepositories
     {
         public PrintingEditionRepository(ApplicationContext applicationContext) : base(applicationContext) { }
 
-        public async Task<List<PrintingEdition>> GetPrintingEditionListAsync(PrintingEditionFilter filter)
+        public async Task<(List<PrintingEdition> printingEditionList, long count)> GetPrintingEditionListAsync(PrintingEditionFilter filter)
         {
             var query = _dbSet.Include(item => item.AuthorsInPrintingEdition).ThenInclude(item => item.Author)
                 .Where(printingEdition => filter.PrintingEditionTypeList.Contains(PrintingEditionType.None) || filter.PrintingEditionTypeList.Contains(printingEdition.Type))
@@ -23,8 +23,8 @@ namespace Store.DataAccess.Repositories.EFRepositories
                 .Where(printingEdition => EF.Functions.Like(printingEdition.Title, $"%{filter.Title}%") || printingEdition.AuthorsInPrintingEdition.Any(item => EF.Functions.Like(item.Author.Name, $"%{filter.Name}%")))
                 .AsNoTracking();
             var printingEditions = await GetSortedListAsync(filter, query);
-            filter.PageOptions.TotalItems = await query.CountAsync();
-            return printingEditions;
+            var result = (printingEditionList: printingEditions, count: await query.CountAsync());
+            return result;
         }
         public Task<double> GetMaxPriceAsync()
         {

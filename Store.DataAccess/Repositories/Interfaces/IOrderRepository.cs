@@ -7,6 +7,6 @@ namespace Store.DataAccess.Repositories.Interfaces
 {
     public interface IOrderRepository : IBaseRepository<Order>
     {
-        public Task<List<Order>> GetOrderListAsync(OrderFilter filter);
+        public Task<(List<Order> orderList, long count)> GetOrderListAsync(OrderFilter filter);
     }
 }

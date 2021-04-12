@@ -50,9 +50,9 @@ namespace Store.Presentation.Controllers
 
         [Authorize]
         [HttpPost("Pay")]
-        public Task<bool> Pay([FromBody] OrderPayModel model)
+        public Task<bool> PayAsync([FromBody] OrderPayModel model)
         {
-            var result = _orderService.Pay(model);
+            var result = _orderService.PayAsync(model);
             return result;
         }
     }
