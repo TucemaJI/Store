@@ -4,7 +4,6 @@ using Store.DataAccess.Entities;
 using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Base;
 using Store.DataAccess.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -62,7 +62,7 @@ namespace Store.BusinessLogic.Services
         {
             var user = await FindUserByIdAsync(userModel.Id);
 
-            if(string.IsNullOrWhiteSpace(userModel.Password) && userModel.ConfirmPassword != userModel.Password)
+            if (string.IsNullOrWhiteSpace(userModel.Password) && userModel.ConfirmPassword != userModel.Password)
             {
                 userModel.Errors.Add(ExceptionConsts.PASSWORDS_DIFFERENT);
                 throw new BusinessLogicException(userModel.Errors.ToList());
