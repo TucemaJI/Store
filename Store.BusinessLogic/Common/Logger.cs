@@ -26,12 +26,14 @@ namespace Store.BusinessLogic.Common
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            if (formatter is not null)
+            if (formatter is null)
             {
-                lock (_lock)
-                {
-                    File.AppendAllText(_filePath, formatter(state, exception) + Environment.NewLine);
-                }
+                return;
+
+            }
+            lock (_lock)
+            {
+                File.AppendAllText(_filePath, formatter(state, exception) + Environment.NewLine);
             }
         }
         private sealed class NullScope : IDisposable

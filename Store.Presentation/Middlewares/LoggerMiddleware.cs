@@ -24,7 +24,7 @@ namespace Store.Presentation.Middlewares
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareConsts.FILE_NAME));
             _logger = loggerFactory.CreateLogger(LoggerMiddlewareConsts.LOGGER);
         }
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {

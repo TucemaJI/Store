@@ -12,7 +12,7 @@ namespace Store.DataAccess.Initialization
 {
     public static class DataBaseInitialization
     {
-        public static async void Initialize(this IServiceCollection services, IConfiguration configuration)
+        public static async void InitializeAsync(this IServiceCollection services, IConfiguration configuration)
         {
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var roleManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();

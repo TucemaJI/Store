@@ -11,7 +11,7 @@ namespace Store.Presentation.Middlewares
         {
             _next = next;
         }
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             var token = context.Request.Cookies[AdminConsts.ACCESS_TOKEN];
             if (!string.IsNullOrWhiteSpace(token))

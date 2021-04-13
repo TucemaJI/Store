@@ -16,7 +16,7 @@ namespace Store.Presentation.Areas.Admin.Pages
         {
 
         }
-        public async Task OnPost()
+        public async Task OnPostAsync()
         {
             var accessToken = HttpContext.Request.Cookies[AdminConsts.ACCESS_TOKEN];
 
