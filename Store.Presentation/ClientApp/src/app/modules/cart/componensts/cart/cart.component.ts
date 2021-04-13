@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 import { BaseCartItem } from 'ng-shopping-cart';
 import { IOrderItem } from 'src/app/modules/shared/models/IOrderItem.model';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { ShoppingCartService } from 'src/app/modules/shared/services/shopping-cart.service';
-import { IAppState } from 'src/app/store/state/app.state';
-import { createOrder } from '../../store/cart.actions';
-import { selectCartState } from '../../store/cart.selector';
+import { CreateOrder } from '../../store/cart.actions';
 import { PaymentComponent } from '../payment/payment.component';
 import { Consts } from 'src/app/modules/shared/consts';
 import { ICreateOrder } from 'src/app/modules/shared/models/ICreateOrder.model';
+import { CartState } from '../../store/cart.state';
 
 @Component({
   selector: 'app-cart',
@@ -27,7 +26,7 @@ export class CartComponent implements OnInit {
   public orderCreated: boolean;
   public orderId: number;
 
-  constructor(public dialogRef: MatDialogRef<CartComponent>, private cartService: ShoppingCartService<BaseCartItem>, private dialog: MatDialog, private store: Store<IAppState>,
+  constructor(public dialogRef: MatDialogRef<CartComponent>, private cartService: ShoppingCartService<BaseCartItem>, private dialog: MatDialog, private store: Store,
     private router: Router, private auth: AuthService) { }
 
   ngOnInit(): void {
@@ -83,9 +82,9 @@ export class CartComponent implements OnInit {
       description: description,
       orderItemModels: orderItems,
     };
-    this.store.dispatch(createOrder({ order }));
+    this.store.dispatch(new CreateOrder({ order }));
     let dialogref: MatDialogRef<PaymentComponent>;
-    this.store.pipe(select(selectCartState)).subscribe(
+    this.store.subscribe(
       data => {
         if (data.orderId != null && data.orderStatus == null) {
           this.orderId = data.orderId;

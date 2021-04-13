@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 import { IPay } from 'src/app/modules/shared/models/IPay.model';
-import { IAppState } from 'src/app/store/state/app.state';
-import { pay } from '../../store/cart.actions';
+import { Pay } from '../../store/cart.actions';
 
 @Component({
   selector: 'app-payment',
@@ -15,7 +14,7 @@ export class PaymentComponent implements OnInit {
 
   public paymentForm: FormGroup;
 
-  constructor(private store: Store<IAppState>, public dialogRef: MatDialogRef<PaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: { total: number, orderId: number }) { }
+  constructor(private store: Store, public dialogRef: MatDialogRef<PaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: { total: number, orderId: number }) { }
 
   ngOnInit(): void {
     this.paymentForm = new FormGroup({
@@ -39,7 +38,7 @@ export class PaymentComponent implements OnInit {
       orderId: this.data.orderId,
       value: this.data.total,
     }
-    this.store.dispatch(pay({ payment }));
+    this.store.dispatch(new Pay({ payment }));
     this.dialogRef.close();
   }
 }

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 import { IConfirm } from '../../../shared/models/IConfirm.model';
-import { confirmEmail as confirmEmail } from '../../store/account.actions';
+import { ConfirmEmail } from '../../store/account.actions';
 
 @Component({
   selector: 'app-confirm-email',
@@ -18,7 +18,7 @@ export class ConfirmEmailComponent implements OnInit {
   public confirmModel: IConfirm;
   public password: string;
   constructor(private store: Store, private activateRoute: ActivatedRoute) { }
-
+  
   ngOnInit(): void {
     this.activateRoute.queryParams.subscribe(params => {
       this.mail = params.mail;
@@ -34,6 +34,6 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public submit(): void {
-    this.store.dispatch(confirmEmail({ model: this.confirmModel }));
+    this.store.dispatch(new ConfirmEmail({ model: this.confirmModel }));
   }
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { IAppState } from 'src/app/store/state/app.state';
-import { passwordRecovery } from '../../store/account.actions';
+import { Store } from '@ngxs/store';
+import { PasswordRecovery } from '../../store/account.actions';
 
 @Component({
   selector: 'app-password-recovery',
@@ -13,7 +12,7 @@ export class PasswordRecoveryComponent implements OnInit {
   public emailForm: FormGroup;
   public passwordSent: boolean;
 
-  constructor(private store: Store<IAppState>) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.emailForm = new FormGroup({
@@ -27,7 +26,7 @@ export class PasswordRecoveryComponent implements OnInit {
 
   public continue(email: { email: string }): void {
     if (this.emailForm.valid) {
-      this.store.dispatch(passwordRecovery(email));
+      this.store.dispatch(new PasswordRecovery(email));
       this.passwordSent = true;
     }
   }

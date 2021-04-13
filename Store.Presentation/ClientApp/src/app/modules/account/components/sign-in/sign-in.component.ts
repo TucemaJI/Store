@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { IAppState } from 'src/app/store/state/app.state';
+import { Store } from '@ngxs/store';
 import { ILogin } from '../../../shared/models/ILogin.model';
-import { signIn } from '../../store/account.actions';
+import { SignIn } from '../../store/account.actions';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,7 +13,7 @@ export class SignInComponent implements OnInit {
   public userForm: FormGroup;
   public remember: boolean = false;
 
-  constructor(private store: Store<IAppState>) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
@@ -32,7 +31,7 @@ export class SignInComponent implements OnInit {
       email: userFormValue.email,
       password: userFormValue.password,
     }
-    this.store.dispatch(signIn({ loginModel: model, remember: this.remember }));
+    this.store.dispatch(new SignIn({ loginModel: model, remember: this.remember }));
   }
 
 }

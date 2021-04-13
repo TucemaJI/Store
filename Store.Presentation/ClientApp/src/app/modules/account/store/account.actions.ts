@@ -1,4 +1,3 @@
-import { createAction, props } from "@ngrx/store";
 import { IUser } from "../../shared/models/IUser.model";
 import { ILogin } from "../../shared/models/ILogin.model";
 import { IConfirm } from "../../shared/models/IConfirm.model";
@@ -6,34 +5,39 @@ import { IToken } from "../../shared/models/IToken.model";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',
-    SignInSuccess = '[User] Sign In Success',
     SignUp = '[User] Sign Up',
-    SignUpSuccess = '[User] Sign Up Success',
     PasswordRecovery = '[User] Password Recovery',
-    PasswordRecoverySuccess = '[User] Password Recovery Success',
     ConfirmEmail = '[User] ConfirmEmail',
-    ConfirmEmailSuccess = '[User] ConfirmEmailSuccess',
     RefreshToken = '[User] RefreshToken',
-    RefreshTokenSuccess = '[User] RefreshTokenSuccess',
     GetUser = '[User] Get User',
-    GetUserSuccess = '[User] Get User Success',
     EditUser = '[User] Edit User',
-    EditUserSucces = '[User] Edit User Success',
 }
 
-export const signIn = createAction(EAccountActions.SignIn, props<{ loginModel: ILogin, remember:boolean }>());
-export const signInSuccess = createAction(EAccountActions.SignInSuccess, props<{
-    accessToken: string, refreshToken: string;
-}>());
-export const signUp = createAction(EAccountActions.SignUp, props<{ user: IUser; }>());
-export const signUpSuccess = createAction(EAccountActions.SignUpSuccess, props<{ user: IUser; }>());
-export const confirmEmail = createAction(EAccountActions.ConfirmEmail, props<{ model: IConfirm; }>());
-export const confirmEmailSuccess = createAction(EAccountActions.ConfirmEmailSuccess, props<{ user: IUser; }>());
-export const passwordRecovery = createAction(EAccountActions.PasswordRecovery, props<{ email: string; }>());
-export const passwordRecoverySuccess = createAction(EAccountActions.PasswordRecovery, props<{ result: string; }>());
-export const refreshToken = createAction(EAccountActions.RefreshToken, props<{ token: IToken }>());
-export const refreshTokenSuccess = createAction(EAccountActions.RefreshTokenSuccess, props<{ accessToken: string, refreshToken: string; }>());
-export const getUser = createAction(EAccountActions.GetUser, props<{ userId: string }>());
-export const getUserSuccess = createAction(EAccountActions.GetUserSuccess, props<{ user: IUser }>());
-export const editUser = createAction(EAccountActions.EditUser, props<{ user: IUser }>());
-export const editUserSuccess = createAction(EAccountActions.EditUserSucces, props<{ user: IUser }>());
+export class SignIn {
+    static readonly type = EAccountActions.SignIn;
+    constructor(public payload: { loginModel: ILogin, remember: boolean }) { }
+};
+export class SignUp {
+    static readonly type = EAccountActions.SignUp;
+    constructor(public payload: { user: IUser }) { }
+};
+export class ConfirmEmail {
+    static readonly type = EAccountActions.ConfirmEmail;
+    constructor(public payload: { model: IConfirm }) { }
+};
+export class PasswordRecovery {
+    static readonly type = EAccountActions.PasswordRecovery;
+    constructor(public payload: { email: string }) { }
+};
+export class RefreshToken {
+    static readonly type = EAccountActions.RefreshToken;
+    constructor(public payload: { token: IToken }) { }
+};
+export class GetUser {
+    static readonly type = EAccountActions.GetUser;
+    constructor(public payload: { userId: string }) { }
+};
+export class EditUser {
+    static readonly type = EAccountActions.EditUser;
+    constructor(public payload: { user: IUser }) { }
+};

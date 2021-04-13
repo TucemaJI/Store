@@ -37,11 +37,11 @@ export class AccountHttpService {
         );
     }
 
-    getUser(id: string) {
-        return this.http.get(`${Consts.GET_USER}${id}`);
+    getUser(id: string): Observable<IUser> {
+        return this.http.get<IUser>(`${Consts.GET_USER}${id}`);
     }
 
-    editUser(user: IUser) {
-        return this.http.put(Consts.UPDATE_USER, user);
+    editUser(user: IUser): Observable<IUser> {
+        return this.http.put<IUser>(Consts.UPDATE_USER, user);
     }
 }

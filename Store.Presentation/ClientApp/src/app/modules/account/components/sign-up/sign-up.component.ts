@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 import { IUser } from 'src/app/modules/shared/models/IUser.model';
 import { CheckerErrors, MyErrorStateMatcher as ErrorStateMatcher } from 'src/app/modules/shared/validator';
-import { IAppState } from 'src/app/store/state/app.state';
-import { signUp } from '../../store/account.actions';
+import { SignUp } from '../../store/account.actions';
 
 @Component({
   selector: 'app-sign-up',
@@ -18,7 +17,7 @@ export class SignUpComponent implements OnInit {
 
   public matcher = new ErrorStateMatcher();
 
-  constructor(private store: Store<IAppState>) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.signUpForm = new FormGroup({
@@ -36,7 +35,7 @@ export class SignUpComponent implements OnInit {
   }
 
   public submit(user: IUser) {
-    this.store.dispatch(signUp({user}));
+    this.store.dispatch(new SignUp({user}));
   }
 }
 
