@@ -38,7 +38,7 @@ export class PaymentComponent implements OnInit {
       orderId: this.data.orderId,
       value: this.data.total,
     }
-    this.store.dispatch(new Pay({ payment }));
+    this.store.dispatch(new Pay(payment));
     this.dialogRef.close();
   }
 }

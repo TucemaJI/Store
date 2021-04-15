@@ -8,11 +8,11 @@ export enum ECartActions {
 
 export class CreateOrder {
     static readonly type = ECartActions.CreateOrder;
-    constructor(public payload: { order: ICreateOrder }) { }
+    constructor(public order: ICreateOrder) { }
 };
-export class Pay{
+export class Pay {
     static readonly type = ECartActions.Pay;
-    constructor(public payload: {payment: IPay}){}
+    constructor(public payment: IPay) { }
 };
 
 

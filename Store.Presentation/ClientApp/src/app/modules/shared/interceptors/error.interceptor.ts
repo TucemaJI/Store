@@ -1,17 +1,16 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { Store } from "@ngxs/store";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { IToken } from "../models/IToken.model";
-import { IAppState } from "../../../store/state/app.state";
-import { refreshToken } from '../../account/store/account.actions'
+import { RefreshToken } from '../../account/store/account.actions'
 import { AuthService } from "../services/auth.service";
 import { Consts } from "../consts";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(public auth: AuthService, private store: Store<IAppState>) { }
+    constructor(public auth: AuthService, private store: Store) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         const token: IToken = this.auth.getTokens();
@@ -20,7 +19,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             catchError((err) => {
                 if (err.status === 401) {
                     if (!this.auth.isAuthenticated()) {
-                        this.store.dispatch(refreshToken({token}));
+                        this.store.dispatch(new RefreshToken( token ));
                     }
                     const newAccessToken = localStorage.getItem(Consts.ACCESS_TOKEN);
 

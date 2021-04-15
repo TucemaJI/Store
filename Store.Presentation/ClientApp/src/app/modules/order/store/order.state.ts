@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { tap } from "rxjs/operators";
 import { IOrder } from "../../shared/models/IOrder.model";
@@ -13,7 +14,7 @@ export interface IOrderState {
 @State<IOrderState>({
     name: 'order',
     defaults: {
-        orders: [],
+        orders: null,
         pageModel: {
             isDescending: null,
             orderByString: null,
@@ -24,6 +25,7 @@ export interface IOrderState {
     }
 })
 
+@Injectable()
 export class OrderState {
     constructor(private httpService: OrderHttpService) { }
 
@@ -33,14 +35,17 @@ export class OrderState {
     }
 
     @Action(GetOrders)
-    getOrders({ getState, setState }: StateContext<IOrderState>, pageModel: IOrderPage) {
-        return this.httpService.postGetOrders(pageModel).pipe(
+    getOrders({ getState, setState }: StateContext<IOrderState>, payload: { pageModel: IOrderPage }) {
+        return this.httpService.postGetOrders(payload.pageModel).pipe(
             tap(result => {
                 const state = getState();
                 setState({
                     ...state,
                     orders: result.elements,
-                    ...state.pageModel.pageOptions = result.pageOptions,
+                    pageModel: {
+                        ...state.pageModel,
+                        pageOptions: result.pageOptions,
+                    }
                 });
             })
         );

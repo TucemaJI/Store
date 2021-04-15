@@ -1,7 +1,7 @@
-import { createAction, props, } from "@ngrx/store";
+// import { createAction, props, } from "@ngrx/store";
 
-export enum EErrorActions {
-    Error = '[Error]',
-}
+// export enum EErrorActions {
+//     Error = '[Error]',
+// }
 
-export const error = createAction(EErrorActions.Error, props<{ err: any; }>());
+// export const error = createAction(EErrorActions.Error, props<{ err: any; }>());

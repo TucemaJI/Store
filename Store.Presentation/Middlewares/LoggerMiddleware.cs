@@ -24,7 +24,7 @@ namespace Store.Presentation.Middlewares
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), LoggerMiddlewareConsts.FILE_NAME));
             _logger = loggerFactory.CreateLogger(LoggerMiddlewareConsts.LOGGER);
         }
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Store.Presentation.Middlewares
                 {
                     Errors = exception.Errors
                 };
-                var response = JsonSerializer.Serialize(model);
+                string response = JsonSerializer.Serialize(model);
                 context.Response.ContentType = LoggerMiddlewareConsts.APP_JSON;
                 context.Response.StatusCode = (int)exception.Code;
                 await context.Response.WriteAsync(response);
@@ -54,7 +54,7 @@ namespace Store.Presentation.Middlewares
                 {
                     Errors = new List<string> { LoggerMiddlewareConsts.UNHANDLED_EXCEPTION, }
                 };
-                var response = JsonSerializer.Serialize(model);
+                string response = JsonSerializer.Serialize(model);
                 context.Response.ContentType = LoggerMiddlewareConsts.APP_JSON;
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(response);

@@ -4,7 +4,7 @@ export enum EOrderActions {
     GetOrders = '[Order] Get Orders',
 }
 
-export class GetOrders{
+export class GetOrders {
     static readonly type = EOrderActions.GetOrders;
-    constructor(public payload:{pageModel: IOrderPage}){}
+    constructor(public pageModel: IOrderPage) { }
 };

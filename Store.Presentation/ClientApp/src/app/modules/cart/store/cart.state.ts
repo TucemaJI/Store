@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store"
 import { tap } from "rxjs/operators";
 import { ICreateOrder } from "../../shared/models/ICreateOrder.model";
@@ -14,10 +15,11 @@ export interface ICartState {
     name: 'cart',
     defaults: {
         orderId: null,
-        orderStatus: false
+        orderStatus: null,
     }
 })
 
+@Injectable()
 export class CartState {
     constructor(private httpService: OrderHttpService) { }
 
@@ -27,8 +29,8 @@ export class CartState {
     }
 
     @Action(CreateOrder)
-    createOrder({ getState, setState }: StateContext<ICartState>, order: ICreateOrder) {
-        return this.httpService.postCreateOrder(order).pipe(
+    createOrder({ getState, setState }: StateContext<ICartState>, payload: { order: ICreateOrder }) {
+        return this.httpService.postCreateOrder(payload.order).pipe(
             tap(result => {
                 const state = getState();
                 setState({
@@ -40,8 +42,8 @@ export class CartState {
     }
 
     @Action(Pay)
-    pay({ getState, setState }: StateContext<ICartState>, payment: IPay) {
-        return this.httpService.postPay(payment).pipe(
+    pay({ getState, setState }: StateContext<ICartState>, payload: { payment: IPay }) {
+        return this.httpService.postPay(payload.payment).pipe(
             tap(result => {
                 const state = getState();
                 setState({

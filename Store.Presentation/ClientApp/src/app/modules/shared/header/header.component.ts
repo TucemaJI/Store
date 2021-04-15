@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 import { BaseCartItem } from 'ng-shopping-cart';
-import { IAppState } from 'src/app/store/state/app.state';
-import { refreshToken } from '../../account/store/account.actions';
+import { RefreshToken } from '../../account/store/account.actions';
 import { CartComponent } from '../../cart/componensts/cart/cart.component';
 import { Consts } from '../consts';
 import { AuthService } from '../services/auth.service';
@@ -20,7 +19,7 @@ export class HeaderComponent implements OnInit {
   public userId: string;
   public count: number;
 
-  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store: Store<IAppState>, private cartService: ShoppingCartService<BaseCartItem>) { }
+  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store: Store, private cartService: ShoppingCartService<BaseCartItem>) { }
 
   ngOnInit(): void {
     this.userId = this.auth.getId();
@@ -45,7 +44,7 @@ export class HeaderComponent implements OnInit {
     }
     if (!this.auth.isAuthenticated()) {
       const token = this.auth.getTokens();
-      this.store.dispatch(refreshToken({ token }));
+      this.store.dispatch(new RefreshToken( token ));
     }
   }
 }

@@ -10,7 +10,6 @@ import { CreateOrder } from '../../store/cart.actions';
 import { PaymentComponent } from '../payment/payment.component';
 import { Consts } from 'src/app/modules/shared/consts';
 import { ICreateOrder } from 'src/app/modules/shared/models/ICreateOrder.model';
-import { CartState } from '../../store/cart.state';
 
 @Component({
   selector: 'app-cart',
@@ -82,19 +81,21 @@ export class CartComponent implements OnInit {
       description: description,
       orderItemModels: orderItems,
     };
-    this.store.dispatch(new CreateOrder({ order }));
+    this.store.dispatch(new CreateOrder(order));
     let dialogref: MatDialogRef<PaymentComponent>;
     this.store.subscribe(
       data => {
-        if (data.orderId != null && data.orderStatus == null) {
-          this.orderId = data.orderId;
+        if (data.cart.orderId != null && data.cart.orderStatus == null) {
+          debugger;
+          this.orderId = data.cart.orderId;
+          debugger;
           this.orderCreated = true;
           dialogref = this.dialog.open(PaymentComponent, { data: { total: this.total, orderId: this.orderId, } });
           this.cartService.clean();
         }
-        if (data.orderStatus != null) {
-          this.orderId = data.orderId;
-          this.orderCreated = data.orderStatus;
+        if (data.cart.orderStatus != null) {
+          this.orderId = data.cart.orderId;
+          this.orderCreated = data.cart.orderStatus;
         }
       }
     );

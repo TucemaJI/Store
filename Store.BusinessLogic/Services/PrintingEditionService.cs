@@ -63,7 +63,7 @@ namespace Store.BusinessLogic.Services
         public async Task UpdatePrintingEditionAsync(PrintingEditionModel printingEditionModel)
         {
             await GetPrintingEditionAsync(printingEditionModel.Id);
-            var exist = await _authorRepository.ExistAsync(printingEditionModel.AuthorsIdList);
+            bool exist = await _authorRepository.ExistAsync(printingEditionModel.AuthorsIdList);
 
             if (!exist)
             {

@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { tap } from "rxjs/operators";
@@ -22,6 +23,7 @@ export interface IAccountState {
   }
 })
 
+@Injectable()
 export class AccountState {
   constructor(private accountService: AccountHttpService, private router: Router) { }
 
@@ -36,8 +38,8 @@ export class AccountState {
   }
 
   @Action(SignIn)
-  login({ getState, setState }: StateContext<IAccountState>, loginModel: ILogin, remember: boolean) {
-    return this.accountService.postLogin(loginModel, remember).pipe(
+  login({ getState, setState }: StateContext<IAccountState>, payload: { loginModel: ILogin, remember: boolean }) {
+    return this.accountService.postLogin(payload.loginModel, payload.remember).pipe(
       tap(result => {
         const state = getState();
         setState({
@@ -50,8 +52,8 @@ export class AccountState {
   }
 
   @Action(SignUp)
-  signUp(user: IUser) {
-    return this.accountService.postRegistration(user).pipe(
+  signUp(payload: { user: IUser }) {
+    return this.accountService.postRegistration(payload.user).pipe(
       tap(() => {
         this.router.navigateByUrl(Consts.ROUTE_CONFIRM_EMAIL);
       })
@@ -59,8 +61,8 @@ export class AccountState {
   }
 
   @Action(ConfirmEmail)
-  confirmEmail(model: IConfirm) {
-    return this.accountService.postConfirm(model).pipe(
+  confirmEmail(payload: { model: IConfirm }) {
+    return this.accountService.postConfirm(payload.model).pipe(
       tap(() => {
         this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
       })
@@ -68,8 +70,8 @@ export class AccountState {
   }
 
   @Action(RefreshToken)
-  refreshToken({ getState, setState }: StateContext<IAccountState>, token: IToken) {
-    return this.accountService.postRefresh(token).pipe(
+  refreshToken({ getState, setState }: StateContext<IAccountState>, payload: { token: IToken }) {
+    return this.accountService.postRefresh(payload.token).pipe(
       tap(result => {
         const state = getState();
         setState({
@@ -81,8 +83,8 @@ export class AccountState {
   }
 
   @Action(GetUser)
-  getUser({ getState, setState }: StateContext<IAccountState>, userId: string) {
-    return this.accountService.getUser(userId).pipe(
+  getUser({ getState, setState }: StateContext<IAccountState>, payload: { userId: string }) {
+    return this.accountService.getUser(payload.userId).pipe(
       tap(result => {
         const state = getState();
         setState({
@@ -94,8 +96,8 @@ export class AccountState {
   }
 
   @Action(EditUser)
-  editUser({ getState, setState }: StateContext<IAccountState>, user: IUser) {
-    return this.accountService.editUser(user).pipe(
+  editUser({ getState, setState }: StateContext<IAccountState>, payload: { user: IUser }) {
+    return this.accountService.editUser(payload.user).pipe(
       tap(result => {
         const state = getState();
         setState({
@@ -107,7 +109,7 @@ export class AccountState {
   }
 
   @Action(PasswordRecovery)
-  passwordRecovery(email: string) {
-    return this.accountService.sendEmail(email);
+  passwordRecovery(payload: { email: string }) {
+    return this.accountService.sendEmail(payload.email);
   }
 }

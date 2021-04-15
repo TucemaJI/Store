@@ -36,16 +36,16 @@ export class OrdersComponent implements OnInit {
       userId: this.userId,
       status: EStatusType.none,
     };
-    this.store.dispatch(new GetOrders({ pageModel: this.pageModel }));
+    this.store.dispatch(new GetOrders(this.pageModel ));
     this.getOrders();
   }
 
   getOrders(): void {
     this.store.subscribe(
       data => {
-        if (data.orders != null && data.pageModel != null) {
-          this.ordersData = data.orders;
-          this.pageOptions = data.pageModel.pageOptions;
+        if (data.order.orders != null && data.order.pageModel != null) {
+          this.ordersData = data.order.orders;
+          this.pageOptions = data.order.pageModel.pageOptions;
         }
       }
     )
@@ -54,7 +54,7 @@ export class OrdersComponent implements OnInit {
   pageChanged(event: number): void {
     this.pageOptions = { currentPage: event, itemsPerPage: this.pageOptions.itemsPerPage, totalItems: this.pageOptions.totalItems, };
     const pageModel: IOrderPage = { ...this.pageModel, pageOptions: this.pageOptions };
-    this.store.dispatch(new GetOrders({ pageModel }));
+    this.store.dispatch(new GetOrders( pageModel ));
   }
 
   pay(element: IOrder): void {
@@ -62,10 +62,10 @@ export class OrdersComponent implements OnInit {
     
     this.store.subscribe(
       data => {
-        if (data.orderStatus != null) {
+        if (data.cart.orderStatus != null) {
           const pageModel: IOrderPage = { ...this.pageModel, pageOptions: this.pageOptions };
-          this.store.dispatch(new GetOrders({ pageModel }));
-          element.status = data.orderStatus;
+          this.store.dispatch(new GetOrders( pageModel ));
+          element.status = data.cart.orderStatus;
         }
       }
     )

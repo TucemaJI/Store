@@ -15,29 +15,29 @@ export enum EAccountActions {
 
 export class SignIn {
     static readonly type = EAccountActions.SignIn;
-    constructor(public payload: { loginModel: ILogin, remember: boolean }) { }
+    constructor(public loginModel: ILogin, public remember: boolean ) { }
 };
 export class SignUp {
     static readonly type = EAccountActions.SignUp;
-    constructor(public payload: { user: IUser }) { }
+    constructor(public user: IUser ) { }
 };
 export class ConfirmEmail {
     static readonly type = EAccountActions.ConfirmEmail;
-    constructor(public payload: { model: IConfirm }) { }
+    constructor(public model: IConfirm ) { }
 };
 export class PasswordRecovery {
     static readonly type = EAccountActions.PasswordRecovery;
-    constructor(public payload: { email: string }) { }
+    constructor(public email: string ) { }
 };
 export class RefreshToken {
     static readonly type = EAccountActions.RefreshToken;
-    constructor(public payload: { token: IToken }) { }
+    constructor(public token: IToken ) { }
 };
 export class GetUser {
     static readonly type = EAccountActions.GetUser;
-    constructor(public payload: { userId: string }) { }
+    constructor(public userId: string ) { }
 };
 export class EditUser {
     static readonly type = EAccountActions.EditUser;
-    constructor(public payload: { user: IUser }) { }
+    constructor(public user: IUser ) { }
 };

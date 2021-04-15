@@ -34,6 +34,6 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public submit(): void {
-    this.store.dispatch(new ConfirmEmail({ model: this.confirmModel }));
+    this.store.dispatch(new ConfirmEmail( this.confirmModel ));
   }
 }

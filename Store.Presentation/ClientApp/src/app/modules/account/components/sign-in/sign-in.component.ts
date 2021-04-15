@@ -31,7 +31,7 @@ export class SignInComponent implements OnInit {
       email: userFormValue.email,
       password: userFormValue.password,
     }
-    this.store.dispatch(new SignIn({ loginModel: model, remember: this.remember }));
+    this.store.dispatch(new SignIn(model, this.remember));
   }
 
 }

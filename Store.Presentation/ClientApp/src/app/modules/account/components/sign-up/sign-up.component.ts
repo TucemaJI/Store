@@ -29,13 +29,13 @@ export class SignUpComponent implements OnInit {
       confirmPassword: new FormControl('', [Validators.required]),
     }, { validators: CheckerErrors.checkPasswords });
   }
-  
+
   public hasError = (controlName: string, errorName: string): boolean => {
     return this.signUpForm.controls[controlName].hasError(errorName);
   }
 
   public submit(user: IUser) {
-    this.store.dispatch(new SignUp({user}));
+    this.store.dispatch(new SignUp(user));
   }
 }
 

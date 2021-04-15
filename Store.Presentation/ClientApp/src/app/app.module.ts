@@ -30,6 +30,9 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { AccountState } from './modules/account/store/account.state';
 import { CartState } from './modules/cart/store/cart.state';
+import { OrderState } from './modules/order/store/order.state';
+import { PrintingEditionsState } from './modules/printing-edition/store/printing-edition.state';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { CartState } from './modules/cart/store/cart.state';
     NgxsModule.forRoot([
       AccountState,
       CartState,
-    ]),
+      OrderState,
+      PrintingEditionsState,
+    ], { developmentMode: !environment.production }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     ToastNoAnimationModule.forRoot(),

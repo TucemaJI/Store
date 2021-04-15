@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { IPageOptions } from 'src/app/modules/shared/models/IPageOptions.model';
 import { Options } from "@angular-slider/ngx-slider";
 import { ECurrencyType } from 'src/app/modules/shared/enums/currency-type.enum';
-import { select, Store } from '@ngrx/store';
-import { IAppState } from 'src/app/store/state/app.state';
-import { selectPrintingEditions } from '../../store/printing-edition.selector';
+import { Store } from '@ngxs/store';
 import { IPrintingEdition } from 'src/app/modules/shared/models/IPrintingEdition.model';
-import { getPEs } from 'src/app/modules/printing-edition/store/printing-edition.actions';
 import { EPrintingEditionType } from 'src/app/modules/shared/enums/printing-edition-type.enum';
 import { IPrintingEditionPage } from 'src/app/modules/shared/models/IPrintingEditionPage.model';
 import { Consts } from 'src/app/modules/shared/consts';
+import { GetPEs } from '../../store/printing-edition.actions';
 
 @Component({
   selector: 'app-printing-edition',
@@ -42,7 +40,7 @@ export class PrintingEditionComponent implements OnInit {
   public pageModel: IPrintingEditionPage;
   public pageParameters: IPageOptions;
 
-  constructor(private store: Store<IAppState>) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.pageParameters = Consts.PE_PAGE_PARAMETERS;
@@ -57,23 +55,23 @@ export class PrintingEditionComponent implements OnInit {
       minPrice: this.lowValue,
       maxPrice: Number.MAX_SAFE_INTEGER,
     };
-    this.store.dispatch(getPEs({ pageModel: this.pageModel }));
+    this.store.dispatch(new GetPEs(this.pageModel));
     this.getPrintingEditions();
   }
 
   getPrintingEditions(): void {
-    this.store.pipe(select(selectPrintingEditions)).subscribe(
+    this.store.subscribe(
       data => {
-        if (data.printingEditions != null && data.pageModel != null) {
-          this.printingEditionsData = data.printingEditions;
+        if (data.printingEdition.printingEditions != null && data.printingEdition.pageModel != null) {
+          this.printingEditionsData = data.printingEdition.printingEditions;
           this.option = {
-            floor: data.pageModel.minPrice,
-            ceil: data.pageModel.maxPrice,
+            floor: data.printingEdition.pageModel.minPrice,
+            ceil: data.printingEdition.pageModel.maxPrice,
           };
           if (this.highValue < Consts.HIGH_VALUE) {
-            this.highValue = data.pageModel.maxPrice;
+            this.highValue = data.printingEdition.pageModel.maxPrice;
           }
-          this.pageParameters = data.pageModel.pageOptions;
+          this.pageParameters = data.printingEdition.pageModel.pageOptions;
         }
       }
     );
@@ -82,7 +80,7 @@ export class PrintingEditionComponent implements OnInit {
   pageChanged(event: number): void {
     this.pageParameters = { currentPage: event, itemsPerPage: this.pageParameters.itemsPerPage, totalItems: this.pageParameters.totalItems, };
     this.pageModel = { ...this.pageModel, pageOptions: this.pageParameters };
-    this.store.dispatch(getPEs({ pageModel: this.pageModel }));
+    this.store.dispatch(new GetPEs(this.pageModel));
   }
 
   applyFilter(): void {
@@ -95,7 +93,7 @@ export class PrintingEditionComponent implements OnInit {
     if (this.journalBox) {
       printingEditionTypes.push(EPrintingEditionType.journal);
     }
-    if (this.journalBox) {
+    if (this.newspaperBox) {
       printingEditionTypes.push(EPrintingEditionType.newspaper);
     }
     if (!this.bookBox && !this.journalBox && !this.newspaperBox) {
@@ -113,6 +111,6 @@ export class PrintingEditionComponent implements OnInit {
       minPrice: this.lowValue,
       maxPrice: this.highValue,
     };
-    this.store.dispatch(getPEs({ pageModel: this.pageModel }));
+    this.store.dispatch(new GetPEs(this.pageModel));
   }
 }
