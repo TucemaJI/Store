@@ -9,6 +9,7 @@ namespace Store.BusinessLogic.Services.Interfaces
     {
         public Task<TokenModel> RefreshAsync(TokenModel model);
         public Task<TokenModel> SignInAsync(SignInModel model);
+        public Task<TokenModel> SignInByGoogleAsync(SignInByGoogleModel model);
         public Task<IdentityResult> RegistrationAsync(UserModel model);
         public Task<IdentityResult> ConfirmEmailAsync(ConfirmModel model);
         public Task<IdentityResult> SignOutAsync(string accessToken);

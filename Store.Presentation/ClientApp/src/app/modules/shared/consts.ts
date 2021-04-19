@@ -44,7 +44,7 @@ export class Consts {
     public static ROUTE_PRINTING_EDITIONS = "printing-edition";
     public static ROUTE_PRINTING_EDITION = "pe/:id";
     public static ROUTE_ORDERS = "orders";
-    
+
     public static FORBIDDEN = "You have not pass";
     public static SORT_BY = 'Price';
     public static QUANTITY_MINIMUM = "Quantity cannot be less 1";
@@ -73,6 +73,7 @@ export class Consts {
     public static EXPIRE_DAYS = 60;
     public static HIGH_VALUE = 1;
     public static SIGN_IN = `${environment.apiURL}${environment.accountC}/signin`;
+    public static SIGN_IN_BY_GOOGLE = `${environment.apiURL}${environment.accountC}/signinbygoogle`;
     public static REGISTRATION = `${environment.apiURL}${environment.accountC}/registration`;
     public static FORGOT_PASSWORD = `${environment.apiURL}${environment.accountC}/ForgotPassword?email=`;
     public static CHECKMAIL = `${environment.apiURL}${environment.accountC}/checkmail`;

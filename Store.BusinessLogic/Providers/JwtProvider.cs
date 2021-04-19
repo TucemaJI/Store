@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Google.Apis.Auth;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Store.BusinessLogic.Models.Account;
 using Store.BusinessLogic.Services.Interfaces;
 using Store.Shared.Options;
 using System;
@@ -8,18 +10,21 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 
 namespace Store.BusinessLogic.Providers
 {
     public class JwtProvider : IJwtProvider
     {
-        private readonly IOptions<JwtOptions> _options;
+        private readonly IOptions<JwtOptions> _jwtOptions;
+        private readonly IOptions<GoogleAuthOptions> _googleOptions;
 
-        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_options.Value.Key));
-        public JwtProvider(IOptions<JwtOptions> options)
+        public SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtOptions.Value.Key));
+        public JwtProvider(IOptions<JwtOptions> jwtOptions, IOptions<GoogleAuthOptions> googleOptions)
         {
-            _options = options;
+            _jwtOptions = jwtOptions;
+            _googleOptions = googleOptions;
         }
 
         public string CreateToken(string email, string role, string id)
@@ -33,10 +38,10 @@ namespace Store.BusinessLogic.Providers
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: _options.Value.Issuer,
-                    audience: _options.Value.Audience,
+                    issuer: _jwtOptions.Value.Issuer,
+                    audience: _jwtOptions.Value.Audience,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(_options.Value.Lifetime)),
+                    expires: now.Add(TimeSpan.FromMinutes(_jwtOptions.Value.Lifetime)),
                     signingCredentials: new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
@@ -45,8 +50,8 @@ namespace Store.BusinessLogic.Providers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = _options.Value.Issuer,
-                ValidAudience = _options.Value.Audience,
+                ValidIssuer = _jwtOptions.Value.Issuer,
+                ValidAudience = _jwtOptions.Value.Audience,
 
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.Sub,
@@ -68,12 +73,22 @@ namespace Store.BusinessLogic.Providers
 
         public string GenerateRefreshToken()
         {
-            byte[] randomNumber = new byte[_options.Value.RefreshTokenLength];
+            byte[] randomNumber = new byte[_jwtOptions.Value.RefreshTokenLength];
             using (var random = RandomNumberGenerator.Create())
             {
                 random.GetBytes(randomNumber);
                 return Convert.ToBase64String(randomNumber);
             }
+        }
+
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleTokenAsync(SignInByGoogleModel externalAuth)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string>() { _googleOptions.Value.ClientId }
+            };
+            var payload = await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, settings);
+            return payload;
         }
     }
 }

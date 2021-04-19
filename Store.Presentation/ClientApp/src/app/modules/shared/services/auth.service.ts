@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { GoogleLoginProvider, SocialAuthService } from "angularx-social-login";
 import { Subject } from "rxjs";
 import { Consts } from "../consts";
 import { IToken } from "../models/IToken.model";
@@ -50,12 +51,19 @@ export class AuthService {
         return isAuth;
     }
 
-    public getTokens():IToken{
+    public getTokens(): IToken {
         const accessToken = localStorage.getItem(Consts.ACCESS_TOKEN);
         const refToken = localStorage.getItem(Consts.REFRESH_TOKEN);
         const token: IToken = { accessToken: accessToken, refreshToken: refToken };
         return token;
     }
 
-    constructor(private jwtHelper: JwtHelperService) { }
+    public signInWithGoogle = () => {
+        return this._externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    }
+    public signOutExternal = () => {
+        this._externalAuthService.signOut();
+    }
+    
+    constructor(private jwtHelper: JwtHelperService, private _externalAuthService: SocialAuthService) { }
 }

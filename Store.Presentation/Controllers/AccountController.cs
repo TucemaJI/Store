@@ -34,6 +34,14 @@ namespace Store.Presentation.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("SignInByGoogle")]
+        public Task<TokenModel> SignInByGoogleAsync([FromBody] SignInByGoogleModel model)
+        {
+            var result = _accountService.SignInByGoogleAsync(model);
+            return result;
+        }
+
+        [AllowAnonymous]
         [HttpPost("Registration")]
         public async Task<IdentityResult> RegisterAsync([FromBody] UserModel model)
         {

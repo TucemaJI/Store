@@ -96,6 +96,65 @@ namespace Store.BusinessLogic.Services
             return returnToken;
         }
 
+        public async Task<TokenModel> SignInByGoogleAsync(SignInByGoogleModel model)
+        {
+            var payload = await _jwtProvider.VerifyGoogleTokenAsync(model);
+            if (payload is null)
+            {
+                model.Errors.Add(ExceptionConsts.INVALID_TOKEN);
+                throw new BusinessLogicException(model.Errors.ToList());
+            }
+
+            var user = await _userManager.FindByLoginAsync(model.Provider, payload.Subject);
+            if (user is null)
+            {
+                model.Errors.Add(ExceptionConsts.NOT_FOUND_USER);
+            }
+
+            user = await _userManager.FindByEmailAsync(payload.Email);
+
+            if (user is null)
+            {
+                user = new User
+                {
+                    Email = payload.Email,
+                    FirstName = payload.GivenName,
+                    LastName = payload.FamilyName,
+                    UserName = $"{payload.GivenName}{payload.FamilyName}",
+                    EmailConfirmed = true,
+                };
+                await _userManager.CreateAsync(user);
+                await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
+            }
+
+            if (user.IsBlocked)
+            {
+                model.Errors.Add(ExceptionConsts.USER_BLOCKED);
+                throw new BusinessLogicException(model.Errors.ToList());
+            }
+
+            var info = new UserLoginInfo(model.Provider, payload.Subject, model.Provider);
+            await _userManager.AddLoginAsync(user, info);
+
+            string refreshToken = _jwtProvider.GenerateRefreshToken();
+            var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
+            if (!result.Succeeded)
+            {
+                model.Errors.Add(ExceptionConsts.REFRESH_TOKEN_NOT_WRITED);
+                throw new BusinessLogicException(model.Errors.ToList());
+            }
+
+            string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            var token = new TokenModel
+            {
+                AccessToken = _jwtProvider.CreateToken(user.Email, role, user.Id),
+                RefreshToken = refreshToken,
+            };
+
+            return token;
+        }
+
         public async Task<TokenModel> SignInAsync(SignInModel model)
         {
             var user = await FindUserByEmailAsync(model.Email);

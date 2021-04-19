@@ -40,7 +40,6 @@ export class ProfileComponent implements OnInit {
     this.store.subscribe(
       data => {
         if (data.account.user != null) {
-          debugger;
           this.user = data.account.user;
         }
       }

@@ -33,6 +33,7 @@ import { CartState } from './modules/cart/store/cart.state';
 import { OrderState } from './modules/order/store/order.state';
 import { PrintingEditionsState } from './modules/printing-edition/store/printing-edition.state';
 import { environment } from 'src/environments/environment';
+import { GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig } from 'angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,7 @@ import { environment } from 'src/environments/environment';
       }
     }),
   ],
-  providers: [AccountHttpService,
+  providers: [
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
@@ -82,6 +83,22 @@ import { environment } from 'src/environments/environment';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '557267790672-uupnem35ojvd6h4tobmsd2linn8isn7p.apps.googleusercontent.com'
+            )
+          },
+        ],
+      } as SocialAuthServiceConfig
+    },
+    SocialAuthService,
+    AccountHttpService,
     PrintingEditionHttpService,
     ShoppingCartService,
     CookieService,

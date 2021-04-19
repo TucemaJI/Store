@@ -35,6 +35,7 @@ namespace Store.Presentation
             services.Configure<ServiceOptions>(Configuration.GetSection(StartupConsts.SERVICE_OPTIONS));
             services.Configure<ConnectionStringsOptions>(Configuration.GetSection(StartupConsts.CONNECTION_STRINGS));
             services.Configure<CurrencyOptions>(Configuration.GetSection(StartupConsts.CURRENCY_OPTIONS));
+            services.Configure<GoogleAuthOptions>(Configuration.GetSection(StartupConsts.GOOGLE_OPTIONS));
             StripeConfiguration.ApiKey = Configuration[OrderServiceConsts.API_KEY];
 
             services.InitializeBL(Configuration);

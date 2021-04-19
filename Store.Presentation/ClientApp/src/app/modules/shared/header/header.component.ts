@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
   logOut(): void {
     localStorage.clear();
     this.userId = undefined;
+    this.auth.signOutExternal();
     this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
   }
 
