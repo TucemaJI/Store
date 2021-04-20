@@ -19,7 +19,9 @@ export class ShoppingCartService<T extends BaseCartItem> {
         const strT = this.cookie.getAll();
         let t: T[] = new Array();
         for (let i in strT) {
-            t.push(JSON.parse(this.cookie.get(i)));
+            if (i.match(Consts.VALID_NUM)) {
+                t.push(JSON.parse(this.cookie.get(i)));
+            }
         };
         return t;
     }
@@ -30,11 +32,11 @@ export class ShoppingCartService<T extends BaseCartItem> {
     }
     removeItem(id: string): void {
         if (this.cookie.check(id)) {
-            this.cookie.delete(id,'/');
+            this.cookie.delete(id, '/');
             this.cartChanged.next(this.getItems().length);
         }
     }
-    clean():void{
+    clean(): void {
         this.cookie.deleteAll('/');
         this.cartChanged.next(this.getItems().length);
     }

@@ -43,6 +43,7 @@ export class SignInComponent implements OnInit {
     this._authService.signInWithGoogle()
       .then(res => {
         const user: SocialUser = { ...res };
+        debugger;
         const externalAuth: IExternalAuth = {
           provider: user.provider,
           idToken: user.idToken
