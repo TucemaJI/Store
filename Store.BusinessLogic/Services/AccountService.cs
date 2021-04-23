@@ -73,17 +73,7 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            string newRefreshToken = _jwtProvider.GenerateRefreshToken();
-
-            var result = await _userManager.SetAuthenticationTokenAsync(user, principal.Issuer, AccountServiceConsts.REFRESH_TOKEN, newRefreshToken);
-
-            if (!result.Succeeded)
-            {
-                model.Errors.Add(ExceptionConsts.INVALID_TOKEN);
-                throw new BusinessLogicException(model.Errors.ToList());
-            }
-
-            await _signInManager.RefreshSignInAsync(user);
+            string newRefreshToken = await WriteTokenAsync(user, principal.Issuer);
 
             string role = principal.Claims.First(claim => claim.Type == ClaimTypes.Role).Value;
             string id = principal.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
@@ -136,20 +126,14 @@ namespace Store.BusinessLogic.Services
             var info = new UserLoginInfo(model.Provider, payload.Subject, model.Provider);
             await _userManager.AddLoginAsync(user, info);
 
-            string refreshToken = _jwtProvider.GenerateRefreshToken();
-            var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
-            if (!result.Succeeded)
-            {
-                model.Errors.Add(ExceptionConsts.REFRESH_TOKEN_NOT_WRITED);
-                throw new BusinessLogicException(model.Errors.ToList());
-            }
+            string newRefreshToken = await WriteTokenAsync(user, _jwtOptions.Value.Issuer);
 
             string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
             var token = new TokenModel
             {
                 AccessToken = _jwtProvider.CreateToken(user.Email, role, user.Id),
-                RefreshToken = refreshToken,
+                RefreshToken = newRefreshToken,
             };
 
             return token;
@@ -173,22 +157,14 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(model.Errors.ToList());
             }
 
-            string refreshToken = _jwtProvider.GenerateRefreshToken();
-
-            var result = await _userManager.SetAuthenticationTokenAsync(user, _jwtOptions.Value.Issuer, AccountServiceConsts.REFRESH_TOKEN, refreshToken);
-
-            if (!result.Succeeded)
-            {
-                model.Errors.Add(ExceptionConsts.REFRESH_TOKEN_NOT_WRITED);
-                throw new BusinessLogicException(model.Errors.ToList());
-            }
+            string newRefreshToken = await WriteTokenAsync(user, _jwtOptions.Value.Issuer);
 
             string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
             var token = new TokenModel
             {
                 AccessToken = _jwtProvider.CreateToken(model.Email, role, user.Id),
-                RefreshToken = refreshToken,
+                RefreshToken = newRefreshToken,
             };
 
             return token;
@@ -276,6 +252,7 @@ namespace Store.BusinessLogic.Services
                     string.Concat(EmailConsts.NEW_PASSWORD, password));
             }
         }
+
         private async Task<User> FindUserByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -284,6 +261,22 @@ namespace Store.BusinessLogic.Services
                 throw new BusinessLogicException(new List<string> { $"{ExceptionConsts.NOT_FOUND_USER}{email}" });
             }
             return user;
+        }
+
+        private async Task<string> WriteTokenAsync(User user, string issuer)
+        {
+            string newRefreshToken = _jwtProvider.GenerateRefreshToken();
+
+            var result = await _userManager.SetAuthenticationTokenAsync(user, issuer, AccountServiceConsts.REFRESH_TOKEN, newRefreshToken);
+
+            if (!result.Succeeded)
+            {
+                throw new BusinessLogicException(new List<string> { ExceptionConsts.INVALID_TOKEN });
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+
+            return newRefreshToken;
         }
     }
 }
