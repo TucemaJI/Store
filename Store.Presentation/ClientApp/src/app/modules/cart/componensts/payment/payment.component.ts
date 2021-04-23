@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
+import { UpdateOrder } from 'src/app/modules/order/store/order.action';
+import { EStatusType } from 'src/app/modules/shared/enums/status-type.enum';
 import { IPay } from 'src/app/modules/shared/models/IPay.model';
 import { Pay } from '../../store/cart.actions';
 
@@ -38,7 +40,12 @@ export class PaymentComponent implements OnInit {
       orderId: this.data.orderId,
       value: this.data.total,
     }
-    this.store.dispatch(new Pay(payment));
-    this.dialogRef.close();
+    this.store.dispatch(new Pay(payment, this.data.orderId)).subscribe(
+      data => {
+        this.dialogRef.close();
+
+      }
+    );
+
   }
 }

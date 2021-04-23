@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { PaymentComponent } from 'src/app/modules/cart/componensts/payment/payment.component';
 import { EStatusType } from 'src/app/modules/shared/enums/status-type.enum';
 import { IOrder } from 'src/app/modules/shared/models/IOrder.model';
 import { IOrderPage } from 'src/app/modules/shared/models/IOrderPage.model';
 import { IPageOptions } from 'src/app/modules/shared/models/IPageOptions.model';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
-import { GetOrders } from '../../store/order.action';
+import { GetOrders, UpdateOrder } from '../../store/order.action';
 import { Consts } from 'src/app/modules/shared/consts';
+import { OrderState } from '../../store/order.state';
+import { Observable } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-orders',
@@ -25,6 +29,8 @@ export class OrdersComponent implements OnInit {
 
   constructor(private store: Store, public dialog: MatDialog, private auth: AuthService) { }
 
+  // @Select(OrderState.getOrders) ordersData$: Observable<IOrder[]>;
+
   ngOnInit(): void {
     this.userId = this.auth.getId();
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
@@ -36,7 +42,7 @@ export class OrdersComponent implements OnInit {
       userId: this.userId,
       status: EStatusType.none,
     };
-    this.store.dispatch(new GetOrders(this.pageModel ));
+    this.store.dispatch(new GetOrders(this.pageModel));
     this.getOrders();
   }
 
@@ -54,20 +60,15 @@ export class OrdersComponent implements OnInit {
   pageChanged(event: number): void {
     this.pageOptions = { currentPage: event, itemsPerPage: this.pageOptions.itemsPerPage, totalItems: this.pageOptions.totalItems, };
     const pageModel: IOrderPage = { ...this.pageModel, pageOptions: this.pageOptions };
-    this.store.dispatch(new GetOrders( pageModel ));
+    this.store.dispatch(new GetOrders(pageModel));
   }
 
   pay(element: IOrder): void {
-    this.dialog.open(PaymentComponent, { data: { total: element.totalAmount, orderId: element.id } });
-    
-    this.store.subscribe(
-      data => {
-        if (data.cart.orderStatus != null) {
-          const pageModel: IOrderPage = { ...this.pageModel, pageOptions: this.pageOptions };
-          this.store.dispatch(new GetOrders( pageModel ));
-          element.status = data.cart.orderStatus;
-        }
+    this.dialog.open(PaymentComponent, { data: { total: element.totalAmount, orderId: element.id } }).afterClosed().subscribe(
+      () => {
+        this.store.dispatch(new UpdateOrder(element.id, EStatusType.paid));
       }
-    )
+    );
+
   }
 }

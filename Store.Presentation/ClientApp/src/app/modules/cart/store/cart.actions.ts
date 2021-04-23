@@ -12,7 +12,7 @@ export class CreateOrder {
 };
 export class Pay {
     static readonly type = ECartActions.Pay;
-    constructor(public payment: IPay) { }
+    constructor(public payment: IPay, public orderId: number) { }
 };
 
 

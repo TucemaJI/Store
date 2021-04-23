@@ -20,4 +20,9 @@ export class OrderHttpService {
     postGetOrders(pageModel: IOrderPage):Observable<IResultPageModel> {
         return this.http.post<IResultPageModel>(Consts.GET_ORDERS, pageModel);
     }
+    fakeMethod():Observable<IResultPageModel>{
+        return new Observable<IResultPageModel>(
+            
+        )
+    }
 }
