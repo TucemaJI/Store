@@ -2,11 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { ILogin } from '../../../shared/models/ILogin.model';
-import { SignIn, SignInByGoogle } from '../../store/account.actions';
+import { SignIn, SignInByFacebook, SignInByGoogle as SignInByGoogle } from '../../store/account.actions';
 import { DOCUMENT } from '@angular/common';
 import { AuthService } from 'src/app/modules/shared/services/auth.service';
 import { SocialUser } from 'angularx-social-login';
 import { IExternalAuth } from 'src/app/modules/shared/models/IExternalAuth.model';
+import { IFacebookUserModel } from 'src/app/modules/shared/models/IFacebookUser.model';
 
 @Component({
   selector: 'app-sign-in',
@@ -43,12 +44,21 @@ export class SignInComponent implements OnInit {
     this._authService.signInWithGoogle()
       .then(res => {
         const user: SocialUser = { ...res };
-        debugger;
         const externalAuth: IExternalAuth = {
           provider: user.provider,
           idToken: user.idToken
         }
         this.validateExternalAuth(externalAuth);
+      }, error => console.log(error))
+  }
+
+  public loginWithFacebook(): void {
+    this._authService.signInWithFacebook().then(
+      res=>{
+        const user: IFacebookUserModel = { email: res.email, firstName: res.firstName, lastName: res.lastName };
+        debugger;
+        this.store.dispatch(new SignInByFacebook(user, this.remember))
+        
       }, error => console.log(error))
   }
 

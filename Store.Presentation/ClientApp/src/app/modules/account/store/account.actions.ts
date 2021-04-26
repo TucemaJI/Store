@@ -3,6 +3,7 @@ import { ILogin } from "../../shared/models/ILogin.model";
 import { IConfirm } from "../../shared/models/IConfirm.model";
 import { IToken } from "../../shared/models/IToken.model";
 import { IExternalAuth } from "../../shared/models/IExternalAuth.model";
+import { IFacebookUserModel } from "../../shared/models/IFacebookUser.model";
 
 export enum EAccountActions {
     SignIn = '[User] Sign In',
@@ -13,6 +14,7 @@ export enum EAccountActions {
     GetUser = '[User] Get User',
     EditUser = '[User] Edit User',
     SignInByGoogle = '[User] SignInByGoogle',
+    SignInByFacebook = '[User] SignInByFacebook',
 }
 
 export class SignIn {
@@ -46,4 +48,8 @@ export class EditUser {
 export class SignInByGoogle {
     static readonly type = EAccountActions.SignInByGoogle;
     constructor(public externalAuth: IExternalAuth, public remember: boolean) { }
+}
+export class SignInByFacebook {
+    static readonly type = EAccountActions.SignInByFacebook;
+    constructor(public user: IFacebookUserModel, public remember: boolean) { }
 }

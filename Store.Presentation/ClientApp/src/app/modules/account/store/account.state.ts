@@ -5,11 +5,12 @@ import { tap } from "rxjs/operators";
 import { Consts } from "../../shared/consts";
 import { IConfirm } from "../../shared/models/IConfirm.model";
 import { IExternalAuth } from "../../shared/models/IExternalAuth.model";
+import { IFacebookUserModel } from "../../shared/models/IFacebookUser.model";
 import { ILogin } from "../../shared/models/ILogin.model";
 import { IToken } from "../../shared/models/IToken.model";
 import { IUser } from "../../shared/models/IUser.model";
 import { AccountHttpService } from "../../shared/services/account-http.service";
-import { ConfirmEmail, EditUser, GetUser, PasswordRecovery, RefreshToken, SignIn, SignInByGoogle, SignUp } from "./account.actions";
+import { ConfirmEmail, EditUser, GetUser, PasswordRecovery, RefreshToken, SignIn, SignInByFacebook, SignInByGoogle, SignUp } from "./account.actions";
 
 export interface IAccountState {
   user: IUser
@@ -55,6 +56,20 @@ export class AccountState {
   @Action(SignInByGoogle)
   loginByGoogle({ getState, setState }: StateContext<IAccountState>, payload: { externalAuth: IExternalAuth, remember: boolean }) {
     return this.accountService.postLoginByGoogle(payload.externalAuth, payload.remember).pipe(
+      tap(result => {
+        const state = getState();
+        setState({
+          ...state,
+          token: result
+        });
+        this.router.navigateByUrl("");
+      })
+    );
+  }
+
+  @Action(SignInByFacebook)
+  loginByFacebook({ getState, setState }: StateContext<IAccountState>, payload: { user: IFacebookUserModel, remember: boolean }) {
+    return this.accountService.postLoginByFacebook(payload.user, payload.remember).pipe(
       tap(result => {
         const state = getState();
         setState({

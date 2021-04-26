@@ -139,6 +139,43 @@ namespace Store.BusinessLogic.Services
             return token;
         }
 
+        public async Task<TokenModel> SignInByFacebookAsync(SignInByFacebookModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user is null)
+            {
+                user = new User
+                {
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = $"{model.FirstName}{model.LastName}",
+                    EmailConfirmed = true,
+                };
+                await _userManager.CreateAsync(user);
+                await _userManager.AddToRoleAsync(user, Enums.UserRole.Client.ToString());
+            }
+
+            if (user.IsBlocked)
+            {
+                model.Errors.Add(ExceptionConsts.USER_BLOCKED);
+                throw new BusinessLogicException(model.Errors.ToList());
+            }
+
+            string newRefreshToken = await WriteTokenAsync(user, _jwtOptions.Value.Issuer);
+
+            string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            var token = new TokenModel
+            {
+                AccessToken = _jwtProvider.CreateToken(user.Email, role, user.Id),
+                RefreshToken = newRefreshToken,
+            };
+
+            return token;
+        }
+
         public async Task<TokenModel> SignInAsync(SignInModel model)
         {
             var user = await FindUserByEmailAsync(model.Email);

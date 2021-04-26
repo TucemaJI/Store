@@ -42,6 +42,14 @@ namespace Store.Presentation.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("SignInByFacebook")]
+        public Task<TokenModel> SignInByFacebookAsync([FromBody] SignInByFacebookModel model)
+        {
+            var result = _accountService.SignInByFacebookAsync(model);
+            return result;
+        }
+
+        [AllowAnonymous]
         [HttpPost("Registration")]
         public async Task<IdentityResult> RegisterAsync([FromBody] UserModel model)
         {

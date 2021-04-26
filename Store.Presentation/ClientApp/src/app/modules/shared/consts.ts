@@ -74,6 +74,7 @@ export class Consts {
     public static HIGH_VALUE = 1;
     public static SIGN_IN = `${environment.apiURL}${environment.accountC}/signin`;
     public static SIGN_IN_BY_GOOGLE = `${environment.apiURL}${environment.accountC}/signinbygoogle`;
+    public static SIGN_IN_BY_FACEBOOK = `${environment.apiURL}${environment.accountC}/signinbyfacebook`;
     public static REGISTRATION = `${environment.apiURL}${environment.accountC}/registration`;
     public static FORGOT_PASSWORD = `${environment.apiURL}${environment.accountC}/ForgotPassword?email=`;
     public static CHECKMAIL = `${environment.apiURL}${environment.accountC}/checkmail`;

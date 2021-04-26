@@ -9,6 +9,7 @@ import { tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { Consts } from '../consts';
 import { IExternalAuth } from '../models/IExternalAuth.model';
+import { IFacebookUserModel } from '../models/IFacebookUser.model';
 
 @Injectable()
 export class AccountHttpService {
@@ -22,6 +23,12 @@ export class AccountHttpService {
 
     postLoginByGoogle(externalAuth: IExternalAuth, remember: boolean): Observable<IToken> {
         return this.http.post<IToken>(Consts.SIGN_IN_BY_GOOGLE, externalAuth).pipe(
+            tap(token => { this.auth.saveToken(token, remember) })
+        )
+    }
+
+    postLoginByFacebook(user: IFacebookUserModel, remember: boolean): Observable<IToken> {
+        return this.http.post<IToken>(Consts.SIGN_IN_BY_FACEBOOK, user).pipe(
             tap(token => { this.auth.saveToken(token, remember) })
         )
     }
