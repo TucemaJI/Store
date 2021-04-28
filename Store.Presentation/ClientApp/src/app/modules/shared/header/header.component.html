@@ -1,26 +1,33 @@
 <mat-toolbar>
-  <mat-toolbar-row>
-    <mat-icon class="book" routerLink="">menu_book</mat-icon>
-    <div class="company" routerLink="">Book Publishing Company</div>
+  <mat-toolbar-row class="justify-content-between">
+    <div class="d-flex text-left align-items-center">
+      <mat-icon class="book" routerLink="">menu_book</mat-icon>
+      <div class="company" routerLink="">Book Publishing Company</div>
+    </div>
 
-    <div class="right-button">
+    <div class="row header-right">
 
       <a class="company" *ngIf="userId===undefined" routerLink='/sign-in'>Log in</a>
+      <div class="col-6 pl-0 pr-0 overflow-hidden">
+        <button class="profile-btn" mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon *ngIf="!image"> person_outline </mat-icon>
+          <img class="profile-image" *ngIf="image" [src]="image">
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="check()" routerLink="profile">My Profile</button>
+          <button mat-menu-item (click)="check()" routerLink="orders">My Orders</button>
+          <button mat-menu-item (click)="logOut()" routerLink="">Log Out</button>
+        </mat-menu>
+      </div>
 
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon> person_outline </mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="check()" routerLink="profile">My Profile</button>
-        <button mat-menu-item (click)="check()" routerLink="orders">My Orders</button>
-        <button mat-menu-item (click)="logOut()" routerLink="">Log Out</button>
-      </mat-menu>
+      <div class="col-6 d-flex align-items-center justify-content-center">
+        <button mat-icon-button *ngIf="userId!==undefined" (click)="cart()">
+          <mat-icon [matBadge]=count>
+            shopping_cart
+          </mat-icon>
+        </button>
+      </div>
 
-      <button mat-icon-button *ngIf="userId!==undefined" (click)="cart()">
-        <mat-icon [matBadge]=count>
-          shopping_cart
-        </mat-icon>
-      </button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -19,8 +19,7 @@ export class ShoppingCartService<T extends BaseCartItem> {
         const strT = this.cookie.getAll();
         let t: T[] = new Array();
         for (let i in strT) {
-            if (!i.match(Consts.VALID_SYMBOLS)) {
-                debugger;
+            if (!i.match(Consts.VALID_SYMBOLS)&&!i.match(Consts.VALID_LETTERS)) {
                 t.push(JSON.parse(this.cookie.get(i)));
             }
         };

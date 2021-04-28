@@ -1,6 +1,8 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService } from "angularx-social-login";
+import { CookieService } from "ngx-cookie-service";
 import { Subject } from "rxjs";
 import { Consts } from "../consts";
 import { IToken } from "../models/IToken.model";
@@ -67,6 +69,14 @@ export class AuthService {
     public signOutExternal = () => {
         this._externalAuthService.signOut();
     }
-    
-    constructor(private jwtHelper: JwtHelperService, private _externalAuthService: SocialAuthService) { }
+
+    public setPhotoUrl = (photo: string): void => {
+        this.cookie.set(Consts.KEY_PHOTO_URL_COOKIES, photo, Consts.EXPIRE_DAYS, '/');
+    }
+    public getPhoto = (): string => {
+        const photoUrl = decodeURI(this.cookie.get(Consts.KEY_PHOTO_URL_COOKIES));
+        return photoUrl;
+    }
+
+    constructor(private jwtHelper: JwtHelperService, private _externalAuthService: SocialAuthService, private cookie: CookieService, private http: HttpClient ) { }
 }

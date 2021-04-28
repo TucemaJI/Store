@@ -3,10 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { BaseCartItem } from 'ng-shopping-cart';
+import { Observable, Observer } from 'rxjs';
 import { RefreshToken } from '../../account/store/account.actions';
 import { CartComponent } from '../../cart/componensts/cart/cart.component';
 import { Consts } from '../consts';
 import { AuthService } from '../services/auth.service';
+import { ImageFromUrlService } from '../services/image-from-url.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 
 @Component({
@@ -18,14 +20,21 @@ export class HeaderComponent implements OnInit {
 
   public userId: string;
   public count: number;
+  public image: any;
+  public base64Image: any;
 
-  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store: Store, private cartService: ShoppingCartService<BaseCartItem>) { }
+  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store: Store, private cartService: ShoppingCartService<BaseCartItem>, private imageService: ImageFromUrlService) { }
 
   ngOnInit(): void {
     this.userId = this.auth.getId();
     this.auth.userIdChanged.subscribe((id) => this.userId = id);
     this.count = this.cartService.getItems().length;
     this.cartService.cartChanged.subscribe((count) => this.count = count);
+
+    this.imageService.getBase64ImageFromURL(this.auth.getPhoto()).subscribe(base64data => {
+      this.image = base64data;
+    });
+
   }
 
   logOut(): void {
@@ -45,7 +54,7 @@ export class HeaderComponent implements OnInit {
     }
     if (!this.auth.isAuthenticated()) {
       const token = this.auth.getTokens();
-      this.store.dispatch(new RefreshToken( token ));
+      this.store.dispatch(new RefreshToken(token));
     }
   }
 }

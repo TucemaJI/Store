@@ -45,6 +45,12 @@ export class Consts {
     public static ROUTE_PRINTING_EDITION = "pe/:id";
     public static ROUTE_ORDERS = "orders";
 
+    public static IMG_CROSS_ORIGIN = "Anonymous";
+    public static CANVAS_TYPE = "canvas";
+    public static DIMENSION_2 = "2d";
+    public static IMG_CONTENT_TYPE = "image/png";
+
+    public static KEY_PHOTO_URL_COOKIES = "PHOTO_URL";
     public static FORBIDDEN = "You have not pass";
     public static SORT_BY = 'Price';
     public static QUANTITY_MINIMUM = "Quantity cannot be less 1";

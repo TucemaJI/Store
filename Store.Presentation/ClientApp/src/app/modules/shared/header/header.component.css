@@ -1,13 +1,25 @@
 mat-icon.book {
     color:green;
     cursor:pointer;
+    margin-right: 1rem;
   }
 .company{
     cursor:pointer;
 }
-.right-button {
-    margin-left: auto;
-}
+
 .test{
     margin-left: 10px;
+}
+
+.header-right {
+    height: 100%;
+    width: 8em;
+}
+
+.profile-image{
+    width: 100%;
+}
+
+.profile-btn {
+    width: 100%;
 }

@@ -19,7 +19,7 @@ export class SignInComponent implements OnInit {
   public remember: boolean = false;
   public loginForm: FormGroup;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private store: Store, private _authService: AuthService) { }
+  constructor(@Inject(DOCUMENT) private document: Document, private store: Store, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
@@ -41,9 +41,10 @@ export class SignInComponent implements OnInit {
   }
 
   public externalLogin = () => {
-    this._authService.signInWithGoogle()
+    this.authService.signInWithGoogle()
       .then(res => {
         const user: SocialUser = { ...res };
+        this.authService.setPhotoUrl(user.photoUrl);
         const externalAuth: IExternalAuth = {
           provider: user.provider,
           idToken: user.idToken
@@ -53,10 +54,10 @@ export class SignInComponent implements OnInit {
   }
 
   public loginWithFacebook(): void {
-    this._authService.signInWithFacebook().then(
+    this.authService.signInWithFacebook().then(
       res=>{
+        this.authService.setPhotoUrl(res.photoUrl);
         const user: IFacebookUserModel = { email: res.email, firstName: res.firstName, lastName: res.lastName };
-        debugger;
         this.store.dispatch(new SignInByFacebook(user, this.remember))
         
       }, error => console.log(error))
