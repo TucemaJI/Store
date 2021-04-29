@@ -21,7 +21,6 @@ export class HeaderComponent implements OnInit {
   public userId: string;
   public count: number;
   public image: any;
-  public base64Image: any;
 
   constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private store: Store, private cartService: ShoppingCartService<BaseCartItem>, private imageService: ImageFromUrlService) { }
 
@@ -32,6 +31,7 @@ export class HeaderComponent implements OnInit {
     this.cartService.cartChanged.subscribe((count) => this.count = count);
 
     this.imageService.getBase64ImageFromURL(this.auth.getPhoto()).subscribe(base64data => {
+      debugger;
       this.image = base64data;
     });
 
@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
   logOut(): void {
     localStorage.clear();
     this.userId = undefined;
+    this.image = undefined;
     this.auth.signOutExternal();
     this.router.navigateByUrl(Consts.ROUTE_SIGN_IN);
   }

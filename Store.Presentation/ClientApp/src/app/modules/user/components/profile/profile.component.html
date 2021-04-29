@@ -7,7 +7,8 @@
         <mat-card-title>
             <p>My Profile</p>
             <mat-icon (click)="editButton()" class="right" matTooltip="Edit profile">edit</mat-icon>
-            <mat-icon>person</mat-icon>
+            <mat-icon *ngIf="!image">person</mat-icon>
+            <img class="profile-image" *ngIf="image" [src]="image">
         </mat-card-title>
 
         <mat-card-content>
@@ -21,7 +22,7 @@
                         Please enter Your First name
                     </mat-error>
                     <mat-error align="end" *ngIf="hasError('firstName', 'firstSpace')">
-                        First and last symbol cannot be space 
+                        First and last symbol cannot be space
                     </mat-error>
                 </mat-form-field>
                 <br>
@@ -34,7 +35,7 @@
                         Please enter Your Last name
                     </mat-error>
                     <mat-error align="end" *ngIf="hasError('lastName', 'firstSpace')">
-                        First and last symbol cannot be space 
+                        First and last symbol cannot be space
                     </mat-error>
                 </mat-form-field>
                 <br>
@@ -95,3 +96,4 @@
         </mat-card-content>
     </mat-card>
 </div>
+<input type="file" (change)="createFile($event)"/>

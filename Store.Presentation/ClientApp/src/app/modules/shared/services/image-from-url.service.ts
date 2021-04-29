@@ -8,11 +8,14 @@ import { Consts } from '../consts';
 export class ImageFromUrlService {
 
   constructor() { }
-  
+
+
+
   public getBase64ImageFromURL(url: string): Observable<string> {
     return new Observable((observer: Observer<string>) => {
       let img = new Image();
       img.crossOrigin = Consts.IMG_CROSS_ORIGIN;
+      debugger;
       img.src = url;
       img.onload = () => {
         observer.next(this.getBase64Image(img));

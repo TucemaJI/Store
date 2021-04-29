@@ -7,9 +7,9 @@
 
     <div class="row header-right">
 
-      <a class="company" *ngIf="userId===undefined" routerLink='/sign-in'>Log in</a>
       <div class="col-6 pl-0 pr-0 overflow-hidden">
-        <button class="profile-btn" mat-icon-button [matMenuTriggerFor]="menu">
+        <a class="company" *ngIf="userId===undefined" routerLink='/sign-in'>Log in</a>
+        <button class="profile-btn" *ngIf="userId!==undefined" mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon *ngIf="!image"> person_outline </mat-icon>
           <img class="profile-image" *ngIf="image" [src]="image">
         </button>

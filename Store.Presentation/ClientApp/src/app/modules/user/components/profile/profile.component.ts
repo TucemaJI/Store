@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
+import { ImageFromUrlService } from 'src/app/modules/shared/services/image-from-url.service';
 import { EditUser, GetUser } from '../../../account/store/account.actions';
 import { IUser } from '../../../shared/models/IUser.model';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -18,7 +19,9 @@ export class ProfileComponent implements OnInit {
   public editbool: Boolean;
   public userId: string;
 
-  constructor(private auth: AuthService, private store: Store) { }
+  public image: any;
+
+  constructor(private auth: AuthService, private store: Store, private imageService: ImageFromUrlService) { }
 
   ngOnInit(): void {
     this.userId = this.auth.getId();
@@ -34,6 +37,10 @@ export class ProfileComponent implements OnInit {
       CheckerErrors.checkLength, CheckerErrors.checkNum]),
       confirmPassword: new FormControl('', [Validators.required]),
     }, { validators: CheckerErrors.checkPasswords });
+
+    this.imageService.getBase64ImageFromURL(this.auth.getPhoto()).subscribe(base64data => {
+      this.image = base64data;
+    });
   }
 
   getUserForm(): void {
@@ -70,6 +77,12 @@ export class ProfileComponent implements OnInit {
     }
     this.store.dispatch(new EditUser(user));
     this.editbool = false;
+  }
+
+  public createFile(event) {
+    this.image = <File>event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', this.image, this.image.name);
   }
 
 }
