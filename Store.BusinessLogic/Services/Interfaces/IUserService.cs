@@ -14,5 +14,6 @@ namespace Store.BusinessLogic.Services.Interfaces
         public Task<UserModel> UpdateUserAsync(UserModel userModel);
         public Task BlockUserAsync(string id);
         public Task<PageModel<UserModel>> FilterUsersAsync(UserFilter filter);
+        public Task UploadPhotoAsync();
     }
 }

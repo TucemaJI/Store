@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogic.Models;
@@ -63,6 +64,14 @@ namespace Store.Presentation.Controllers
         {
             var userModels = _userService.FilterUsersAsync(filter);
             return userModels;
+        }
+
+        [Authorize]
+        [HttpPost("UploadPhoto")]
+        public async Task UploadPhotoAsync([FromForm] IFormFile file)
+        {
+            var test = file;
+            await _userService.UploadPhotoAsync();
         }
     }
 }

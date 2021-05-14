@@ -57,8 +57,8 @@ namespace Store.Presentation.Controllers
             return result;
         }
 
-        [HttpPost("CheckMail")]
         [AllowAnonymous]
+        [HttpPost("CheckMail")]
         public Task<IdentityResult> ConfirmEmailAsync([FromBody] ConfirmModel model)
         {
             var result = _accountService.ConfirmEmailAsync(model);
@@ -71,5 +71,7 @@ namespace Store.Presentation.Controllers
         {
             await _accountService.RecoveryPasswordAsync(email);
         }
+
     }
 }
+

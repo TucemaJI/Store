@@ -12,7 +12,7 @@ namespace Store.DataAccess.Initialization
 {
     public static class DataBaseInitialization
     {
-        public static async void Initialize(this IServiceCollection services, IConfiguration configuration)
+        public static async void InitializeAsync(this IServiceCollection services, IConfiguration configuration)
         {
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var roleManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
@@ -74,7 +74,7 @@ namespace Store.DataAccess.Initialization
                 Price = 50,
                 Type = Enums.PrintingEditionType.Book,
                 Title = "C# 5.0",
-                Description = "OLd very good book",
+                Description = "Old very good book",
             };
             var aipe = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pe.Id };
             var aipes = new AuthorInPrintingEdition { AuthorId = author.Id, PrintingEditionId = pes.Id };

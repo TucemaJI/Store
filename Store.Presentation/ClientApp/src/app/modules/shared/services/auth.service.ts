@@ -74,9 +74,7 @@ export class AuthService {
         this.cookie.set(Consts.KEY_PHOTO_URL_COOKIES, photo, Consts.EXPIRE_DAYS, '/');
     }
     public getPhoto = (): string => {
-        debugger;
         const photoUrl = decodeURI(this.cookie.get(Consts.KEY_PHOTO_URL_COOKIES));
-        debugger;
         return photoUrl;
     }
 

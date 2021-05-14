@@ -9,6 +9,7 @@
             <mat-icon (click)="editButton()" class="right" matTooltip="Edit profile">edit</mat-icon>
             <mat-icon *ngIf="!image">person</mat-icon>
             <img class="profile-image" *ngIf="image" [src]="image">
+            <input type="file" (change)="createFile($event.target.files)"/>
         </mat-card-title>
 
         <mat-card-content>
@@ -96,4 +97,3 @@
         </mat-card-content>
     </mat-card>
 </div>
-<input type="file" (change)="createFile($event)"/>

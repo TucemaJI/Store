@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Services;
+using Google.Apis.Upload;
+using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogic.Exceptions;
 using Store.BusinessLogic.Mappers;
 using Store.BusinessLogic.Models;
@@ -9,7 +13,9 @@ using Store.DataAccess.Models.Filters;
 using Store.DataAccess.Repositories.Interfaces;
 using Store.Shared.Enums;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using static Store.Shared.Constants.Constants;
 
@@ -109,6 +115,50 @@ namespace Store.BusinessLogic.Services
             return pageModel;
 
         }
+
+        public async Task UploadPhotoAsync()
+        {
+
+            var credential = GoogleCredential.FromFile(@"C:\Users\anuit\source\repos\Store\Store.Presentation\book-store-310905-2b3cab1266e8.json")
+                .CreateScoped(DriveService.ScopeConstants.Drive);
+
+
+            // Create Drive API service.
+            var service = new DriveService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+            });
+
+            var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+            {
+                Name = "Test hello uploaded.txt",
+                Parents = new List<string>() { "1MKebdlIfx8tGVw170tPjFSd6E4ERcUNQ" },
+            };
+
+
+            string uploadedFileId;
+            // Create a new file on Google Drive
+            await using (var fsSource = new FileStream("Test_hello.txt", FileMode.Open, FileAccess.Read))
+            {
+                // Create a new file, with metadata and stream.
+                var request = service.Files.Create(fileMetadata, fsSource, "text/plain");
+                request.Fields = "*";
+                var results = await request.UploadAsync(CancellationToken.None);
+
+                if (results.Status == UploadStatus.Failed)
+                {
+                    throw new BusinessLogicException(new List<string> { "ERROR LOADING" });
+                }
+
+                // the file id of the new file we created
+                uploadedFileId = request.ResponseBody?.Id;
+            }
+            string test = uploadedFileId;
+            var req = await service.Files.List().ExecuteAsync();
+
+
+        }
+
         private async Task<User> FindUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);

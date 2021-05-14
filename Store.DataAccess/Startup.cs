@@ -28,7 +28,7 @@ namespace Store.DataAccess
                 .WithTransientLifetime()
                 );
 
-            services.Initialize(configuration);
+            services.InitializeAsync(configuration);
         }
     }
 }

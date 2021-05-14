@@ -58,4 +58,7 @@ export class AccountHttpService {
     editUser(user: IUser): Observable<IUser> {
         return this.http.put<IUser>(Consts.UPDATE_USER, user);
     }
+    uploadPhoto(formData: FormData){
+        return this.http.post(Consts.UPLOAD_PHOTO, formData);
+    }
 }

@@ -4,7 +4,7 @@ export class Consts {
     public static AUTHOR_COLUMNS = ['ID', 'Name', 'Product'];
     public static NAME = 'name';
     public static ID = 'id';
-
+    
     public static CLIENTS_COLUMNS = ['userName', 'userEmail', 'status', 'buttons'];
     public static AUTHOR_PAGE_PARAMETERS = {
         itemsPerPage: 10,
@@ -44,12 +44,12 @@ export class Consts {
     public static ROUTE_PRINTING_EDITIONS = "printing-edition";
     public static ROUTE_PRINTING_EDITION = "pe/:id";
     public static ROUTE_ORDERS = "orders";
-
+    
     public static IMG_CROSS_ORIGIN = "Anonymous";
     public static CANVAS_TYPE = "canvas";
     public static DIMENSION_2 = "2d";
     public static IMG_CONTENT_TYPE = "image/png";
-
+    
     public static KEY_PHOTO_URL_COOKIES = "PHOTO_URL";
     public static FORBIDDEN = "You have not pass";
     public static SORT_BY = 'Price';
@@ -89,6 +89,7 @@ export class Consts {
     public static UPDATE_USER = `${environment.apiURL}${environment.userC}/updateuser`;
     public static FILTER_USERS = `${environment.apiURL}${environment.userC}/filterusers`;
     public static DELETE_USER = `${environment.apiURL}${environment.userC}/deleteuser`;
+    public static UPLOAD_PHOTO = `${environment.apiURL}${environment.userC}/uploadPhoto`;
     public static GET_AUTHORS = `${environment.apiURL}${environment.authorC}/getauthorswithfilter`;
     public static CREATE_AUTHOR = `${environment.apiURL}${environment.authorC}/createauthor`;
     public static UPDATE_AUTHOR = `${environment.apiURL}${environment.authorC}/updateauthor`;
@@ -98,6 +99,6 @@ export class Consts {
     public static GET_ORDERS = `${environment.apiURL}${environment.orderC}/getorders`;
     public static GET_PES = `${environment.apiURL}${environment.peC}/getprintingeditions`;
     public static GET_PE = `${environment.apiURL}${environment.peC}/`;
-
-
+    
+    
 }

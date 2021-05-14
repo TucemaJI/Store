@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
+import { AccountHttpService } from 'src/app/modules/shared/services/account-http.service';
 import { ImageFromUrlService } from 'src/app/modules/shared/services/image-from-url.service';
 import { EditUser, GetUser } from '../../../account/store/account.actions';
 import { IUser } from '../../../shared/models/IUser.model';
@@ -21,7 +22,7 @@ export class ProfileComponent implements OnInit {
 
   public image: any;
 
-  constructor(private auth: AuthService, private store: Store, private imageService: ImageFromUrlService) { }
+  constructor(private auth: AuthService, private store: Store, private imageService: ImageFromUrlService, private accService: AccountHttpService) { }
 
   ngOnInit(): void {
     this.userId = this.auth.getId();
@@ -79,10 +80,15 @@ export class ProfileComponent implements OnInit {
     this.editbool = false;
   }
 
-  public createFile(event) {
-    this.image = <File>event.target.files[0];
+  public createFile(file: FileList) {
+    let img = file.item(0);
     const formData = new FormData();
-    formData.append('image', this.image, this.image.name);
+    formData.append('file', img, `${this.user.id}${img.name.substr(img.name.lastIndexOf('.'))}`);
+    this.accService.uploadPhoto(formData).subscribe(
+      () => {
+        debugger;
+      }
+    );
   }
 
 }

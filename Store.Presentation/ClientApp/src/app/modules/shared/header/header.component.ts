@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit {
     this.cartService.cartChanged.subscribe((count) => this.count = count);
 
     this.imageService.getBase64ImageFromURL(this.auth.getPhoto()).subscribe(base64data => {
-      debugger;
       this.image = base64data;
     });
 

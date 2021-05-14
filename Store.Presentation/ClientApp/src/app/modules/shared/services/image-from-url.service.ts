@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
+import { isNullOrUndefined } from 'util';
 import { Consts } from '../consts';
 
 @Injectable({
@@ -13,17 +14,20 @@ export class ImageFromUrlService {
 
   public getBase64ImageFromURL(url: string): Observable<string> {
     return new Observable((observer: Observer<string>) => {
-      let img = new Image();
-      img.crossOrigin = Consts.IMG_CROSS_ORIGIN;
-      debugger;
-      img.src = url;
-      img.onload = () => {
-        observer.next(this.getBase64Image(img));
-        observer.complete();
-      };
-      img.onerror = (err) => {
-        observer.error(err);
-      };
+      if (url !== '') {
+        let img = new Image();
+        img.crossOrigin = Consts.IMG_CROSS_ORIGIN;
+        debugger;
+        img.src = url;
+        img.onload = () => {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+        };
+        img.onerror = (err) => {
+          observer.error(err);
+        };
+      }
+
     });
   }
 
